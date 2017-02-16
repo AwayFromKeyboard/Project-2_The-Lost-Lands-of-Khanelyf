@@ -66,11 +66,10 @@ public:
 	// Gets the atlas texture
 	const void GetAtlas() const;
 
-	UI_Element* UI_CreateWin(iPoint pos, int w, int h, bool dinamic = false, bool is_ui = true);
+	UI_Element* UI_CreateWin(iPoint pos, int w, int h, int blit = 0, bool dinamic = false, bool is_ui = true);
 
 	void GetChilds(UI_Element * element, list<UI_Element*>& visited);
 	void GetParentElements(UI_Element * element, list<UI_Element*>& visited);
-	void GetAlwaysTopElements(list<UI_Element*>& always_top);
 	void ReorderElements();
 	bool Move_Elements();
 	UI_Element* CheckClickMove(int x, int y);
@@ -158,11 +157,11 @@ public:
 	bool				started_dinamic = false;
 	bool				enabled = true;
 	bool				click_through = false;
-	bool				always_top = false;
 	bool				is_ui = true;
 
 	// Layers --
 	double				layer = 0;
+	int					blit_layer = 0;
 	list<UI_Element*>   childs;
 	UI_Window*			parent = nullptr;
 	UI_Element*			parent_element = nullptr;
@@ -196,12 +195,12 @@ public:
 
 	void Set(iPoint pos, int w, int h);
 
-	UI_Element* CreateButton(iPoint _pos, int w, int h, bool dinamic = false, bool is_ui = true);
-	UI_Element* CreateText(iPoint pos, _TTF_Font* font, int spacing = 0, bool dinamic = false, bool is_ui = true, uint r = 255, uint g = 255, uint b = 255);
-	UI_Element* CreateImage(iPoint pos, SDL_Rect image, bool dinamic = false, bool is_ui = true);
-	UI_Element* CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool dinamic = false, bool is_ui = true, uint r = 255, uint g = 255, uint b = 255);
-	UI_Element* CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size = 11, bool dinamic = false, bool is_ui = true);
-	UI_Element* CreateColoredRect(iPoint pos, int view_w, int view_h, SDL_Color color, bool filled = true, bool dinamic = false, bool is_ui = true);
+	UI_Element* CreateButton(iPoint _pos, int w, int h, bool dinamic = false);
+	UI_Element* CreateText(iPoint pos, _TTF_Font* font, int spacing = 0, bool dinamic = false, uint r = 255, uint g = 255, uint b = 255);
+	UI_Element* CreateImage(iPoint pos, SDL_Rect image, bool dinamic = false);
+	UI_Element* CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool dinamic = false, uint r = 255, uint g = 255, uint b = 255);
+	UI_Element* CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size = 11, bool dinamic = false);
+	UI_Element* CreateColoredRect(iPoint pos, int view_w, int view_h, SDL_Color color, bool filled = true, bool dinamic = false);
 
 public:
 
@@ -292,7 +291,7 @@ public:
 
 	void Set(iPoint pos, _TTF_Font* font, int spacing,  uint r = 255, uint g = 255, uint b = 255);
 	void SetText(string text);
-	const char* GetText();
+	string GetText();
 
 public:
 	list<tex_str>          tex_str_list;  
@@ -351,11 +350,15 @@ private:
 
 	bool TakeInput();
 	bool Delete();
-	void MoveCursor();
-	void UpdateWordsLenght(string l_text);
-	void DrawBar();
+	bool MoveCursor();
+
+	void SetBarPos(string text);	
+	int  GetTextSize(string text);
 	void SetPasword();
-	void SetCursorToEnd();
+	void ChangeTextInput();
+
+	void DrawBar();
+	void DinamicViewport();
 
 public:
 	string	     intern_text;
@@ -368,10 +371,10 @@ private:
 	// Bar control
 	SDL_Rect	 bar = NULLRECT;
 	uint		 bar_pos = 0;
-	uint		 bar_x = 0;
+	int	     	 bar_x = 0;
+	int          text_offset = 0;
 
-	list<int>	 words_lenght;
-
+	// Camera
 	SDL_Rect     camera_before = NULLRECT;
 
 	// Change text manually

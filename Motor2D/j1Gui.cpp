@@ -71,16 +71,20 @@ bool j1Gui::Update(float dt)
 
 	if (start)
 	{
-		// Put all always top elements to top ----
-		list<UI_Element*> always_top;
-		GetAlwaysTopElements(always_top);
-
-		int acumulator = 0;
-		for(list<UI_Element*>::iterator it = always_top.begin(); it != always_top.end(); it++, acumulator++)
-			(*it)->layer = elements_list.Count() + acumulator;
-		
-		ReorderElements();
-		// ---------------------------------------
+		// Set variables that inherit from window to childs
+		for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
+		{
+			if (elements->data->type == ui_element::ui_window)
+			{
+				list<UI_Element*> childs;
+				App->gui->GetChilds(elements->data, childs);
+				for (list<UI_Element*>::iterator it = childs.begin(); it != childs.end(); it++)
+				{
+					(*it)->blit_layer = elements->data->blit_layer;
+					(*it)->is_ui = elements->data->is_ui;
+				}
+			}
+		}
 
 		start = false;
 	}
@@ -90,11 +94,11 @@ bool j1Gui::Update(float dt)
 	
 	// Update all elements in order
 	list<UI_Element*> to_top;
-	list<UI_Element*> to_update;
+	p2PQueue<UI_Element*> to_update;
 
 	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
 	{
-		// Move elements if the camera si moving
+		// Move elements if the camera is moving
 		if (elements->data->is_ui && (camera_x != App->render->camera.x || camera_y != App->render->camera.y))
 		{
 			elements->data->rect.x += camera_x - App->render->camera.x;
@@ -104,7 +108,7 @@ bool j1Gui::Update(float dt)
 		// To update if enabled
 		if (elements->data->enabled)
 		{
-			to_update.push_back(elements->data);
+			to_update.Push(elements->data, elements->data->blit_layer);
 
 			// Debug lines ------------------------------------
 			if (debug)
@@ -130,9 +134,8 @@ bool j1Gui::Update(float dt)
 	}
 
 	// Update
-	for (list<UI_Element*>::iterator it = to_update.begin(); it != to_update.end(); it++)
-		(*it)->update();
-
+	for (p2PQueue_item<UI_Element*>* up = to_update.start; up != nullptr; up = up->next)
+		up->data->update();
 
 	// Move clicked elements
 	Move_Elements();
@@ -163,11 +166,11 @@ bool j1Gui::CleanUp()
 
 	App->tex->UnLoadTexture(atlas);
 
-	//while (elements_list.Count() > 0)
-	//{
-	//	p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start;
-	//	DeleteElement(elements->data);
-	//}
+	while (elements_list.Count() > 0)
+	{
+		p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start;
+		DeleteElement(elements->data);
+	}
 
 	return true;
 }
@@ -180,7 +183,7 @@ const void j1Gui::GetAtlas() const
 // ---------------------------------------------------------------------
 // Create a new Window
 // ---------------------------------------------------------------------
-UI_Element* j1Gui::UI_CreateWin(iPoint pos, int w, int h, bool _dinamic, bool _is_ui)
+UI_Element* j1Gui::UI_CreateWin(iPoint pos, int w, int h, int blit, bool _dinamic, bool _is_ui)
 {
 	UI_Window* ret = nullptr;
 	ret = new UI_Window();
@@ -195,6 +198,7 @@ UI_Element* j1Gui::UI_CreateWin(iPoint pos, int w, int h, bool _dinamic, bool _i
 		// Layer
 
 		ret->layer = elements_list.Count();
+		ret->blit_layer = blit;
 
 		// -----
 
@@ -223,12 +227,12 @@ void j1Gui::GetChilds(UI_Element * element, list<UI_Element*>& visited)
 		frontier.push_back(*it);
 
 
-	// Navigate through all the childs and add them (works but needs inprovement)
+	// Navigate through all the childs and add them
 
 	int end = 0;
 	while (!frontier.empty())
 	{
-		for (list<UI_Element*>::iterator fr = frontier.begin(); fr != frontier.end(); fr++) // Navegate through frontier
+		for (list<UI_Element*>::iterator fr = frontier.begin(); fr != frontier.end(); fr++)
 		{
 			list<UI_Element*>::iterator find = std::find(visited.begin(), visited.end(), *fr);
 			if (find == visited.end() && *fr != element)
@@ -262,33 +266,6 @@ void j1Gui::GetParentElements(UI_Element * element, list<UI_Element*>& visited)
 }
 
 // ---------------------------------------------------------------------
-// Looks for all the elements that must be always on the top.
-// ---------------------------------------------------------------------
-void j1Gui::GetAlwaysTopElements(list<UI_Element*>& always_top)
-{
-	// Put childs from always top elements also to top elements
-	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
-	{
-		if (elements->data->always_top)
-		{
-			list<UI_Element*> childs;
-			GetChilds(elements->data, childs);
-
-			for (list<UI_Element*>::iterator ch = childs.begin(); ch != childs.end(); ch++)
-			{
-				(*ch)->always_top = true;
-			}
-		}
-	}
-
-	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
-	{
-		if (elements->data->always_top)
-			always_top.push_back(elements->data);
-	}
-}
-
-// ---------------------------------------------------------------------
 // Updates the PQ elements order.
 // ---------------------------------------------------------------------
 void j1Gui::ReorderElements()
@@ -308,7 +285,6 @@ void j1Gui::ReorderElements()
 	// Place againt he elements on the PQ (now they are on the correct order)
 	for (list<UI_Element*>::iterator it = copy.begin(); it != copy.end(); it++)
 		App->gui->elements_list.Push(*it, (*it)->layer);
-	
 }
 
 // ---------------------------------------------------------------------
@@ -322,7 +298,6 @@ bool j1Gui::Move_Elements()
 	if((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !moving)
 	{
 		App->input->GetMousePosition(mouse_x, mouse_y);
-
 		mouse_x -= App->render->camera.x;
 		mouse_y -= App->render->camera.y;
 
@@ -345,7 +320,6 @@ bool j1Gui::Move_Elements()
 
 		int curr_x; int curr_y;
 		App->input->GetMousePosition(curr_x, curr_y);
-
 		curr_x -= App->render->camera.x;
 		curr_y -= App->render->camera.y;
 
@@ -414,15 +388,17 @@ UI_Element* j1Gui::CheckClickMove(int x, int y)
 
 	// Get the higher element
 	int higher_layer = -1;
+	int higher_blit_layer = -1;
 	UI_Element* higher_element = nullptr;
 
 	if (!elements_clicked.empty())
 	{
 		for (list<UI_Element*>::iterator it = elements_clicked.begin(); it != elements_clicked.end(); it++)
 		{
-			if ((*it)->layer > higher_layer)
+			if ((*it)->layer > higher_layer && (*it)->blit_layer >= higher_blit_layer)
 			{
 				higher_layer = (*it)->layer;
+				higher_blit_layer = (*it)->blit_layer;
 				higher_element = *it;
 			}
 		}
@@ -454,10 +430,7 @@ UI_Element* j1Gui::CheckClickMove(int x, int y)
 // ---------------------------------------------------------------------
 void j1Gui::DeleteElement(UI_Element* element)
 {
-	if (element == nullptr || element == NULL)
-		return;
-
-	if (element->type == ui_window && windows.empty())
+	if (element == nullptr)
 		return;
 
 	list<UI_Element*> childs;
@@ -466,16 +439,13 @@ void j1Gui::DeleteElement(UI_Element* element)
 	// Delete element and it's childs
 	for (list<UI_Element*>::iterator ch = childs.begin(); ch != childs.end(); ch++)
 	{
-		if (*ch == nullptr)
-			continue;
-		
-		if ((*ch)->parent != nullptr)
+		if (*ch == nullptr && (*ch)->parent->childs.size() > 0)
 			(*ch)->parent->childs.remove(*ch);
 
-		if ((*ch)->parent_element != nullptr)
+		if ((*ch)->parent_element != nullptr && (*ch)->parent_element->childs.size() > 0)
 			(*ch)->parent_element->childs.remove(*ch);
 
-		if ((*ch)->type == ui_window)
+		if ((*ch)->type == ui_window && windows.size() > 0)
 			windows.remove((UI_Window*)*ch);
 
 			// Delete from pQ
@@ -537,7 +507,6 @@ void UI_Element::SetEnabledAndChilds(bool set)
 
 	for (list<UI_Element*>::iterator it = visited.begin(); it != visited.end(); it++)
 		(*it)->enabled = set;
-
 }
 
 
@@ -551,28 +520,14 @@ bool UI_Element::PutWindowToTop()
 	list<UI_Element*> visited;
 	list<UI_Element*> copy;
 
-	list<UI_Element*> always_top;
-
 	// Get childs from the window parent
 	App->gui->GetChilds(parent, visited);
-
-	// Get always top elements
-	App->gui->GetAlwaysTopElements(always_top);
 
 	// Update layer
 	int i = 0;
 	for (list<UI_Element*>::iterator it = visited.begin(); it != visited.end(); it++, i++)
-	{
-		if(!(*it)->always_top)
-			(*it)->layer = App->gui->higher_layer + i + 1;
-	}
-
-	// Update always top layer
-	for (list<UI_Element*>::iterator it = always_top.begin(); it != always_top.end(); it++, i++)
-	{
 		(*it)->layer = App->gui->higher_layer + i + 1;
-	}
-
+	
 	// Rorded the elements of the PQ
 	App->gui->ReorderElements();
 
@@ -584,7 +539,7 @@ bool UI_Element::PutWindowToTop()
 // ---------------------------------------------------------------------
 int UI_Element::CheckClickOverlap(int x, int y)
 {
-	list<int> contactors;
+	list<UI_Element*> contactors;
 
 	// Check the UI_Elements that are in the point
 	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
@@ -595,19 +550,23 @@ int UI_Element::CheckClickOverlap(int x, int y)
 			{
 				// Check if is dinamic
 				if (!elements->data->click_through)
-					contactors.push_back(elements->data->layer);
+					contactors.push_back(elements->data);
 			}
 		}
 	}
 
 	// Get the higher layer
 	int higher_layer = -1;
+	int higher_blit_layer = -1;
 	if (!contactors.empty())
 	{
-		for (list<int>::iterator it = contactors.begin(); it != contactors.end(); it++)
+		for (list<UI_Element*>::iterator it = contactors.begin(); it != contactors.end(); it++)
 		{
-			if (*it > higher_layer)
-				higher_layer = *it;
+			if ((*it)->layer > higher_layer && (*it)->blit_layer >= higher_blit_layer)
+			{
+				higher_layer = (*it)->layer;
+				higher_blit_layer = (*it)->blit_layer;
+			}
 		}
 	}
 
@@ -725,7 +684,7 @@ void UI_Window::Set(iPoint pos, int w, int h)
 // ---------------------------------------------------------------------
 // Create a button linked to the current window
 // ---------------------------------------------------------------------
-UI_Element* UI_Window::CreateButton(iPoint pos, int w, int h, bool _dinamic, bool _is_ui)
+UI_Element* UI_Window::CreateButton(iPoint pos, int w, int h, bool _dinamic)
 {
 	UI_Button* ret = nullptr;
 	ret = new UI_Button();
@@ -738,7 +697,6 @@ UI_Element* UI_Window::CreateButton(iPoint pos, int w, int h, bool _dinamic, boo
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_ui = _is_ui;
 
 		// Layers --
 
@@ -756,7 +714,7 @@ UI_Element* UI_Window::CreateButton(iPoint pos, int w, int h, bool _dinamic, boo
 // ---------------------------------------------------------------------
 // Create text linked to the current window
 // ---------------------------------------------------------------------
-UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, bool _dinamic, bool _is_ui, uint r, uint g, uint b)
+UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, bool _dinamic, uint r, uint g, uint b)
 {
 	UI_Text* ret = nullptr;
 	ret = new UI_Text();
@@ -769,7 +727,6 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_ui = _is_ui;
 
 		// Layers --
 
@@ -786,7 +743,7 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 // ---------------------------------------------------------------------
 // Create an image linked to the current window
 // ---------------------------------------------------------------------
-UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic, bool _is_ui)
+UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic)
 {
 	UI_Image* ret = nullptr;
 	ret = new UI_Image();
@@ -799,7 +756,6 @@ UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic, bo
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_ui = _is_ui;
 
 		// Layers --
 
@@ -816,7 +772,7 @@ UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic, bo
 // ---------------------------------------------------------------------
 // Create a text input box to the current window
 // ---------------------------------------------------------------------
-UI_Element* UI_Window::CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool _dinamic, bool _is_ui, uint r, uint g, uint b)
+UI_Element* UI_Window::CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool _dinamic, uint r, uint g, uint b)
 {
 	UI_Text_Input* ret = nullptr;
 	ret = new UI_Text_Input();
@@ -829,7 +785,6 @@ UI_Element* UI_Window::CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool 
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_ui = _is_ui;
 
 		// Layers --
 
@@ -843,7 +798,7 @@ UI_Element* UI_Window::CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool 
 	return ret;
 }
 
-UI_Element * UI_Window::CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size, bool _dinamic, bool _is_ui)
+UI_Element * UI_Window::CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size, bool _dinamic)
 {
 	UI_Scroll_Bar* ret = nullptr;
 	ret = new UI_Scroll_Bar();
@@ -856,7 +811,6 @@ UI_Element * UI_Window::CreateScrollBar(iPoint pos, int view_w, int view_h, int 
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_ui = _is_ui;
 
 		// Layers --
 
@@ -871,7 +825,7 @@ UI_Element * UI_Window::CreateScrollBar(iPoint pos, int view_w, int view_h, int 
 	return ret;
 }
 
-UI_Element * UI_Window::CreateColoredRect(iPoint pos, int w, int h, SDL_Color color, bool filled, bool _dinamic, bool _is_ui)
+UI_Element * UI_Window::CreateColoredRect(iPoint pos, int w, int h, SDL_Color color, bool filled, bool _dinamic)
 {
 	UI_ColoredRect* ret = nullptr;
 	ret = new UI_ColoredRect();
@@ -884,7 +838,6 @@ UI_Element * UI_Window::CreateColoredRect(iPoint pos, int w, int h, SDL_Color co
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_ui = _is_ui;
 
 		// Layers --
 
@@ -1169,14 +1122,19 @@ void UI_Text::SetText(string _text)
 		tex_str_list.push_back(ts);
 	}
 }
-const char* UI_Text::GetText()
+string UI_Text::GetText()
 {
 	string ret;
 
+	int acumulated = 0;
 	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
-		ret.insert(ret.size(), (*it).text.c_str());
+	{
+		ret.insert(acumulated, (*it).text.c_str());
+		acumulated += (*it).text.size() + 1;
+	}
+	ret[acumulated] = '\0';
 
-	return ret.c_str();
+	return ret;
 }
 
 bool UI_Text::update()
@@ -1221,6 +1179,7 @@ bool UI_Text::cleanup()
 {
 	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
 		App->tex->UnLoadTexture((*it).texture);
+
 	return true;
 }
 
@@ -1305,6 +1264,8 @@ void UI_Text_Input::Set(iPoint pos, int w, _TTF_Font* font, uint r, uint g, uint
 	camera_before.y = App->render->camera.y;
 
 	color.r = color.g = color.b = color.a = 255;
+
+	text_offset = 0;
 }
 
 bool UI_Text_Input::update()
@@ -1322,50 +1283,40 @@ bool UI_Text_Input::update()
 	{
 		SetIsActive();
 
-		// Text setup
-		//if (intern_text.Length() == 0 && !active)
-		//	text->SetText("Insert Text");
+		if (intern_text.size() == 0 && active)
+		text->SetText("");
 
 		// Manuall change text
-		if (change)
-		{
-			text->SetText(text_change);
-			intern_text = text_change.c_str();
-			UpdateWordsLenght(intern_text);
-			SetCursorToEnd();
-			change = false;
-		}
-		// Set empty text
-		else if (intern_text.size() == 0 && active)
-			text->SetText("");
+		ChangeTextInput();
 
 		// Input
 		if (active)
 		{
 			// Take and print input
-			if (TakeInput() || Delete())
+			if (TakeInput() || Delete() || MoveCursor())
 			{
 				// Update words position list
 				if(!pasword)
-					UpdateWordsLenght(intern_text);
+					SetBarPos(intern_text.substr(0, bar_pos));
 				else
 					SetPasword();
+
+				//LOG("%d %s %d", bar_pos, intern_text.substr(0, bar_pos).c_str(), text_offset);
 			}
 
 			// Move cursor
-			MoveCursor();
-
 			DrawBar();
 		}
 
 		// Viewport -----------
-		App->render->SetViewPort({ rect.x + App->render->camera.x, rect.y + App->render->camera.y, rect.x + rect.w + App->render->camera.x, rect.h });
+		App->render->SetViewPort({ rect.x + App->render->camera.x, rect.y + App->render->camera.y, rect.w, rect.h });
 
 			text->update();
 
 		App->render->ResetViewPort();
 		// --------------------
 
+		// Camera
 		if (camera_before.x != App->render->camera.x)
 		{
 			text->rect.x += camera_before.x - App->render->camera.x;
@@ -1388,7 +1339,6 @@ bool UI_Text_Input::cleanup()
 	return true;
 }
 
-
 void UI_Text_Input::SetTextInput(string text)
 {
 	text_change = text;
@@ -1403,8 +1353,11 @@ bool UI_Text_Input::TakeInput()
 	{
 		intern_text.insert(bar_pos, App->input->input_text.c_str());
 
+		// Set new text
 		text->SetText(intern_text);
-		App->input->input_text.clear(); // Clean input
+
+		// Clean input
+		App->input->input_text.clear(); 
 
 		// Increase bar positon
 		bar_pos++;
@@ -1423,6 +1376,23 @@ bool UI_Text_Input::Delete()
 	{
 		if (intern_text.size() > 0 && bar_pos > 0)
 		{
+			// Dynamic movement
+			if (text_offset < 0)
+			{
+				int to_erase = GetTextSize(intern_text.substr(bar_pos - 1, 1));
+				if (text_offset + to_erase > 0)
+				{
+					text_offset = 0;
+					text->rect.x = 0;
+				}
+				else
+				{
+					text_offset += to_erase;
+					text->rect.x += to_erase;
+				}
+			}
+			// ---------------
+
 			intern_text.erase(bar_pos-1, 1);
 			bar_pos--;
 
@@ -1435,6 +1405,23 @@ bool UI_Text_Input::Delete()
 	{
 		if (intern_text.size() > 0 && bar_pos < intern_text.size())
 		{
+			// Dynamic movement
+			if (text_offset < 0)
+			{
+				int to_erase = GetTextSize(intern_text.substr(bar_pos, 1));
+				if (text_offset + to_erase > 0)
+				{
+					text_offset = 0;
+					text->rect.x = 0;
+				}
+				else
+				{
+					text_offset += to_erase;
+					text->rect.x += to_erase;
+				}
+			}
+			// ---------------
+
 			intern_text.erase(bar_pos, 1);
 
 			text->SetText(intern_text);
@@ -1446,54 +1433,50 @@ bool UI_Text_Input::Delete()
 	return ret;
 }
 
-void UI_Text_Input::MoveCursor()
+bool UI_Text_Input::MoveCursor()
 {
+	bool ret = false;
+
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		if (bar_pos > 0)
+		{
 			bar_pos--;
+			ret = true;
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
-		if(bar_pos < intern_text.size())
-			bar_pos++;
-	}
-
-	if (bar_pos != 0)
-	{
-		int i = 0;
-		for (list<int>::iterator it = words_lenght.begin(); it != words_lenght.end(); it++, i++)
+		if (bar_pos < intern_text.size())
 		{
-			if (i == bar_pos - 1)
-			{
-				bar_x = *it;
-				break;
-			}
+			bar_pos++;
+			ret = true;
 		}
 	}
-	else
-		bar_x = 0;
+
+	return ret;
 }
 
-void UI_Text_Input::UpdateWordsLenght(string l_text)
+void UI_Text_Input::SetBarPos(string _text)
 {
-	words_lenght.clear();
+	int width, height;
+	App->font->CalcSize(_text.c_str(), width, height, text->font);
+	bar_x = width + text_offset;
 
-	int acumulated = 0;
-	for (uint i = 0; i < intern_text.size(); i++)
-	{
-		string word; word = intern_text[i];
-		int x = 0, y = 0;
-		App->font->CalcSize(word.c_str(), x, y, text->font);
+	DinamicViewport();
 
-		if (TextCmp(word.c_str(), "f") || TextCmp(word.c_str(), "j"))
-			x--;
-
-		acumulated += x;
-		words_lenght.push_back(acumulated);
-	}
+	bar_x = width + text_offset;
 }
+
+int UI_Text_Input::GetTextSize(string _text)
+{
+	int width, height;
+	App->font->CalcSize(_text.c_str(), width, height, text->font);
+
+	return width;
+}
+
 
 void UI_Text_Input::DrawBar()
 {
@@ -1501,6 +1484,23 @@ void UI_Text_Input::DrawBar()
 	bar.y = rect.y;
 
 	App->render->DrawQuad(bar, color.r, color.g, color.b, color.a, true);
+}
+
+void UI_Text_Input::DinamicViewport()
+{
+	// Right
+	if (bar_x > rect.w)
+	{
+		text_offset -= bar_x - rect.w;
+		text->rect.x -= bar_x - rect.w;
+	}
+
+	// Left
+	if (bar_pos >= 0 && text_offset < 0 && bar_x <= 0)
+	{
+		text_offset -= bar_x;
+		text->rect.x -= bar_x;
+	}
 }
 
 void UI_Text_Input::SetPasword()
@@ -1511,24 +1511,20 @@ void UI_Text_Input::SetPasword()
 
 	text->SetText(tmp);
 
-	UpdateWordsLenght(tmp);
+	SetBarPos(tmp);
 }
 
-void UI_Text_Input::SetCursorToEnd()
+void UI_Text_Input::ChangeTextInput()
 {
-	bar_pos = words_lenght.size();
-	
-	if (bar_pos != 0)
+	if (change)
 	{
-		int i = 0;
-		for (list<int>::iterator it = words_lenght.begin(); it != words_lenght.end(); it++, i++)
-		{
-			if(i = bar_pos - 1)
-			bar_x = *it;
-		}
+		text->SetText(text_change);
+		intern_text = text_change.c_str();
+		SetBarPos(intern_text);
+		bar_pos = intern_text.size();
+		change = false;
 	}
 }
-
 
 void UI_Text_Input::Clear()
 {
@@ -1536,8 +1532,6 @@ void UI_Text_Input::Clear()
 
 	bar_pos = 0;
 	bar_x = 0;
-
-	words_lenght.clear();
 }
 
 
@@ -1652,7 +1646,8 @@ bool UI_Scroll_Bar::update()
 	}
 
 	// Viewport -----------
-	App->render->SetViewPort({ rect.x + App->render->camera.x, rect.y + App->render->camera.y, rect.x + rect.w + App->render->camera.x, rect.h});
+	App->render->SetViewPort({ rect.x + App->render->camera.x, rect.y + App->render->camera.y, rect.w, rect.h});
+	//  rect.x + rect.w + App->render->camera.x
 
 	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		(*it).element->update();
@@ -1682,6 +1677,7 @@ bool UI_Scroll_Bar::update()
 bool UI_Scroll_Bar::cleanup()
 {
 	ClearElements();
+
 	return true;
 }
 
@@ -1710,8 +1706,15 @@ void UI_Scroll_Bar::DeleteScrollElement(UI_Element * element)
 
 void UI_Scroll_Bar::ClearElements()
 {
-	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
-		App->gui->DeleteElement((*it).element);
+	while (!elements.empty())
+	{
+		for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
+		{
+			App->gui->DeleteElement((*it).element);
+			elements.remove(*it);
+			break;
+		}
+	}
 	
 	elements.clear();
 }
@@ -1748,12 +1751,6 @@ void UI_Scroll_Bar::ChangeHeightMovingRect()
 	// Update min and max bar positions
 	min_bar_v = rect.y;
 	max_bar_v = rect.y + rect.h;
-
-	if (button_v->rect.h >= max_bar_v - min_bar_v && button_v->enabled)
-		button_v->SetEnabled(false);
-	else if (!button_v->enabled)
-		button_v->SetEnabled(true);
-
 }
 
 void UI_Scroll_Bar::ChangeWidthMovingRect()
@@ -1788,11 +1785,6 @@ void UI_Scroll_Bar::ChangeWidthMovingRect()
 	// Update min and max bar positions
 	min_bar_h = rect.x;
 	max_bar_h = min_bar_h + rect.w;
-
-	if (button_h->rect.w >= max_bar_h - min_bar_h && button_h->enabled)
-		button_h->SetEnabled(false);
-	else if (!button_h->enabled)
-		button_h->SetEnabled(true);
 }
 
 void UI_Scroll_Bar::MoveBarV()

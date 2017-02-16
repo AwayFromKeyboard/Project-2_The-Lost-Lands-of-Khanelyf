@@ -219,9 +219,4 @@
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\Game\config.xml">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </Xml>
-  </ItemGroup>
 </Project>

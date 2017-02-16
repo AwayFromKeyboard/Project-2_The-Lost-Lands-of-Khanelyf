@@ -47,8 +47,7 @@ bool j1Console::Start()
 	
 	App->win->GetWindowSize(win_w, win_h);
 
-	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->render->camera.x, App->render->camera.y),win_w, win_h/3);
-	window->always_top = true;
+	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->render->camera.x, App->render->camera.y),win_w, win_h/3, 2);
 
 	console_background = (UI_ColoredRect*)window->CreateColoredRect(iPoint(window->rect.x, window->rect.y), window->rect.w, window->rect.h, CONSOLE_COLOR_1);
 	console_background2 = (UI_ColoredRect*)window->CreateColoredRect(iPoint(window->rect.x + FRAMES_SIZE, window->rect.y + TOP_FRAME_SIZE), window->rect.x + window->rect.w - (FRAMES_SIZE * 2) - 15, win_h / 3 - FRAMES_SIZE - TOP_FRAME_SIZE, CONSOLE_COLOR_1);
@@ -61,7 +60,7 @@ bool j1Console::Start()
 	button_h_background->click_through = true;
 
 	input_background = (UI_ColoredRect*)window->CreateColoredRect(iPoint(window->rect.x, scroll->rect.y + scroll->rect.h + FRAMES_SIZE), window->rect.w, FRAMES_SIZE * 2.5f, CONSOLE_COLOR_1);
-	text_input = (UI_Text_Input*)window->CreateTextInput(iPoint(window->rect.x + FRAMES_SIZE * 1.5f, scroll->rect.y + scroll->rect.h + (FRAMES_SIZE*1.5f)), window->rect.w - FRAMES_SIZE, App->font->default_15);
+	text_input = (UI_Text_Input*)window->CreateTextInput(iPoint(window->rect.x + FRAMES_SIZE * 1.5f, scroll->rect.y + scroll->rect.h + (FRAMES_SIZE*1.5f)), window->rect.w - FRAMES_SIZE * 4, App->font->default_15);
 	input_mark = (UI_Text*)window->CreateText(iPoint(10, scroll->rect.y + scroll->rect.h + (FRAMES_SIZE*1.5f)), App->font->default_15);
 	input_mark->SetText(">");
 
@@ -204,6 +203,7 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 		else if ((*it) == "clear") {
 			scroll->ClearElements();
 			labels.clear();
+			currentLabel = -1;
 		}
 		break;
 	case 2:
@@ -263,7 +263,33 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 			else
 				AddText("Invalid framerate", ConsoleTextType::Error);
 		}
-
+	case 3:
+		if ((*it) == "list") {
+			it++;
+			if ((*it) == "commands") {
+				it++;
+				for (std::list<Command*>::iterator item = commands.begin(); item != commands.end(); item++) {
+					if ((*item)->command_str.find((*it).c_str()) != std::string::npos) {
+						std::ostringstream oss;
+						oss << (*item)->command_str.c_str() << ": " << (*item)->help.c_str() << ".";
+						std::string command_text = oss.str();
+						AddText(command_text.c_str(), Output);
+					}
+				}
+			}
+			else if ((*it) == "cvars") {
+				it++;
+				for (std::list<CVar*>::iterator item = cvars.begin(); item != cvars.end(); item++) {
+					if ((*item)->cvar_str.find((*it).c_str()) != std::string::npos) {
+						std::ostringstream oss;
+						oss << (*item)->cvar_str.c_str() << ": " << (*item)->help.c_str() << ".";
+						std::string cvar_text = oss.str();
+						AddText(cvar_text.c_str(), Output);
+					}
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}
@@ -413,7 +439,6 @@ void j1Console::AddText(const char * txt, ConsoleTextType type)
 				(*it).element->rect.y -= 20;
 			}
 		}
-		currentLabel = labels.end();
 	}
 }
 
@@ -479,57 +504,63 @@ void j1Console::FastCommands()
 		// Get last command from the commands used
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 		{
-			if ((*currentLabel) == NULL)
-				currentLabel = labels.end();
+			if (currentLabel == -1)
+				currentLabel = labels.size()-1;
 
 			// iterator backwards does not work, must change, code crash
-			for (std::list<UI_Text*>::iterator entry = currentLabel; entry != labels.begin(); entry--)
+			int index = currentLabel;
+			std::list<UI_Text*>::iterator entry = labels.begin();
+			std::advance(entry, currentLabel);
+			for (; entry != labels.begin(); entry--)
 			{
-				if ((*entry)->color.r == 255 && (*entry)->color.g == 255 && (*entry)->color.b == 255 && (*entry)->color.a == 255)
+				if ((*entry)->color.r == 235 && (*entry)->color.g == 235 && (*entry)->color.b == 235 && (*entry)->color.a == 255)
 				{
 					if (labels.size() == 1)
 					{
 						text_input->SetTextInput((*entry)->GetText());
-						currentLabel = entry;
 					}
 					else
 					{
-						if (currentLabel != entry)
+						if (currentLabel != index)
 						{
 							text_input->SetTextInput((*entry)->GetText());
-							currentLabel = entry;
+							currentLabel = index;
 							break;
 						}
 					}
 				}
+				index--;
 			}
 		}
 
 		// Get first command from the commands used
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 		{
-			if ((*currentLabel) == NULL)
-				currentLabel = labels.begin();
+			if (currentLabel == -1)
+				currentLabel = 0;
 
-			for (std::list<UI_Text*>::iterator entry = currentLabel; entry != labels.end(); entry++)
+			int index = currentLabel;
+			std::list<UI_Text*>::iterator entry = labels.begin();
+			std::advance(entry, currentLabel);
+			for (; entry != labels.end(); entry++)
 			{
-				if ((*entry)->color.r == 255 && (*entry)->color.g == 255 && (*entry)->color.b == 255 && (*entry)->color.a == 255)
+				if ((*entry)->color.r == 235 && (*entry)->color.g == 235 && (*entry)->color.b == 235 && (*entry)->color.a == 255)
 				{
 					if (labels.size() == 1)
 					{
 						text_input->SetTextInput((*entry)->GetText());
-						currentLabel = entry;
 					}
 					else
 					{
-						if (currentLabel != entry)
+						if (currentLabel != index)
 						{
 							text_input->SetTextInput((*entry)->GetText());
-							currentLabel = entry;
+							currentLabel = index;
 							break;
 						}
 					}
 				}
+				index++;
 			}
 		}
 	}
