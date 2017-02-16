@@ -1,7 +1,7 @@
 #include <iostream> 
 #include <sstream> 
 
-#include "p2Defs.h"
+#include "Defs.h"
 #include "p2Log.h"
 
 #include "j1Window.h"

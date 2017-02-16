@@ -5,7 +5,7 @@
 #ifndef __p2PQueue_H__
 #define __p2PQueue_H__
 
-#include "p2Defs.h"
+#include "Defs.h"
 
 /**
 * Contains items from double linked list

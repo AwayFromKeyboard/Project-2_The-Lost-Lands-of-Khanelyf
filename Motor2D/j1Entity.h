@@ -2,7 +2,7 @@
 #define __j1ENTITY_H__
 
 #include "j1Module.h"
-#include "p2Defs.h"
+#include "Defs.h"
 #include "p2List.h"
 
 class b2Fixture;

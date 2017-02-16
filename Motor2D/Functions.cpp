@@ -2,7 +2,7 @@
 #include "j1App.h"
 #include <stdio.h>
 #include <cmath>
-#include "p2Defs.h"
+#include "Defs.h"
 #include "p2Log.h"
 
 // Returns the angle between two points in degrees

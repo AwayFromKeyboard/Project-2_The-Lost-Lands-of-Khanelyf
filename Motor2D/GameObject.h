@@ -1,7 +1,7 @@
 #ifndef _GAMEOBJECT__H__
 #define _GAMEOJBECT__H__
 
-#include "p2Defs.h"
+#include "Defs.h"
 #include "j1Render.h"
 #include "p2List.h"
 

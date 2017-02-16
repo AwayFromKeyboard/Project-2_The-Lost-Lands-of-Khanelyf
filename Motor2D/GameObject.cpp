@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include "j1Physics.h"
 #include "Animation.h"
-#include "p2Defs.h"
+#include "Defs.h"
 #include "j1Physics.h"
 #include "Functions.h" 
 

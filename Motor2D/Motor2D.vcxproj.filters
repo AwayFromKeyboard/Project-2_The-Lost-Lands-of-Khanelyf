@@ -144,9 +144,6 @@
     <ClInclude Include="j1Physics.h">
       <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
-    <ClInclude Include="p2Defs.h">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClInclude>
     <ClInclude Include="p2DynArray.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
@@ -188,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="Parallax.h">
       <Filter>Engine\2. Components ======</Filter>
+    </ClInclude>
+    <ClInclude Include="Defs.h">
+      <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
