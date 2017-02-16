@@ -1,6 +1,6 @@
 #include "j1Console.h"
 #include "Defs.h"
-#include "p2Point.h"
+#include "Point.h"
 #include "j1Window.h"
 #include "j1FileSystem.h"
 #include "p2Log.h"

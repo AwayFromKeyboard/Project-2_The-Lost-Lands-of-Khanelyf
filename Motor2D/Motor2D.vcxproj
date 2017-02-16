@@ -128,7 +128,7 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="p2List.h" />
     <ClInclude Include="j1Module.h" />
-    <ClInclude Include="p2Point.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="j1Render.h" />
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />

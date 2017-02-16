@@ -1,6 +1,6 @@
 #pragma once
 #include "j1Module.h"
-#include "p2Point.h"
+#include "Point.h"
 #include "Box2D/Box2D/Box2D.h"
 
 #define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too

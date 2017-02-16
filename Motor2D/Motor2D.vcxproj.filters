@@ -153,9 +153,6 @@
     <ClInclude Include="p2Log.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClInclude>
     <ClInclude Include="p2PQueue.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
@@ -187,6 +184,9 @@
       <Filter>Engine\2. Components ======</Filter>
     </ClInclude>
     <ClInclude Include="Defs.h">
+      <Filter>Engine\5. Tools ===========</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
   </ItemGroup>
