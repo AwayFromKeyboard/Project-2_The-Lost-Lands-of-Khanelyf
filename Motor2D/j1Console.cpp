@@ -12,7 +12,7 @@
 #include <sstream>
 
 #define PADDING 15
-#define OUTPUT_TEXT_COLOR { 0, 178, 255, 255 }
+#define OUTPUT_TEXT_COLOR { 102, 204, 102, 255 }
 #define INPUT_TEXT_COLOR {235, 235, 235, 255}
 #define ERROR_TEXT_COLOR { 255, 67, 67, 255 }
 #define TOP_FRAME_SIZE 30
