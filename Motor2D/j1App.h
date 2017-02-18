@@ -6,7 +6,6 @@
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 #include "CollisionFilters.h"
-#include "p2SString.h"
 #include <list>
 
 class UI_Window;

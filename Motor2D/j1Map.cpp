@@ -7,6 +7,7 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1Window.h"
+#include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -202,10 +203,12 @@ bool j1Map::CleanUp()
 bool j1Map::Load(const char* file_name)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.c_str(), file_name);
+	std::stringstream oss;
+	oss << folder.c_str() << file_name;
+	std::string tmp = oss.str();
 
 	char* buf;
-	int size = App->fs->Load(tmp.GetString(), &buf);
+	int size = App->fs->Load(tmp.c_str(), &buf);
 	pugi::xml_parse_result result = map_file.load_buffer(buf, size);
 
 	RELEASE(buf);
@@ -303,33 +306,33 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		std::string bg_color(map.attribute("backgroundcolor").as_string());
 
 		data.background_color.r = 0;
 		data.background_color.g = 0;
 		data.background_color.b = 0;
 		data.background_color.a = 0;
 
-		if(bg_color.Length() > 0)
+		if(bg_color.length() > 0)
 		{
-			p2SString red, green, blue;
-			bg_color.SubString(1, 2, red);
-			bg_color.SubString(3, 4, green);
-			bg_color.SubString(5, 6, blue);
+			std::string red, green, blue;
+			red	= bg_color.substr(1, 2);
+			green = bg_color.substr(3, 4);
+			blue = bg_color.substr(5, 6);
 
 			int v = 0;
 
-			sscanf_s(red.GetString(), "%x", &v);
+			sscanf_s(red.c_str(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.r = v;
 
-			sscanf_s(green.GetString(), "%x", &v);
+			sscanf_s(green.c_str(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.g = v;
 
-			sscanf_s(blue.GetString(), "%x", &v);
+			sscanf_s(blue.c_str(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
 
-		p2SString orientation(map.attribute("orientation").as_string());
+		std::string orientation(map.attribute("orientation").as_string());
 
 		if(orientation == "orthogonal")
 		{
