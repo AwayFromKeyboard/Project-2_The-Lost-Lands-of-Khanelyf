@@ -314,7 +314,9 @@ void j1App::LoadGame(const char* file)
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
 	want_to_load = true;
-	load_game.create("%s%s", fs->GetSaveDirectory(), file);
+	std::ostringstream oss;
+	oss << fs->GetSaveDirectory() << file;
+	load_game = oss.str();
 }
 
 // ---------------------------------------
@@ -324,11 +326,13 @@ void j1App::SaveGame(const char* file) const
 	// from the "GetSaveGames" list ... should we overwrite ?
 
 	want_to_save = true;
-	save_game.create(file);
+	std::ostringstream oss;
+	oss << file;
+	save_game = oss.str();
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(std::list<p2SString>& list_to_fill) const
+void j1App::GetSaveGames(std::list<std::string>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
@@ -358,7 +362,7 @@ bool j1App::LoadGameNow()
 	bool ret = false;
 
 	char* buffer;
-	uint size = fs->Load(load_game.GetString(), &buffer);
+	uint size = fs->Load(load_game.c_str(), &buffer);
 
 	if(size > 0)
 	{
@@ -370,7 +374,7 @@ bool j1App::LoadGameNow()
 
 		if(result != NULL)
 		{
-			LOG("Loading new Game State from %s...", load_game.GetString());
+			LOG("Loading new Game State from %s...", load_game.c_str());
 
 			root = data.child("game_state");
 
@@ -388,10 +392,10 @@ bool j1App::LoadGameNow()
 
 		}
 		else
-			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
+			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.c_str(), result.description());
 	}
 	else
-		LOG("Could not load game state xml file %s", load_game.GetString());
+		LOG("Could not load game state xml file %s", load_game.c_str());
 
 	want_to_load = false;
 	return ret;
@@ -401,7 +405,7 @@ bool j1App::SavegameNow() const
 {
 	bool ret = true;
 
-	LOG("Saving Game State to %s...", save_game.GetString());
+	LOG("Saving Game State to %s...", save_game.c_str());
 
 	// xml object were we will store all data
 	pugi::xml_document data;
@@ -421,8 +425,8 @@ bool j1App::SavegameNow() const
 		data.save(stream);
 
 		// we are done, so write data to disk
-		fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
-		LOG("... finished saving", save_game.GetString());
+		fs->Save(save_game.c_str(), stream.str().c_str(), stream.str().length());
+		LOG("... finished saving", save_game.c_str());
 	}
 	else
 		LOG("Save process halted from an error in module %s", (*it)->name.c_str());
@@ -447,8 +451,10 @@ void j1App::FrameRateCalculations()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
-	p2SString str("FPS: %i \nAv.FPS: %.2f \nLast Frame Ms: %u \nLast dt: %.3f \nTime since startup: %.2f \nFrame Count: %lu", frames_on_last_update, avg_fps, last_frame_ms, dt, seconds_since_startup, frame_count);
-	string t = str.GetString();
+	std::ostringstream oss;
+	oss << "FPS: " << frames_on_last_update << "\nAv.FPS: " << avg_fps << "\nLast Frame Ms: " << last_frame_ms << "\nLast dt : " << dt << "\nTime since startup: " << seconds_since_startup << "\nFrame Count : " << frame_count;
+	std::string str = oss.str();
+	string t = str.c_str();
 	debug_text->SetText(t);
 
 	if (capped_ms > 0 && last_frame_ms < capped_ms)

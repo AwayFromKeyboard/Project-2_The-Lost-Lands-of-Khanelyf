@@ -6,7 +6,7 @@
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 #include "CollisionFilters.h"
-
+#include "p2SString.h"
 #include <list>
 
 class UI_Window;
@@ -63,7 +63,7 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(std::list<p2SString>& list_to_fill) const;
+	void GetSaveGames(std::list<std::string>& list_to_fill) const;
 
 	// Load an XML file
 	void LoadXML(const char* path, pugi::xml_document& doc);
@@ -136,8 +136,8 @@ private:
 
 	mutable bool		want_to_save = false;
 	bool				want_to_load = false;
-	p2SString			load_game;
-	mutable p2SString	save_game;
+	std::string			load_game;
+	mutable std::string	save_game;
 
 	int					capped_ms = -1;
 	j1PerfTimer			ptimer;
