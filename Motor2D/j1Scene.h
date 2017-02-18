@@ -7,6 +7,7 @@
 
 struct SDL_Texture;
 class MainScene;
+class SceneTest;
 
 // LayerBlit struct
 struct layer_blit
@@ -77,7 +78,7 @@ private:
 public:
 	// Scenes
 	MainScene*           main_scene = nullptr;
-
+	SceneTest*		     scene_test = nullptr;
 private:
 	// Layer Blit list
 	p2PQueue<layer_blit> layer_list;

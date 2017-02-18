@@ -79,6 +79,9 @@
     <ClCompile Include="Log.cpp">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClCompile>
+    <ClCompile Include="SceneTest.cpp">
+      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Engine\5. Tools ===========</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTest.h">
+      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
