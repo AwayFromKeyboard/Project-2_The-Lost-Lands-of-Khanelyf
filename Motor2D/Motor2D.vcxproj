@@ -94,7 +94,7 @@
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="j1Physics.cpp" />
-    <ClCompile Include="p2Log.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
@@ -120,13 +120,11 @@
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="j1Physics.h" />
-    <ClInclude Include="p2DynArray.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
-    <ClInclude Include="p2Log.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="j1App.h" />
     <ClInclude Include="Defs.h" />
-    <ClInclude Include="p2List.h" />
     <ClInclude Include="j1Module.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="j1Render.h" />

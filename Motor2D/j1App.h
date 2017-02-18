@@ -1,12 +1,13 @@
 #ifndef __j1APP_H__
 #define __j1APP_H__
 
-#include "p2List.h"
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 #include "CollisionFilters.h"
+
+#include <list>
 
 class UI_Window;
 class UI_Text;
@@ -62,7 +63,7 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(std::list<p2SString>& list_to_fill) const;
 
 	// Load an XML file
 	void LoadXML(const char* path, pugi::xml_document& doc);

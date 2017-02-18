@@ -2,7 +2,6 @@
 #define __FUNCTIONS_H__
 
 #include "Defs.h"
-#include "p2List.h"
 #include "j1Render.h"
 #include <list>
 #include <string>

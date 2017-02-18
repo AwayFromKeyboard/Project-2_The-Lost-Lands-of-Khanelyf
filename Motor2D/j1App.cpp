@@ -2,7 +2,7 @@
 #include <sstream> 
 
 #include "Defs.h"
-#include "p2Log.h"
+#include "Log.h"
 
 #include "j1Window.h"
 #include "j1Input.h"
@@ -328,7 +328,7 @@ void j1App::SaveGame(const char* file) const
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void j1App::GetSaveGames(std::list<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }

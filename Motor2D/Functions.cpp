@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <cmath>
 #include "Defs.h"
-#include "p2Log.h"
+#include "Log.h"
 
 // Returns the angle between two points in degrees
 float AngleFromTwoPoints(float x1, float y1, float x2, float y2)

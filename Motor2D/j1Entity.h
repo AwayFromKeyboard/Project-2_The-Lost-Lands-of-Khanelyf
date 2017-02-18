@@ -3,7 +3,6 @@
 
 #include "j1Module.h"
 #include "Defs.h"
-#include "p2List.h"
 
 class b2Fixture;
 class PhysBody;

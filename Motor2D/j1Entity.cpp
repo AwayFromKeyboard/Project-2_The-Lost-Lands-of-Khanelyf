@@ -1,6 +1,6 @@
 #include "j1Entity.h"
 #include "Player.h"
-#include "p2Log.h"
+#include "Log.h"
 
 j1Entity::j1Entity()
 {

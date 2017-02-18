@@ -1,5 +1,5 @@
 #include "Parallax.h"
-#include "p2Log.h"
+#include "Log.h"
 
 #define CHUNKS 8
 

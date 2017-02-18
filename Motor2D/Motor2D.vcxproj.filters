@@ -55,9 +55,6 @@
     <ClCompile Include="j1Physics.cpp">
       <Filter>Engine\1. Modules =========</Filter>
     </ClCompile>
-    <ClCompile Include="p2Log.cpp">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClCompile>
     <ClCompile Include="Functions.cpp">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClCompile>
@@ -78,6 +75,9 @@
     </ClCompile>
     <ClCompile Include="Parallax.cpp">
       <Filter>Engine\2. Components ======</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Engine\5. Tools ===========</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,15 +144,6 @@
     <ClInclude Include="j1Physics.h">
       <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Log.h">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClInclude>
     <ClInclude Include="p2PQueue.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
@@ -187,6 +178,9 @@
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
+      <Filter>Engine\5. Tools ===========</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
   </ItemGroup>

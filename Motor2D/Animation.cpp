@@ -1,6 +1,6 @@
 #include "Animation.h"
 #include "Functions.h"
-#include "p2Log.h"
+#include "Log.h"
 
 Animation::Animation(const char* _name, list<SDL_Rect>& rects, float speed, bool loop) : speed(speed), loop(loop)
 {

@@ -3,7 +3,7 @@
 #include "Point.h"
 #include "j1Window.h"
 #include "j1FileSystem.h"
-#include "p2Log.h"
+#include "Log.h"
 #include "j1Gui.h"
 #include "j1App.h"
 #include "j1Render.h"

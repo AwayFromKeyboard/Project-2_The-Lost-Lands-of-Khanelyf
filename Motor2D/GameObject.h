@@ -3,7 +3,6 @@
 
 #include "Defs.h"
 #include "j1Render.h"
-#include "p2List.h"
 
 class Animator;
 class PhysBody;

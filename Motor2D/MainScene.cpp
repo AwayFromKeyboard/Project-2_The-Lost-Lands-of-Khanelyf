@@ -1,6 +1,6 @@
 #include "MainScene.h"
 #include "j1Scene.h"
-#include "p2Log.h"
+#include "Log.h"
 #include "j1Input.h"
 #include "Functions.h"
 #include "j1Physics.h"
