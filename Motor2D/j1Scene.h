@@ -6,8 +6,6 @@
 #include "Scene.h"
 #include <queue>
 
-#define LAYER_ERASER 100
-
 struct SDL_Texture;
 class MainScene;
 class SceneTest;
