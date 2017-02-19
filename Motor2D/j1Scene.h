@@ -4,6 +4,9 @@
 #include "j1Module.h"
 #include "j1Gui.h"
 #include "Scene.h"
+#include <queue>
+
+#define LAYER_ERASER 100
 
 struct SDL_Texture;
 class MainScene;
@@ -14,7 +17,7 @@ struct layer_blit
 {
 	layer_blit() {};
 
-	layer_blit(SDL_Texture* _texture, iPoint _pos, const SDL_Rect _section, float _scale, SDL_RendererFlip _flip, double _angle, int _pivot_x, int _pivot_y)
+	layer_blit(SDL_Texture* _texture, iPoint _pos, const SDL_Rect _section, float _scale, SDL_RendererFlip _flip, double _angle, int _pivot_x, int _pivot_y, int _layer = 0)
 	{
 		texture = _texture; 
 		pos = _pos; 
@@ -24,6 +27,7 @@ struct layer_blit
 		angle = _angle;
 		pivot_x = _pivot_x;
 		pivot_y = _pivot_y;
+		layer = _layer;
 	};
 
 	SDL_Texture*	 texture = nullptr;
@@ -34,6 +38,14 @@ struct layer_blit
 	double           angle = 0; 
 	int              pivot_x = 0;
 	int              pivot_y = 0;
+
+	int layer;
+};
+
+struct compare_layer {
+	bool operator()(layer_blit const& l1, layer_blit const& l2) {
+		return l1.layer < l2.layer;
+	}
 };
 
 class j1Scene : public j1Module
@@ -81,7 +93,7 @@ public:
 	SceneTest*		     scene_test = nullptr;
 private:
 	// Layer Blit list
-	p2PQueue<layer_blit> layer_list;
+	std::priority_queue<layer_blit, std::vector<layer_blit>, compare_layer> layer_list;
 
 	// Scenes list
 	list<Scene*>         scenes;

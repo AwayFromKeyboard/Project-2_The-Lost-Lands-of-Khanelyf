@@ -121,8 +121,8 @@ void j1Scene::ChangeScene(Scene * new_scene)
 
 void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_Rect section, float scale, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)
 {
-	layer_blit lblit(texture, pos, section, scale, flip, angle, pivot_x, pivot_y);
-	layer_list.Push(lblit, layer);
+	layer_blit lblit(texture, pos, section, scale, flip, angle, pivot_x, pivot_y, layer);
+	layer_list.push(lblit);
 }
 
 void j1Scene::OnCollision(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
@@ -133,10 +133,10 @@ void j1Scene::OnCollision(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtur
 
 void j1Scene::DoLayerBlit()
 {
-	while(layer_list.Count() > 0)
+	while(layer_list.size() > 0)
 	{
-		layer_blit current;
-		layer_list.Pop(current);
+		layer_blit current = layer_list.top();
+		layer_list.pop();
 		App->render->Blit(current.texture, current.pos.x, current.pos.y, &current.section, current.scale, current.flip, current.angle, current.pivot_x, current.pivot_y);
 	}
 }
