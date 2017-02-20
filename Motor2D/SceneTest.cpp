@@ -22,7 +22,7 @@ bool SceneTest::Start()
 {
 	App->map->Load("age.tmx");
 
-	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(50, 50), 37, 37, 100, true);
+	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 37, 100, true);
 	cursor_r = { 0, 0, 37, 37 };
 	cursor = (UI_Image*)window->CreateImage(iPoint(0, 0), cursor_r, true);
 
