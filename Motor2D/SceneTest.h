@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "j1Render.h"
+#include "j1Gui.h"
 
 class GameObject;
 class b2Fixture;
@@ -26,7 +27,10 @@ public:
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
 private:
+	UI_Window* window = nullptr;
+	UI_Image* cursor = nullptr;
 
+	SDL_Rect cursor_r;
 };
 
 #endif // _SceneTest_H_

@@ -8,7 +8,6 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "SceneTest.h"
-
 #include <sstream>
 
 SceneTest::SceneTest()
@@ -21,8 +20,13 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	App->map->Load("iso_walk.tmx");
+	App->map->Load("age.tmx");
 
+	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(50, 50), 37, 37, 100, true);
+	cursor_r = { 0, 0, 37, 37 };
+	cursor = (UI_Image*)window->CreateImage(iPoint(0, 0), cursor_r, true);
+
+	SDL_ShowCursor(0);
 	return true;
 }
 
@@ -52,10 +56,10 @@ bool SceneTest::Update(float dt)
 		App->render->camera.x -= 5;
 
 	App->map->Draw();
-
+	window->Set(iPoint(50, 10), 0, 0);
 	int x, y;
 	App->input->GetMousePosition(x, y);
-
+	cursor->Set(iPoint(x, y), cursor_r);
 	return true;
 }
 

@@ -6,7 +6,7 @@
 #ifndef __j1MODULE_H__
 #define __j1MODULE_H__
 
-#include "p2SString.h"
+#include "Defs.h"
 #include <string>
 #include <list>
 #include <iostream>
