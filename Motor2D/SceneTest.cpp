@@ -59,7 +59,10 @@ bool SceneTest::Update(float dt)
 	window->Set(iPoint(50, 10), 0, 0);
 	int x, y;
 	App->input->GetMousePosition(x, y);
+	x -= App->render->camera.x;
+	y -= App->render->camera.y;
 	cursor->Set(iPoint(x, y), cursor_r);
+
 	return true;
 }
 
