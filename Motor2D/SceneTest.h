@@ -8,6 +8,7 @@
 class GameObject;
 class b2Fixture;
 class Parallax;
+class Test;
 
 class SceneTest : public Scene
 {
@@ -29,6 +30,8 @@ public:
 private:
 	UI_Window* window = nullptr;
 	UI_Image* cursor = nullptr;
+
+	Test* troop = nullptr;
 
 	SDL_Rect cursor_r;
 };

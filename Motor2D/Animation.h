@@ -52,6 +52,8 @@ public:
 
 	Animation* GetCurrentAnimation();
 
+	bool IsCurrentAnimation(const char * name);
+
 private:
 	Animation*           current_animation = nullptr;
 	Animation*			 next_animation = nullptr;
