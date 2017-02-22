@@ -6,9 +6,11 @@
 #include "PugiXml\src\pugixml.hpp"
 #include "j1Physics.h"
 #include "Animation.h"
+#include <list>
 
 class b2Fixture;
 class PhysBody;
+class GameObject;
 
 class Entity
 {
@@ -38,7 +40,8 @@ public:
 	virtual void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB) {};
 
 public:
-
+	std::list<GameObject*> unit_game_objects;
+	std::list<GameObject*> building_game_objects;
 };
 
 #endif

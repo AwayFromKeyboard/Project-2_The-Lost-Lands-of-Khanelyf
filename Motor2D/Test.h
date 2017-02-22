@@ -1,11 +1,11 @@
 #ifndef _Test_
 #define _Test_
 
-#include "Entity.h"
-#define	COLLISION_ADJUSTMENT iPoint(7, 15)
+#include "Unit.h"
+#define	COLLISION_ADJUSTMENT iPoint(23, 25)
 
 class GameObject;
-class Test : public Entity
+class Test : public Unit
 {
 public:
 	Test();
@@ -36,9 +36,7 @@ public:
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
 public:
-	GameObject* test_go = nullptr;
 
-	float last_height = 0.0f;
 };
 
 #endif

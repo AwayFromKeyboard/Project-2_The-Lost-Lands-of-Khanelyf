@@ -103,6 +103,7 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -141,10 +142,11 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
-    <Xml Include="test.xml" />
+    <Xml Include="..\Game\test.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

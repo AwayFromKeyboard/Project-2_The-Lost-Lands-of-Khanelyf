@@ -85,6 +85,7 @@
     <ClCompile Include="Test.cpp">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClCompile>
+    <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -195,6 +196,9 @@
     <ClInclude Include="Test.h">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Engine\4. Entities ==========</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -232,7 +236,7 @@
     <Xml Include="..\Game\config.xml">
       <Filter>Engine\5. Tools ===========</Filter>
     </Xml>
-    <Xml Include="test.xml">
+    <Xml Include="..\Game\test.xml">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </Xml>
   </ItemGroup>

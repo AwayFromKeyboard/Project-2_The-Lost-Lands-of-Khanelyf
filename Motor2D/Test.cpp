@@ -21,21 +21,22 @@ bool Test::LoadEntity()
 {
 	bool ret = true;
 
-	test_go = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
+	game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
-	test_go->CreateCollision(COLLISION_ADJUSTMENT, 17, 35, fixture_type::f_t_null);
-	test_go->SetListener((j1Module*)App->entity);
-	test_go->SetFixedRotation(true);
-
-	test_go->SetTexture(App->tex->LoadTexture("Vilager.png"));
+	game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
+	game_object->SetListener((j1Module*)App->entity);
+	game_object->SetFixedRotation(true);
+	
+	game_object->SetTexture(App->tex->LoadTexture("Villager.png"));
 
 	pugi::xml_document doc;
 	App->LoadXML("test.xml", doc);
-	test_go->LoadAnimationsFromXML(doc);
+	game_object->LoadAnimationsFromXML(doc);
 	
-	test_go->SetAnimation("south");
+	game_object->SetAnimation("idle_south");
 
-	last_height = test_go->fGetPos().y;
+	unit_game_objects.push_back(game_object);
+	//last_height = test_go->fGetPos().y;
 
 	return ret;
 }
@@ -59,7 +60,7 @@ bool Test::Update(float dt)
 	bool ret = true;
 
 	float speed = (200 * dt);
-
+/*
 	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
 	{
 		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y - speed });
@@ -91,7 +92,7 @@ bool Test::Update(float dt)
 	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		test_go->SetPos({ test_go->fGetPos().x, test_go->fGetPos().y + speed });
-	}
+	}*/
 
 	return ret;
 }
@@ -100,40 +101,12 @@ bool Test::Draw(float dt)
 {
 	bool ret = true;
 
-	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
-	{
-		test_go->SetAnimation("north_west");
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
-	{
-		test_go->SetAnimation("north_east");
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
-	{
-		test_go->SetAnimation("south_west");
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
-	{
-		test_go->SetAnimation("south_east");
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		test_go->SetAnimation("west");
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		test_go->SetAnimation("east");
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		test_go->SetAnimation("nord");
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		test_go->SetAnimation("south");
-	}
 
-	App->scene->LayerBlit(5, test_go->GetTexture(), { test_go->GetPos().x, test_go->GetPos().y}, test_go->GetCurrentAnimationRect(dt));
+	if (flip) {
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL );
+	}
+	else
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y}, game_object->GetCurrentAnimationRect(dt));
 
 	return ret;
 }
