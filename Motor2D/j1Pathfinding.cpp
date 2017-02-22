@@ -19,6 +19,10 @@ bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
+	for (std::list<iPoint>::iterator it = last_path.begin(); it != last_path.end();) {
+		last_path.erase(it++);
+	}
+
 	last_path.clear();
 	RELEASE_ARRAY(map);
 	return true;
@@ -139,6 +143,26 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 	if(App->pathfinding->IsWalkable(cell))
 		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
 
+	// north-east
+	cell.create(pos.x + 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+
+	// north-west
+	cell.create(pos.x - 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+
+	// south-east
+	cell.create(pos.x + 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+
+	// south-west
+	cell.create(pos.x - 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+
 	return list_to_fill.list.size();
 }
 
@@ -155,8 +179,8 @@ int PathNode::Score() const
 // ----------------------------------------------------------------------------------
 int PathNode::CalculateF(const iPoint& destination)
 {
-	g = parent->g + 1;
-	h = pos.DistanceTo(destination);
+	g = parent->g + this->pos.DistanceManhattan(parent->pos);
+	h = pos.DistanceManhattan(destination);
 
 	return g + h;
 
