@@ -1,4 +1,6 @@
 #include "Unit.h"
+#include "j1Entity.h"
+#include "Scene.h"
 
 Unit::Unit()
 {
@@ -10,47 +12,53 @@ Unit::~Unit()
 
 bool Unit::LoadEntity()
 {
-	return false;
+	return true;
 }
 
 bool Unit::Start()
 {
-	return false;
+	return true;
 }
 
 bool Unit::PreUpdate()
 {
-	return false;
+	return true;
 }
 
 bool Unit::Update(float dt)
 {
-	return false;
+	return true;
 }
 
 bool Unit::Draw(float dt)
 {
-	return false;
+	
+	return true;
 }
 
 bool Unit::PostUpdate()
 {
-	return false;
+	return true;
 }
 
 bool Unit::CleanUp()
 {
-	return false;
+	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
+		RELEASE(*it);
+	}
+	App->entity->unit_game_objects_list.clear();
+
+	return true;
 }
 
 bool Unit::Load(pugi::xml_node &)
 {
-	return false;
+	return true;
 }
 
 bool Unit::Save(pugi::xml_node &) const
 {
-	return false;
+	return true;
 }
 
 void Unit::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)

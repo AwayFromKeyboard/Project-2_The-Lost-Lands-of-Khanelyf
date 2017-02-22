@@ -40,8 +40,6 @@ public:
 	virtual void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB) {};
 
 public:
-	std::list<GameObject*> unit_game_objects;
-	std::list<GameObject*> building_game_objects;
 };
 
 #endif

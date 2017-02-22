@@ -1,6 +1,5 @@
 #include "j1Entity.h"
 #include "Entity.h"
-#include "Player.h"
 #include "Test.h"
 #include "Log.h"
 
@@ -65,7 +64,6 @@ bool j1Entity::CleanUp()
 {
 	bool ret = true;
 
-
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 		ret = (*it)->CleanUp();
 
@@ -84,9 +82,6 @@ Entity* j1Entity::CreateEntity(entity_name entity)
 
 	switch (entity)
 	{
-	case player:
-		ret = new Player();
-		break;
 	case test:
 		ret = new Test();
 		break;

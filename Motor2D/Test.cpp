@@ -8,6 +8,7 @@
 #include "j1Scene.h"
 #include "Functions.h"
 #include "j1Textures.h"
+#include "j1Entity.h"
 
 Test::Test()
 {
@@ -35,7 +36,7 @@ bool Test::LoadEntity()
 	
 	game_object->SetAnimation("idle_south");
 
-	unit_game_objects.push_back(game_object);
+	App->entity->unit_game_objects_list.push_back(game_object);
 	//last_height = test_go->fGetPos().y;
 
 	return ret;
@@ -101,12 +102,11 @@ bool Test::Draw(float dt)
 {
 	bool ret = true;
 
-
 	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL );
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL);
 	}
 	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y}, game_object->GetCurrentAnimationRect(dt));
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y }, game_object->GetCurrentAnimationRect(dt));
 
 	return ret;
 }
@@ -121,6 +121,13 @@ bool Test::PostUpdate()
 bool Test::CleanUp()
 {
 	bool ret = true;
+
+	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
+		if ((*it) == game_object) {
+			App->entity->unit_game_objects_list.erase(it++);
+		}
+	}
+	
 
 	return ret;
 }

@@ -6,7 +6,7 @@
 
 class b2Fixture;
 class PhysBody;
-
+class GameObject;
 enum entity_name
 {
 	player,
@@ -50,10 +50,11 @@ public:
 
 private:
 
-private:
+public:
 	// List with all entities
-	list<Entity*> entity_list;
-
+	std::list<Entity*> entity_list;
+	std::list<GameObject*> unit_game_objects_list;
+	std::list<GameObject*> building_game_objects_list;
 };
 
 #endif // __j1ENTITY_H__

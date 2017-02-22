@@ -61,9 +61,6 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Engine\4. Entities ==========</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Engine\4. Entities ==========\Player</Filter>
-    </ClCompile>
     <ClCompile Include="j1Scene.cpp">
       <Filter>Engine\3. Scenes ==========</Filter>
     </ClCompile>
@@ -166,9 +163,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Engine\4. Entities ==========</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Engine\4. Entities ==========\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Engine\2. Components ======</Filter>
     </ClInclude>
@@ -218,9 +212,6 @@
     </Filter>
     <Filter Include="Engine\4. Entities ==========">
       <UniqueIdentifier>{1fe24bf0-1db6-45b2-aa68-fef0607a5a12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\4. Entities ==========\Player">
-      <UniqueIdentifier>{649f33ab-cba0-4e3f-9d04-df22ae53d381}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\5. Tools ===========">
       <UniqueIdentifier>{42c748be-4a37-49de-970f-5be811d06b38}</UniqueIdentifier>
