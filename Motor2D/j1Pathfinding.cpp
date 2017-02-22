@@ -71,32 +71,32 @@ const std::list<iPoint>* j1PathFinding::GetLastPath() const
 // PathList ------------------------------------------------------------------------
 // Looks for a node in this list and returns it's list node or NULL
 // ---------------------------------------------------------------------------------
-PathNode* PathList::Find(const iPoint& point) 
+list<PathNode>::iterator PathList::Find(const iPoint& point)
 {
-	for (std::list<PathNode*>::iterator it = list.begin(); it != list.end(); ++it) 
+	for (std::list<PathNode>::iterator it = node_list.begin(); it != node_list.end(); ++it)
 	{
-		if ((*it)->pos == point) 
+		if (it->pos == point) 
 		{
-			return *it;
+			return it;
 		}
 	}
-	return nullptr;
+	return node_list.end();
 }
 
 // PathList ------------------------------------------------------------------------
 // Returns the Pathnode with lowest score in this list or NULL if empty
 // ---------------------------------------------------------------------------------
-PathNode* PathList::GetNodeLowestScore()
+list<PathNode>::iterator PathList::GetNodeLowestScore()
 {
-	PathNode* ret = NULL;
+	list<PathNode>::iterator ret = node_list.end();
 	int min = 65535;
 
-	for (std::list<PathNode*>::iterator it = list.begin(); it != list.end(); ++it)
+	for (std::list<PathNode>::iterator it = node_list.begin(); it != node_list.end(); ++it)
 	{
-		if ((*it)->Score() < min)
+		if (it->Score() < min)
 		{
-			min = (*it)->Score();
-			ret = *it;
+			min = it->Score();
+			ret = it;
 		}
 	}
 
@@ -121,49 +121,49 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 {
 	iPoint cell;
-	uint before = list_to_fill.list.size();
+	uint before = list_to_fill.node_list.size();
 
 	// north
 	cell.create(pos.x, pos.y + 1);
 	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
 	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
 	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
 	if(App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// north-east
 	cell.create(pos.x + 1, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// north-west
 	cell.create(pos.x - 1, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// south-east
 	cell.create(pos.x + 1, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
 	// south-west
 	cell.create(pos.x - 1, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.push_back(new PathNode(-1, -1, cell, this));
+		list_to_fill.node_list.push_back(PathNode(-1, -1, cell, this));
 
-	return list_to_fill.list.size();
+	return list_to_fill.node_list.size();
 }
 
 // PathNode -------------------------------------------------------------------------
@@ -186,6 +186,107 @@ int PathNode::CalculateF(const iPoint& destination)
 
 }
 
+void PathNode::IdentifySuccessors(PathList & list_to_fill, iPoint startNode, iPoint endNode, j1PathFinding* pathfinder) const
+{
+	PathList neighbours;
+	this->FindWalkableAdjacents(neighbours);
+
+	list<PathNode>::iterator neighbour = neighbours.node_list.begin();
+
+	while (neighbour != neighbours.node_list.end())
+	{
+		int dx = clamp(neighbour->pos.x - this->pos.x, -1, 1);
+		int dy = clamp(neighbour->pos.y - this->pos.y, -1, 1);
+
+		PathNode jump_point(-1, -1, iPoint(-1, -1), this);
+		bool succed = pathfinder->Jump(this->pos.x, this->pos.y, dx, dy, startNode, endNode, jump_point);
+
+		if (succed == true)
+			list_to_fill.node_list.push_back(jump_point);
+
+		++neighbour;
+	}
+}
+
+bool j1PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint start, iPoint end, PathNode& new_node)
+{
+	iPoint next(current_x + dx, current_y + dy);
+
+	if (IsWalkable(next) == false)
+		return false;		
+	else if (next.x == end.x && next.y == end.y) 
+	{
+		new_node.pos = next;
+		return true;
+	}
+
+	if (dx != 0 && dy != 0) // Diagonal Case   
+	{
+		if (!IsWalkable(iPoint(current_x + dx, current_y)))
+		{
+			new_node.pos = next;
+			return true;
+		}
+		else if (!IsWalkable(iPoint(current_x, current_y + dy)))
+		{
+			new_node.pos = next;
+			return true;
+		}
+
+		// Check in horizontal and vertical directions for forced neighbors
+		// This is a special case for diagonal direction
+		if (Jump(next.x, next.y, dx, 0, start, end, new_node) != NULL || Jump(next.x, next.y, 0, dy, start, end, new_node) != NULL)
+		{
+			new_node.pos = next;
+			return true;
+		}
+	}
+	else
+	{
+		if (dx != 0) // Horizontal case
+		{
+			if (!IsWalkable(iPoint(current_x, current_y + 1)))
+			{
+				if (IsWalkable(iPoint(current_x + dx, current_y + 1)))
+				{
+					new_node.pos = next;
+					return true;
+				}
+			}
+			else if (!IsWalkable(iPoint(current_x, current_y - 1)))
+			{
+				if (IsWalkable(iPoint(current_x + dx, current_y - 1)))
+				{
+					new_node.pos = next;
+					return true;
+				}
+			}
+		}
+		else // Vertical case
+		{
+			if (!IsWalkable(iPoint(current_x + 1, current_y)))
+			{
+				if (IsWalkable(iPoint(current_x + 1, current_y + dy)))
+				{
+					new_node.pos = next;
+					return true;
+				}
+			}
+			else if (!IsWalkable(iPoint(current_x - 1, current_y)))
+			{
+				if (IsWalkable(iPoint(current_x - 1, current_y + dy)))
+				{
+					new_node.pos = next;
+					return true;
+				}
+			}
+		}
+
+	}
+
+	// If forced neighbor was not found try next jump point
+	return Jump(next.x, next.y, dx, dy, start, end, new_node);
+}
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
@@ -200,11 +301,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	PathList open;
 	PathList close;
 	PathNode origin_tile(0, origin.DistanceTo(destination), origin, nullptr);
-	open.list.push_back(new PathNode(origin_tile));
-	while (open.list.size() > 0) 
+	open.node_list.push_back(PathNode(origin_tile));
+	while (open.node_list.size() > 0)
 	{
 		PathNode* next_tile = open.GetNodeLowestScore();
-		close.list.push_back(new PathNode(*next_tile));
+		close.node_list.push_back(PathNode(*next_tile));
 
 
 		if (close.Find(destination))

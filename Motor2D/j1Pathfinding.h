@@ -9,12 +9,6 @@
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 
-// --------------------------------------------------
-// Recommended reading:
-// Intro: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
-// Details: http://theory.stanford.edu/~amitp/GameProgramming/
-// --------------------------------------------------
-
 class j1PathFinding : public j1Module
 {
 public:
@@ -44,6 +38,8 @@ public:
 
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
+
+	bool Jump(int current_x, int current_y, int dx, int dy, iPoint start, iPoint end, PathNode& new_node);
 
 private:
 
@@ -76,6 +72,8 @@ struct PathNode
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
 
+	void IdentifySuccessors(PathList& list_to_fill, iPoint startNode, iPoint endNode, j1PathFinding* path_finder = this)const;
+
 	// -----------
 	int g;
 	int h;
@@ -89,14 +87,14 @@ struct PathNode
 struct PathList
 {
 	// Looks for a node in this list and returns it's list node or NULL
-	PathNode* Find(const iPoint& point);
+	list<PathNode>::iterator Find(const iPoint& point);
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	PathNode* GetNodeLowestScore();
+	list<PathNode>::iterator GetNodeLowestScore();
 
 	// -----------
 	// The list itself
-	std::list<PathNode*> list;
+	std::list<PathNode> node_list;
 };
 
 
