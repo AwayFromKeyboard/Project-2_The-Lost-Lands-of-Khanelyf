@@ -82,7 +82,12 @@
     <ClCompile Include="Test.cpp">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClCompile>
-    <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="Unit.cpp">
+      <Filter>Engine\4. Entities ==========</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Engine\4. Entities ==========</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -192,6 +197,12 @@
     </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Engine\4. Entities ==========</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Engine\4. Entities ==========</Filter>
+    </ClInclude>
+    <ClInclude Include="MemLeaks.h">
+      <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

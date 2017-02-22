@@ -3,6 +3,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include "j1App.h"
+#include "MemLeaks.h"
 
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
@@ -26,7 +27,7 @@ j1App* App = NULL;
 int main(int argc, char* args[])
 {
 	LOG("Engine starting ... %d");
-
+	ReportMemoryLeaks();
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
 
