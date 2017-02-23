@@ -3,7 +3,7 @@
 #include "j1App.h"
 #include "j1PathFinding.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH),width(0), height(0)
+j1PathFinding::j1PathFinding() : j1Module(), map(NULL), width(0), height(0)
 {
 	name = "pathfinding";
 }
@@ -19,12 +19,36 @@ bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
-	for (std::list<iPoint>::iterator it = last_path.begin(); it != last_path.end();) {
-		last_path.erase(it++);
+	for (std::list<Path*>::iterator it = paths.begin(); it != paths.end();) {
+		delete *it;
+		*it = NULL;
+		std::list<Path*>::iterator tmp = it;
+		++it;
+		paths.erase(tmp);
+	}
+	paths.clear();
+
+	RELEASE_ARRAY(map);
+	return true;
+}
+
+bool j1PathFinding::PreUpdate()
+{
+	for (std::list<Path*>::iterator it = paths.begin(); it != paths.end();) 
+	{
+		if ((*it)->completed == false)
+			CalculatePath(*it);
+		else
+		{
+			RELEASE(*it);
+			std::list<Path*>::iterator tmp = it;
+			++it;
+			paths.erase(tmp);
+
+		}
+		++it;
 	}
 
-	last_path.clear();
-	RELEASE_ARRAY(map);
 	return true;
 }
 
@@ -60,12 +84,6 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 		return map[(pos.y*width) + pos.x];
 
 	return INVALID_WALK_CODE;
-}
-
-// To request all tiles involved in the last generated path
-const std::list<iPoint>* j1PathFinding::GetLastPath() const
-{
-	return &last_path;
 }
 
 // PathList ------------------------------------------------------------------------
@@ -287,83 +305,119 @@ bool j1PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint st
 	// If forced neighbor was not found try next jump point
 	return Jump(next.x, next.y, dx, dy, start, end, new_node);
 }
-// ----------------------------------------------------------------------------------
-// Actual A* algorithm: return number of steps in the creation of the path or -1 ----
-// ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 {
-	last_path.clear();
-	int ret = -1;
+	iPoint ret(origin);
 
-	if (!IsWalkable(origin) || !IsWalkable(destination))
-		return -1;
+	// dx -> direction x  | dy -> direction y  
+	// search_in_radius -> finds the nearest walkable tile in a radius (max radius in FIND_RADIUS) 
 
-	PathList open;
-	PathList close;
-	PathNode origin_tile(0, origin.DistanceTo(destination), origin, nullptr);
-	open.node_list.push_back(PathNode(origin_tile));
-	while (open.node_list.size() > 0)
+	int search_in_radius = 1;
+	while (search_in_radius != FIND_RADIUS)
 	{
-		PathNode* next_tile = open.GetNodeLowestScore();
-		close.node_list.push_back(PathNode(*next_tile));
-
-
-		if (close.Find(destination))
+		for (int dx = -search_in_radius; dx < search_in_radius; dx++)
 		{
-			iPoint backtrack(destination);
-			while (backtrack != origin)
+			for (int dy = -search_in_radius; dy < search_in_radius; dy++)
 			{
-				last_path.push_front(backtrack);
-				backtrack = close.Find(backtrack)->parent->pos;
-			}
-			last_path.push_front(backtrack);
-
-			ret = last_path.size();
-
-			//clean memory for open and close list
-			for (std::list<PathNode*>::iterator curr_open = open.list.begin(); curr_open != open.list.end(); curr_open++)
-			{
-				RELEASE(*curr_open);
-			}
-			for (std::list<PathNode*>::iterator curr_close = close.list.begin(); curr_close != open.list.end(); curr_close++)
-			{
-				RELEASE(*curr_close);
-			}
-
-			open.list.clear();
-			close.list.clear();
-
-			break;
-		}
-
-		PathList adjacents;
-		int walkables = next_tile->FindWalkableAdjacents(adjacents);
-
-		for (std::list<PathNode*>::iterator curr_adjacent = adjacents.list.begin(); curr_adjacent != adjacents.list.end(); curr_adjacent++)
-		{
-			(*curr_adjacent)->parent = next_tile;
-
-			if (close.Find((*curr_adjacent)->pos) != NULL)
-				continue;
-			if (open.Find((*curr_adjacent)->pos) == NULL) 
-			{
-				(*curr_adjacent)->CalculateF(destination);
-				open.list.push_back(*curr_adjacent);
-			}
-			else
-			{
-				PathNode* old_node = open.Find((*curr_adjacent)->pos);
-				if ((*curr_adjacent)->CalculateF(destination) < old_node->Score())
-				{
-					open.list.remove(old_node);
-					open.list.push_back(*curr_adjacent);
-				}
+				ret.x = origin.x + dx;
+				ret.y = origin.y + dy;
+				if (IsWalkable(ret))
+					return ret; // Found the nearest walkable tile
 			}
 		}
 
-		open.list.remove(next_tile);
+		++search_in_radius;
 	}
 
+
+	return ret.create(-1, -1);
+}
+
+	 //----------------||----------------||----------------\\
+	//----------------||A* + JPS algorithm||----------------\\
+   //----------------||____________________||----------------\\
+
+void j1PathFinding::CalculatePath(Path * path)
+{
+	while (path->open.node_list.size() > 0)
+	{
+		list<PathNode>::iterator lowest_score_node = path->open.GetNodeLowestScore(); // Get the lowest score node from the open list
+		path->closed.node_list.push_back(*lowest_score_node);						  // Adds it to the closed list
+		path->open.node_list.erase(lowest_score_node);								  // Delete the lowest_score_node from the open list
+		list<PathNode>::iterator next_tile = --path->closed.node_list.end();		  // Next tile will be the newly added node
+
+		if (next_tile->pos == path->destination)
+		{
+			path->finished_path.clear();
+			const PathNode* path_node = &(*next_tile);
+
+			while (path_node) // We backtrack to create the resulting path
+			{
+				path->finished_path.push_back(path_node->pos); // That path will be stored in finished_path, inside path
+				path_node = path_node->parent;
+			}
+
+			iPoint* start = &path->finished_path[0];
+			iPoint* end = &path->finished_path[path->finished_path.size() - 1];
+
+			while (start < end)
+				SWAP(*start++, *end--);
+
+			path->completed = true;
+
+			break;	// As the path is completed we exit the loop
+		}
+		path->adjacent.node_list.clear();											// Fill a list with all adjacent nodes
+		next_tile->IdentifySuccessors(path->adjacent, path->origin, path->destination, this);
+
+		for (std::list<PathNode>::iterator it = path->adjacent.node_list.begin(); it != path->adjacent.node_list.end();) 
+		{																			// Iterate for every adjacent node
+			if (path->closed.Find(it->pos) != path->closed.node_list.end())
+			{
+				++it;
+				continue;
+			}
+
+			list<PathNode>::iterator adjacent_in_open = path->open.Find(it->pos);	// save from the open list to adjacent_in_open
+																					// the node that has the position of the current
+			if (adjacent_in_open == path->open.node_list.end())						// iterator
+			{
+				it->CalculateF(path->destination);
+				path->open.node_list.push_back(*it);
+			}
+			else if (adjacent_in_open->g > it->g + 1) 
+			{
+				adjacent_in_open->parent = it->parent;
+				adjacent_in_open->CalculateF(path->destination);
+			}
+			++it;
+		}
+	}
+}
+
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+{
+	int ret = -1;
+	iPoint current_origin = origin;
+
+	if (!IsWalkable(destination))
+		return ret;
+	if (!IsWalkable(origin)) {
+		current_origin = FindNearestWalkable(origin);
+		if (current_origin.x == -1 && current_origin.y == -1) {
+			return ret;
+		}
+	}
+	Path* path = new Path();
+	path->open.node_list.push_back(PathNode(0, 0, current_origin, NULL));
+	path->origin = current_origin;
+	path->destination = destination;
+
+	paths.push_back(path); // push the path to a list where there will be all the paths that need to be calculated
+
+	ret = 1;
 	return ret;
 }
+
+
 

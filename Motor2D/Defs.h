@@ -2,6 +2,7 @@
 #define __Defs_H__
 
 #include <stdio.h>
+#include <algorithm>
 
 //  NULL just in case ----------------------
 

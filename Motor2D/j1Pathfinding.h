@@ -8,6 +8,12 @@
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
+#define FIND_RADIUS 10
+
+// forward declarations
+struct Path; 
+struct PathList;
+struct PathNode;
 
 class j1PathFinding : public j1Module
 {
@@ -21,14 +27,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// We will call here the CalculatePath(path)
+	bool PreUpdate();
+	
 	// Sets up the walkability map
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
 	int CreatePath(const iPoint& origin, const iPoint& destination);
-
-	// To request all tiles involved in the last generated path
-	const std::list<iPoint>* GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -42,18 +48,18 @@ public:
 	bool Jump(int current_x, int current_y, int dx, int dy, iPoint start, iPoint end, PathNode& new_node);
 
 private:
+	iPoint FindNearestWalkable(const iPoint& origin);
+	void CalculatePath(Path* path);
+private:
 
 	// size of the map
 	uint width;
 	uint height;
 	// all map walkability values [0..255]
 	uchar* map;
-	// we store the created path here
-	std::list<iPoint> last_path;
+	// we store the created paths here
+	std::list<Path*> paths;
 };
-
-// forward declaration
-struct PathList;
 
 // ---------------------------------------------------------------------
 // Pathnode: Helper struct to represent a node in the path creation
@@ -72,7 +78,7 @@ struct PathNode
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
 
-	void IdentifySuccessors(PathList& list_to_fill, iPoint startNode, iPoint endNode, j1PathFinding* path_finder = this)const;
+	void IdentifySuccessors(PathList& list_to_fill, iPoint startNode, iPoint endNode, j1PathFinding* path_finder) const;
 
 	// -----------
 	int g;
@@ -97,6 +103,18 @@ struct PathList
 	std::list<PathNode> node_list;
 };
 
+struct Path {
+	Path() { completed = false; }
+	PathList open;
+	PathList closed;
+	PathList adjacent;
 
+	iPoint origin;
+	iPoint destination;
+
+	vector<iPoint> finished_path;
+
+	bool completed;
+};
 
 #endif // __j1PATHFINDING_H__
