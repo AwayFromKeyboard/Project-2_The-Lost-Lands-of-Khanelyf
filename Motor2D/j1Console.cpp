@@ -12,9 +12,9 @@
 #include <sstream>
 
 #define PADDING 15
-#define OUTPUT_TEXT_COLOR { 102, 204, 102, 255 }
+#define output_TEXT_COLOR { 102, 204, 102, 255 }
 #define INPUT_TEXT_COLOR {235, 235, 235, 255}
-#define ERROR_TEXT_COLOR { 255, 67, 67, 255 }
+#define error_TEXT_COLOR { 255, 67, 67, 255 }
 #define TOP_FRAME_SIZE 30
 #define FRAMES_SIZE 15
 #define SCROLL_BUTTON_SIZE 15
@@ -86,7 +86,7 @@ bool j1Console::Update(float dt)
 	FastCommands();
 
 	// Open/close console
-	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == key_down)
 	{
 		window->SetEnabledAndChilds(!window->enabled);
 		text_input->Clear();
@@ -178,19 +178,19 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 	{
 	case 1:
 		if ((*it) == "list") {
-			AddText("--- COMMANDS ---", Output);
+			AddText("--- COMMANDS ---", output);
 			for (std::list<Command*>::iterator item = commands.begin(); item != commands.end(); item++){
 				std::ostringstream oss;
 				oss << (*item)->command_str.c_str() << ": " << (*item)->help.c_str() << ".";
 				std::string command_text = oss.str();
-				AddText(command_text.c_str(), Output);
+				AddText(command_text.c_str(), output);
 			}
-			AddText("     --- CVARS ---", Output);
+			AddText("     --- CVARS ---", output);
 			for (std::list<CVar*>::iterator item = cvars.begin(); item != cvars.end(); item++) {
 				std::ostringstream oss;
 				oss << (*item)->cvar_str.c_str() << ": " << (*item)->help.c_str() << ".";
 				std::string cvar_text = oss.str();
-				AddText(cvar_text.c_str(), Output);
+				AddText(cvar_text.c_str(), output);
 			}
 		}
 		else if ((*it) == "quit") {
@@ -214,7 +214,7 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 					std::ostringstream oss;
 					oss << (*item)->command_str.c_str() << ": " << (*item)->help.c_str() << ".";
 					std::string command_text = oss.str();
-					AddText(command_text.c_str(), Output);
+					AddText(command_text.c_str(), output);
 				}
 			}
 			else if ((*it) == "cvars") {
@@ -222,26 +222,26 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 					std::ostringstream oss;
 					oss << (*item)->cvar_str.c_str() << ": " << (*item)->help.c_str() << ".";
 					std::string cvar_text = oss.str();
-					AddText(cvar_text.c_str(), Output);
+					AddText(cvar_text.c_str(), output);
 				}
 			}
 			else {
-				AddText("--- COMMANDS ---", Output);
+				AddText("--- COMMANDS ---", output);
 				for (std::list<Command*>::iterator item = commands.begin(); item != commands.end(); item++) {
 					if((*item)->command_str.find((*it).c_str()) != std::string::npos){
 						std::ostringstream oss;
 						oss << (*item)->command_str.c_str() << ": " << (*item)->help.c_str() << ".";
 						std::string command_text = oss.str();
-						AddText(command_text.c_str(), Output);
+						AddText(command_text.c_str(), output);
 					}
 				}
-				AddText("     --- CVARS ---", Output);
+				AddText("     --- CVARS ---", output);
 				for (std::list<CVar*>::iterator item = cvars.begin(); item != cvars.end(); item++) {
 					if((*item)->cvar_str.find((*it).c_str()) != std::string::npos){
 						std::ostringstream oss;
 						oss << (*item)->cvar_str.c_str() << ": " << (*item)->help.c_str() << ".";
 						std::string cvar_text = oss.str();
-						AddText(cvar_text.c_str(), Output);
+						AddText(cvar_text.c_str(), output);
 					}
 				}
 			}
@@ -261,7 +261,7 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 				AddText(str.c_str());
 			}
 			else
-				AddText("Invalid framerate", ConsoleTextType::Error);
+				AddText("Invalid framerate", console_text_type::error);
 		}
 	case 3:
 		if ((*it) == "list") {
@@ -273,7 +273,7 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 						std::ostringstream oss;
 						oss << (*item)->command_str.c_str() << ": " << (*item)->help.c_str() << ".";
 						std::string command_text = oss.str();
-						AddText(command_text.c_str(), Output);
+						AddText(command_text.c_str(), output);
 					}
 				}
 			}
@@ -284,7 +284,7 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 						std::ostringstream oss;
 						oss << (*item)->cvar_str.c_str() << ": " << (*item)->help.c_str() << ".";
 						std::string cvar_text = oss.str();
-						AddText(cvar_text.c_str(), Output);
+						AddText(cvar_text.c_str(), output);
 					}
 				}
 			}
@@ -333,12 +333,12 @@ void j1Console::AddCVar(const char * cvar, j1Module * callback, const char* help
 // Add text to console. 
 // txt: text console should add.
 // type: input (check commands and cvars) or output (console return message).
-void j1Console::AddText(const char * txt, ConsoleTextType type)
+void j1Console::AddText(const char * txt, console_text_type type)
 {
 	if (txt[0] != '\0' && ready) {
 		switch (type)
 		{
-		case Output: 
+		case output: 
 		{
 			std::string text(txt);
 			std::list<std::string> tokens;
@@ -348,13 +348,13 @@ void j1Console::AddText(const char * txt, ConsoleTextType type)
 			{
 				if ((*token).length() > 1) 
 				{
-					Log((*token).c_str(), OUTPUT_TEXT_COLOR);
+					Log((*token).c_str(), output_TEXT_COLOR);
 				}
 			}
 			tokens.clear();
 		}
 			break;
-		case Input:
+		case input:
 		{
 			bool command_found = false;
 			bool command_valid = false;
@@ -393,21 +393,21 @@ void j1Console::AddText(const char * txt, ConsoleTextType type)
 			{
 				if (!command_found && !cvar_found) {
 					std::ostringstream oss;
-					oss << "Error: " << text << " don't exist.";
-					Log(std::string(oss.str()), ERROR_TEXT_COLOR);
+					oss << "error: " << text << " don't exist.";
+					Log(std::string(oss.str()), error_TEXT_COLOR);
 				}
 					
 				else if (!command_valid || !cvar_valid)
 				{
 					if (command_found)
-						Log("Error: Invalid command arguments.", ERROR_TEXT_COLOR);
+						Log("error: Invalid command arguments.", error_TEXT_COLOR);
 					else if (cvar_found) 
-						Log("Error: Invalid cvar arguments.", ERROR_TEXT_COLOR);
+						Log("error: Invalid cvar arguments.", error_TEXT_COLOR);
 				}
 			}	
 		}
 		break;
-		case Error:
+		case error:
 		{
 			std::string text(txt);
 			std::list<std::string> tokens;
@@ -416,7 +416,7 @@ void j1Console::AddText(const char * txt, ConsoleTextType type)
 			for (std::list<std::string>::iterator token = tokens.begin(); token != tokens.end(); token++) 
 			{
 				if ((*token).length() > 1) 
-					Log((*token), ERROR_TEXT_COLOR);
+					Log((*token), error_TEXT_COLOR);
 			}
 			tokens.clear();
 		}
@@ -468,14 +468,14 @@ void j1Console::FastCommands()
 	{
 		if (text_input->intern_text.size() > 0)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_RETURN) == key_down)
 			{
-				AddText(text_input->intern_text.c_str(), Input);
+				AddText(text_input->intern_text.c_str(), input);
 				text_input->Clear();
 			}
 
 			// Get first command from list more similar to actual input text 
-			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == key_down)
 			{
 				bool found = false;
 				for (std::list<Command*>::iterator command = commands.begin(); command != commands.end(); command++)
@@ -502,7 +502,7 @@ void j1Console::FastCommands()
 		}
 
 		// Get last command from the commands used
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_UP) == key_down)
 		{
 			if (currentLabel == -1)
 				currentLabel = labels.size()-1;
@@ -534,7 +534,7 @@ void j1Console::FastCommands()
 		}
 
 		// Get first command from the commands used
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == key_down)
 		{
 			if (currentLabel == -1)
 				currentLabel = 0;

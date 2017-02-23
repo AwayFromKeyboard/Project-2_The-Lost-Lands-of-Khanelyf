@@ -154,13 +154,13 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		debug_mode = !debug_mode;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 		ret = false;
 
-	if(input->GetWindowEvent(WE_QUIT) == true || end_program)
+	if(input->GetWindowEvent(we_quit) == true || end_program)
 		ret = false;
 
 	if(ret == true)

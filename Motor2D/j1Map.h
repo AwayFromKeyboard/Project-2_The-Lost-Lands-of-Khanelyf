@@ -80,12 +80,12 @@ struct TileSet
 	int					offset_y;
 };
 
-enum MapTypes
+enum map_types
 {
-	MAPTYPE_UNKNOWN = 0,
-	MAPTYPE_ORTHOGONAL,
-	MAPTYPE_ISOMETRIC,
-	MAPTYPE_STAGGERED
+	maptype_unknown = 0,
+	maptype_orthogonal,
+	maptype_isometric,
+	maptype_staggered
 };
 // ----------------------------------------------------
 struct MapData
@@ -95,7 +95,7 @@ struct MapData
 	int					tile_width;
 	int					tile_height;
 	SDL_Color			background_color;
-	MapTypes			type;
+	map_types			type;
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>layers;
 };

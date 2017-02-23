@@ -147,9 +147,9 @@ void j1Window::OnCVar(std::list<std::string>& tokens)
 				title.insert(title.size(), (*it).c_str());
 			}
 			SetTitle(title.c_str());
-			string output("Title set to: ");
-			output.insert(output.size(), title);
-			App->console->AddText(output.c_str(), Output);
+			string new_title("Title set to: ");
+			new_title.insert(new_title.size(), title);
+			App->console->AddText(new_title.c_str(), output);
 		}
 	}
 }

@@ -156,9 +156,6 @@
     <ClInclude Include="p2PQueue.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
-    <ClInclude Include="p2SString.h">
-      <Filter>Engine\5. Tools ===========</Filter>
-    </ClInclude>
     <ClInclude Include="Functions.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>

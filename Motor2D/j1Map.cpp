@@ -110,12 +110,12 @@ iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
 
-	if (data.type == MAPTYPE_ORTHOGONAL)
+	if (data.type == maptype_orthogonal)
 	{
 		ret.x = x * data.tile_width;
 		ret.y = y * data.tile_height;
 	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
+	else if (data.type == maptype_isometric)
 	{
 		ret.x = (x - y) * (data.tile_width * 0.5f);
 		ret.y = (x + y) * (data.tile_height * 0.5f);
@@ -133,12 +133,12 @@ iPoint j1Map::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
 
-	if (data.type == MAPTYPE_ORTHOGONAL)
+	if (data.type == maptype_orthogonal)
 	{
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
 	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
+	else if (data.type == maptype_isometric)
 	{
 
 		float half_width = data.tile_width * 0.5f;
@@ -336,19 +336,19 @@ bool j1Map::LoadMap()
 
 		if (orientation == "orthogonal")
 		{
-			data.type = MAPTYPE_ORTHOGONAL;
+			data.type = maptype_orthogonal;
 		}
 		else if (orientation == "isometric")
 		{
-			data.type = MAPTYPE_ISOMETRIC;
+			data.type = maptype_isometric;
 		}
 		else if (orientation == "staggered")
 		{
-			data.type = MAPTYPE_STAGGERED;
+			data.type = maptype_staggered;
 		}
 		else
 		{
-			data.type = MAPTYPE_UNKNOWN;
+			data.type = maptype_unknown;
 		}
 	}
 
@@ -478,17 +478,17 @@ void j1Map::TilesToDraw_x(int & x_ini, int & x_end, MapLayer * layer) const
 	iPoint end = WorldToMap(fit_square.x + fit_square.w, fit_square.y + fit_square.h);
 	switch (data.type)
 	{
-	case MAPTYPE_UNKNOWN:
+	case maptype_unknown:
 		break;
-	case MAPTYPE_ORTHOGONAL:
+	case maptype_orthogonal:
 		x_ini = (ini.x - draw_margin > 0) ? (ini.x - draw_margin) : 0;
 		x_end = (end.x + draw_margin < layer->width) ? (end.x + draw_margin) : layer->width;
 		break;
-	case MAPTYPE_ISOMETRIC:
+	case maptype_isometric:
 		x_ini = (ini.x - draw_margin > 0) ? (ini.x - draw_margin) : 0;
 		x_end = (end.x + draw_margin < layer->width) ? (end.x + draw_margin) : layer->width;
 		break;
-	case MAPTYPE_STAGGERED:
+	case maptype_staggered:
 		break;
 	default:
 		break;
@@ -503,13 +503,13 @@ void j1Map::TilesToDraw_y(int count, int x, int x_end, int & y_ini, int & y_end,
 	iPoint bot_left = WorldToMap(fit_square.x, fit_square.y + fit_square.h);
 	switch (data.type)
 	{
-	case MAPTYPE_UNKNOWN:
+	case maptype_unknown:
 		break;
-	case MAPTYPE_ORTHOGONAL:
+	case maptype_orthogonal:
 		y_ini = (top_left.y - draw_margin > 0) ? (top_left.y - draw_margin) : 0;
 		y_end = (bot_right.y + draw_margin < layer->height) ? bot_right.y + draw_margin : layer->height;
 		break;
-	case MAPTYPE_ISOMETRIC: {
+	case maptype_isometric: {
 		float screen_prop = (float)fit_square.w / (float)fit_square.h;
 		int diag1 = bot_left.x, diag2 = top_right.x;
 		if (x <= diag1) {
@@ -536,7 +536,7 @@ void j1Map::TilesToDraw_y(int count, int x, int x_end, int & y_ini, int & y_end,
 
 		break;
 	}
-	case MAPTYPE_STAGGERED:
+	case maptype_staggered:
 		break;
 	default:
 		break;

@@ -11,9 +11,9 @@ j1Input::j1Input() : j1Module()
 {
 	name = "input";
 
-	keyboard = new j1KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
-	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * NUM_MOUSE_BUTTONS);
+	keyboard = new j1_key_state[MAX_KEYS];
+	memset(keyboard, key_idle, sizeof(j1_key_state) * MAX_KEYS);
+	memset(mouse_buttons, key_idle, sizeof(j1_key_state) * NUM_MOUSE_BUTTONS);
 }
 
 // Destructor
@@ -62,27 +62,27 @@ bool j1Input::PreUpdate()
 	{
 		if(keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE)
-				keyboard[i] = KEY_DOWN;
+			if(keyboard[i] == key_idle)
+				keyboard[i] = key_down;
 			else
-				keyboard[i] = KEY_REPEAT;
+				keyboard[i] = key_repeat;
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
-				keyboard[i] = KEY_UP;
+			if(keyboard[i] == key_repeat || keyboard[i] == key_down)
+				keyboard[i] = key_up;
 			else
-				keyboard[i] = KEY_IDLE;
+				keyboard[i] = key_idle;
 		}
 	}
 
 	for(int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
-		if(mouse_buttons[i] == KEY_DOWN)
-			mouse_buttons[i] = KEY_REPEAT;
+		if(mouse_buttons[i] == key_down)
+			mouse_buttons[i] = key_repeat;
 
-		if(mouse_buttons[i] == KEY_UP)
-			mouse_buttons[i] = KEY_IDLE;
+		if(mouse_buttons[i] == key_up)
+			mouse_buttons[i] = key_idle;
 	}
 
 	// GUI -------------------------
@@ -95,7 +95,7 @@ bool j1Input::PreUpdate()
 		switch(event.type)
 		{
 			case SDL_QUIT:
-				windowEvents[WE_QUIT] = true;
+				windowEvents[we_quit] = true;
 			break;
 
 			case SDL_WINDOWEVENT:
@@ -105,7 +105,7 @@ bool j1Input::PreUpdate()
 					case SDL_WINDOWEVENT_HIDDEN:
 					case SDL_WINDOWEVENT_MINIMIZED:
 					case SDL_WINDOWEVENT_FOCUS_LOST:
-					windowEvents[WE_HIDE] = true;
+					windowEvents[we_hide] = true;
 					break;
 
 					//case SDL_WINDOWEVENT_ENTER:
@@ -113,18 +113,18 @@ bool j1Input::PreUpdate()
 					case SDL_WINDOWEVENT_FOCUS_GAINED:
 					case SDL_WINDOWEVENT_MAXIMIZED:
 					case SDL_WINDOWEVENT_RESTORED:
-					windowEvents[WE_SHOW] = true;
+					windowEvents[we_show] = true;
 					break;
 				}
 			break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				mouse_buttons[event.button.button - 1] = KEY_DOWN;
+				mouse_buttons[event.button.button - 1] = key_down;
 				//LOG("Mouse button %d down", event.button.button-1);
 			break;
 
 			case SDL_MOUSEBUTTONUP:
-				mouse_buttons[event.button.button - 1] = KEY_UP;
+				mouse_buttons[event.button.button - 1] = key_up;
 				//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
@@ -166,7 +166,7 @@ bool j1Input::CleanUp()
 }
 
 // ---------
-bool j1Input::GetWindowEvent(j1EventWindow ev)
+bool j1Input::GetWindowEvent(j1_event_window ev)
 {
 	return windowEvents[ev];
 }

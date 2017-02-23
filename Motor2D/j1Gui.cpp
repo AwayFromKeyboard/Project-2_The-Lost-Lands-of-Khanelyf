@@ -61,7 +61,7 @@ bool j1Gui::Start()
 bool j1Gui::Update(float dt)
 {
 	// Debug
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && App->debug_mode)
+	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
 		debug = !debug;
 	else if (!App->debug_mode)
 		debug = false;
@@ -295,7 +295,7 @@ bool j1Gui::Move_Elements()
 	int ret = false;
 
 	// Click
-	if((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && !moving)
+	if((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && !moving)
 	{
 		App->input->GetMousePosition(mouse_x, mouse_y);
 		mouse_x -= App->render->camera.x;
@@ -354,7 +354,7 @@ bool j1Gui::Move_Elements()
 	}
 
 	// Release click
-	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP))
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up))
 	{
 		to_move = nullptr;
 		moving = false;
@@ -612,7 +612,7 @@ void UI_Element::AddChildBoth(UI_Element * _child)
 
 bool UI_Element::MouseClickEnterLeftIntern()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
 		int mouse_x, mouse_y;
 		App->input->GetMousePosition(mouse_x, mouse_y);
@@ -633,7 +633,7 @@ bool UI_Element::MouseClickEnterLeftIntern()
 
 bool UI_Element::MouseClickOutLeftIntern()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up)
 	{
 		if (clicked)
 		{
@@ -964,7 +964,7 @@ bool UI_Button::MouseClickEnterLeft()
 	if (!enabled)
 		return false;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
 		int mouse_x, mouse_y;
 		App->input->GetMousePosition(mouse_x, mouse_y);
@@ -988,7 +988,7 @@ bool UI_Button::MouseClickOutLeft()
 	if (!enabled)
 		return false;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up)
 	{
 		if (clicked_left)
 		{
@@ -1004,7 +1004,7 @@ bool UI_Button::MouseClickEnterRight()
 	if (!enabled)
 		return false;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
 	{
 		int mouse_x, mouse_y;
 		App->input->GetMousePosition(mouse_x, mouse_y);
@@ -1031,7 +1031,7 @@ bool UI_Button::MouseClickOutRight()
 	if (!enabled)
 		return false;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_up)
 	{
 		if (clicked_right)
 		{
@@ -1372,7 +1372,7 @@ bool UI_Text_Input::Delete()
 {
 	bool ret = false;
 
-	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == key_down)
 	{
 		if (intern_text.size() > 0 && bar_pos > 0)
 		{
@@ -1401,7 +1401,7 @@ bool UI_Text_Input::Delete()
 			ret = true;
 		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == key_down)
 	{
 		if (intern_text.size() > 0 && bar_pos < intern_text.size())
 		{
@@ -1437,7 +1437,7 @@ bool UI_Text_Input::MoveCursor()
 {
 	bool ret = false;
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == key_down)
 	{
 		if (bar_pos > 0)
 		{
@@ -1446,7 +1446,7 @@ bool UI_Text_Input::MoveCursor()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == key_down)
 	{
 		if (bar_pos < intern_text.size())
 		{
@@ -1537,7 +1537,7 @@ void UI_Text_Input::Clear()
 
 void UI_Text_Input::SetIsActive()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
 		int mouse_x, mouse_y;
 		App->input->GetMousePosition(mouse_x, mouse_y);
@@ -1558,7 +1558,7 @@ void UI_Text_Input::SetIsActive()
 
 bool UI_Text_Input::MouseClick()
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
 		int mouse_x, mouse_y;
 		App->input->GetMousePosition(mouse_x, mouse_y);

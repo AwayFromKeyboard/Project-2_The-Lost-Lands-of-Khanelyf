@@ -13,9 +13,11 @@ class UI_Text_Input;
 
 class SDL_Color;
 
-enum ConsoleTextType
+enum console_text_type
 {
-	Output, Input, Error
+	output, 
+	input, 
+	error
 };
 
 class Command 
@@ -86,7 +88,7 @@ public:
 
 	void AddCVar(const char* cvar, j1Module* callback, const char* help_txt);
 
-	void AddText(const char* txt, ConsoleTextType type = ConsoleTextType::Output);
+	void AddText(const char* txt, console_text_type type = console_text_type::output);
 
 	void ChangeCVarMaxArgs(const char* name, int args);
 

@@ -11,15 +11,15 @@
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
-enum MainState
+enum main_state
 {
-	CREATE = 1,
-	AWAKE,
-	START,
-	LOOP,
-	CLEAN,
-	FAIL,
-	EXIT
+	create = 1,
+	awake,
+	start,
+	loop,
+	clean,
+	fail,
+	exit_
 };
 
 j1App* App = NULL;
@@ -28,80 +28,80 @@ int main(int argc, char* args[])
 {
 	LOG("Engine starting ... %d");
 	ReportMemoryLeaks();
-	MainState state = MainState::CREATE;
+	main_state state = main_state::create;
 	int result = EXIT_FAILURE;
 
-	while(state != EXIT)
+	while(state != exit_)
 	{
 		switch(state)
 		{
 
 			// Allocate the engine --------------------------------------------
-			case CREATE:
+			case create:
 			LOG("CREATION PHASE ===============================");
 
 			App = new j1App(argc, args);
 
 			if(App != NULL)
-				state = AWAKE;
+				state = awake;
 			else
-				state = FAIL;
+				state = fail;
 
 			break;
 
 			// Awake all modules -----------------------------------------------
-			case AWAKE:
+			case awake:
 			LOG("AWAKE PHASE ===============================");
 			if(App->Awake() == true)
-				state = START;
+				state = start;
 			else
 			{
 				LOG("ERROR: Awake failed");
-				state = FAIL;
+				state = fail;
 			}
 
 			break;
 
 			// Call all modules before first frame  ----------------------------
-			case START:
+			case start:
 			LOG("START PHASE ===============================");
 			if(App->Start() == true)
 			{
-				state = LOOP;
+				state = loop;
 				LOG("UPDATE PHASE ===============================");
 			}
 			else
 			{
-				state = FAIL;
+				state = fail;
 				LOG("ERROR: Start failed");
 			}
 			break;
 
 			// Loop all modules until we are asked to leave ---------------------
-			case LOOP:
+			case loop:
 			if(App->Update() == false)
-				state = CLEAN;
+				state = clean;
 			break;
 
 			// Cleanup allocated memory -----------------------------------------
-			case CLEAN:
+			case clean:
 			LOG("CLEANUP PHASE ===============================");
 			if(App->CleanUp() == true)
 			{
 				RELEASE(App);
 				result = EXIT_SUCCESS;
-				state = EXIT;
+				state = exit_;
 			}
 			else
-				state = FAIL;
+				state = fail;
 
 			break;
 
 			// Exit with errors and shame ---------------------------------------
-			case FAIL:
+			case fail:
 			LOG("Exiting with errors :(");
 			result = EXIT_FAILURE;
-			state = EXIT;
+			state = exit_;
 			break;
 		}
 	}

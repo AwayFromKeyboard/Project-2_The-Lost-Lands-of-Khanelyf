@@ -62,35 +62,35 @@ bool Test::Update(float dt)
 
 	float speed = (200 * dt);
 /*
-	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+	if ((App->input->GetKey(SDL_SCANCODE_A) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_W) == key_repeat))
 	{
 		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y - speed });
 	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+	else if ((App->input->GetKey(SDL_SCANCODE_D) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_W) == key_repeat))
 	{
 		test_go->SetPos({ test_go->fGetPos().x + speed, test_go->fGetPos().y - speed });
 	}
-	else if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+	else if ((App->input->GetKey(SDL_SCANCODE_A) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_S) == key_repeat))
 	{
 		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y + speed });
 	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+	else if ((App->input->GetKey(SDL_SCANCODE_D) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_S) == key_repeat))
 	{
 		test_go->SetPos({ test_go->fGetPos().x + speed, test_go->fGetPos().y + speed });
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_A) == key_repeat)
 	{
 		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y });
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_D) == key_repeat)
 	{
 		test_go->SetPos({ test_go->fGetPos().x + speed, test_go->fGetPos().y });
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_W) == key_repeat)
 	{
 		test_go->SetPos({ test_go->fGetPos().x, test_go->fGetPos().y - speed });
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_S) == key_repeat)
 	{
 		test_go->SetPos({ test_go->fGetPos().x, test_go->fGetPos().y + speed });
 	}*/
