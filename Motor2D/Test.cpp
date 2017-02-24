@@ -67,8 +67,6 @@ bool Test::Update(float dt)
 		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		App->pathfinding->CreatePath(game_object->GetPos(), mouse_position);
 	}
-	
-	FollowPath();
 
 /*
 	if ((App->input->GetKey(SDL_SCANCODE_A) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_W) == key_repeat))
