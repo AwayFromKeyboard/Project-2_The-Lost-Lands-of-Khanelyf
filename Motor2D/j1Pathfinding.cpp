@@ -20,8 +20,7 @@ bool j1PathFinding::CleanUp()
 	LOG("Freeing pathfinding library");
 
 	for (std::list<Path*>::iterator it = paths.begin(); it != paths.end();) {
-		delete *it;
-		*it = NULL;
+		RELEASE(*it);
 		std::list<Path*>::iterator tmp = it;
 		++it;
 		paths.erase(tmp);
@@ -305,6 +304,7 @@ bool j1PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint st
 	// If forced neighbor was not found try next jump point
 	return Jump(next.x, next.y, dx, dy, start, end, new_node);
 }
+
 iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 {
 	iPoint ret(origin);

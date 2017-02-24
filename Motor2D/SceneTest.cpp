@@ -114,6 +114,9 @@ bool SceneTest::Update(float dt)
 	y -= App->render->camera.y;
 	cursor->Set(iPoint(x, y), cursor_r);
 
+	troop->FollowPath();
+
+
 	return true;
 }
 

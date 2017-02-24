@@ -2,6 +2,7 @@
 #include "j1Entity.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "j1Map.h"
 
 Unit::Unit()
 {
@@ -66,15 +67,12 @@ void Unit::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fi
 {
 }
 
-void Unit::SetPath(Path * _path)
+void Unit::SetPath(vector<iPoint> _path)
 {
 	path = _path;
 }
 
-void Unit::FollowPath()
+vector<iPoint> Unit::GetPath()const
 {
-	for (std::vector<iPoint>::iterator it = path->finished_path.begin(); it != path->finished_path.end(); it++) {
-		iPoint pos = game_object->GetPos();
-		game_object->SetPos(fPoint(it->x - pos.x, it->y - pos.y));
-	}
+	return path;
 }

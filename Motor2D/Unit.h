@@ -24,11 +24,13 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
-	void SetPath(Path* _path);
-	void FollowPath();
+
+	// Pathfinding
+	void SetPath(vector<iPoint> _path);
+	vector<iPoint> GetPath() const;
 public:
 	GameObject* game_object = nullptr;
-	Path* path = nullptr;
+	vector<iPoint> path;
 
 	bool flip = false;
 };

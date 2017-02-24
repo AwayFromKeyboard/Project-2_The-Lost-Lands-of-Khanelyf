@@ -687,8 +687,6 @@ b2MotorJoint* j1Physics::CreateMotorJoint(b2Body* body, b2Vec2 target)
 	def.maxTorque = 100.0f * body->GetMass();
 	def.maxForce = 100.0f * body->GetMass();
 
-	
-
 	return (b2MotorJoint*)world->CreateJoint(&def);
 }
 

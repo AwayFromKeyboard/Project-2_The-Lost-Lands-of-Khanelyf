@@ -156,6 +156,7 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	CursorSelection();
 	return true;
 }
 
@@ -465,6 +466,23 @@ void j1Gui::DeleteElement(UI_Element* element)
 
 		(*ch)->cleanup();
 		delete((*ch));
+	}
+}
+
+void j1Gui::CursorSelection()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+	{
+		App->input->GetMousePosition(selection_rect.x, selection_rect.y);
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
+	{
+		iPoint position;
+		App->input->GetMousePosition(position.x, position.y);
+		selection_rect.w = position.x - selection_rect.x;
+		selection_rect.h = position.y - selection_rect.y;
+		App->render->DrawQuad(selection_rect, 255, 255, 255, 255, false);
 	}
 }
 

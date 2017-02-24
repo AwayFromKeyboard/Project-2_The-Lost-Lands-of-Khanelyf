@@ -68,7 +68,10 @@ public:
 	UI_Element* CheckClickMove(int x, int y);
 	void DeleteElement(UI_Element * element);
 
+	void CursorSelection();
+
 private:
+	SDL_Rect				selection_rect;
 
 public:
 	// Atlas --

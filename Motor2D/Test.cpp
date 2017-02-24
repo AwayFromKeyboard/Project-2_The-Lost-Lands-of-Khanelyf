@@ -65,11 +65,11 @@ bool Test::Update(float dt)
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 		iPoint mouse_position; 
 		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
-		path = App->pathfinding->CreatePath(game_object->GetPos(), mouse_position);
+		App->pathfinding->CreatePath(game_object->GetPos(), mouse_position);
 	}
-	if (path != nullptr && path->completed) {
-		FollowPath();
-	}
+	
+	FollowPath();
+
 /*
 	if ((App->input->GetKey(SDL_SCANCODE_A) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_W) == key_repeat))
 	{
