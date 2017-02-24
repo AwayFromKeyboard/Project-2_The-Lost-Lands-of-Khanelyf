@@ -2,6 +2,7 @@
 #define _UNIT_H_
 
 #include "Entity.h"
+#include "j1Pathfinding.h"
 
 class GameObject;
 
@@ -23,9 +24,11 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
-
+	void SetPath(Path* _path);
+	void FollowPath();
 public:
 	GameObject* game_object = nullptr;
+	Path* path = nullptr;
 
 	bool flip = false;
 };

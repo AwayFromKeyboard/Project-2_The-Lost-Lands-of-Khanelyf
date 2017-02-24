@@ -395,17 +395,16 @@ void j1PathFinding::CalculatePath(Path * path)
 	}
 }
 
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+Path* j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	int ret = -1;
 	iPoint current_origin = origin;
 
 	if (!IsWalkable(destination))
-		return ret;
+		return nullptr;
 	if (!IsWalkable(origin)) {
 		current_origin = FindNearestWalkable(origin);
 		if (current_origin.x == -1 && current_origin.y == -1) {
-			return ret;
+			return nullptr;
 		}
 	}
 	Path* path = new Path();
@@ -415,8 +414,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	paths.push_back(path); // push the path to a list where there will be all the paths that need to be calculated
 
-	ret = 1;
-	return ret;
+	return path;
 }
 
 

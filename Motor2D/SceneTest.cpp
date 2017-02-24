@@ -11,6 +11,7 @@
 #include <sstream>
 #include "j1Entity.h"
 #include "Test.h"
+#include "GameObject.h"
 
 SceneTest::SceneTest()
 {
@@ -22,14 +23,22 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	App->map->Load("age.tmx");
+	if (App->map->Load("iso_walk.tmx") == true)
+	{
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
 
 	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 1, 37, 40 };
 	cursor = (UI_Image*)window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	troop = (Test*)App->entity->CreateEntity(test);
-
+	troop->game_object->SetPos(fPoint(100,100));
 	SDL_ShowCursor(0);
 	return true;
 }

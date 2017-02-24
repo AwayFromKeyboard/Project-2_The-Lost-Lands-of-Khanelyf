@@ -1,6 +1,7 @@
 #include "Unit.h"
 #include "j1Entity.h"
 #include "Scene.h"
+#include "GameObject.h"
 
 Unit::Unit()
 {
@@ -63,4 +64,17 @@ bool Unit::Save(pugi::xml_node &) const
 
 void Unit::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
+}
+
+void Unit::SetPath(Path * _path)
+{
+	path = _path;
+}
+
+void Unit::FollowPath()
+{
+	for (std::vector<iPoint>::iterator it = path->finished_path.begin(); it != path->finished_path.end(); it++) {
+		iPoint pos = game_object->GetPos();
+		game_object->SetPos(fPoint(it->x - pos.x, it->y - pos.y));
+	}
 }
