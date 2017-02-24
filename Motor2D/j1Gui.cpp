@@ -852,6 +852,42 @@ UI_Element * UI_Window::CreateColoredRect(iPoint pos, int w, int h, SDL_Color co
 	return ret;
 }
 
+bool UI_Window::MouseEnter()
+{
+	if (!enabled)
+		return false;
+
+	int mouse_x, mouse_y;
+	App->input->GetMousePosition(mouse_x, mouse_y);
+	mouse_x -= App->render->camera.x;
+	mouse_y -= App->render->camera.y;
+
+	if (CheckClickOverlap(mouse_x, mouse_y) != layer)
+		return false;
+
+	if (CheckClickRect(mouse_x, mouse_y))
+	{
+		if (!enter)
+		{
+			to_enter = true;
+			return true;
+		}
+		return false;
+	}
+
+	return false;
+}
+
+iPoint UI_Window::GetPosition()
+{
+	return iPoint(rect.x, rect.y);
+}
+
+SDL_Rect UI_Window::GetRect()
+{
+	return rect;
+}
+
 // -----------------------------------
 // ---------------------------- Window
 

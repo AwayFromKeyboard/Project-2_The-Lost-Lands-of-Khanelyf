@@ -6,6 +6,8 @@
 #include "j1Module.h"
 #include "j1App.h"
 
+#define CAMERA_SPEED 10
+
 class App;
 
 class j1Render : public j1Module

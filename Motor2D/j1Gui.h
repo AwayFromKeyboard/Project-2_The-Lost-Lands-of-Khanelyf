@@ -7,6 +7,7 @@
 #include "j1Render.h"
 
 #define CURSOR_WIDTH 2
+#define MOVEMENT_AREA 40
 
 enum ui_element
 {
@@ -195,9 +196,12 @@ public:
 	UI_Element* CreateColoredRect(iPoint pos, int view_w, int view_h, SDL_Color color, bool filled = true, bool dinamic = false);
 
 public:
-
+	bool MouseEnter();
+	iPoint GetPosition();
+	SDL_Rect GetRect();
 private:
-
+	bool	to_enter = false;
+	bool	enter = false;
 };
 
 // ----------------------------
