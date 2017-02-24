@@ -28,8 +28,13 @@ public:
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
 private:
-	UI_Window* window = nullptr;
+	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
+
+	UI_Window* movement_window_u = nullptr;
+	UI_Window* movement_window_d = nullptr;
+	UI_Window* movement_window_l = nullptr;
+	UI_Window* movement_window_r = nullptr;
 
 	Test* troop = nullptr;
 

@@ -33,9 +33,15 @@ bool SceneTest::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
+	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 1, 37, 40 };
-	cursor = (UI_Image*)window->CreateImage(iPoint(0, 0), cursor_r, true);
+	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
+
+	movement_window_u = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 20, (int)App->win->_GetWindowSize().y, 100, true);
+	SDL_Color color;
+	color.r = 255;
+	movement_window_u->SetDebugColor(color);
+	movement_window_d = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, (int)App->win->_GetWindowSize().y - 20), 20, (int)App->win->_GetWindowSize().y, 100, true);
 
 	troop = (Test*)App->entity->CreateEntity(test);
 	troop->game_object->SetPos(fPoint(100,100));
@@ -69,7 +75,7 @@ bool SceneTest::Update(float dt)
 		App->render->camera.x -= 5;
 
 	App->map->Draw();
-	window->Set(iPoint(50, 10), 0, 0);
+	cursor_window->Set(iPoint(50, 10), 0, 0);
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	x -= App->render->camera.x;

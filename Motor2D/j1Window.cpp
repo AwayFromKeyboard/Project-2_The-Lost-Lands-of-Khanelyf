@@ -1,5 +1,6 @@
 #include "Defs.h"
 #include "Log.h"
+#include "Point.h"
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Console.h"
@@ -117,6 +118,10 @@ void j1Window::GetWindowSize(uint& width, uint& height) const
 {
 	width = this->width;
 	height = this->height;
+}
+
+iPoint j1Window::_GetWindowSize() {
+	return iPoint(this->width, this->height);
 }
 
 uint j1Window::GetScale() const
