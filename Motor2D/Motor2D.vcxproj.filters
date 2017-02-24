@@ -201,6 +201,7 @@
     <ClInclude Include="MemLeaks.h">
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -238,5 +239,11 @@
     <Xml Include="..\Game\test.xml">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="2D Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
 </Project>

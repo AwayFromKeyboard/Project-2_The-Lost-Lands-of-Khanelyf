@@ -114,7 +114,6 @@ bool SceneTest::Update(float dt)
 	}
 
 	App->map->Draw();
-	cursor_window->Set(iPoint(50, 10), 0, 0);
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;

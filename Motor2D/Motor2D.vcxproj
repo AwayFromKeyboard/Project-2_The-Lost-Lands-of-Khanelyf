@@ -139,6 +139,7 @@
     <ClInclude Include="Parallax.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Test.h" />
@@ -149,6 +150,12 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\test.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="2D Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
