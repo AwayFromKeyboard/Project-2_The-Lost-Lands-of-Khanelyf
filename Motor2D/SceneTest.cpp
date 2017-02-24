@@ -23,7 +23,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("iso_walk.tmx") == true)
+	if (App->map->Load("age.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -37,14 +37,19 @@ bool SceneTest::Start()
 	cursor_r = { 1, 1, 37, 40 };
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
-	movement_window_u = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, -1), (int)App->win->_GetWindowSize().x - 2*MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_d = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, (int)App->win->_GetWindowSize().y - MOVEMENT_AREA), (int)App->win->_GetWindowSize().x - 2*MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, MOVEMENT_AREA), MOVEMENT_AREA, (int)App->win->_GetWindowSize().y - 2* MOVEMENT_AREA, 5);
-	movement_window_r = (UI_Window*)App->gui->UI_CreateWin(iPoint((int)App->win->_GetWindowSize().x - MOVEMENT_AREA, MOVEMENT_AREA), MOVEMENT_AREA, (int)App->win->_GetWindowSize().y - 2 * MOVEMENT_AREA, 5);
+	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
+	ui_r = { 1, 84, 800, 600 };
+	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
+	
+
+	movement_window_u = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, -1), App->win->_GetWindowSize().x - 2*MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_d = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), App->win->_GetWindowSize().x - 2*MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, MOVEMENT_AREA), MOVEMENT_AREA, App->win->_GetWindowSize().y - 2* MOVEMENT_AREA, 5);
+	movement_window_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, MOVEMENT_AREA), MOVEMENT_AREA, App->win->_GetWindowSize().y - 2 * MOVEMENT_AREA, 5);
 	movement_window_u_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_u_r = (UI_Window*)App->gui->UI_CreateWin(iPoint((int)App->win->_GetWindowSize().x - MOVEMENT_AREA, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_d_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, (int)App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_d_r = (UI_Window*)App->gui->UI_CreateWin(iPoint((int)App->win->_GetWindowSize().x - MOVEMENT_AREA, (int)App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_u_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_d_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_d_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
 
 	movement_window_u->SetEnabled(true);
 	movement_window_d->SetEnabled(true);
@@ -77,6 +82,8 @@ bool SceneTest::PreUpdate()
 
 bool SceneTest::Update(float dt)
 {
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
 	if (movement_window_u->MouseEnter()) {
 		App->render->camera.y += CAMERA_SPEED;
 	}
@@ -108,11 +115,7 @@ bool SceneTest::Update(float dt)
 
 	App->map->Draw();
 	cursor_window->Set(iPoint(50, 10), 0, 0);
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	x -= App->render->camera.x;
-	y -= App->render->camera.y;
-	cursor->Set(iPoint(x, y), cursor_r);
+	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
 }

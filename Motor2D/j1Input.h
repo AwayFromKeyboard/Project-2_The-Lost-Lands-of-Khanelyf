@@ -51,6 +51,10 @@ public:
 	// Gather relevant win events
 	bool GetWindowEvent(j1_event_window ev);
 
+	void GetMouseWorld(int & x, int & y);
+
+	void SetMouseWorld(int & x, int & y);
+
 	// Check key states (includes mouse and joy buttons)
 	j1_key_state GetKey(int id) const
 	{

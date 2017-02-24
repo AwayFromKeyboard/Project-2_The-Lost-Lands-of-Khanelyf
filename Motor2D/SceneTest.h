@@ -31,6 +31,9 @@ private:
 	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
 
+	UI_Window* general_ui_window = nullptr;
+	UI_Image* general_ui_image = nullptr;
+
 	UI_Window* movement_window_u = nullptr;
 	UI_Window* movement_window_d = nullptr;
 	UI_Window* movement_window_l = nullptr;
@@ -52,6 +55,7 @@ private:
 	Test* troop = nullptr;
 
 	SDL_Rect cursor_r;
+	SDL_Rect ui_r;
 };
 
 #endif // _SceneTest_H_

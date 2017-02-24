@@ -37,7 +37,6 @@ bool Test::LoadEntity()
 	game_object->SetAnimation("idle_south");
 
 	App->entity->unit_game_objects_list.push_back(game_object);
-	//last_height = test_go->fGetPos().y;
 
 	return ret;
 }
@@ -67,40 +66,6 @@ bool Test::Update(float dt)
 		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		App->pathfinding->CreatePath(game_object->GetPos(), mouse_position);
 	}
-
-/*
-	if ((App->input->GetKey(SDL_SCANCODE_A) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_W) == key_repeat))
-	{
-		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y - speed });
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_W) == key_repeat))
-	{
-		test_go->SetPos({ test_go->fGetPos().x + speed, test_go->fGetPos().y - speed });
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_A) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_S) == key_repeat))
-	{
-		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y + speed });
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == key_repeat) && (App->input->GetKey(SDL_SCANCODE_S) == key_repeat))
-	{
-		test_go->SetPos({ test_go->fGetPos().x + speed, test_go->fGetPos().y + speed });
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == key_repeat)
-	{
-		test_go->SetPos({ test_go->fGetPos().x - speed, test_go->fGetPos().y });
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == key_repeat)
-	{
-		test_go->SetPos({ test_go->fGetPos().x + speed, test_go->fGetPos().y });
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == key_repeat)
-	{
-		test_go->SetPos({ test_go->fGetPos().x, test_go->fGetPos().y - speed });
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == key_repeat)
-	{
-		test_go->SetPos({ test_go->fGetPos().x, test_go->fGetPos().y + speed });
-	}*/
 
 	return ret;
 }

@@ -7,7 +7,7 @@
 #include "j1Render.h"
 
 #define CURSOR_WIDTH 2
-#define MOVEMENT_AREA 40
+#define MOVEMENT_AREA 10
 
 enum ui_element
 {

@@ -473,13 +473,13 @@ void j1Gui::CursorSelection()
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->input->GetMousePosition(selection_rect.x, selection_rect.y);
+		App->input->GetMouseWorld(selection_rect.x, selection_rect.y);
 	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
 	{
 		iPoint position;
-		App->input->GetMousePosition(position.x, position.y);
+		App->input->GetMouseWorld(position.x, position.y);
 		selection_rect.w = position.x - selection_rect.x;
 		selection_rect.h = position.y - selection_rect.y;
 		App->render->DrawQuad(selection_rect, 255, 255, 255, 255, false);
@@ -876,9 +876,7 @@ bool UI_Window::MouseEnter()
 		return false;
 
 	int mouse_x, mouse_y;
-	App->input->GetMousePosition(mouse_x, mouse_y);
-	mouse_x -= App->render->camera.x;
-	mouse_y -= App->render->camera.y;
+	App->input->GetMouseWorld(mouse_x, mouse_y);
 
 	if (CheckClickOverlap(mouse_x, mouse_y) != layer)
 		return false;
