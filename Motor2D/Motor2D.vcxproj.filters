@@ -239,6 +239,9 @@
     <Xml Include="..\Game\test.xml">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </Xml>
+    <Xml Include="Hero.xml">
+      <Filter>Engine\4. Entities ==========\Troops</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
