@@ -1,0 +1,204 @@
+<units>
+  <!--XML STRUCTURE
+  <unit type="">
+    <texture value=""/>
+    <width value=""/>
+    <height value=""/>
+    <cost value=""/>
+    <speed value=""/>
+    <damage value=""/>
+    <armor value=""/>
+    <pierce_armor value=""/>
+    <range value=""/>
+    <life value=""/>
+    <animations>
+      <idle speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </idle>
+      <walk speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </walk>
+      <attack speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </attack>
+      <death speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </death>
+      <decompose speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </decompose>
+    </animations>
+  </unit>
+  -->
+  <unit type="">
+    <texture value=""/>
+    <width value=""/>
+    <height value=""/>
+    <cost value=""/>
+    <speed value=""/>
+    <damage value=""/>
+    <armor value=""/>
+    <pierce_armor value=""/>
+    <range value=""/>
+    <life value=""/>
+    <animations>
+      <idle speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </idle>
+      <walk speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </walk>
+      <attack speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </attack>
+      <death speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </death>
+      <decompose speed="">
+        <south>
+          <rect x="" y=""/>
+        </south>
+        <south_west>
+          <rect x="" y=""/>
+        </south_west>
+        <west>
+          <rect x="" y=""/>
+        </west>
+        <north_west>
+          <rect x="" y=""/>
+        </north_west>
+        <north>
+          <rect x="" y=""/>
+        </north>
+      </decompose>
+    </animations>
+  </unit>
+  
+  
+</units>

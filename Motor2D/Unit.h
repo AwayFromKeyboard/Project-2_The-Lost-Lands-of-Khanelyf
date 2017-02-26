@@ -4,6 +4,17 @@
 #include "Entity.h"
 #include "j1Pathfinding.h"
 
+enum unit_type {
+	unknown
+};
+
+enum unit_state {
+	unit_idle,
+	unit_move,
+	unit_attack,
+	unit_death,
+	unit_decompose
+};
 class GameObject;
 
 class Unit : public Entity
@@ -32,12 +43,16 @@ public:
 	void SetDirection();
 public:
 	GameObject* game_object = nullptr;
+	unit_state state;
+	unit_type type;
+	bool flip = false;
+public:
 	vector<iPoint> path;
 	fPoint direction;
 	iPoint destination;
 	bool has_destination = false;
 	bool end_movement = true;
-	bool flip = false;
+
 };
 
 #endif

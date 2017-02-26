@@ -153,6 +153,7 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\test.xml" />
+    <Xml Include="..\Game\Units.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />

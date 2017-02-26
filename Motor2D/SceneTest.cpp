@@ -134,7 +134,7 @@ bool SceneTest::Update(float dt)
 		App->render->Blit(debug_tex, pos.x, pos.y);
 		troop->end_movement = false;
 	}
-
+	
 	return true;
 }
 
