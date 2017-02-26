@@ -434,3 +434,8 @@ vector<iPoint> j1PathFinding::GetPath() const
 	return ret;
 }
 
+std::list<Path*> j1PathFinding::GetPaths() const
+{
+	return paths;
+}
+

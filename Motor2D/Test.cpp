@@ -29,10 +29,10 @@ bool Test::LoadEntity()
 	game_object->SetListener((j1Module*)App->entity);
 	game_object->SetFixedRotation(true);
 	
-	game_object->SetTexture(App->tex->LoadTexture("Villager.png"));
+	game_object->SetTexture(App->tex->LoadTexture("Hero.png"));
 
 	pugi::xml_document doc;
-	App->LoadXML("test.xml", doc);
+	App->LoadXML("Hero.xml", doc);
 	game_object->LoadAnimationsFromXML(doc);
 	
 	game_object->SetAnimation("idle_south");
@@ -60,21 +60,10 @@ bool Test::Update(float dt)
 {
 	bool ret = true;
 
-	float speed = (200 * dt);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		iPoint mouse_position;
-		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
-		App->pathfinding->CreatePath(game_object->GetPos(), mouse_position);
-		App->input->GetMouseWorld(mouse_position.x, mouse_position.y);
-		mouse_position = App->map->WorldToMapPoint(mouse_position);
-		App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), mouse_position);
+	if (end_movement == false) {
+		FollowPath(dt);
 	}
 
-	if (App->pathfinding->GetPath().size() > 0) {
-		SetPath(App->pathfinding->GetPath());
-		path;
-	}
 
 	return ret;
 }
@@ -84,10 +73,10 @@ bool Test::Draw(float dt)
 	bool ret = true;
 
 	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y + T_HEIGHT }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL);
 	}
 	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y }, game_object->GetCurrentAnimationRect(dt));
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y + T_HEIGHT }, game_object->GetCurrentAnimationRect(dt));
 
 	return ret;
 }

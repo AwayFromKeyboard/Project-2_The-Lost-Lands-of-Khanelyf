@@ -239,7 +239,7 @@
     <Xml Include="..\Game\test.xml">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </Xml>
-    <Xml Include="Hero.xml">
+    <Xml Include="..\Game\Hero.xml">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </Xml>
   </ItemGroup>

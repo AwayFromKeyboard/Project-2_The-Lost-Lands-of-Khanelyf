@@ -105,6 +105,13 @@ public:
 		return(*this);
 	}
 
+	void Normalize()
+	{
+		float module = sqrt(x * x + y * y);
+		x = x / module;
+		y = y / module;
+	}
+
 	// Distances ---------------------------------------------
 	TYPE DistanceTo(const Point& v) const
 	{

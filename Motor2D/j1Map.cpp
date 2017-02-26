@@ -40,28 +40,28 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
-	if(map_loaded == false)
+	if (map_loaded == false)
 		return;
 	fit_square = { -(App->render->camera.x - XOFFSET), -(App->render->camera.y - YOFFSET), App->render->camera.w, App->render->camera.h };
-	for(std::list<MapLayer*>::iterator item = data.layers.begin(); item != data.layers.end(); item++)
+	for (std::list<MapLayer*>::iterator item = data.layers.begin(); item != data.layers.end(); item++)
 	{
 		MapLayer* layer = *item;
 
-		if(layer->properties.Get("Nodraw") != 0)
-			continue;
+		/*if(layer->properties.Get("Nodraw") != 0)
+		continue;*/
 
 		int x_ini, x_end;
 		TilesToDraw_x(x_ini, x_end, *item);
 		int count = 0;
-		for(int x = x_ini; x < x_end; ++x)
+		for (int x = x_ini; x < x_end; ++x)
 		{
 			int y_ini, y_end;
 			TilesToDraw_y(count, x, x_end, y_ini, y_end, *item);
 
-			for(int y = y_ini; y < y_end; ++y)
+			for (int y = y_ini; y < y_end; ++y)
 			{
 				int tile_id = layer->Get(x, y);
-				if(tile_id > 0)
+				if (tile_id > 0)
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 
@@ -467,7 +467,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
 			layer->data[i++] = tile.attribute("gid").as_int(0);
-		}	
+		}
 	}
 
 	return ret;

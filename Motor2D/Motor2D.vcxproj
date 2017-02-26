@@ -149,8 +149,10 @@
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\Hero.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="..\Game\test.xml" />
-    <Xml Include="Hero.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />

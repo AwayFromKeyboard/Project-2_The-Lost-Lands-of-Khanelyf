@@ -56,6 +56,9 @@ private:
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;
+
+private:
+	SDL_Texture* debug_tex;
 };
 
 #endif // _SceneTest_H_

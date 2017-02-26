@@ -3,6 +3,7 @@
 
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(23, 25)
+#define T_HEIGHT -35 // Number to add in blit for pushing the texture up
 
 class GameObject;
 class Test : public Unit

@@ -37,6 +37,7 @@ public:
 	Path* CreatePath(const iPoint& origin, const iPoint& destination);
 
 	vector<iPoint> GetPath() const;
+	std::list<Path*> GetPaths() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;

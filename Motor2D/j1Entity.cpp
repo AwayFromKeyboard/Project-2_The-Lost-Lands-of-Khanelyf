@@ -47,6 +47,7 @@ bool j1Entity::Update(float dt)
 		(*it)->Draw(dt);
 	}
 
+	
 	return ret;
 }
 

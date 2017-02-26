@@ -1,3 +1,4 @@
+#include "Log.h"
 #include "Unit.h"
 #include "j1Entity.h"
 #include "Scene.h"
@@ -79,4 +80,79 @@ void Unit::SetPath(vector<iPoint> _path)
 vector<iPoint> Unit::GetPath()const
 {
 	return path;
+}
+
+void Unit::FollowPath(float dt) 
+{
+	if (has_destination)
+	{
+		SetDirection();
+
+		iPoint position = game_object->GetPos();
+		fPoint fposition; fposition.x = position.x, fposition.y = position.y;
+
+		fposition.x += (direction.x * 100) * dt;
+		fposition.y += (direction.y * 100) * dt;
+
+		fposition.x = roundf(fposition.x);
+		fposition.y = roundf(fposition.y);
+
+		position.x = fposition.x;
+		position.y = fposition.y;
+
+		game_object->SetPos(fPoint(position.x, position.y));
+
+		iPoint destination_w = App->map->MapToWorld(destination.x, destination.y);
+
+		if (position.DistanceNoSqrt(destination_w) <= 8)
+		{
+			if (path.size() > 0)
+			{
+				destination = path.front();
+				path.erase(path.begin());
+				SetDirection();
+			}
+			else
+				has_destination = false;
+				end_movement = true;
+		}
+	}
+	else 
+	{
+		if (path.size() > 0)
+		{
+			destination = path.front();
+			path.erase(path.begin());
+			SetDirection();
+		}
+		else
+			has_destination = false;
+	}
+}
+
+void Unit::SetDirection()
+{
+	iPoint position = game_object->GetPos();
+
+	iPoint position_m = App->map->WorldToMap(position.x, position.y);
+
+	if (position_m == destination)
+	{
+		if (path.size() > 0)
+		{
+			destination = path.front();
+			path.erase(path.begin());
+			SetDirection();
+		}
+		return;
+	}
+
+	iPoint destination_w = App->map->MapToWorld(destination.x, destination.y);
+
+	direction.x = destination_w.x - position.x;
+	direction.y = destination_w.y - position.y;
+	
+	direction.Normalize();
+
+	has_destination = true;
 }

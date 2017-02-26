@@ -28,10 +28,15 @@ public:
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
 	vector<iPoint> GetPath() const;
+	void FollowPath(float dt);
+	void SetDirection();
 public:
 	GameObject* game_object = nullptr;
 	vector<iPoint> path;
-
+	fPoint direction;
+	iPoint destination;
+	bool has_destination = false;
+	bool end_movement = true;
 	bool flip = false;
 };
 
