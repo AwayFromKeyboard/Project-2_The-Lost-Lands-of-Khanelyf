@@ -36,6 +36,8 @@ public:
 	// Main function to request a path from A to B
 	Path* CreatePath(const iPoint& origin, const iPoint& destination);
 
+	vector<iPoint> GetPath() const;
+
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
 

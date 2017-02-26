@@ -23,7 +23,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("age.tmx") == true)
+	if (App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;

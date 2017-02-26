@@ -9,6 +9,7 @@
 #include "Functions.h"
 #include "j1Textures.h"
 #include "j1Entity.h"
+#include "j1Map.h"
 
 Test::Test()
 {
@@ -62,9 +63,17 @@ bool Test::Update(float dt)
 	float speed = (200 * dt);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		iPoint mouse_position; 
+		iPoint mouse_position;
 		App->input->GetMousePosition(mouse_position.x, mouse_position.y);
 		App->pathfinding->CreatePath(game_object->GetPos(), mouse_position);
+		App->input->GetMouseWorld(mouse_position.x, mouse_position.y);
+		mouse_position = App->map->WorldToMapPoint(mouse_position);
+		App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), mouse_position);
+	}
+
+	if (App->pathfinding->GetPath().size() > 0) {
+		SetPath(App->pathfinding->GetPath());
+		path;
 	}
 
 	return ret;

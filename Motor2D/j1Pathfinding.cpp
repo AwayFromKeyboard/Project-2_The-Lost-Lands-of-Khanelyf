@@ -417,5 +417,20 @@ Path* j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	return path;
 }
 
+vector<iPoint> j1PathFinding::GetPath() const
+{
+	vector<iPoint> ret;
+	std::list<Path*>::const_iterator it = paths.begin();
 
+	if (it == paths.end())
+	{
+		LOG("PathFinding ERROR: wrong id to get Path");
+	}
+	else
+	{
+		ret = (*it)->finished_path;
+	}
+
+	return ret;
+}
 
