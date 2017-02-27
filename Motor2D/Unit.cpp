@@ -167,7 +167,7 @@ void Unit::SetDirection()
 	iPoint position = game_object->GetPos();
 
 	iPoint position_m = App->map->WorldToMap(position.x, position.y);
-	position_m.x += 1;
+
 	if (position_m == destination)
 	{
 		if (path.size() > 0)

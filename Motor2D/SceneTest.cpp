@@ -95,31 +95,31 @@ bool SceneTest::Update(float dt)
 {
 	iPoint mouse;
 	App->input->GetMouseWorld(mouse.x, mouse.y);
-	if (movement_window_u->MouseEnter()) {
+	if (movement_window_u->MouseEnter() || App->input->GetKey(SDL_SCANCODE_UP) == key_repeat) {
 		App->render->camera.y += CAMERA_SPEED;
 	}
-	if (movement_window_d->MouseEnter()) {
+	if (movement_window_d->MouseEnter() || App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat) {
 		App->render->camera.y -= CAMERA_SPEED;
 	}
-	if (movement_window_l->MouseEnter()) {
+	if (movement_window_l->MouseEnter() || App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat) {
 		App->render->camera.x += CAMERA_SPEED;
 	}
-	if (movement_window_r->MouseEnter()) {
+	if (movement_window_r->MouseEnter() || App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat) {
 		App->render->camera.x -= CAMERA_SPEED;
 	}
-	if (movement_window_u_l->MouseEnter()) {
+	if (movement_window_u_l->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_UP) == key_repeat && App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat)) {
 		App->render->camera.x += CAMERA_SPEED;
 		App->render->camera.y += CAMERA_SPEED;
 	}
-	if (movement_window_u_r->MouseEnter()) {
+	if (movement_window_u_r->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_UP) == key_repeat && App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat)) {
 		App->render->camera.x -= CAMERA_SPEED;
 		App->render->camera.y += CAMERA_SPEED;
 	}
-	if (movement_window_d_l->MouseEnter()) {
+	if (movement_window_d_l->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat && App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat)) {
 		App->render->camera.x += CAMERA_SPEED;
 		App->render->camera.y -= CAMERA_SPEED;
 	}
-	if (movement_window_d_r->MouseEnter()) {
+	if (movement_window_d_r->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat && App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat)) {
 		App->render->camera.x -= CAMERA_SPEED;
 		App->render->camera.y -= CAMERA_SPEED;
 	}
