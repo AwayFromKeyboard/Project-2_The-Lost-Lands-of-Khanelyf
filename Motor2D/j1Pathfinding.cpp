@@ -37,14 +37,14 @@ bool j1PathFinding::PreUpdate()
 	{
 		if ((*it)->completed == false)
 			CalculatePath(*it);
-		else
+		/*else
 		{
 			RELEASE(*it);
 			std::list<Path*>::iterator tmp = it;
 			++it;
 			paths.erase(tmp);
 
-		}
+		}*/
 		++it;
 	}
 

@@ -7,6 +7,7 @@
 class b2Fixture;
 class PhysBody;
 class GameObject;
+
 enum entity_name
 {
 	player,

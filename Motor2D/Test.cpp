@@ -60,11 +60,6 @@ bool Test::Update(float dt)
 {
 	bool ret = true;
 
-	if (end_movement == false) {
-		FollowPath(dt);
-	}
-
-
 	return ret;
 }
 
@@ -73,10 +68,10 @@ bool Test::Draw(float dt)
 	bool ret = true;
 
 	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y + T_HEIGHT }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL);
 	}
 	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x, game_object->GetPos().y + T_HEIGHT }, game_object->GetCurrentAnimationRect(dt));
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, game_object->GetCurrentAnimationRect(dt));
 
 	return ret;
 }

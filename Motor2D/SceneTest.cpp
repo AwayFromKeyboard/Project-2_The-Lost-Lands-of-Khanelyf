@@ -71,7 +71,8 @@ bool SceneTest::Start()
 	rect_d_r = (UI_ColoredRect*)movement_window_d_r->CreateColoredRect(movement_window_d_r->GetPosition(), movement_window_d_r->GetRect().w, movement_window_d_r->GetRect().h, { 0, 255, 0, 100 });*/
 
 	troop = (Test*)App->entity->CreateEntity(test);
-	troop->game_object->SetPos(fPoint(100,100));
+	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
+	troop->game_object->SetPos(pos);
 	SDL_ShowCursor(0);
 	return true;
 }

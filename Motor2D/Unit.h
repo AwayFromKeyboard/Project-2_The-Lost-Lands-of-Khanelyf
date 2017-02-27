@@ -5,6 +5,7 @@
 #include "j1Pathfinding.h"
 
 enum unit_type {
+	unit_test,
 	unknown
 };
 
@@ -21,6 +22,7 @@ class Unit : public Entity
 {
 public:
 	Unit();
+	Unit(unit_type  type);
 	~Unit();
 
 	bool LoadEntity();
@@ -31,10 +33,12 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	Entity* CreateUnit(unit_type _type);
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	GameObject* GetGameObject();
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
@@ -42,6 +46,7 @@ public:
 	void FollowPath(float dt);
 	void SetDirection();
 public:
+	std::list<Entity*> unit_list;
 	GameObject* game_object = nullptr;
 	unit_state state;
 	unit_type type;

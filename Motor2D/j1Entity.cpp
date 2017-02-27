@@ -84,7 +84,7 @@ Entity* j1Entity::CreateEntity(entity_name entity)
 	switch (entity)
 	{
 	case test:
-		ret = new Test();
+		ret = new Unit(unit_test);
 		break;
 	default:
 		break;
