@@ -137,5 +137,15 @@ SDL_Texture * GameObject::GetTexture()
 	return texture;
 }
 
+void GameObject::SetSpeed(int _speed)
+{
+	speed = _speed;
+}
+
+int GameObject::GetSpeed()
+{
+	return speed;
+}
+
 
 

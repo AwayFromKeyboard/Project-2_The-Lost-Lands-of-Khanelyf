@@ -154,18 +154,52 @@ vector<iPoint> Unit::GetPath()const
 	return path;
 }
 
-void Unit::FollowPath(float dt) 
+void Unit::FollowPath(float dt)
 {
 	if (has_destination)
 	{
 		SetDirection();
+
+		fPoint pos = game_object->fGetPos();
+
+		pos.x += direction.x * game_object->GetSpeed();
+		pos.y += direction.y * game_object->GetSpeed();
+
+		game_object->SetPos(pos);
+
+		if (App->map->WorldToMapPoint(game_object->GetPos()) == destination) {
+			if (path.size() > 0)
+			{
+				destination = path.front();
+				path.erase(path.begin());
+				SetDirection();
+			}
+			else
+			{
+				state = unit_idle;
+				has_destination = false;
+			}
+		}
+	}
+	else
+	{
+		if (path.size() > 0)
+		{
+			destination = path.front();
+			path.erase(path.begin());
+			SetDirection();
+		}
+		else
+		{
+			has_destination = false;
+			state = unit_idle;
+		}
 	}
 }
 
 void Unit::SetDirection()
 {
 	iPoint position = game_object->GetPos();
-
 	iPoint position_m = App->map->WorldToMap(position.x, position.y);
 
 	if (position_m == destination)
@@ -179,12 +213,14 @@ void Unit::SetDirection()
 		return;
 	}
 
-	iPoint destination_w = App->map->MapToWorld(destination.x, destination.y);
+	iPoint destination_w(App->map->MapToWorld(destination.x, destination.y));
 
-	direction.x = destination_w.x - position.x;
-	direction.y = destination_w.y - position.y;
+	direction = fPoint(destination_w.x - position.x, destination_w.y - position.y);
 	
-	direction.Normalize();
+	if (direction.x > 0) direction.x = 1;
+	else if (direction.x < 0) direction.x = -1;
+	if (direction.y > 0) direction.y = 1;
+	else if (direction.y < 0) direction.y = -1;
 
 	has_destination = true;
 }

@@ -138,7 +138,6 @@ bool SceneTest::Update(float dt)
 	{
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
-		troop->end_movement = false;
 	}
 	
 	return true;

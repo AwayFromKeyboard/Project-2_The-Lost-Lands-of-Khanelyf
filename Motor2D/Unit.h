@@ -56,7 +56,7 @@ public:
 	fPoint direction;
 	iPoint destination;
 	bool has_destination = false;
-	bool end_movement = true;
+public:
 
 };
 

@@ -36,7 +36,9 @@ bool Test::LoadEntity()
 	game_object->LoadAnimationsFromXML(doc);
 	
 	game_object->SetAnimation("idle_south");
-
+	
+	game_object->SetSpeed(2);
+	
 	App->entity->unit_game_objects_list.push_back(game_object);
 
 	return ret;
