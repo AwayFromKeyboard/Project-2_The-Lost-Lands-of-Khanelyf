@@ -54,6 +54,7 @@ bool Unit::Update(float dt)
 	case unit_idle:
 		break;
 	case unit_move:
+		FollowPath(dt);
 		break;
 	case unit_attack:
 		break;

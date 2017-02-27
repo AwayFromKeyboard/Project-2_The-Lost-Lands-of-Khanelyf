@@ -129,6 +129,11 @@ bool SceneTest::Update(float dt)
 
 	troop->path = App->pathfinding->GetPath();
 
+	if (troop->path.size() > 0)
+	{
+		troop->state = unit_move;
+	}
+
 	for (uint i = 0; i < troop->path.size(); i++)
 	{
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
