@@ -3,8 +3,9 @@
 
 #include "j1Module.h"
 #include "j1Fonts.h"
-#include "p2PQueue.h"
 #include "j1Render.h"
+#include <deque>
+#include <utility>
 
 #define CURSOR_WIDTH 2
 #define MOVEMENT_AREA 10
@@ -70,6 +71,7 @@ public:
 
 	void CursorSelection();
 
+
 private:
 	SDL_Rect				selection_rect;
 
@@ -80,7 +82,7 @@ public:
 	// --------
 
 	// All elements
-	p2PQueue<UI_Element*>  elements_list;
+	std::deque<std::pair<UI_Element*, double> >  elements_list;
 	double				   higher_layer = 0;
 
 	// Elements that can tab
