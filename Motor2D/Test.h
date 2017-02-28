@@ -19,12 +19,6 @@ public:
 	// Start variables
 	bool Start();
 
-	// PreUpdate
-	bool PreUpdate();
-
-	// Update
-	bool Update(float dt);
-
 	// Draw and change animations
 	bool Draw(float dt);
 

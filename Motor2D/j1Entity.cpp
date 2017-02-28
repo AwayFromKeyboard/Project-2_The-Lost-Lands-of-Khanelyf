@@ -66,8 +66,12 @@ bool j1Entity::CleanUp()
 	bool ret = true;
 
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
+	{
 		ret = (*it)->CleanUp();
-
+	}
+	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
+		RELEASE(*it);
+	}
 	return ret;
 }
 
@@ -84,7 +88,7 @@ Entity* j1Entity::CreateEntity(entity_name entity)
 	switch (entity)
 	{
 	case test:
-		ret = new Unit(unit_test);
+		ret = new Test();
 		break;
 	default:
 		break;

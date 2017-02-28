@@ -1697,15 +1697,9 @@ bool UI_Scroll_Bar::update()
 		App->render->DrawLine(min_bar_h, button_h->rect.y + (button_h->rect.h/2), max_bar_h, button_h->rect.y + (button_h->rect.h / 2), color.r, color.g, color.b, color.a);
 	}
 
-	// Viewport -----------
-	App->render->SetViewPort({ rect.x + App->render->camera.x, rect.y + App->render->camera.y, rect.w, rect.h});
-	//  rect.x + rect.w + App->render->camera.x
-
 	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		(*it).element->update();
 	
-
-	App->render->ResetViewPort();
 	// --------------------
 
 	ChangeHeightMovingRect();

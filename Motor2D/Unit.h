@@ -33,7 +33,6 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	Entity* CreateUnit(unit_type _type);
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
@@ -46,11 +45,11 @@ public:
 	void FollowPath(float dt);
 	void SetDirection();
 public:
-	std::list<Entity*> unit_list;
 	GameObject* game_object = nullptr;
 	unit_state state;
 	unit_type type;
 	bool flip = false;
+	bool to_delete = true;
 public:
 	vector<iPoint> path;
 	fPoint direction;

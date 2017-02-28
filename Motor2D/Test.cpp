@@ -51,20 +51,6 @@ bool Test::Start()
 	return ret;
 }
 
-bool Test::PreUpdate()
-{
-	bool ret = true;
-
-	return ret;
-}
-
-bool Test::Update(float dt)
-{
-	bool ret = true;
-
-	return ret;
-}
-
 bool Test::Draw(float dt)
 {
 	bool ret = true;
@@ -94,7 +80,6 @@ bool Test::CleanUp()
 			App->entity->unit_game_objects_list.erase(it++);
 		}
 	}
-	
 
 	return ret;
 }

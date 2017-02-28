@@ -11,11 +11,6 @@ Unit::Unit()
 {
 }
 
-Unit::Unit(unit_type type)
-{
-	CreateUnit(type);
-}
-
 Unit::~Unit()
 {
 }
@@ -23,28 +18,21 @@ Unit::~Unit()
 bool Unit::LoadEntity()
 {
 	bool ret = true;
-	for (std::list<Entity*>::iterator it = unit_list.begin(); it != unit_list.end(); it++) {
-		ret = (*it)->LoadEntity();
-		game_object = (*it)->GetGameObject();
-	}
+	
 	return ret;
 }
 
 bool Unit::Start()
 {
 	bool ret = true;
-	for (std::list<Entity*>::iterator it = unit_list.begin(); it != unit_list.end(); it++) {
-		ret = (*it)->Start();
-	}
+	
 	return ret;
 }
 
 bool Unit::PreUpdate()
 {
 	bool ret = true;
-	for (std::list<Entity*>::iterator it = unit_list.begin(); it != unit_list.end(); it++) {
-		ret = (*it)->PreUpdate();
-	}
+	
 	return ret;
 }
 
@@ -69,60 +57,22 @@ bool Unit::Update(float dt)
 bool Unit::Draw(float dt)
 {
 	bool ret = true;
-	for (std::list<Entity*>::iterator it = unit_list.begin(); it != unit_list.end(); it++) {
-		ret = (*it)->Draw(dt);
-	}
+	
 	return ret;
 }
 
 bool Unit::PostUpdate()
 {
 	bool ret = true;
-	for (std::list<Entity*>::iterator it = unit_list.begin(); it != unit_list.end(); it++) {
-		ret = (*it)->PostUpdate();
-	}
+	
 	return ret;
 }
 
 bool Unit::CleanUp()
 {
-	for (std::vector<iPoint>::iterator it = path.begin(); it != path.end(); it++) {
-		path.erase(it);
-	}
-	path.clear();
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
-		RELEASE(*it);
-	}
-	for (std::list<Entity*>::iterator it = unit_list.begin(); it != unit_list.end(); it++) {
-		(*it)->CleanUp();
-		RELEASE(*it);
-	}
-	unit_list.clear();
-	App->entity->unit_game_objects_list.clear();
+	RELEASE(game_object);
 
 	return true;
-}
-
-Entity * Unit::CreateUnit(unit_type _type)
-{
-	Entity* ret = nullptr;
-	switch (_type)
-	{
-	case unit_test:
-		ret = new Test();
-		type = _type;
-		break;
-	}
-
-	if (ret != nullptr)
-	{
-		ret->Start();
-		unit_list.push_back(ret);
-	}
-	else
-		LOG("Unit creation returned nullptr");
-
-	return ret;
 }
 
 bool Unit::Load(pugi::xml_node &)
