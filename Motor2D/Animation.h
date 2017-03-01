@@ -41,6 +41,7 @@ public:
 
 	// Load Animations from XML
 	void LoadAnimationsFromXML(pugi::xml_node &node);
+	void LoadAnimationsFromUnitsXML(pugi::xml_node &node);
 
 	// Set a current animation
 	void SetAnimation(const char* name);

@@ -10,6 +10,7 @@
 #include "j1Textures.h"
 #include "j1Entity.h"
 #include "j1Map.h"
+#include "Log.h"
 
 Test::Test()
 {
@@ -28,18 +29,34 @@ bool Test::LoadEntity()
 	game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
 	game_object->SetListener((j1Module*)App->entity);
 	game_object->SetFixedRotation(true);
-	
-	game_object->SetTexture(App->tex->LoadTexture("Hero.png"));
 
 	pugi::xml_document doc;
-	App->LoadXML("Hero.xml", doc);
-	game_object->LoadAnimationsFromXML(doc);
+	pugi::xml_node node;
+	App->LoadXML("Units.xml", doc);
+	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
+	{
+		if (TextCmp(unit.attribute("type").as_string(), "Hero"))
+		{
+			node = unit;
+			break;
+		}
+	}
+	if (node)
+	{
+		cost = node.child("cost").attribute("value").as_int();
+		speed = node.child("speed").attribute("value").as_float();
+		damage = node.child("damage").attribute("value").as_int();
+		armor = node.child("armor").attribute("value").as_int();
+		pierce_armor = node.child("pierce_armor").attribute("value").as_int();
+		range = node.child("range").attribute("value").as_int();
+		life = node.child("life").attribute("value").as_int();
+
+		std::string texture = node.child("texture").attribute("value").as_string();
+		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
+		game_object->LoadAnimationsFromUnitsXML(node);
+	}
+	else LOG("\nERROR, no node found\n");
 	
-	game_object->SetAnimation("idle_south");
-	
-	game_object->SetSpeed(2);
-	
-	App->entity->unit_game_objects_list.push_back(game_object);
 
 	return ret;
 }

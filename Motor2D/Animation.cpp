@@ -151,6 +151,27 @@ void Animator::LoadAnimationsFromXML(pugi::xml_node & node)
 	}
 }
 
+void Animator::LoadAnimationsFromUnitsXML(pugi::xml_node & node)
+{
+	/*for (pugi::xml_node anim = node.child("animations").child("idle"); anim != NULL; anim = anim.next_sibling("animations"))
+	{
+		for (pugi::xml_node directions = anim.child("animations").child("idle"); directions != NULL; directions = directions.next_sibling())
+		list<SDL_Rect> anim_rects;
+		float speed = anim.attribute("speed").as_float(1.0f);
+		string name = anim.attribute("name").as_string("null");
+		bool loop = anim.attribute("loop").as_bool(true);
+
+		for (pugi::xml_node frame = anim.child("rect"); frame != NULL; frame = frame.next_sibling("rect"))
+		{
+			SDL_Rect new_frame = { frame.attribute("x").as_int(0),frame.attribute("y").as_int(0),frame.attribute("w").as_int(0),frame.attribute("h").as_int(0) };
+			anim_rects.push_back(new_frame);
+		}
+
+		Animation* animation = new Animation(name.c_str(), anim_rects, speed, loop);
+		AddAnimation(animation);
+	}*/
+}
+
 void Animator::SetAnimation(const char* name)
 {
 	if (next_animation != nullptr && TextCmp(next_animation->GetName(), name))
