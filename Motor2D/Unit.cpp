@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "Test.h"
 #include "Entity.h"
+#include "Animation.h"
 
 Unit::Unit()
 {
@@ -112,8 +113,8 @@ void Unit::FollowPath(float dt)
 
 		fPoint pos = game_object->fGetPos();
 
-		pos.x += direction.x * game_object->GetSpeed();
-		pos.y += direction.y * game_object->GetSpeed();
+		pos.x += direction.x * speed;
+		pos.y += direction.y * speed;
 
 		game_object->SetPos(pos);
 

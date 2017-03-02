@@ -34,19 +34,7 @@ public:
 public:
 	iPoint mouse_position;
 
-	int life = 0;
-	int cost = 0;
-	float speed = 0;
-	int damage = 0;
-	int armor = 0;
-	int  pierce_armor = 0;
-	int range = 0;
-
-	Animation* i_south;
-	Animation* i_south_west;
-	Animation* i_west;
-	Animation* i_north_west;
-	Animation* i_north;
+	
 };
 
 #endif

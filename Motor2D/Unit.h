@@ -55,7 +55,45 @@ public:
 	iPoint destination;
 	bool has_destination = false;
 public:
+	int life = 0;
+	int cost = 0;
+	float speed = 0;
+	int damage = 0;
+	int armor = 0;
+	int pierce_armor = 0;
+	int range = 0;
 
+	Animation* current_animation;
+	// Idle
+	Animation i_south;
+	Animation i_south_west;
+	Animation i_west;
+	Animation i_north_west;
+	Animation i_north;
+	// Move
+	Animation m_south;
+	Animation m_south_west;
+	Animation m_west;
+	Animation m_north_west;
+	Animation m_north;
+	// Attack
+	Animation a_south;
+	Animation a_south_west;
+	Animation a_west;
+	Animation a_north_west;
+	Animation a_north;
+	// Death
+	Animation d_south;
+	Animation d_south_west;
+	Animation d_west;
+	Animation d_north_west;
+	Animation d_north;
+	// Decompose
+	Animation de_south;
+	Animation de_south_west;
+	Animation de_west;
+	Animation de_north_west;
+	Animation de_north;
 };
 
 #endif

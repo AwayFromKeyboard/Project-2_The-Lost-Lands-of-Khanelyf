@@ -8,6 +8,7 @@ class Animator;
 class PhysBody;
 class b2Joint;
 class Animation;
+class Unit;
 
 enum class pbody_type;
 enum class fixture_type;
@@ -70,7 +71,7 @@ public:
 	// Loads all animations from an XML
 	void LoadAnimationsFromXML(pugi::xml_node & node);
 
-	void LoadAnimationsFromUnitsXML(pugi::xml_node & node);
+	void LoadAnimationsFromUnitsXML(pugi::xml_node & node, Unit* unit);
 
 	// Sets an animation
 	void SetAnimation(const char* animation);

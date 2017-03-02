@@ -53,7 +53,10 @@ bool Test::LoadEntity()
 
 		std::string texture = node.child("texture").attribute("value").as_string();
 		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
-		game_object->LoadAnimationsFromUnitsXML(node);
+		node = node.child("animations");
+		game_object->LoadAnimationsFromUnitsXML(node, this);
+
+		current_animation = &i_south;
 	}
 	else LOG("\nERROR, no node found\n");
 	
@@ -73,10 +76,10 @@ bool Test::Draw(float dt)
 	bool ret = true;
 
 	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, game_object->GetCurrentAnimationRect(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 	}
 	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, game_object->GetCurrentAnimationRect(dt));
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, current_animation->GetAnimationFrame(dt));
 
 	return ret;
 }

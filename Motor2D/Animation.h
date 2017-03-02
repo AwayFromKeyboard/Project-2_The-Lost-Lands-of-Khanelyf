@@ -7,7 +7,7 @@
 
 struct SDL_Texture;
 class Animation;
-
+class Unit;
 // -----------------------------------------
 // -----------------------------------------
 
@@ -41,7 +41,7 @@ public:
 
 	// Load Animations from XML
 	void LoadAnimationsFromXML(pugi::xml_node &node);
-	void LoadAnimationsFromUnitsXML(pugi::xml_node &node);
+	void LoadAnimationsFromUnitsXML(pugi::xml_node &node, Unit* unit);
 
 	// Set a current animation
 	void SetAnimation(const char* name);
@@ -65,6 +65,7 @@ private:
 class Animation
 {
 public:
+	Animation();
 	Animation(const char* name, list<SDL_Rect>& rects, float speed, bool loop = true);
 	~Animation();
 
@@ -72,7 +73,7 @@ public:
 	SDL_Rect& GetAnimationFrame(float dt);
 
 	// Get the current animation frame
-	SDL_Rect& GetActualFrame();
+	SDL_Rect& GetCurrentFrame();
 
 	// Get the current fame index
 	float GetFrameIndex() const;
@@ -102,13 +103,12 @@ public:
 	const char* GetName();
 
 public:
-
+	list<SDL_Rect>      frames;
 private:
 	string		    	name;
 	float			    speed = 0.0f;
-	bool			    loop = false;
+	bool			    loop = true;
 	int				    loops = 0;
-	list<SDL_Rect>      frames;
 	float			    curr_frame = 0.0f;
 };
 
