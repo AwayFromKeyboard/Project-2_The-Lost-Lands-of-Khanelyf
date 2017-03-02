@@ -4,11 +4,6 @@
 #include "Entity.h"
 #include "j1Pathfinding.h"
 
-enum unit_type {
-	unit_test,
-	unknown
-};
-
 enum unit_state {
 	unit_idle,
 	unit_move,
@@ -16,7 +11,9 @@ enum unit_state {
 	unit_death,
 	unit_decompose
 };
+
 class GameObject;
+enum entity_name;
 
 class Unit : public Entity
 {
@@ -46,7 +43,7 @@ public:
 public:
 	GameObject* game_object = nullptr;
 	unit_state state;
-	unit_type type;
+	entity_name type;
 	bool flip = false;
 	bool to_delete = true;
 public:
@@ -69,7 +66,6 @@ public:
 	iPoint a_offset;
 	iPoint d_offset;
 	iPoint de_offset;
-
 
 	Animation* current_animation;
 	// Idle

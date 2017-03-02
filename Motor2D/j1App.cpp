@@ -139,9 +139,9 @@ bool j1App::Start()
 
 	debug_mode = true;
 
-	debug_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 200, 115, 1);
-	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 0), 200, 115, { 20, 20, 20, 255 }, true);
-	debug_text = (UI_Text*)debug_window->CreateText(iPoint(5, 5), App->font->default_15, 15);
+	debug_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 20), 200, 115, 1);
+	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 20), 200, 115, { 20, 20, 20, 125 }, true);
+	debug_text = (UI_Text*)debug_window->CreateText(iPoint(5, 25), App->font->default_15, 15);
 
 	PERF_PEEK(ptimer);
 

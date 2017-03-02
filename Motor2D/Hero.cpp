@@ -43,6 +43,8 @@ bool Hero::LoadEntity()
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 		
+		type = player;
+
 		cost = node.child("cost").attribute("value").as_int();
 		speed = node.child("speed").attribute("value").as_float();
 		damage = node.child("damage").attribute("value").as_int();

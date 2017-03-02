@@ -4,7 +4,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "PugiXml\src\pugixml.hpp"
-
+#include "j1Gui.h"
 #include <string>
 #include <list>
 
@@ -41,7 +41,26 @@ public:
 	virtual void SaveCVar(std::string& cvar_name, pugi::xml_node& node) const {}
 
 public:
+	void InitCameraMovement();
+	void UpdateCameraMovement();
+private:
+	UI_Window* movement_window_u = nullptr;
+	UI_Window* movement_window_d = nullptr;
+	UI_Window* movement_window_l = nullptr;
+	UI_Window* movement_window_r = nullptr;
+	UI_Window* movement_window_u_l = nullptr;
+	UI_Window* movement_window_u_r = nullptr;
+	UI_Window* movement_window_d_l = nullptr;
+	UI_Window* movement_window_d_r = nullptr;
 
+	UI_ColoredRect* rect_u = nullptr;
+	UI_ColoredRect* rect_d = nullptr;
+	UI_ColoredRect* rect_l = nullptr;
+	UI_ColoredRect* rect_r = nullptr;
+	UI_ColoredRect* rect_u_l = nullptr;
+	UI_ColoredRect* rect_u_r = nullptr;
+	UI_ColoredRect* rect_d_l = nullptr;
+	UI_ColoredRect* rect_d_r = nullptr;
 };
 
 #endif

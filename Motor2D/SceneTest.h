@@ -34,23 +34,7 @@ private:
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
 
-	UI_Window* movement_window_u = nullptr;
-	UI_Window* movement_window_d = nullptr;
-	UI_Window* movement_window_l = nullptr;
-	UI_Window* movement_window_r = nullptr;
-	UI_Window* movement_window_u_l = nullptr;
-	UI_Window* movement_window_u_r = nullptr;
-	UI_Window* movement_window_d_l = nullptr;
-	UI_Window* movement_window_d_r = nullptr;
-
-	UI_ColoredRect* rect_u = nullptr;
-	UI_ColoredRect* rect_d = nullptr;
-	UI_ColoredRect* rect_l = nullptr;
-	UI_ColoredRect* rect_r = nullptr;
-	UI_ColoredRect* rect_u_l = nullptr;
-	UI_ColoredRect* rect_u_r = nullptr;
-	UI_ColoredRect* rect_d_l = nullptr;
-	UI_ColoredRect* rect_d_r = nullptr;
+	
 
 	Hero* troop = nullptr;
 

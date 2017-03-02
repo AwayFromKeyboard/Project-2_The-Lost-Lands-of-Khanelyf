@@ -101,6 +101,7 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Unit.cpp" />
