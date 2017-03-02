@@ -3,8 +3,8 @@
 
 #include "j1Module.h"
 #include "j1Fonts.h"
-#include "p2PQueue.h"
 #include "j1Render.h"
+#include <deque>
 
 #define CURSOR_WIDTH 2
 #define MOVEMENT_AREA 10
@@ -29,6 +29,10 @@ struct TTF_Font;
 class UI_Element;
 class UI_Window;
 class UI_Text;
+struct ElementItem {
+	UI_Element* data;
+	double priority;
+};
 
 class j1Gui : public j1Module
 {
@@ -70,6 +74,7 @@ public:
 
 	void CursorSelection();
 
+
 private:
 	SDL_Rect				selection_rect;
 
@@ -80,8 +85,8 @@ public:
 	// --------
 
 	// All elements
-	p2PQueue<UI_Element*>  elements_list;
-	double				   higher_layer = 0;
+	std::deque<ElementItem>  elements_list;
+	double				     higher_layer = 0;
 
 	// Elements that can tab
 	list<UI_Element*>      tab_list;

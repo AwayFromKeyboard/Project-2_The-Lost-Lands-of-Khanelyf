@@ -11,6 +11,9 @@
 #include <iostream> 
 #include <sstream> 
 
+// Declaring PushElements
+void PushElements(std::deque<ElementItem>& pqueue, UI_Element * item, double priority);
+
 // Class Gui -------------------------
 // -----------------------------------
 
@@ -72,16 +75,16 @@ bool j1Gui::Update(float dt)
 	if (start)
 	{
 		// Set variables that inherit from window to childs
-		for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
+		for (unsigned int i = 0; i < elements_list.size(); i++)
 		{
-			if (elements->data->type == ui_element::ui_window)
+			if (elements_list[i].data->type == ui_element::ui_window)
 			{
 				list<UI_Element*> childs;
-				App->gui->GetChilds(elements->data, childs);
+				GetChilds(elements_list[i].data, childs);
 				for (list<UI_Element*>::iterator it = childs.begin(); it != childs.end(); it++)
 				{
-					(*it)->blit_layer = elements->data->blit_layer;
-					(*it)->is_ui = elements->data->is_ui;
+					(*it)->blit_layer = elements_list[i].data->blit_layer;
+					(*it)->is_ui = elements_list[i].data->is_ui;
 				}
 			}
 		}
@@ -94,31 +97,31 @@ bool j1Gui::Update(float dt)
 	
 	// Update all elements in order
 	list<UI_Element*> to_top;
-	p2PQueue<UI_Element*> to_update;
+	std::deque<ElementItem> to_update;
 
-	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
+	for (unsigned int i = 0; i < elements_list.size(); i++)
 	{
 		// Move elements if the camera is moving
-		if (elements->data->is_ui && (camera_x != App->render->camera.x || camera_y != App->render->camera.y))
+		if (elements_list[i].data->is_ui && (camera_x != App->render->camera.x || camera_y != App->render->camera.y))
 		{
-			elements->data->rect.x += camera_x - App->render->camera.x;
-			elements->data->rect.y += camera_y - App->render->camera.y;
+			elements_list[i].data->rect.x += camera_x - App->render->camera.x;
+			elements_list[i].data->rect.y += camera_y - App->render->camera.y;
 		}
 
 		// To update if enabled
-		if (elements->data->enabled)
+		if (elements_list[i].data->enabled)
 		{
-			to_update.Push(elements->data, elements->data->blit_layer);
+			PushElements(to_update, elements_list[i].data, elements_list[i].data->blit_layer);
 
 			// Debug lines ------------------------------------
 			if (debug)
 			{
-				for (list<UI_Element*>::iterator it = elements->data->childs.begin(); it != elements->data->childs.end(); it++)
+				for (list<UI_Element*>::iterator it = elements_list[i].data->childs.begin(); it != elements_list[i].data->childs.end(); it++)
 				{
 					if ((*it)->enabled)
 					{
-						App->render->DrawLine(elements->data->rect.x + elements->data->rect.w * 0.5f,
-							elements->data->rect.y + elements->data->rect.h * 0.5f,
+						App->render->DrawLine(elements_list[i].data->rect.x + elements_list[i].data->rect.w * 0.5f,
+							elements_list[i].data->rect.y + elements_list[i].data->rect.h * 0.5f,
 							(*it)->rect.x + (*it)->rect.w * 0.5f,
 							(*it)->rect.y + (*it)->rect.h * 0.5,
 							255, 255, 255);
@@ -129,13 +132,13 @@ bool j1Gui::Update(float dt)
 		}
 
 		//Take higher layer
-		if (elements->next == nullptr)
-			higher_layer = elements->priority;
+		if (i == elements_list.size() - 1)
+			higher_layer = elements_list[i].priority;
 	}
 
 	// Update
-	for (p2PQueue_item<UI_Element*>* up = to_update.start; up != nullptr; up = up->next)
-		up->data->update();
+	for (unsigned int i = 0; i < to_update.size(); ++i)
+		to_update[i].data->update();
 
 	// Move clicked elements
 	Move_Elements();
@@ -167,10 +170,9 @@ bool j1Gui::CleanUp()
 
 	App->tex->UnLoadTexture(atlas);
 
-	while (elements_list.Count() > 0)
+	while (elements_list.size() > 0)
 	{
-		p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start;
-		DeleteElement(elements->data);
+		DeleteElement(elements_list[0].data);
 	}
 
 	return true;
@@ -198,7 +200,7 @@ UI_Element* j1Gui::UI_CreateWin(iPoint pos, int w, int h, int blit, bool _dinami
 
 		// Layer
 
-		ret->layer = elements_list.Count();
+		ret->layer = elements_list.size();
 		ret->blit_layer = blit;
 
 		// -----
@@ -206,7 +208,7 @@ UI_Element* j1Gui::UI_CreateWin(iPoint pos, int w, int h, int blit, bool _dinami
 		ret->type = ui_window;
 		ret->parent = ret;
 
-		elements_list.Push(ret, ret->layer);
+		PushElements(elements_list, ret, ret->layer);
 		windows.push_back(ret);
 	}
 
@@ -274,18 +276,16 @@ void j1Gui::ReorderElements()
 	list<UI_Element*> copy;
 
 	// Copy all elements of PQ and clean it
-	while (App->gui->elements_list.Count() != 0)
+	while (App->gui->elements_list.size() != 0)
 	{
-		UI_Element* tmp;
-		App->gui->elements_list.Pop(tmp);
+		UI_Element* tmp = elements_list[0].data;
+		elements_list.pop_front();
 		copy.push_back(tmp);
 	}
 
-	App->gui->elements_list.Clear();
-
-	// Place againt he elements on the PQ (now they are on the correct order)
+	// Place again the elements on the PQ (now they are on the correct order)
 	for (list<UI_Element*>::iterator it = copy.begin(); it != copy.end(); it++)
-		App->gui->elements_list.Push(*it, (*it)->layer);
+		PushElements(elements_list, *it, (*it)->layer);
 }
 
 // ---------------------------------------------------------------------
@@ -372,16 +372,16 @@ UI_Element* j1Gui::CheckClickMove(int x, int y)
 	list<UI_Element*> elements_clicked;
 
 	// Check the UI_Elements that are in the point
-	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
+	for (unsigned int i = 0; i < elements_list.size(); ++i)
 	{
-		if (x > elements->data->rect.x && x < elements->data->rect.x + elements->data->rect.w)
+		if (x >elements_list[i].data->rect.x && x < elements_list[i].data->rect.x + elements_list[i].data->rect.w)
 		{
-			if (y > elements->data->rect.y && y < elements->data->rect.y + elements->data->rect.h)
+			if (y > elements_list[i].data->rect.y && y < elements_list[i].data->rect.y + elements_list[i].data->rect.h)
 			{
 				// Check if you can click through it and if it's enabled
-				if (!elements->data->click_through && elements->data->enabled)
+				if (!elements_list[i].data->click_through && elements_list[i].data->enabled)
 				{
-					elements_clicked.push_back(elements->data);
+					elements_clicked.push_back(elements_list[i].data);
 				}
 			}
 		}
@@ -452,17 +452,18 @@ void j1Gui::DeleteElement(UI_Element* element)
 			// Delete from pQ
 			list<UI_Element*> to_add;
 
-			while (App->gui->elements_list.Count() > 0)
+			while (elements_list.size() > 0)
 			{
 				UI_Element* current = nullptr;
-				App->gui->elements_list.Pop(current);
+				current = elements_list[0].data;
+				elements_list.pop_front();
 
 				if (current != *ch)
 					to_add.push_back(current);
 			}
 
 			for (list<UI_Element*>::iterator ta = to_add.begin(); ta != to_add.end(); ta++)
-				App->gui->elements_list.Push((*ta), (*ta)->layer);
+				PushElements(elements_list, (*ta), (*ta)->layer);
 
 		(*ch)->cleanup();
 		delete((*ch));
@@ -484,6 +485,22 @@ void j1Gui::CursorSelection()
 		selection_rect.h = position.y - selection_rect.y;
 		App->render->DrawQuad(selection_rect, 255, 255, 255, 255, false);
 	}
+}
+
+void PushElements(std::deque<ElementItem>& pqueue, UI_Element * item, double priority)
+{
+	std::deque<ElementItem>::iterator it;
+	it = pqueue.begin();
+	for (unsigned int i = 0; i < pqueue.size(); ++i)
+	{
+		if (pqueue[i].priority > priority)
+			break;
+		++it;
+	}
+	ElementItem tmp;
+	tmp.data = item;
+	tmp.priority = priority;
+	pqueue.insert(it,tmp);
 }
 
 // -----------------------------------
@@ -560,15 +577,15 @@ int UI_Element::CheckClickOverlap(int x, int y)
 	list<UI_Element*> contactors;
 
 	// Check the UI_Elements that are in the point
-	for (p2PQueue_item<UI_Element*>* elements = App->gui->elements_list.start; elements != nullptr; elements = elements->next)
+	for (unsigned int i = 0; i < App->gui->elements_list.size(); ++i)
 	{
-		if (x > elements->data->rect.x && x < elements->data->rect.x + elements->data->rect.w)
+		if (x > App->gui->elements_list[i].data->rect.x && x < App->gui->elements_list[i].data->rect.x + App->gui->elements_list[i].data->rect.w)
 		{
-			if (y > elements->data->rect.y && y < elements->data->rect.y + elements->data->rect.h)
+			if (y > App->gui->elements_list[i].data->rect.y && y < App->gui->elements_list[i].data->rect.y + App->gui->elements_list[i].data->rect.h)
 			{
 				// Check if is dinamic
-				if (!elements->data->click_through)
-					contactors.push_back(elements->data);
+				if (!App->gui->elements_list[i].data->click_through)
+					contactors.push_back(App->gui->elements_list[i].data);
 			}
 		}
 	}
@@ -722,7 +739,8 @@ UI_Element* UI_Window::CreateButton(iPoint pos, int w, int h, bool _dinamic)
 
 		// ---------
 
-		App->gui->elements_list.Push(ret, ret->layer);
+		
+		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
 	return ret;
@@ -752,7 +770,7 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 
 		// ---------
 
-		App->gui->elements_list.Push(ret, ret->layer);
+		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
 	return ret;
@@ -781,7 +799,7 @@ UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic)
 
 		// ---------
 
-		App->gui->elements_list.Push(ret, ret->layer);
+		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
 	return ret;
@@ -810,7 +828,7 @@ UI_Element* UI_Window::CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool 
 
 		// ---------
 
-		App->gui->elements_list.Push(ret, ret->layer);
+		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
 	return ret;
@@ -836,7 +854,7 @@ UI_Element * UI_Window::CreateScrollBar(iPoint pos, int view_w, int view_h, int 
 
 		// ---------
 
-		App->gui->elements_list.Push(ret, ret->layer);
+		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
 
@@ -863,7 +881,7 @@ UI_Element * UI_Window::CreateColoredRect(iPoint pos, int w, int h, SDL_Color co
 
 		// ---------
 
-		App->gui->elements_list.Push(ret, ret->layer);
+		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
 
@@ -1659,19 +1677,19 @@ void UI_Scroll_Bar::Set(iPoint pos, int view_w, int view_h, int button_size)
 	// Button vertical ---
 	button_v = new UI_Button();
 	button_v->Set(iPoint(view_w + button_size, pos.y), button_size, view_h);
-	button_v->layer = App->gui->elements_list.Count() + 1;
+	button_v->layer = App->gui->elements_list.size() + 1;
 	AddChild(button_v);
 	button_starting_v = button_v->rect.h;
-	App->gui->elements_list.Push(button_v, button_v->layer);
+	PushElements(App->gui->elements_list, button_v, button_v->layer);
 	// ----------
 
 	// Button horizontal ---
 	button_h = new UI_Button();
 	button_h->Set(iPoint(pos.x, pos.y + view_h), view_w, button_size);
-	button_h->layer = App->gui->elements_list.Count() + 2;
+	button_h->layer = App->gui->elements_list.size() + 2;
 	AddChild(button_h);
 	button_starting_h = button_h->rect.w;
-	App->gui->elements_list.Push(button_h, button_h->layer);
+	PushElements(App->gui->elements_list, button_h, button_h->layer);
 	// ----------
 
 	// Min and max bar movement allowed
