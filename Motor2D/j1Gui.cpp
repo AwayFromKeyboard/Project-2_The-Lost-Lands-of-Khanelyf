@@ -12,7 +12,7 @@
 #include <sstream> 
 
 // Declaring PushElements
-void PushElements(std::deque<std::pair<UI_Element*, double> >& pqueue, UI_Element * item, double priority);
+void PushElements(std::deque<ElementItem>& pqueue, UI_Element * item, double priority);
 
 // Class Gui -------------------------
 // -----------------------------------
@@ -77,14 +77,14 @@ bool j1Gui::Update(float dt)
 		// Set variables that inherit from window to childs
 		for (unsigned int i = 0; i < elements_list.size(); i++)
 		{
-			if (elements_list[i].first->type == ui_element::ui_window)
+			if (elements_list[i].data->type == ui_element::ui_window)
 			{
 				list<UI_Element*> childs;
-				GetChilds(elements_list[i].first, childs);
+				GetChilds(elements_list[i].data, childs);
 				for (list<UI_Element*>::iterator it = childs.begin(); it != childs.end(); it++)
 				{
-					(*it)->blit_layer = elements_list[i].first->blit_layer;
-					(*it)->is_ui = elements_list[i].first->is_ui;
+					(*it)->blit_layer = elements_list[i].data->blit_layer;
+					(*it)->is_ui = elements_list[i].data->is_ui;
 				}
 			}
 		}
@@ -97,31 +97,31 @@ bool j1Gui::Update(float dt)
 	
 	// Update all elements in order
 	list<UI_Element*> to_top;
-	std::deque<std::pair<UI_Element*, double> > to_update;
+	std::deque<ElementItem> to_update;
 
 	for (unsigned int i = 0; i < elements_list.size(); i++)
 	{
 		// Move elements if the camera is moving
-		if (elements_list[i].first->is_ui && (camera_x != App->render->camera.x || camera_y != App->render->camera.y))
+		if (elements_list[i].data->is_ui && (camera_x != App->render->camera.x || camera_y != App->render->camera.y))
 		{
-			elements_list[i].first->rect.x += camera_x - App->render->camera.x;
-			elements_list[i].first->rect.y += camera_y - App->render->camera.y;
+			elements_list[i].data->rect.x += camera_x - App->render->camera.x;
+			elements_list[i].data->rect.y += camera_y - App->render->camera.y;
 		}
 
 		// To update if enabled
-		if (elements_list[i].first->enabled)
+		if (elements_list[i].data->enabled)
 		{
-			PushElements(to_update, elements_list[i].first, elements_list[i].first->blit_layer);
+			PushElements(to_update, elements_list[i].data, elements_list[i].data->blit_layer);
 
 			// Debug lines ------------------------------------
 			if (debug)
 			{
-				for (list<UI_Element*>::iterator it = elements_list[i].first->childs.begin(); it != elements_list[i].first->childs.end(); it++)
+				for (list<UI_Element*>::iterator it = elements_list[i].data->childs.begin(); it != elements_list[i].data->childs.end(); it++)
 				{
 					if ((*it)->enabled)
 					{
-						App->render->DrawLine(elements_list[i].first->rect.x + elements_list[i].first->rect.w * 0.5f,
-							elements_list[i].first->rect.y + elements_list[i].first->rect.h * 0.5f,
+						App->render->DrawLine(elements_list[i].data->rect.x + elements_list[i].data->rect.w * 0.5f,
+							elements_list[i].data->rect.y + elements_list[i].data->rect.h * 0.5f,
 							(*it)->rect.x + (*it)->rect.w * 0.5f,
 							(*it)->rect.y + (*it)->rect.h * 0.5,
 							255, 255, 255);
@@ -133,12 +133,12 @@ bool j1Gui::Update(float dt)
 
 		//Take higher layer
 		if (i == elements_list.size() - 1)
-			higher_layer = elements_list[i].second;
+			higher_layer = elements_list[i].priority;
 	}
 
 	// Update
 	for (unsigned int i = 0; i < to_update.size(); ++i)
-		to_update[i].first->update();
+		to_update[i].data->update();
 
 	// Move clicked elements
 	Move_Elements();
@@ -172,7 +172,7 @@ bool j1Gui::CleanUp()
 
 	while (elements_list.size() > 0)
 	{
-		DeleteElement(elements_list[0].first);
+		DeleteElement(elements_list[0].data);
 	}
 
 	return true;
@@ -278,7 +278,7 @@ void j1Gui::ReorderElements()
 	// Copy all elements of PQ and clean it
 	while (App->gui->elements_list.size() != 0)
 	{
-		UI_Element* tmp = elements_list[0].first;
+		UI_Element* tmp = elements_list[0].data;
 		elements_list.pop_front();
 		copy.push_back(tmp);
 	}
@@ -374,14 +374,14 @@ UI_Element* j1Gui::CheckClickMove(int x, int y)
 	// Check the UI_Elements that are in the point
 	for (unsigned int i = 0; i < elements_list.size(); ++i)
 	{
-		if (x >elements_list[i].first->rect.x && x < elements_list[i].first->rect.x + elements_list[i].first->rect.w)
+		if (x >elements_list[i].data->rect.x && x < elements_list[i].data->rect.x + elements_list[i].data->rect.w)
 		{
-			if (y > elements_list[i].first->rect.y && y < elements_list[i].first->rect.y + elements_list[i].first->rect.h)
+			if (y > elements_list[i].data->rect.y && y < elements_list[i].data->rect.y + elements_list[i].data->rect.h)
 			{
 				// Check if you can click through it and if it's enabled
-				if (!elements_list[i].first->click_through && elements_list[i].first->enabled)
+				if (!elements_list[i].data->click_through && elements_list[i].data->enabled)
 				{
-					elements_clicked.push_back(elements_list[i].first);
+					elements_clicked.push_back(elements_list[i].data);
 				}
 			}
 		}
@@ -455,7 +455,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 			while (elements_list.size() > 0)
 			{
 				UI_Element* current = nullptr;
-				current = elements_list[0].first;
+				current = elements_list[0].data;
 				elements_list.pop_front();
 
 				if (current != *ch)
@@ -487,19 +487,20 @@ void j1Gui::CursorSelection()
 	}
 }
 
-void PushElements(std::deque<std::pair<UI_Element*, double> >& pqueue, UI_Element * item, double priority)
+void PushElements(std::deque<ElementItem>& pqueue, UI_Element * item, double priority)
 {
-	std::deque<std::pair<UI_Element*, double> >::iterator it;
+	std::deque<ElementItem>::iterator it;
+	it = pqueue.begin();
 	for (unsigned int i = 0; i < pqueue.size(); ++i)
 	{
-		if (pqueue[i].second > priority)
+		if (pqueue[i].priority > priority)
 			break;
 		++it;
 	}
-	std::pair<UI_Element*, double> tmp;
-	tmp.first = item;
-	tmp.second = priority;
-	pqueue.insert(it, tmp);
+	ElementItem tmp;
+	tmp.data = item;
+	tmp.priority = priority;
+	pqueue.insert(it,tmp);
 }
 
 // -----------------------------------
@@ -578,13 +579,13 @@ int UI_Element::CheckClickOverlap(int x, int y)
 	// Check the UI_Elements that are in the point
 	for (unsigned int i = 0; i < App->gui->elements_list.size(); ++i)
 	{
-		if (x > App->gui->elements_list[i].first->rect.x && x < App->gui->elements_list[i].first->rect.x + App->gui->elements_list[i].first->rect.w)
+		if (x > App->gui->elements_list[i].data->rect.x && x < App->gui->elements_list[i].data->rect.x + App->gui->elements_list[i].data->rect.w)
 		{
-			if (y > App->gui->elements_list[i].first->rect.y && y < App->gui->elements_list[i].first->rect.y + App->gui->elements_list[i].first->rect.h)
+			if (y > App->gui->elements_list[i].data->rect.y && y < App->gui->elements_list[i].data->rect.y + App->gui->elements_list[i].data->rect.h)
 			{
 				// Check if is dinamic
-				if (!App->gui->elements_list[i].first->click_through)
-					contactors.push_back(App->gui->elements_list[i].first);
+				if (!App->gui->elements_list[i].data->click_through)
+					contactors.push_back(App->gui->elements_list[i].data);
 			}
 		}
 	}

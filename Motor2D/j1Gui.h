@@ -5,7 +5,6 @@
 #include "j1Fonts.h"
 #include "j1Render.h"
 #include <deque>
-#include <utility>
 
 #define CURSOR_WIDTH 2
 #define MOVEMENT_AREA 10
@@ -30,6 +29,10 @@ struct TTF_Font;
 class UI_Element;
 class UI_Window;
 class UI_Text;
+struct ElementItem {
+	UI_Element* data;
+	double priority;
+};
 
 class j1Gui : public j1Module
 {
@@ -82,8 +85,8 @@ public:
 	// --------
 
 	// All elements
-	std::deque<std::pair<UI_Element*, double> >  elements_list;
-	double				   higher_layer = 0;
+	std::deque<ElementItem>  elements_list;
+	double				     higher_layer = 0;
 
 	// Elements that can tab
 	list<UI_Element*>      tab_list;
