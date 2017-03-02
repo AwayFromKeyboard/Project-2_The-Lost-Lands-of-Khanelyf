@@ -107,7 +107,7 @@ vector<iPoint> Unit::GetPath()const
 
 void Unit::FollowPath(float dt)
 {
-	if (has_destination)
+	if (1)
 	{
 		SetDirection();
 
@@ -118,25 +118,22 @@ void Unit::FollowPath(float dt)
 
 		game_object->SetPos(pos);
 
-		if (App->map->WorldToMapPoint(game_object->GetPos()) == destination) {
-			if (path.size() > 0)
-			{
-				destination = path.front();
+		if (path.size() != 0)
+		{
+			if (App->map->WorldToMapPoint(game_object->GetPos()) == path.front()) {
 				path.erase(path.begin());
-				SetDirection();
-			}
-			else
-			{
-				state = unit_idle;
-				has_destination = false;
 			}
 		}
+		else
+		{
+			state = unit_idle;
+			has_destination = false;
+		}
 	}
-	else
+	/*else
 	{
 		if (path.size() > 0)
 		{
-			destination = path.front();
 			path.erase(path.begin());
 			SetDirection();
 		}
@@ -145,33 +142,55 @@ void Unit::FollowPath(float dt)
 			has_destination = false;
 			state = unit_idle;
 		}
-	}
+	}*/
 }
 
 void Unit::SetDirection()
 {
+	if (path.size() == 0){
+		return;
+	}
 	iPoint position = game_object->GetPos();
 	iPoint position_m = App->map->WorldToMap(position.x, position.y);
 
-	if (position_m == destination)
+	if (path.size() != 0 && position_m == path.front())
 	{
-		if (path.size() > 0)
-		{
-			destination = path.front();
-			path.erase(path.begin());
-			SetDirection();
-		}
+		path.erase(path.begin());
+		SetDirection();
 		return;
 	}
 
-	iPoint destination_w(App->map->MapToWorld(destination.x, destination.y));
+	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
 
-	direction = fPoint(destination_w.x - position.x, destination_w.y - position.y);
+	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
 	
-	if (direction.x > 0) direction.x = 1;
+	/*if (direction.x > 0) direction.x = 1;
 	else if (direction.x < 0) direction.x = -1;
 	if (direction.y > 0) direction.y = 1;
-	else if (direction.y < 0) direction.y = -1;
+	else if (direction.y < 0) direction.y = -1;*/
+
+	if (direction.x > 0) {
+		if (direction.y > 0)
+			direction = { 0,1 };
+		else if (direction.y < 0)
+			direction = { 1,0 };
+		else
+			direction = { +1,+1 };//
+	}
+	else if (direction.x < 0){
+		if (direction.y > 0)
+			direction = { -1,0 };
+		else if (direction.y < 0)
+			direction = { 0,-1 };
+		else
+			direction = { -1,-1 };
+	}
+	else {
+		if (direction.y > 0)
+			direction = { -1,1 };
+		else if (direction.y < 0)
+			direction = { 1,-1 };
+	}
 
 	has_destination = true;
 }

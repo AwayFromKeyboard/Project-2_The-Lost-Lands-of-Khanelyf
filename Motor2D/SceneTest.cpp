@@ -59,7 +59,7 @@ bool SceneTest::PreUpdate()
 	p = App->map->WorldToMap(p.x, p.y);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p);
+		troop->path = App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p);
 	}
 
 	return true;
@@ -75,7 +75,7 @@ bool SceneTest::Update(float dt)
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
-	troop->path = App->pathfinding->GetPath();
+	
 
 	if (troop->path.size() > 0)
 	{
@@ -87,6 +87,8 @@ bool SceneTest::Update(float dt)
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+	
+
 	
 	return true;
 }
