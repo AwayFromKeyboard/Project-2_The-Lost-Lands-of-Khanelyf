@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "j1Gui.h"
 #include "j1Window.h"
 #include "j1Input.h"
 
