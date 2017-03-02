@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "j1Map.h"
-#include "Test.h"
+#include "Hero.h"
 #include "Entity.h"
 #include "Animation.h"
 

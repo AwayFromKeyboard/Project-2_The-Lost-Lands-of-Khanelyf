@@ -79,14 +79,14 @@
     <ClCompile Include="SceneTest.cpp">
       <Filter>Engine\3. Scenes ==========\MainScene</Filter>
     </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>Engine\4. Entities ==========\Troops</Filter>
-    </ClCompile>
     <ClCompile Include="Unit.cpp">
       <Filter>Engine\4. Entities ==========</Filter>
     </ClCompile>
     <ClCompile Include="Building.cpp">
       <Filter>Engine\4. Entities ==========</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +189,6 @@
     <ClInclude Include="SceneTest.h">
       <Filter>Engine\3. Scenes ==========\MainScene</Filter>
     </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>Engine\4. Entities ==========\Troops</Filter>
-    </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Engine\4. Entities ==========</Filter>
     </ClInclude>
@@ -202,6 +199,9 @@
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Hero.h">
+      <Filter>Engine\4. Entities ==========\Troops</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -237,9 +237,6 @@
       <Filter>Engine\5. Tools ===========</Filter>
     </Xml>
     <Xml Include="..\Game\test.xml">
-      <Filter>Engine\4. Entities ==========\Troops</Filter>
-    </Xml>
-    <Xml Include="..\Game\Hero.xml">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </Xml>
     <Xml Include="..\Game\Units.xml">

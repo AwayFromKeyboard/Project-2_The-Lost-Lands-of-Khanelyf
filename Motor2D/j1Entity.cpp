@@ -1,6 +1,6 @@
 #include "j1Entity.h"
 #include "Entity.h"
-#include "Test.h"
+#include "Hero.h"
 #include "Log.h"
 
 j1Entity::j1Entity()
@@ -87,8 +87,8 @@ Entity* j1Entity::CreateEntity(entity_name entity)
 
 	switch (entity)
 	{
-	case test:
-		ret = new Test();
+	case player:
+		ret = new Hero();
 		break;
 	default:
 		break;

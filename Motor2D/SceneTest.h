@@ -8,7 +8,7 @@
 class GameObject;
 class b2Fixture;
 class Parallax;
-class Test;
+class Hero;
 
 class SceneTest : public Scene
 {
@@ -52,7 +52,7 @@ private:
 	UI_ColoredRect* rect_d_l = nullptr;
 	UI_ColoredRect* rect_d_r = nullptr;
 
-	Test* troop = nullptr;
+	Hero* troop = nullptr;
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;

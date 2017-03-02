@@ -102,7 +102,7 @@
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="SceneTest.cpp" />
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,14 +142,11 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />
-    <ClInclude Include="Test.h" />
+    <ClInclude Include="Hero.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">
-      <SubType>Designer</SubType>
-    </Xml>
-    <Xml Include="..\Game\Hero.xml">
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\test.xml" />

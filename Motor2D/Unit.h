@@ -62,6 +62,7 @@ public:
 	int armor = 0;
 	int pierce_armor = 0;
 	int range = 0;
+	iPoint offset;
 
 	Animation* current_animation;
 	// Idle

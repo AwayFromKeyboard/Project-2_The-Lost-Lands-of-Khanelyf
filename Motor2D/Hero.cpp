@@ -1,4 +1,4 @@
-#include "Test.h"
+#include "Hero.h"
 #include "GameObject.h"
 #include "Scene.h"
 #include "j1App.h"
@@ -12,23 +12,17 @@
 #include "j1Map.h"
 #include "Log.h"
 
-Test::Test()
+Hero::Hero()
 {
 }
 
-Test::~Test()
+Hero::~Hero()
 {
 }
 
-bool Test::LoadEntity()
+bool Hero::LoadEntity()
 {
 	bool ret = true;
-
-	game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
-
-	game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
-	game_object->SetListener((j1Module*)App->entity);
-	game_object->SetFixedRotation(true);
 
 	pugi::xml_document doc;
 	pugi::xml_node node;
@@ -43,6 +37,13 @@ bool Test::LoadEntity()
 	}
 	if (node)
 	{
+		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
+
+		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
+		game_object->SetListener((j1Module*)App->entity);
+		game_object->SetFixedRotation(true);
+
+		offset.x = 10; offset.y = 20;
 		cost = node.child("cost").attribute("value").as_int();
 		speed = node.child("speed").attribute("value").as_float();
 		damage = node.child("damage").attribute("value").as_int();
@@ -64,34 +65,34 @@ bool Test::LoadEntity()
 	return ret;
 }
 
-bool Test::Start()
+bool Hero::Start()
 {
 	bool ret = true;
 
 	return ret;
 }
 
-bool Test::Draw(float dt)
+bool Hero::Draw(float dt)
 {
 	bool ret = true;
 
 	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 	}
 	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - X_OFFSET, game_object->GetPos().y - Y_OFFSET }, current_animation->GetAnimationFrame(dt));
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 
 	return ret;
 }
 
-bool Test::PostUpdate()
+bool Hero::PostUpdate()
 {
 	bool ret = true;
 
 	return ret;
 }
 
-bool Test::CleanUp()
+bool Hero::CleanUp()
 {
 	bool ret = true;
 
@@ -104,7 +105,7 @@ bool Test::CleanUp()
 	return ret;
 }
 
-void Test::OnColl(PhysBody* bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Hero::OnColl(PhysBody* bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
 
 }

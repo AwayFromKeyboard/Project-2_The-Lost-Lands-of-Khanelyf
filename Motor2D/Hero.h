@@ -3,15 +3,13 @@
 
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(23, 25)
-#define Y_OFFSET 32 // Number to add in blit for pushing the texture up
-#define X_OFFSET 32 // Number to add in blit for pushing the texture up
 
 class GameObject;
-class Test : public Unit
+class Hero : public Unit
 {
 public:
-	Test();
-	~Test();
+	Hero();
+	~Hero();
 
 	// Load animations
 	bool LoadEntity();
