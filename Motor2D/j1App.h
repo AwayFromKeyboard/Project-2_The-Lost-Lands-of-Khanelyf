@@ -9,6 +9,7 @@
 #include <list>
 
 class UI_Window;
+class UI_Button;
 class UI_Text;
 class UI_ColoredRect;
 
@@ -152,7 +153,6 @@ private:
 	UI_Window*			debug_window = nullptr;
 	UI_ColoredRect*		debug_colored_rect = nullptr;
 	UI_Text*			debug_text = nullptr;
-
 };
 
 extern j1App* App;

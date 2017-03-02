@@ -463,6 +463,10 @@ void j1App::FrameRateCalculations()
 		SDL_Delay(capped_ms - last_frame_ms);
 	}
 
+	if (input->GetKey(SDL_SCANCODE_F10) == key_down) {
+		ShellExecute(NULL, "open", "https://github.com/viriato22/Project_2/issues", NULL, NULL, SW_SHOWMAXIMIZED);
+	}
+
 	if (debug_mode && !debug_window->enabled)
 		debug_window->SetEnabledAndChilds(true);
 	if(!debug_mode && debug_window->enabled)
