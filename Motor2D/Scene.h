@@ -41,8 +41,8 @@ public:
 	virtual void SaveCVar(std::string& cvar_name, pugi::xml_node& node) const {}
 
 public:
-	void InitCameraMovement();
-	void UpdateCameraMovement();
+	void InitCameraMovement(); // Init windows to move the camera
+	void UpdateCameraMovement(); // Look if enters any condition to move the camera 
 private:
 	UI_Window* movement_window_u = nullptr;
 	UI_Window* movement_window_d = nullptr;

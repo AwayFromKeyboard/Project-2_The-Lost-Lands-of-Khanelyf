@@ -88,7 +88,9 @@
     <ClCompile Include="Hero.cpp">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine\3. Scenes ==========</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
