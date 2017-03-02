@@ -108,18 +108,18 @@
     <range value="1"/>
     <life value="3"/>
     <animations>
-      <idle speed="10" w="47" h="28">
+      <idle speed="10" w="29" h="48">
         <south>
           <rect x="0" y="0"/>
-          <rect x="48" y="0"/>
-          <rect x="96" y="0"/>
-          <rect x="144" y="0"/>
-          <rect x="192" y="0"/>
+          <rect x="30" y="0"/>
+          <rect x="60" y="0"/>
+          <rect x="90" y="0"/>
+          <rect x="120" y="0"/>
+          <rect x="150" y="0"/>
+          <rect x="180" y="0"/>
+          <rect x="210" y="0"/>
           <rect x="240" y="0"/>
-          <rect x="288" y="0"/>
-          <rect x="336" y="0"/>
-          <rect x="384" y="0"/>
-          <rect x="432" y="0"/>
+          <rect x="270" y="0"/>
         </south>
         <south_west>
           <rect x="0" y="29"/>
@@ -170,7 +170,7 @@
           <rect x="432" y="116"/>
         </north>
       </idle>
-      <walk speed="10" w="49" h="30">
+      <walk speed="10" w="31" h="50">
         <south>
           <rect x="0" y="117"/>
           <rect x="50" y="117"/>
@@ -232,7 +232,7 @@
           <rect x="450" y="241"/>
         </north>
       </walk>
-      <attack speed="10" w="72" h="55">
+      <attack speed="10" w="56" h="73">
         <south>
           <rect x="0" y="242"/>
           <rect x="73" y="242"/>
@@ -319,7 +319,7 @@
           <rect x="1022" y="466"/>
         </north>
       </attack>
-      <death speed="10" w="81" h="93">
+      <death speed="10" w="94" h="82">
         <south>
           <rect x="0" y="467"/>
           <rect x="82" y="467"/>
@@ -406,7 +406,7 @@
           <rect x="1148" y="843"/>
         </north>
       </death>
-      <decompose speed="10" w="66" h="85">
+      <decompose speed="10" w="86" h="67">
         <south>
           <rect x="0" y="844"/>
           <rect x="67" y="844"/>
@@ -445,6 +445,326 @@
       </decompose>
     </animations>
   </unit>
-  
-  
+  <unit type="Hero2">
+    <texture value="textures/Hero.png"/>
+    <cost value="0"/>
+    <speed value="2"/>
+    <damage value="0"/>
+    <armor value="0"/>
+    <pierce_armor value="0"/>
+    <range value="1"/>
+    <life value="3"/>
+    <animations>
+      <idle speed="15" w="51" h="62">
+        <south>
+          <rect x = "0" y = "0"/>
+          <rect x = "52" y = "0"/>
+          <rect x = "104" y = "0"/>
+          <rect x = "156" y = "0"/>
+          <rect x = "208" y = "0"/>
+          <rect x = "260" y = "0"/>
+          <rect x = "312" y = "0"/>
+          <rect x = "364" y = "0"/>
+          <rect x = "416" y = "0"/>
+          <rect x = "468" y = "0"/>
+        </south>
+        <south_west>
+          <rect x = "0" y = "64"/>
+          <rect x = "52" y = "64"/>
+          <rect x = "104" y = "64"/>
+          <rect x = "156" y = "64"/>
+          <rect x = "208" y = "64"/>
+          <rect x = "260" y = "64"/>
+          <rect x = "312" y = "64"/>
+          <rect x = "364" y = "64"/>
+          <rect x = "416" y = "64"/>
+          <rect x = "468" y = "64"/>
+        </south_west>
+        <west>
+          <rect x = "0" y = "128"/>
+          <rect x = "52" y = "128"/>
+          <rect x = "104" y = "128"/>
+          <rect x = "156" y = "128"/>
+          <rect x = "208" y = "128"/>
+          <rect x = "260" y = "128"/>
+          <rect x = "312" y = "128"/>
+          <rect x = "364" y = "128"/>
+          <rect x = "416" y = "128"/>
+          <rect x = "468" y = "128"/>
+        </west>
+        <north_west>
+          <rect x = "0" y = "192"/>
+          <rect x = "52" y = "192"/>
+          <rect x = "104" y = "192"/>
+          <rect x = "156" y = "192"/>
+          <rect x = "208" y = "192"/>
+          <rect x = "260" y = "192"/>
+          <rect x = "312" y = "192"/>
+          <rect x = "364" y = "192"/>
+          <rect x = "416" y = "192"/>
+          <rect x = "468" y = "192"/>
+        </north_west>
+        <north>
+          <rect x = "0" y = "266"/>
+          <rect x = "52" y = "266"/>
+          <rect x = "104" y = "266"/>
+          <rect x = "156" y = "266"/>
+          <rect x = "208" y = "266"/>
+          <rect x = "260" y = "266"/>
+          <rect x = "312" y = "266"/>
+          <rect x = "364" y = "266"/>
+          <rect x = "416" y = "266"/>
+          <rect x = "468" y = "266"/>
+        </north>
+      </idle>
+      <walk speed="15" w="37" h="64">
+        <south>
+          <rect x = "0" y = "320"/>
+          <rect x = "38" y = "320"/>
+          <rect x = "76"  y = "320"/>
+          <rect x = "114" y = "320"/>
+          <rect x = "152" y = "320"/>
+          <rect x = "190" y = "320"/>
+          <rect x = "228" y = "320"/>
+          <rect x = "266" y = "320"/>
+          <rect x = "304" y = "320"/>
+          <rect x = "342" y = "320"/>
+        </south>
+        <south_west>
+          <rect x = "0" y = "385"/>
+          <rect x = "38" y = "385"/>
+          <rect x = "76"  y = "385"/>
+          <rect x = "114" y = "385"/>
+          <rect x = "152" y = "385"/>
+          <rect x = "190" y = "385"/>
+          <rect x = "228" y = "385"/>
+          <rect x = "266" y = "385"/>
+          <rect x = "304" y = "385"/>
+          <rect x = "342" y = "385"/>
+        </south_west>
+        <west>
+          <rect x = "0" y = "450"/>
+          <rect x = "38" y = "450"/>
+          <rect x = "76"  y = "450"/>
+          <rect x = "114" y = "450"/>
+          <rect x = "152" y = "450"/>
+          <rect x = "190" y = "450"/>
+          <rect x = "228" y = "450"/>
+          <rect x = "266" y = "450"/>
+          <rect x = "304" y = "450"/>
+          <rect x = "342" y = "450"/>
+        </west>
+        <north_west>
+          <rect x = "0" y = "515"/>
+          <rect x = "38" y = "515"/>
+          <rect x = "76"  y = "515"/>
+          <rect x = "114" y = "515"/>
+          <rect x = "152" y = "515"/>
+          <rect x = "190" y = "515"/>
+          <rect x = "228" y = "515"/>
+          <rect x = "266" y = "515"/>
+          <rect x = "304" y = "515"/>
+          <rect x = "342" y = "515"/>
+        </north_west>
+        <north>
+          <rect x = "0" y = "580"/>
+          <rect x = "38" y = "580"/>
+          <rect x = "76" y = "580"/>
+          <rect x = "114" y = "580"/>
+          <rect x = "152" y = "580"/>
+          <rect x = "190" y = "580"/>
+          <rect x = "228" y = "580"/>
+          <rect x = "266" y = "580"/>
+          <rect x = "304" y = "580"/>
+          <rect x = "342" y = "580"/>
+        </north>
+      </walk>
+      <attack speed="15" w="86" h="81">
+        <south>
+          <rect x = "0" y = "645"/>
+          <rect x = "87" y = "645"/>
+          <rect x = "174" y = "645"/>
+          <rect x = "261" y = "645"/>
+          <rect x = "348" y = "645"/>
+          <rect x = "435" y = "645"/>
+          <rect x = "522" y = "645"/>
+          <rect x = "609" y = "645"/>
+          <rect x = "696" y = "645"/>
+          <rect x = "783" y = "645"/>
+        </south>
+        <south_west>
+            <rect x = "0" y = "727"/>
+            <rect x = "87" y = "727"/>
+            <rect x = "174" y = "727"/>
+            <rect x = "261" y = "727"/>
+            <rect x = "348" y = "727"/>
+            <rect x = "435" y = "727"/>
+            <rect x = "522" y = "727"/>
+            <rect x = "609" y = "727"/>
+            <rect x = "696" y = "727"/>
+            <rect x = "783" y = "727"/>
+        </south_west>
+        <west>
+          <rect x = "0" y = "809"/>
+          <rect x = "87" y = "809"/>
+          <rect x = "174" y = "809"/>
+          <rect x = "261" y = "809"/>
+          <rect x = "348" y = "809"/>
+          <rect x = "435" y = "809"/>
+          <rect x = "522" y = "809"/>
+          <rect x = "609" y = "809"/>
+          <rect x = "696" y = "809"/>
+          <rect x = "783" y = "809"/>
+        </west>
+        <north_west>
+          <rect x = "0" y = "891"/>
+          <rect x = "87" y = "891"/>
+          <rect x = "174" y = "891"/>
+          <rect x = "261" y = "891"/>
+          <rect x = "348" y = "891"/>
+          <rect x = "435" y = "891"/>
+          <rect x = "522" y = "891"/>
+          <rect x = "609" y = "891"/>
+          <rect x = "696" y = "891"/>
+          <rect x = "783" y = "891"/>
+        </north_west>
+        <north>
+          <rect x = "0" y = "973"/>
+          <rect x = "87" y = "973"/>
+          <rect x = "174" y = "973"/>
+          <rect x = "261" y = "973"/>
+          <rect x = "348" y = "973"/>
+          <rect x = "435" y = "973"/>
+          <rect x = "522" y = "973"/>
+          <rect x = "609" y = "973"/>
+          <rect x = "696" y = "973"/>
+          <rect x = "783" y = "973"/>
+        </north>
+      </attack>
+      <death speed="15" w="110" h="73">
+        <south>
+          <rect x = "0" y = "1055"/>
+          <rect x = "111" y = "1055"/>
+          <rect x = "222" y = "1055"/>
+          <rect x = "333" y = "1055"/>
+          <rect x = "444" y = "1055"/>
+          <rect x = "555" y = "1055"/>
+          <rect x = "666" y = "1055"/>
+          <rect x = "777" y = "1055"/>
+          <rect x = "888" y = "1055"/>
+          <rect x = "999" y = "1055"/>
+        </south>
+        <south_west>
+          <rect x = "0" y = "1129"/>
+          <rect x = "111" y = "1129"/>
+          <rect x = "222" y = "1129"/>
+          <rect x = "333" y = "1129"/>
+          <rect x = "444" y = "1129"/>
+          <rect x = "555" y = "1129"/>
+          <rect x = "666" y = "1129"/>
+          <rect x = "777" y = "1129"/>
+          <rect x = "888" y = "1129"/>
+          <rect x = "999" y = "1129"/>
+        </south_west>
+        <west>
+          <rect x = "0" y = "1203"/>
+          <rect x = "111" y = "1203"/>
+          <rect x = "222" y = "1203"/>
+          <rect x = "333" y = "1203"/>
+          <rect x = "444" y = "1203"/>
+          <rect x = "555" y = "1203"/>
+          <rect x = "666" y = "1203"/>
+          <rect x = "777" y = "1203"/>
+          <rect x = "888" y = "1203"/>
+          <rect x = "999" y = "1203"/>
+        </west>
+        <north_west>
+          <rect x = "0" y = "1277"/>
+          <rect x = "111" y = "1277"/>
+          <rect x = "222" y = "1277"/>
+          <rect x = "333" y = "1277"/>
+          <rect x = "444" y = "1277"/>
+          <rect x = "555" y = "1277"/>
+          <rect x = "666" y = "1277"/>
+          <rect x = "777" y = "1277"/>
+          <rect x = "888" y = "1277"/>
+          <rect x = "999" y = "1277"/>
+        </north_west>
+        <north>
+          <rect x = "0" y = "1351"/>
+          <rect x = "111" y = "1351"/>
+          <rect x = "222" y = "1351"/>
+          <rect x = "333" y = "1351"/>
+          <rect x = "444" y = "1351"/>
+          <rect x = "555" y = "1351"/>
+          <rect x = "666" y = "1351"/>
+          <rect x = "777" y = "1351"/>
+          <rect x = "888" y = "1351"/>
+          <rect x = "999" y = "1351"/>
+        </north>
+      </death>
+      <decompose speed="" w="108" h="42">
+        <south>
+          <rect x = "0" y = "1425"/>
+          <rect x = "109" y = "1425"/>
+          <rect x = "218" y = "1425"/>
+          <rect x = "327" y = "1425"/>
+          <rect x = "436" y = "1425"/>
+          <rect x = "545" y = "1425"/>
+          <rect x = "654" y = "1425"/>
+          <rect x = "763" y = "1425"/>
+          <rect x = "872" y = "1425"/>
+          <rect x = "981" y = "1425"/>
+        </south>
+        <south_west>
+          <rect x = "0" y = "1468"/>
+          <rect x = "109" y = "1468"/>
+          <rect x = "218" y = "1468"/>
+          <rect x = "327" y = "1468"/>
+          <rect x = "436" y = "1468"/>
+          <rect x = "545" y = "1468"/>
+          <rect x = "654" y = "1468"/>
+          <rect x = "763" y = "1468"/>
+          <rect x = "872" y = "1468"/>
+          <rect x = "981" y = "1468"/>
+        </south_west>
+        <west>
+          <rect x = "0" y = "1511"/>
+          <rect x = "109" y = "1511"/>
+          <rect x = "218" y = "1511"/>
+          <rect x = "327" y = "1511"/>
+          <rect x = "436" y = "1511"/>
+          <rect x = "545" y = "1511"/>
+          <rect x = "654" y = "1511"/>
+          <rect x = "763" y = "1511"/>
+          <rect x = "872" y = "1511"/>
+          <rect x = "981" y = "1511"/>
+        </west>
+        <north_west>
+          <rect x = "0" y = "1554"/>
+          <rect x = "109" y = "1554"/>
+          <rect x = "218" y = "1554"/>
+          <rect x = "327" y = "1554"/>
+          <rect x = "436" y = "1554"/>
+          <rect x = "545" y = "1554"/>
+          <rect x = "654" y = "1554"/>
+          <rect x = "763" y = "1554"/>
+          <rect x = "872" y = "1554"/>
+          <rect x = "981" y = "1554"/>
+        </north_west>
+        <north>
+          <rect x = "0" y = "1597"/>
+          <rect x = "109" y = "1597"/>
+          <rect x = "218" y = "1597"/>
+          <rect x = "327" y = "1597"/>
+          <rect x = "436" y = "1597"/>
+          <rect x = "545" y = "1597"/>
+          <rect x = "654" y = "1597"/>
+          <rect x = "763" y = "1597"/>
+          <rect x = "872" y = "1597"/>
+          <rect x = "981" y = "1597"/>
+        </north>
+      </decompose>
+    </animations>
+  </unit>
 </units>

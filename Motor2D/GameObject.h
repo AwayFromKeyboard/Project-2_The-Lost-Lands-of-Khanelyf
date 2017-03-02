@@ -8,6 +8,7 @@ class Animator;
 class PhysBody;
 class b2Joint;
 class Animation;
+class Unit;
 
 enum class pbody_type;
 enum class fixture_type;
@@ -70,6 +71,8 @@ public:
 	// Loads all animations from an XML
 	void LoadAnimationsFromXML(pugi::xml_node & node);
 
+	void LoadAnimationsFromUnitsXML(pugi::xml_node & node, Unit* unit);
+
 	// Sets an animation
 	void SetAnimation(const char* animation);
 
@@ -94,12 +97,6 @@ public:
 	// Returns the texture
 	SDL_Texture* GetTexture();
 
-	// Set the speed of the Game Object
-	void SetSpeed(int _speed);
-
-	// Get the speed of the current Game Object
-	int GetSpeed();
-
 private:
 
 public:
@@ -113,7 +110,6 @@ private:
 	float          restitution = 0.0f;
 	int			   cat = 0;
 	int		       mask = 0;
-	int			   speed = 0;
 
 	SDL_Texture*   texture = nullptr;
 };
