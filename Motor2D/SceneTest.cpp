@@ -12,6 +12,7 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "GameObject.h"
+#include "j1Scene.h"
 
 SceneTest::SceneTest()
 {
@@ -98,6 +99,12 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
+	if (App->scene->GetCurrentScene() != App->scene->scene_test)
+	{
+		App->gui->DeleteElement(cursor);
+		App->gui->DeleteElement(general_ui_window);
+	}
+
 	return true;
 }
 
