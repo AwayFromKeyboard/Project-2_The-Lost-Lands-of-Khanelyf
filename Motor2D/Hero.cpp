@@ -42,13 +42,12 @@ bool Hero::LoadEntity()
 		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
-
-		offset.x = 10; offset.y = 20;
+		
 		cost = node.child("cost").attribute("value").as_int();
 		speed = node.child("speed").attribute("value").as_float();
 		damage = node.child("damage").attribute("value").as_int();
 		armor = node.child("armor").attribute("value").as_int();
-		pierce_armor = node.child("pierce_armor").attribute("value").as_int();
+		pierce_armor = node.child("pierce_armor").attribute("value").as_int(); 
 		range = node.child("range").attribute("value").as_int();
 		life = node.child("life").attribute("value").as_int();
 
@@ -57,11 +56,17 @@ bool Hero::LoadEntity()
 		node = node.child("animations");
 		game_object->LoadAnimationsFromUnitsXML(node, this);
 
+		i_offset.create(node.child("idle").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+		a_offset.create(node.child("attack").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+		d_offset.create(node.child("death").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+		de_offset.create(node.child("decompose").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+
 		current_animation = &i_south;
+		offset = i_offset;
 	}
 	else LOG("\nERROR, no node found\n");
 	
-
 	return ret;
 }
 
