@@ -392,13 +392,13 @@ private:
 // -----------------------------------
 // Scroll Bar ------------------------
 
-class scroll_element
+class ScrollElement
 {
 public:
-	scroll_element() {};
-	~scroll_element() {};
+	ScrollElement() {};
+	~ScrollElement() {};
 
-	bool operator == (scroll_element sc)
+	bool operator == (ScrollElement sc)
 	{
 		if (sc.element == element && sc.starting_pos_x == starting_pos_x && sc.starting_pos_y == starting_pos_y)
 			return true; 
@@ -410,11 +410,11 @@ public:
 	int          starting_pos_y = 0;
 };
 
-class UI_Scroll_Bar : public UI_Element
+class UI_ScrollBar : public UI_Element
 {
 public:
-	UI_Scroll_Bar();
-	~UI_Scroll_Bar();
+	UI_ScrollBar();
+	~UI_ScrollBar();
 
 	void Set(iPoint pos, int w, int h, int button_size = 11);
 
@@ -445,7 +445,7 @@ public:
 
 	SDL_Rect             moving_rect = NULLRECT;
 
-	list<scroll_element> elements;
+	list<ScrollElement> elements;
 
 	int                  starting_h = 0;
 	int                  button_starting_h = 0;

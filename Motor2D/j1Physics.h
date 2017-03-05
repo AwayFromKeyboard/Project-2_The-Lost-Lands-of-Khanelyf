@@ -42,7 +42,7 @@ public:
 };
 
 // Module --------------------------------------
-class j1Physics : public j1Module, public b2ContactListener // TODO
+class j1Physics : public j1Module, public b2ContactListener
 {
 public:
 	j1Physics();
