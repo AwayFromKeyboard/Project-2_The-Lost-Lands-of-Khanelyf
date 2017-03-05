@@ -10,8 +10,8 @@
 
 j1Window::j1Window() : j1Module()
 {
-	window = NULL;
-	screen_surface = NULL;
+	window = nullptr;
+	screen_surface = nullptr;
 	name = "window";
 }
 
@@ -66,7 +66,7 @@ bool j1Window::Awake(pugi::xml_node& config)
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 	
-		if(window == NULL)
+		if(window == nullptr)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
@@ -92,7 +92,7 @@ bool j1Window::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
+	if(window != nullptr)
 	{
 		SDL_DestroyWindow(window);
 	}
