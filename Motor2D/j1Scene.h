@@ -38,7 +38,7 @@ struct layer_blit
 	int              pivot_x = 0;
 	int              pivot_y = 0;
 
-	int layer;
+	int layer = 0;
 };
 
 struct compare_layer {

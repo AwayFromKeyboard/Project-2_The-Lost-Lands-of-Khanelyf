@@ -91,7 +91,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\3. Scenes ==========</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Engine\3. Scenes ==========\MainMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

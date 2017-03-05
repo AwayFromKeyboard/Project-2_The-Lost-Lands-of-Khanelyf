@@ -11,7 +11,8 @@ class GameObject;
 enum entity_name
 {
 	player,
-	test
+	test,
+	entity_null
 };
 
 class Entity;

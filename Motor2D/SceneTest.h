@@ -36,11 +36,11 @@ private:
 
 	Hero* troop = nullptr;
 
-	SDL_Rect cursor_r;
-	SDL_Rect ui_r;
+	SDL_Rect cursor_r = NULLRECT;
+	SDL_Rect ui_r = NULLRECT;
 
 private:
-	SDL_Texture* debug_tex;
+	SDL_Texture* debug_tex = nullptr;
 };
 
 #endif // _SceneTest_H_

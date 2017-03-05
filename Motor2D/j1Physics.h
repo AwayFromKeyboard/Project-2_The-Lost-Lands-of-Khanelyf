@@ -14,8 +14,8 @@ enum class fixture_type;
 
 struct path_joint 
 {
-	b2MouseJoint* joint;
-	b2Vec2*       path;
+	b2MouseJoint* joint = nullptr;
+	b2Vec2*       path = nullptr;
 	int           points = 0;
 	int			  cur_point = 0;
 };

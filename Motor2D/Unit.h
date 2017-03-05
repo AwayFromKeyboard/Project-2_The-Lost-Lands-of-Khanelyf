@@ -9,7 +9,8 @@ enum unit_state {
 	unit_move,
 	unit_attack,
 	unit_death,
-	unit_decompose
+	unit_decompose,
+	unit_null
 };
 
 class GameObject;
@@ -42,14 +43,14 @@ public:
 	void SetDirection();
 public:
 	GameObject* game_object = nullptr;
-	unit_state state;
-	entity_name type;
+	unit_state state = unit_state::unit_null;
+	entity_name type = entity_name::entity_null;
 	bool flip = false;
 	bool to_delete = true;
 public:
 	vector<iPoint> path;
-	fPoint direction;
-	iPoint destination;
+	fPoint direction = NULLPOINT;
+	iPoint destination = NULLPOINT;
 	bool has_destination = false;
 public:
 	int life = 0;
@@ -60,14 +61,14 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 	
-	iPoint offset;
-	iPoint i_offset;
-	iPoint m_offset;
-	iPoint a_offset;
-	iPoint d_offset;
-	iPoint de_offset;
+	iPoint offset = NULLPOINT;
+	iPoint i_offset = NULLPOINT;
+	iPoint m_offset = NULLPOINT;
+	iPoint a_offset = NULLPOINT;
+	iPoint d_offset = NULLPOINT;
+	iPoint de_offset = NULLPOINT;
 
-	Animation* current_animation;
+	Animation* current_animation = nullptr
 	// Idle
 	Animation i_south;
 	Animation i_south_west;

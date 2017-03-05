@@ -18,7 +18,8 @@ enum ui_element
 	ui_image,
 	ui_scroll_bar,
 	ui_colored_rect,
-	ui_element_null
+	ui_element_null,
+	null
 };
 
 
@@ -30,8 +31,8 @@ class UI_Element;
 class UI_Window;
 class UI_Text;
 struct ElementItem {
-	UI_Element* data;
-	double priority;
+	UI_Element* data = nullptr;
+	double priority = 0;
 };
 
 class j1Gui : public j1Module
@@ -76,7 +77,7 @@ public:
 
 
 private:
-	SDL_Rect				selection_rect;
+	SDL_Rect				selection_rect = NULLRECT;
 
 public:
 	// Atlas --
@@ -150,7 +151,7 @@ protected:
 	bool CheckClickRect(int x, int y);
 
 public:
-	ui_element          type = ui_element_null;
+	ui_element          type = ui_element::null;
 	SDL_Rect            rect = NULLRECT;
 
 	bool                print = true;
@@ -382,7 +383,7 @@ private:
 	SDL_Rect     camera_before = NULLRECT;
 
 	// Change text manually
-	string       text_change;
+	std::string       text_change;
 	bool         change = false;
 };
 

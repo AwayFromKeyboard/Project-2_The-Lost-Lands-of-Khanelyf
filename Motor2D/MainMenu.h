@@ -32,8 +32,8 @@ private:
 
 	UI_Button* single_player_button = nullptr;
 
-	SDL_Rect cursor_r;
-	SDL_Rect ui_r;
+	SDL_Rect cursor_r = NULLRECT;
+	SDL_Rect ui_r = NULLRECT;
 
 private:
 	void CheckSinglePlayerButton();

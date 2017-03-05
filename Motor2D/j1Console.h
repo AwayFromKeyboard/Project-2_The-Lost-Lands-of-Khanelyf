@@ -17,7 +17,8 @@ enum console_text_type
 {
 	output, 
 	input, 
-	error
+	error,
+	null
 };
 
 class Command 
