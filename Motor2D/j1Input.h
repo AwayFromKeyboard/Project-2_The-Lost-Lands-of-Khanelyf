@@ -15,7 +15,7 @@ enum event_window
 	we_hide,
 	we_show,
 	we_count,
-	null
+	we_null
 };
 
 enum key_state
@@ -24,7 +24,7 @@ enum key_state
 	key_down,
 	key_repeat,
 	key_up,
-	null
+	key_null
 };
 
 class j1Input : public j1Module

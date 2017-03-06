@@ -53,7 +53,7 @@ bool j1Scene::Start()
 	// -------------
 
 	// Starting scene
-	current_scene = main_menu;
+	current_scene = scene_test;
 
 	if(current_scene != nullptr)
 		ret = current_scene->Start();

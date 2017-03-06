@@ -44,7 +44,7 @@ public:
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
-	entity_name type = entity_name::entity_null;
+	entity_name type;
 	bool flip = false;
 	bool to_delete = true;
 public:
@@ -68,7 +68,7 @@ public:
 	iPoint d_offset = NULLPOINT;
 	iPoint de_offset = NULLPOINT;
 
-	Animation* current_animation = nullptr
+	Animation* current_animation = nullptr;
 	// Idle
 	Animation i_south;
 	Animation i_south_west;

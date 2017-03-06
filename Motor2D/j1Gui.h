@@ -19,7 +19,6 @@ enum ui_element
 	ui_scroll_bar,
 	ui_colored_rect,
 	ui_element_null,
-	null
 };
 
 
@@ -151,7 +150,7 @@ protected:
 	bool CheckClickRect(int x, int y);
 
 public:
-	ui_element          type = ui_element::null;
+	ui_element          type = ui_element::ui_element_null;
 	SDL_Rect            rect = NULLRECT;
 
 	bool                print = true;

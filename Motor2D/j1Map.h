@@ -85,8 +85,7 @@ enum map_types
 	maptype_unknown = 0,
 	maptype_orthogonal,
 	maptype_isometric,
-	maptype_staggered,
-	null
+	maptype_staggered
 };
 // ----------------------------------------------------
 struct MapData
@@ -96,7 +95,7 @@ struct MapData
 	int					tile_width = 0;
 	int					tile_height = 0;
 	SDL_Color			background_color = NULLRECT;
-	map_types			type = map_types::null;
+	map_types			type = map_types::maptype_unknown;
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>layers;
 };
