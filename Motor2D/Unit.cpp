@@ -41,6 +41,7 @@ bool Unit::Update(float dt)
 {
 	switch (state) {
 	case unit_idle:
+		CheckDirection();
 		break;
 	case unit_move:
 		FollowPath(dt);
@@ -103,6 +104,59 @@ void Unit::SetPath(vector<iPoint> _path)
 vector<iPoint> Unit::GetPath()const
 {
 	return path;
+}
+
+void Unit::CheckDirection()
+{
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &i_west;
+			flip = true;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &i_south_west;
+			flip = true;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &i_north_west;
+			flip = true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			current_animation = &i_south;
+			flip = false;
+		}
+		else if (direction.y == -1)
+		{
+			current_animation = &i_north;
+			flip = false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &i_west;
+			flip = false;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &i_south_west;
+			flip = false;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &i_north_west;
+			flip = false;
+		}
+	}
 }
 
 void Unit::FollowPath(float dt)

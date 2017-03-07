@@ -81,6 +81,10 @@ bool SceneTest::Update(float dt)
 	{
 		troop->state = unit_move;
 	}
+	else
+	{
+		troop->state = unit_idle;
+	}
 
 	for (uint i = 0; i < troop->path.size(); i++)
 	{

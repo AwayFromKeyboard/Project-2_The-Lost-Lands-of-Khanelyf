@@ -38,6 +38,7 @@ public:
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
 	vector<iPoint> GetPath() const;
+	void CheckDirection();
 	void FollowPath(float dt);
 	void SetDirection();
 public:
