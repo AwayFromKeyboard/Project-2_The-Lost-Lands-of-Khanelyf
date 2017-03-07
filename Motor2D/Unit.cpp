@@ -171,25 +171,61 @@ void Unit::SetDirection()
 
 	if (direction.x > 0) {
 		if (direction.y > 0)
+		{
 			direction = { 0,1 };
+			current_animation = &m_south;
+			flip = false;
+		}
+
 		else if (direction.y < 0)
+		{
 			direction = { 1,0 };
+			current_animation = &m_west;
+			flip = true;
+		}
 		else
-			direction = { +1,+1 };//
+		{
+			direction = { +1,+0.5 };
+			current_animation = &m_south_west;
+			flip = true;
+		}
+
 	}
 	else if (direction.x < 0){
 		if (direction.y > 0)
+		{
 			direction = { -1,0 };
+			current_animation = &m_west;
+			flip = false;
+		}
 		else if (direction.y < 0)
+		{
 			direction = { 0,-1 };
+			current_animation = &m_north;
+			flip = false;
+		}
+			
 		else
-			direction = { -1,-1 };
+		{
+			direction = { -1,-0.5 };
+			current_animation = &m_north_west;
+			flip = false;
+		}
 	}
 	else {
 		if (direction.y > 0)
-			direction = { -1,1 };
+		{
+			direction = { -1,0.5 };
+			current_animation = &m_south_west;
+			flip = false;
+		}
 		else if (direction.y < 0)
-			direction = { 1,-1 };
+		{
+			direction = { 1,-0.5 };
+			current_animation = &m_north_west;
+			flip = true;
+		}
+			
 	}
 
 	has_destination = true;
