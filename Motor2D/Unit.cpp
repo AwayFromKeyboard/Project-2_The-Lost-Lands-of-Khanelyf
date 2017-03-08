@@ -115,7 +115,7 @@ void Unit::FollowPath(float dt)
 
 		pos.x += direction.x * speed;
 		pos.y += direction.y * speed;
-
+		// Its just a Test Bro
 		game_object->SetPos(pos);
 
 		if (App->map->WorldToMapPoint(game_object->GetPos()) == destination) {
