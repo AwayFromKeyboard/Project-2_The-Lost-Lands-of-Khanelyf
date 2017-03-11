@@ -17,9 +17,6 @@ public:
 	// Start variables
 	bool Start();
 
-	// Draw and change animations
-	bool Draw(float dt);
-
 	// Post Update
 	bool PostUpdate();
 

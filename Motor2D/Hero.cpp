@@ -79,19 +79,6 @@ bool Hero::Start()
 	return ret;
 }
 
-bool Hero::Draw(float dt)
-{
-	bool ret = true;
-
-	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
-	}
-	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
-
-	return ret;
-}
-
 bool Hero::PostUpdate()
 {
 	bool ret = true;

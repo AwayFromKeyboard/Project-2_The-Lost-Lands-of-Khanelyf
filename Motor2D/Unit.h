@@ -99,6 +99,9 @@ public:
 	Animation de_west;
 	Animation de_north_west;
 	Animation de_north;
+
+public:
+	bool is_selected = false;
 };
 
 #endif
