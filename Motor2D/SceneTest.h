@@ -10,6 +10,9 @@ class b2Fixture;
 class Parallax;
 class Hero;
 
+#define TROOP_PRICE 20
+#define TROOP_OFFSET 1
+
 class SceneTest : public Scene
 {
 public:
@@ -27,6 +30,8 @@ public:
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
+	void CheckUnitCreation(iPoint p);
+
 private:
 	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
@@ -39,6 +44,9 @@ private:
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect ui_r = NULLRECT;
 
+private:
+	int gold = 0;
+	UI_Text* gold_txt = nullptr;
 private:
 	SDL_Texture* debug_tex = nullptr;
 };
