@@ -59,7 +59,7 @@ bool SceneTest::PreUpdate()
 	p = App->map->WorldToMap(p.x, p.y);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		troop->path = App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p);
+		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
 	}
 
 	return true;
