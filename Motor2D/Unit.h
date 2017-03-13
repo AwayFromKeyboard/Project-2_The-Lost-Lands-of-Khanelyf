@@ -22,12 +22,26 @@ enum attack_state
 	attack_null
 };
 
+enum unit_direction {
+	north = 0,
+	south,
+	west,
+	east,
+	north_west,
+	north_east,
+	south_west,
+	south_east
+};
+
 class GameObject;
 class Building;
 enum entity_name;
 
 class Unit : public Entity
 {
+private:
+	unit_direction destination;
+
 public:
 	Unit();
 	~Unit();
@@ -49,8 +63,10 @@ public:
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
 	vector<iPoint> GetPath() const;
+	void CheckDirection();
 	void FollowPath(float dt);
 	void SetDirection();
+	void LookAtMovement();
 
 	// Attack
 	bool IsInRange(Entity* attacked_entity);
@@ -59,6 +75,7 @@ public:
 	void BuildingAttack();
 	void SetAttackingUnit(Unit* att_unit);
 	void SetAttackingBuilding(Building* att_building);
+  
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
@@ -66,14 +83,17 @@ public:
 	entity_name type;
 	bool flip = false;
 	bool to_delete = true;
+  
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
 	iPoint destination = NULLPOINT;
 	bool has_destination = false;
+  
 private:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
+  
 public:
 	int life = 0;
 	int cost = 0;

@@ -181,6 +181,29 @@ iPoint j1Map::WorldToMapPoint(iPoint position) const
 	return ret;
 }
 
+iPoint j1Map::MapToWorldPoint(iPoint position) const
+{
+	iPoint ret;
+
+	if (data.type == maptype_orthogonal)
+	{
+		ret.x = position.x * data.tile_width;
+		ret.y = position.y * data.tile_height;
+	}
+	else if (data.type == maptype_isometric)
+	{
+		ret.x = (position.x - position.y) * (data.tile_width * 0.5f);
+		ret.y = (position.x + position.y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = position.x; ret.y = position.y;
+	}
+
+	return ret;
+}
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;

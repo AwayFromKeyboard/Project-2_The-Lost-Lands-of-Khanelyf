@@ -125,6 +125,7 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMapPoint(iPoint position) const;
+	iPoint MapToWorldPoint(iPoint position) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 private:

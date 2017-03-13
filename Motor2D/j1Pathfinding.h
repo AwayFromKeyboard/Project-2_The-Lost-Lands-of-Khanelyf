@@ -34,7 +34,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	Path* CreatePath(const iPoint& origin, const iPoint& destination);
+	vector<iPoint> CreatePath(const iPoint& origin, const iPoint& destination);
 
 	vector<iPoint> GetPath() const;
 	std::list<Path*> GetPaths() const;
