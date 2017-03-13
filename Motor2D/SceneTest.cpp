@@ -50,7 +50,7 @@ bool SceneTest::Start()
 	troop->game_object->SetPos(pos);
 	
 	troop2 = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos2(App->map->MapToWorld(14, 0).x, App->map->MapToWorld(14, 0).y);
+	fPoint pos2(App->map->MapToWorld(13, 1).x, App->map->MapToWorld(13, 1).y);
 	troop2->game_object->SetPos(pos2);
 
 	SDL_ShowCursor(0);

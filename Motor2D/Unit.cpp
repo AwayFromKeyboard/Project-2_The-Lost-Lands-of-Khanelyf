@@ -47,11 +47,18 @@ bool Unit::Update(float dt)
 		FollowPath(dt);
 		break;
 	case unit_attack:
-		if (attacked_unit != nullptr && IsInRange(attacked_unit)) att_state = attack_unit;
+		if (attacked_unit != nullptr && IsInRange(attacked_unit))
+		{
+			att_state = attack_unit;
+			offset = a_offset;
+		}
 		else if (!IsInRange(attacked_unit))
 		{
 			state = unit_idle;
+			current_animation = &i_north;
 			att_state = attack_null;
+			offset = i_offset;
+			attacked_unit = nullptr;
 			break;
 		}
 		/*if (attacked_building != nullptr && IsInRange(attacked_building)) att_state = attack_building;
