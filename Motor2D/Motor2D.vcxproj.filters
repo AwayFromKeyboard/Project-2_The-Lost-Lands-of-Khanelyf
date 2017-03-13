@@ -94,6 +94,9 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Engine\3. Scenes ==========\MainMenu</Filter>
     </ClCompile>
+    <ClCompile Include="j1Collisions.cpp">
+      <Filter>Engine\1. Modules =========</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -210,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>Engine\3. Scenes ==========\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Collisions.h">
+      <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
