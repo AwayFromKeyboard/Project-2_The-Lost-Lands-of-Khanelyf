@@ -87,7 +87,6 @@ public:
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
-	iPoint destination = NULLPOINT;
 	bool has_destination = false;
   
 private:
