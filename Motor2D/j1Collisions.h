@@ -54,7 +54,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	Collider* AddCollider(SDL_Rect rect, j1Module* callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	bool EraseCollider(Collider* collider);
 	void DebugDraw();
 

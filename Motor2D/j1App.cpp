@@ -55,7 +55,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(console);
 	AddModule(entity);
-	AddModule(collisions)
+	AddModule(collisions);
 
 	// Scene
 	AddModule(scene);
