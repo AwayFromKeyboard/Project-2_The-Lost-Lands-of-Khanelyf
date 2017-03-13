@@ -12,11 +12,25 @@ enum unit_state {
 	unit_decompose
 };
 
+enum unit_direction {
+	north = 0,
+	south,
+	west,
+	east,
+	north_west,
+	north_east,
+	south_west,
+	south_east
+};
+
 class GameObject;
 enum entity_name;
 
 class Unit : public Entity
 {
+private:
+	unit_direction destination;
+
 public:
 	Unit();
 	~Unit();
@@ -50,7 +64,6 @@ public:
 public:
 	vector<iPoint> path;
 	fPoint direction;
-	iPoint destination;
 	bool has_destination = false;
 public:
 	int life = 0;

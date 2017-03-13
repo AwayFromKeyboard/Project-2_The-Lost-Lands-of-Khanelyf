@@ -161,42 +161,20 @@ void Unit::CheckDirection()
 
 void Unit::FollowPath(float dt)
 {
-	if (1)
+	SetDirection();
+
+	fPoint pos = game_object->fGetPos();
+
+	pos.x += direction.x * speed;
+	pos.y += direction.y * speed;
+
+	game_object->SetPos(pos);
+
+	if (path.size() == 0)
 	{
-		SetDirection();
-
-		fPoint pos = game_object->fGetPos();
-
-		pos.x += direction.x * speed;
-		pos.y += direction.y * speed;
-
-		game_object->SetPos(pos);
-
-		if (path.size() != 0)
-		{
-			if (App->map->WorldToMapPoint(game_object->GetPos()) == path.front()) {
-				path.erase(path.begin());
-			}
-		}
-		else
-		{
-			state = unit_idle;
-			has_destination = false;
-		}
+		state = unit_idle;
+		has_destination = false;
 	}
-	/*else
-	{
-		if (path.size() > 0)
-		{
-			path.erase(path.begin());
-			SetDirection();
-		}
-		else
-		{
-			has_destination = false;
-			state = unit_idle;
-		}
-	}*/
 }
 
 void Unit::SetDirection()
@@ -204,30 +182,47 @@ void Unit::SetDirection()
 	if (path.size() == 0){
 		return;
 	}
-	iPoint position = game_object->GetPos();
-	iPoint position_m = App->map->WorldToMap(position.x, position.y);
 
-	if (path.size() != 0 && position_m == path.front())
-	{
-		path.erase(path.begin());
-		SetDirection();
-		return;
+	iPoint position = game_object->GetPos();
+	switch (destination) {
+	case south:
+		break;
+	case north:
+		position.y += offset.y;
+		break;
+	case north_east:
+		position.y += offset.y;
+	case south_east:
+	case east:
+		position.x -= offset.x;
+		break;
+	case north_west:
+		position.y += offset.y;
+	case south_west:
+	case west:
+		position.x += offset.x;
+		break;
+
+	}
+
+	iPoint position_m = App->map->WorldToMapPoint(position);
+
+	if (position_m == path.front()) {
+			path.erase(path.begin());
+			SetDirection();
+			return;
 	}
 
 	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
 
 	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
-	
-	/*if (direction.x > 0) direction.x = 1;
-	else if (direction.x < 0) direction.x = -1;
-	if (direction.y > 0) direction.y = 1;
-	else if (direction.y < 0) direction.y = -1;*/
 
 	if (direction.x > 0) {
 		if (direction.y > 0)
 		{
 			direction = { 0,1 };
 			current_animation = &m_south;
+			destination = south;
 			flip = false;
 		}
 
@@ -235,12 +230,14 @@ void Unit::SetDirection()
 		{
 			direction = { 1,0 };
 			current_animation = &m_west;
+			destination = east;
 			flip = true;
 		}
 		else
 		{
 			direction = { +1,+0.5 };
 			current_animation = &m_south_west;
+			destination = south_east;
 			flip = true;
 		}
 
@@ -250,12 +247,14 @@ void Unit::SetDirection()
 		{
 			direction = { -1,0 };
 			current_animation = &m_west;
+			destination = west;
 			flip = false;
 		}
 		else if (direction.y < 0)
 		{
 			direction = { 0,-1 };
 			current_animation = &m_north;
+			destination = north;
 			flip = false;
 		}
 			
@@ -263,6 +262,7 @@ void Unit::SetDirection()
 		{
 			direction = { -1,-0.5 };
 			current_animation = &m_north_west;
+			destination = north_west;
 			flip = false;
 		}
 	}
@@ -271,12 +271,14 @@ void Unit::SetDirection()
 		{
 			direction = { -1,0.5 };
 			current_animation = &m_south_west;
+			destination = south_west;
 			flip = false;
 		}
 		else if (direction.y < 0)
 		{
 			direction = { 1,-0.5 };
 			current_animation = &m_north_west;
+			destination = north_east;
 			flip = true;
 		}
 			
