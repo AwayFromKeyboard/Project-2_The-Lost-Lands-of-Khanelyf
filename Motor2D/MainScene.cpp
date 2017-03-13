@@ -59,7 +59,7 @@ bool MainScene::CleanUp()
 	return ret;
 }
 
-void MainScene::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void MainScene::OnColl(Collider* c1, Collider* c2)
 {
 
 }

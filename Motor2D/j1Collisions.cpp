@@ -75,7 +75,7 @@ void j1Collisions::DebugDraw()
 	if (App->debug_mode == false)
 		debug = true;
 
-	if (App->input->keyboard[SDL_SCANCODE_F1] == KEY_DOWN && App->debug_mode == true)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down && App->debug_mode == true)
 		debug = !debug;
 
 	if (debug == true)

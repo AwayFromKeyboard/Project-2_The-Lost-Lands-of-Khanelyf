@@ -45,26 +45,26 @@ bool j1Physics::Start()
 	return true;
 }
 
-// 
+// CONVERT
 bool j1Physics::PreUpdate()
 {
-	world->Step(App->GetDT(), 6, 2);
-
-	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
-	{
-		if(c->GetFixtureA()->IsSensor() && c->IsTouching())
-		{
-			PhysBody* pb1 = (PhysBody*)c->GetFixtureA()->GetBody()->GetUserData();
-			PhysBody* pb2 = (PhysBody*)c->GetFixtureB()->GetBody()->GetUserData();
-
-			b2Fixture* fA = c->GetFixtureA();
-			b2Fixture* fB = c->GetFixtureB();
-
-			if(pb1 && pb2 && pb1->listener)
-				pb1->listener->OnCollision(pb1, pb2, fA, fB);
-		}
-	}
-
+//	world->Step(App->GetDT(), 6, 2);
+//
+//	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
+//	{
+//		if(c->GetFixtureA()->IsSensor() && c->IsTouching())
+//		{
+//			PhysBody* pb1 = (PhysBody*)c->GetFixtureA()->GetBody()->GetUserData();
+//			PhysBody* pb2 = (PhysBody*)c->GetFixtureB()->GetBody()->GetUserData();
+//
+//			b2Fixture* fA = c->GetFixtureA();
+//			b2Fixture* fB = c->GetFixtureB();
+//
+//			if(pb1 && pb2 && pb1->listener)
+//				pb1->listener->OnCollision(pb1, pb2, fA, fB);
+//		}
+//	}
+//
 	return true;
 }
 
@@ -963,17 +963,18 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	return ret;
 }
 
+// CONVERT
 void j1Physics::BeginContact(b2Contact* contact)
 {
-	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData();
-	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData();
-
-	b2Fixture* fixtureA = contact->GetFixtureA();
-	b2Fixture* fixtureB = contact->GetFixtureB();
-
-	if(physA && physA->listener != nullptr)
-		physA->listener->OnCollision(physA, physB, fixtureA, fixtureB);
-
-	if(physB && physB->listener != nullptr)
-		physB->listener->OnCollision(physB, physA, fixtureB, fixtureA);
+//	PhysBody* physA = (PhysBody*)contact->GetFixtureA()->GetBody()->GetUserData();
+//	PhysBody* physB = (PhysBody*)contact->GetFixtureB()->GetBody()->GetUserData();
+//
+//	b2Fixture* fixtureA = contact->GetFixtureA();
+//	b2Fixture* fixtureB = contact->GetFixtureB();
+//
+//	if(physA && physA->listener != nullptr)
+//		physA->listener->OnCollision(physA, physB, fixtureA, fixtureB);
+//
+//	if(physB && physB->listener != nullptr)
+//		physB->listener->OnCollision(physB, physA, fixtureB, fixtureA);
 }
