@@ -55,6 +55,7 @@ public:
 	void CheckDirection();
 	void FollowPath(float dt);
 	void SetDirection();
+	void LookAtMovement();
 public:
 	GameObject* game_object = nullptr;
 	unit_state state;

@@ -202,7 +202,6 @@ void Unit::SetDirection()
 	case west:
 		position.x += offset.x;
 		break;
-
 	}
 
 	iPoint position_m = App->map->WorldToMapPoint(position);
@@ -217,7 +216,15 @@ void Unit::SetDirection()
 
 	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
 
-	if (direction.x > 0) {
+	LookAtMovement();
+
+	has_destination = true;
+}
+
+void Unit::LookAtMovement()
+{
+	if (direction.x > 0) 
+	{
 		if (direction.y > 0)
 		{
 			direction = { 0,1 };
@@ -242,7 +249,8 @@ void Unit::SetDirection()
 		}
 
 	}
-	else if (direction.x < 0){
+	else if (direction.x < 0) 
+	{
 		if (direction.y > 0)
 		{
 			direction = { -1,0 };
@@ -257,7 +265,7 @@ void Unit::SetDirection()
 			destination = north;
 			flip = false;
 		}
-			
+
 		else
 		{
 			direction = { -1,-0.5 };
@@ -266,7 +274,8 @@ void Unit::SetDirection()
 			flip = false;
 		}
 	}
-	else {
+	else 
+	{
 		if (direction.y > 0)
 		{
 			direction = { -1,0.5 };
@@ -281,8 +290,6 @@ void Unit::SetDirection()
 			destination = north_east;
 			flip = true;
 		}
-			
-	}
 
-	has_destination = true;
+	}
 }
