@@ -1,12 +1,14 @@
 #include "Defs.h"
 #include "Log.h"
+#include "j1Scene.h"
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Render.h"
 #include "j1Window.h"
-#include "j1Scene.h"
+#include "MainScene.h"
+#include "MainMenu.h"
 #include "MainScene.h"
 #include "SceneTest.h"
 #include "j1Console.h"
@@ -41,9 +43,11 @@ bool j1Scene::Start()
 	LOG("Start module scene");
 
 	// Create scenes
+	main_menu = new MainMenu();
 	main_scene = new MainScene();
 	scene_test = new SceneTest();
 
+	scenes.push_back(main_menu);
 	scenes.push_back(main_scene);
 	scenes.push_back(scene_test);
 	// -------------
@@ -114,9 +118,15 @@ void j1Scene::ChangeScene(Scene * new_scene)
 {
 	LOG("Changing current scene");
 
-	current_scene->CleanUp();
+	Scene* prev_scene = current_scene;
 	current_scene = new_scene;
+	prev_scene->CleanUp();
 	current_scene->Start();
+}
+
+Scene * j1Scene::GetCurrentScene()
+{
+	return current_scene;
 }
 
 void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_Rect section, float scale, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)

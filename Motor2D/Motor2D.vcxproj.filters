@@ -91,6 +91,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\3. Scenes ==========</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Engine\3. Scenes ==========\MainMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -205,6 +208,9 @@
     <ClInclude Include="Hero.h">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Engine\3. Scenes ==========\MainMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -233,6 +239,9 @@
     </Filter>
     <Filter Include="Engine\4. Entities ==========\Troops">
       <UniqueIdentifier>{4dbb521a-8d56-4ca6-9a54-726f796efe55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. Scenes ==========\MainMenu">
+      <UniqueIdentifier>{08dc2cab-567c-4b1a-8d0d-78ed5a4cb88f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

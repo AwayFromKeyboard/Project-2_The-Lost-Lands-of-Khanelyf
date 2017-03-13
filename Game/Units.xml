@@ -232,7 +232,7 @@
           <rect x="288" y="449"/>
         </north>
       </move>
-      <attack speed="10" w="56" h="73" offset_x="" offset_y="">
+      <attack speed="10" w="56" h="73" offset_x="33" offset_y="38">
         <south>
           <rect x="0" y="500"/>
           <rect x="57" y="500"/>

@@ -52,7 +52,7 @@ bool j1Console::Start()
 	console_background = (UI_ColoredRect*)window->CreateColoredRect(iPoint(window->rect.x, window->rect.y), window->rect.w, window->rect.h, CONSOLE_COLOR_1);
 	console_background2 = (UI_ColoredRect*)window->CreateColoredRect(iPoint(window->rect.x + FRAMES_SIZE, window->rect.y + TOP_FRAME_SIZE), window->rect.x + window->rect.w - (FRAMES_SIZE * 2) - 15, win_h / 3 - FRAMES_SIZE - TOP_FRAME_SIZE, CONSOLE_COLOR_1);
 
-	scroll = (UI_Scroll_Bar*)window->CreateScrollBar(iPoint(window->rect.x + FRAMES_SIZE, window->rect.y + TOP_FRAME_SIZE), window->rect.x + window->rect.w - (FRAMES_SIZE * 2) - 15, win_h / 3 - FRAMES_SIZE - TOP_FRAME_SIZE, SCROLL_BUTTON_SIZE);
+	scroll = (UI_ScrollBar*)window->CreateScrollBar(iPoint(window->rect.x + FRAMES_SIZE, window->rect.y + TOP_FRAME_SIZE), window->rect.x + window->rect.w - (FRAMES_SIZE * 2) - 15, win_h / 3 - FRAMES_SIZE - TOP_FRAME_SIZE, SCROLL_BUTTON_SIZE);
 
 	button_v_background = (UI_ColoredRect*)window->CreateColoredRect(iPoint(scroll->button_v->rect.x, scroll->min_bar_v), scroll->button_v->rect.w, scroll->rect.h, CONSOLE_COLOR_2);
 	button_v_background->click_through = true;
@@ -433,7 +433,7 @@ void j1Console::AddText(const char * txt, console_text_type type)
 			labels.remove(labels.front());
 
 			// Change to STD when UI is done
-			for (list<scroll_element>::iterator it = scroll->elements.begin(); it != scroll->elements.end(); it++)
+			for (list<ScrollElement>::iterator it = scroll->elements.begin(); it != scroll->elements.end(); it++)
 			{
 				(*it).starting_pos_y -= 20;
 				(*it).element->rect.y -= 20;

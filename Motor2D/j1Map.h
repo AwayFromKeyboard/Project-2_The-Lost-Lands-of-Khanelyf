@@ -16,12 +16,12 @@ struct Properties
 	struct Property
 	{
 		std::string name;
-		int value;
+		int value = 0;
 	};
 
 	~Properties()
 	{
-		Property* item;
+		Property* item = nullptr;
 		item = list.front();
 
 		for (std::list<Property*>::iterator prop = list.begin(); prop != list.end(); ++prop)
@@ -41,9 +41,9 @@ struct Properties
 struct MapLayer
 {
 	std::string	name;
-	int			width;
-	int			height;
-	uint*		data;
+	int			width = 0;
+	int			height = 0;
+	uint*		data = 0;
 	Properties	properties;
 
 	MapLayer() : data(NULL)
@@ -66,18 +66,18 @@ struct TileSet
 	SDL_Rect GetTileRect(int id) const;
 
 	std::string			name;
-	int					firstgid;
-	int					margin;
-	int					spacing;
-	int					tile_width;
-	int					tile_height;
-	SDL_Texture*		texture;
-	int					tex_width;
-	int					tex_height;
-	int					num_tiles_width;
-	int					num_tiles_height;
-	int					offset_x;
-	int					offset_y;
+	int					firstgid = 0;
+	int					margin = 0;
+	int					spacing = 0;
+	int					tile_width = 0;
+	int					tile_height = 0;
+	SDL_Texture*		texture = nullptr;
+	int					tex_width = 0;
+	int					tex_height = 0;
+	int					num_tiles_width = 0;
+	int					num_tiles_height = 0;
+	int					offset_x = 0;
+	int					offset_y = 0;
 };
 
 enum map_types
@@ -90,12 +90,12 @@ enum map_types
 // ----------------------------------------------------
 struct MapData
 {
-	int					width;
-	int					height;
-	int					tile_width;
-	int					tile_height;
-	SDL_Color			background_color;
-	map_types			type;
+	int					width = 0;
+	int					height = 0;
+	int					tile_width = 0;
+	int					tile_height = 0;
+	SDL_Color			background_color = NULLRECT;
+	map_types			type = map_types::maptype_unknown;
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>layers;
 };
@@ -144,15 +144,15 @@ private:
 public:
 
 	MapData data;
-	SDL_Rect fit_square;
+	SDL_Rect fit_square = NULLRECT;
 
 private:
 
 	pugi::xml_document	map_file;
 	std::string			folder;
-	bool				map_loaded;
-	int					draw_margin;
-	int					offset;
+	bool				map_loaded = false;
+	int					draw_margin = 0;
+	int					offset = 0;
 };
 
 #endif // __j1MAP_H__

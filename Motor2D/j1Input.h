@@ -9,21 +9,22 @@
 
 struct SDL_Rect;
 
-enum j1_event_window
+enum event_window
 {
 	we_quit = 0,
-	we_hide = 1,
-	we_show = 2,
-	we_count
+	we_hide,
+	we_show,
+	we_count,
+	we_null
 };
 
-enum j1_key_state
+enum key_state
 {
 	key_idle = 0,
 	key_down,
 	key_repeat,
 	key_up,
-	j1_key_state_null
+	key_null
 };
 
 class j1Input : public j1Module
@@ -49,19 +50,19 @@ public:
 	bool CleanUp();
 
 	// Gather relevant win events
-	bool GetWindowEvent(j1_event_window ev);
+	bool GetWindowEvent(event_window ev);
 
 	void GetMouseWorld(int & x, int & y);
 
 	void SetMouseWorld(int & x, int & y);
 
 	// Check key states (includes mouse and joy buttons)
-	j1_key_state GetKey(int id) const
+	key_state GetKey(int id) const
 	{
 		return keyboard[id];
 	}
 
-	j1_key_state GetMouseButtonDown(int id) const
+	key_state GetMouseButtonDown(int id) const
 	{
 		return mouse_buttons[id - 1];
 	}
@@ -77,8 +78,8 @@ public:
 
 private:
 	bool		windowEvents[we_count];
-	j1_key_state*	keyboard = nullptr;
-	j1_key_state	mouse_buttons[NUM_MOUSE_BUTTONS];
+	key_state*	keyboard = nullptr;
+	key_state	mouse_buttons[NUM_MOUSE_BUTTONS];
 	int			mouse_motion_x = 0;
 	int			mouse_motion_y = 0;
 	int			mouse_x = 0;

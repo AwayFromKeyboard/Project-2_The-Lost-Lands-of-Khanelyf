@@ -56,10 +56,10 @@ private:
 private:
 
 	// size of the map
-	uint width;
-	uint height;
+	uint width = 0;
+	uint height = 0;
 	// all map walkability values [0..255]
-	uchar* map;
+	uchar* map = nullptr;
 	// we store the created paths here
 	std::list<Path*> paths;
 };
@@ -84,9 +84,9 @@ struct PathNode
 	void IdentifySuccessors(PathList& list_to_fill, iPoint startNode, iPoint endNode, j1PathFinding* path_finder) const;
 
 	// -----------
-	int g;
-	int h;
-	iPoint pos;
+	int g = 0;
+	int h = 0;
+	iPoint pos = NULLPOINT;
 	const PathNode* parent; // needed to reconstruct the path in the end
 };
 
@@ -112,12 +112,12 @@ struct Path {
 	PathList closed;
 	PathList adjacent;
 
-	iPoint origin;
-	iPoint destination;
+	iPoint origin = NULLPOINT;
+	iPoint destination = NULLPOINT;
 
 	vector<iPoint> finished_path;
 
-	bool completed;
+	bool completed = false;
 };
 
 #endif // __j1PATHFINDING_H__

@@ -25,7 +25,7 @@ public:
 	GameObject* go = nullptr;
 	Parallax* p1 = nullptr;
 
-	fPoint pos;
+	fPoint pos = NULLPOINT;
 
 private:
 

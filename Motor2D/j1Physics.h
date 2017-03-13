@@ -14,8 +14,8 @@ enum class fixture_type;
 
 struct path_joint 
 {
-	b2MouseJoint* joint;
-	b2Vec2*       path;
+	b2MouseJoint* joint = nullptr;
+	b2Vec2*       path = nullptr;
 	int           points = 0;
 	int			  cur_point = 0;
 };
@@ -42,7 +42,7 @@ public:
 };
 
 // Module --------------------------------------
-class j1Physics : public j1Module, public b2ContactListener // TODO
+class j1Physics : public j1Module, public b2ContactListener
 {
 public:
 	j1Physics();

@@ -99,7 +99,7 @@ public:
 public:
 
 	string	    name;
-	bool		active;
+	bool		active = false;
 
 };
 

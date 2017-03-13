@@ -62,7 +62,7 @@ bool j1Audio::CleanUp()
 
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
-	if(music != NULL)
+	if(music != nullptr)
 	{
 		Mix_FreeMusic(music);
 	}
@@ -87,7 +87,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	if(!active)
 		return false;
 
-	if(music != NULL)
+	if(music != nullptr)
 	{
 		if(fade_time > 0.0f)
 		{
@@ -104,7 +104,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 
 	music = Mix_LoadMUS_RW(App->fs->Load(path), 1);
 
-	if(music == NULL)
+	if(music == nullptr)
 	{
 		LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
 		ret = false;
@@ -143,7 +143,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 
 	Mix_Chunk* chunk = Mix_LoadWAV_RW(App->fs->Load(path), 1);
 
-	if(chunk == NULL)
+	if(chunk == nullptr)
 	{
 		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
 	}

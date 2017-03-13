@@ -5,11 +5,11 @@
 
 class GameObject;
 
-class Bulding : public Entity
+class Building : public Entity
 {
 public:
-	Bulding();
-	~Bulding();
+	Building();
+	~Building();
 
 	bool LoadEntity();
 	bool Start();
