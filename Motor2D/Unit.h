@@ -4,22 +4,12 @@
 #include "Entity.h"
 #include "j1Pathfinding.h"
 
-enum unit_state 
-{
+enum unit_state {
 	unit_idle,
 	unit_move,
 	unit_attack,
-	unit_attacking,
 	unit_death,
-	unit_decompose,
-	unit_null
-};
-
-enum attack_state
-{
-	attack_unit,
-	attack_building,
-	attack_null
+	unit_decompose
 };
 
 enum unit_direction {
@@ -34,7 +24,6 @@ enum unit_direction {
 };
 
 class GameObject;
-class Building;
 enum entity_name;
 
 class Unit : public Entity
@@ -67,33 +56,16 @@ public:
 	void FollowPath(float dt);
 	void SetDirection();
 	void LookAtMovement();
-
-	// Attack
-	bool IsInRange(Entity* attacked_entity);
-	void LookAtAttack();
-	void UnitAttack();
-	void BuildingAttack();
-	void SetAttackingUnit(Unit* att_unit);
-	void SetAttackingBuilding(Building* att_building);
-  
 public:
 	GameObject* game_object = nullptr;
-	unit_state state = unit_state::unit_null;
-	attack_state att_state = attack_state::attack_null;
+	unit_state state;
 	entity_name type;
 	bool flip = false;
 	bool to_delete = true;
-  
 public:
 	vector<iPoint> path;
-	fPoint direction = NULLPOINT;
-	iPoint destination = NULLPOINT;
+	fPoint direction;
 	bool has_destination = false;
-  
-private:
-	Unit* attacked_unit = nullptr;
-	Building* attacked_building = nullptr;
-  
 public:
 	int life = 0;
 	int cost = 0;
@@ -103,14 +75,14 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 	
-	iPoint offset = NULLPOINT;
-	iPoint i_offset = NULLPOINT;
-	iPoint m_offset = NULLPOINT;
-	iPoint a_offset = NULLPOINT;
-	iPoint d_offset = NULLPOINT;
-	iPoint de_offset = NULLPOINT;
+	iPoint offset;
+	iPoint i_offset;
+	iPoint m_offset;
+	iPoint a_offset;
+	iPoint d_offset;
+	iPoint de_offset;
 
-	Animation* current_animation = nullptr;
+	Animation* current_animation;
 	// Idle
 	Animation i_south;
 	Animation i_south_west;

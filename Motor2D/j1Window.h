@@ -48,9 +48,9 @@ public:
 
 private:
 	string	     title;
-	uint		 width = 0;
-	uint		 height = 0;
-	uint		 scale = 0;
+	uint		 width;
+	uint		 height;
+	uint		 scale;
 };
 
 #endif // __j1WINDOW_H__

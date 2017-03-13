@@ -1,6 +1,5 @@
 #include "Log.h"
 #include "Unit.h"
-#include "Building.h"
 #include "j1Entity.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -48,32 +47,6 @@ bool Unit::Update(float dt)
 		FollowPath(dt);
 		break;
 	case unit_attack:
-		if (attacked_unit != nullptr && IsInRange(attacked_unit))
-		{
-			att_state = attack_unit;
-			offset = a_offset;
-		}
-		else if (!IsInRange(attacked_unit))
-		{
-			state = unit_idle;
-			current_animation = &i_north;
-			att_state = attack_null;
-			offset = i_offset;
-			attacked_unit = nullptr;
-			break;
-		}
-		/*if (attacked_building != nullptr && IsInRange(attacked_building)) att_state = attack_building;
-		else if (!IsInRange(attacked_unit))
-		*/
-		switch (att_state) {
-		case attack_unit:
-			UnitAttack();
-			break;
-		case attack_building:
-			BuildingAttack();
-			break;
-		}
-
 		break;
 	case unit_death:
 		break;
@@ -320,98 +293,3 @@ void Unit::LookAtMovement()
 
 	}
 }
-
-bool Unit::IsInRange(Entity* attacked_entity)
-{
-	bool ret = true;
-
-	iPoint attacked_pos = attacked_entity->GetGameObject()->GetPos();
-	iPoint pos = game_object->GetPos();
-	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
-	pos = App->map->WorldToMapPoint(pos);
-
-	direction.x = attacked_pos.x - pos.x;
-	direction.y = attacked_pos.y - pos.y;
-
-	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
-
-	return ret;
-}
-
-void Unit::LookAtAttack()
-{
-	if (direction.x > 0)
-	{
-		if (direction.y > 0)
-		{
-			current_animation = &a_south;
-			flip = false;
-		}
-
-		else if (direction.y < 0)
-		{
-			current_animation = &a_west;
-			flip = true;
-		}
-		else
-		{
-			current_animation = &a_south_west;
-			flip = true;
-		}
-
-	}
-	else if (direction.x < 0)
-	{
-		if (direction.y > 0)
-		{
-			current_animation = &a_west;
-			flip = false;
-		}
-		else if (direction.y < 0)
-		{
-			current_animation = &a_north;
-			flip = false;
-		}
-
-		else
-		{
-			current_animation = &a_north_west;
-			flip = false;
-		}
-	}
-	else
-	{
-		if (direction.y > 0)
-		{
-			current_animation = &a_south_west;
-			flip = false;
-		}
-		else if (direction.y < 0)
-		{
-			current_animation = &a_north_west;
-			flip = true;
-		}
-	}
-}
-
-void Unit::UnitAttack()
-{
-	LookAtAttack();
-
-}
-
-void Unit::BuildingAttack()
-{
-	LookAtAttack();
-}
-
-void Unit::SetAttackingUnit(Unit * att_unit)
-{
-	attacked_unit = att_unit;
-}
-
-void Unit::SetAttackingBuilding(Building * att_building)
-{
-	attacked_building = att_building;
-}
-

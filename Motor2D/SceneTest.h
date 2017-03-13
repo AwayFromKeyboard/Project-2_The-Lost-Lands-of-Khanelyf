@@ -34,13 +34,15 @@ private:
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
 
+	
+
 	Hero* troop = nullptr;
-	Hero* troop2 = nullptr;
-	SDL_Rect cursor_r = NULLRECT;
-	SDL_Rect ui_r = NULLRECT;
+
+	SDL_Rect cursor_r;
+	SDL_Rect ui_r;
 
 private:
-	SDL_Texture* debug_tex = nullptr;
+	SDL_Texture* debug_tex;
 };
 
 #endif // _SceneTest_H_

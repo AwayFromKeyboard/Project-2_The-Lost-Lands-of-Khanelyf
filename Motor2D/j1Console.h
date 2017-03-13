@@ -8,7 +8,7 @@
 class UI_Window;
 class UI_Text;
 class UI_ColoredRect;
-class UI_ScrollBar;
+class UI_Scroll_Bar;
 class UI_Text_Input;
 
 class SDL_Color;
@@ -17,8 +17,7 @@ enum console_text_type
 {
 	output, 
 	input, 
-	error,
-	null
+	error
 };
 
 class Command 
@@ -110,7 +109,7 @@ private:
 	UI_Window*           window = nullptr;
 	UI_ColoredRect*      console_background = nullptr;
 	UI_ColoredRect*      console_background2 = nullptr;
-	UI_ScrollBar*        scroll = nullptr;
+	UI_Scroll_Bar*       scroll = nullptr;
 	UI_ColoredRect*      input_background = nullptr;
 	UI_Text_Input*       text_input = nullptr;
 	UI_Text*             input_mark = nullptr;

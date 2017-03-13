@@ -21,8 +21,8 @@ enum class fixture_type;
 
 j1Physics::j1Physics()
 {
-	world = nullptr;
-	mouse_joint = nullptr;
+	world = NULL;
+	mouse_joint = NULL;
 	debug = true;
 }
 
@@ -919,7 +919,7 @@ bool PhysBody::Contains(int x, int y) const
 
 	const b2Fixture* fixture = body->GetFixtureList();
 
-	while(fixture != nullptr)
+	while(fixture != NULL)
 	{
 		if(fixture->GetShape()->TestPoint(body->GetTransform(), p) == true)
 			return true;
@@ -942,7 +942,7 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 
 	const b2Fixture* fixture = body->GetFixtureList();
 
-	while(fixture != nullptr)
+	while(fixture != NULL)
 	{
 		if(fixture->GetShape()->RayCast(&output, input, body->GetTransform(), 0) == true)
 		{
@@ -971,9 +971,9 @@ void j1Physics::BeginContact(b2Contact* contact)
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 
-	if(physA && physA->listener != nullptr)
+	if(physA && physA->listener != NULL)
 		physA->listener->OnCollision(physA, physB, fixtureA, fixtureB);
 
-	if(physB && physB->listener != nullptr)
+	if(physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA, fixtureB, fixtureA);
 }

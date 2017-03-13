@@ -12,7 +12,6 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "GameObject.h"
-#include "j1Scene.h"
 
 SceneTest::SceneTest()
 {
@@ -48,11 +47,6 @@ bool SceneTest::Start()
 	troop = (Hero*)App->entity->CreateEntity(player);
 	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
 	troop->game_object->SetPos(pos);
-	
-	troop2 = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos2(App->map->MapToWorld(13, 1).x, App->map->MapToWorld(13, 1).y);
-	troop2->game_object->SetPos(pos2);
-
 	SDL_ShowCursor(0);
 	return true;
 }
@@ -66,12 +60,7 @@ bool SceneTest::PreUpdate()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
-		troop2->state = unit_attack;
-		troop2->SetAttackingUnit(troop);
 	}
-
 
 	return true;
 }
@@ -102,7 +91,9 @@ bool SceneTest::Update(float dt)
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+	
 
+	
 	return true;
 }
 
@@ -113,12 +104,6 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
-	if (App->scene->GetCurrentScene() != App->scene->scene_test)
-	{
-		App->gui->DeleteElement(cursor);
-		App->gui->DeleteElement(general_ui_window);
-	}
-
 	return true;
 }
 

@@ -2,45 +2,45 @@
 #include "j1Entity.h"
 #include "Scene.h"
 
-Building::Building()
+Bulding::Bulding()
 {
 }
 
-Building::~Building()
+Bulding::~Bulding()
 {
 }
 
-bool Building::LoadEntity()
-{
-	return true;
-}
-
-bool Building::Start()
+bool Bulding::LoadEntity()
 {
 	return true;
 }
 
-bool Building::PreUpdate()
+bool Bulding::Start()
 {
 	return true;
 }
 
-bool Building::Update(float dt)
+bool Bulding::PreUpdate()
 {
 	return true;
 }
 
-bool Building::Draw(float dt)
+bool Bulding::Update(float dt)
 {
 	return true;
 }
 
-bool Building::PostUpdate()
+bool Bulding::Draw(float dt)
 {
 	return true;
 }
 
-bool Building::CleanUp()
+bool Bulding::PostUpdate()
+{
+	return true;
+}
+
+bool Bulding::CleanUp()
 {
 	for (std::list<GameObject*>::iterator it = App->entity->building_game_objects_list.begin(); it != App->entity->building_game_objects_list.end(); it++) {
 		RELEASE(*it);
@@ -50,16 +50,16 @@ bool Building::CleanUp()
 	return true;
 }
 
-bool Building::Load(pugi::xml_node &)
+bool Bulding::Load(pugi::xml_node &)
 {
 	return true;
 }
 
-bool Building::Save(pugi::xml_node &) const
+bool Bulding::Save(pugi::xml_node &) const
 {
 	return true;
 }
 
-void Building::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Bulding::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
 }
