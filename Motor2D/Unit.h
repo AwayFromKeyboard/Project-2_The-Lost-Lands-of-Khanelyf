@@ -41,6 +41,9 @@ public:
 	vector<iPoint> GetPath() const;
 	void FollowPath(float dt);
 	void SetDirection();
+
+	// Attack
+	bool IsInRange();
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
@@ -52,6 +55,8 @@ public:
 	fPoint direction = NULLPOINT;
 	iPoint destination = NULLPOINT;
 	bool has_destination = false;
+private:
+	Entity* attacked_entity = nullptr;
 public:
 	int life = 0;
 	int cost = 0;

@@ -46,6 +46,10 @@ bool Unit::Update(float dt)
 		FollowPath(dt);
 		break;
 	case unit_attack:
+		if (attacked_entity != nullptr && IsInRange())
+		{
+			state = unit_attack
+		}
 		break;
 	case unit_death:
 		break;
@@ -174,4 +178,25 @@ void Unit::SetDirection()
 	else if (direction.y < 0) direction.y = -1;
 
 	has_destination = true;
+}
+
+bool Unit::IsInRange()
+{
+	bool ret = true;
+
+	iPoint attacked_pos = attacked_entity->GetGameObject()->GetPos();
+	iPoint pos = game_object->GetPos();
+	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
+	pos = App->map->WorldToMapPoint(pos);
+
+	iPoint direction(attacked_pos.x - pos.x, attacked_pos.y - pos.y);
+
+	if (direction.x > range && direction.y > range) ret = false;
+
+	if (direction.x > 0) direction.x = 1;
+	else if (direction.x < 0) direction.x = -1;
+	if (direction.y > 0) direction.y = 1;
+	else if (direction.y < 0) direction.y = -1;
+
+	return ret;
 }
