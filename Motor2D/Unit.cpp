@@ -1,5 +1,6 @@
 #include "Log.h"
 #include "Unit.h"
+#include "Building.h"
 #include "j1Entity.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -46,10 +47,25 @@ bool Unit::Update(float dt)
 		FollowPath(dt);
 		break;
 	case unit_attack:
-		if (attacked_entity != nullptr && IsInRange())
+		if (attacked_unit != nullptr && IsInRange(attacked_unit)) att_state = attack_unit;
+		else if (!IsInRange(attacked_unit))
 		{
-			state = unit_attack
+			state = unit_idle;
+			att_state = attack_null;
+			break;
 		}
+		/*if (attacked_building != nullptr && IsInRange(attacked_building)) att_state = attack_building;
+		else if (!IsInRange(attacked_unit))
+		*/
+		switch (att_state) {
+		case attack_unit:
+			UnitAttack();
+			break;
+		case attack_building:
+			BuildingAttack();
+			break;
+		}
+
 		break;
 	case unit_death:
 		break;
@@ -180,7 +196,7 @@ void Unit::SetDirection()
 	has_destination = true;
 }
 
-bool Unit::IsInRange()
+bool Unit::IsInRange(Entity* attacked_entity)
 {
 	bool ret = true;
 
@@ -189,14 +205,87 @@ bool Unit::IsInRange()
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
 	pos = App->map->WorldToMapPoint(pos);
 
-	iPoint direction(attacked_pos.x - pos.x, attacked_pos.y - pos.y);
+	direction.x = attacked_pos.x - pos.x;
+	direction.y = attacked_pos.y - pos.y;
 
-	if (direction.x > range && direction.y > range) ret = false;
-
-	if (direction.x > 0) direction.x = 1;
-	else if (direction.x < 0) direction.x = -1;
-	if (direction.y > 0) direction.y = 1;
-	else if (direction.y < 0) direction.y = -1;
+	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
 
 	return ret;
+}
+
+void Unit::LookAtAttack()
+{
+	if (direction.x > 0)
+	{
+		if (direction.y > 0)
+		{
+			current_animation = &a_south;
+			flip = false;
+		}
+
+		else if (direction.y < 0)
+		{
+			current_animation = &a_west;
+			flip = true;
+		}
+		else
+		{
+			current_animation = &a_south_west;
+			flip = true;
+		}
+
+	}
+	else if (direction.x < 0)
+	{
+		if (direction.y > 0)
+		{
+			current_animation = &a_west;
+			flip = false;
+		}
+		else if (direction.y < 0)
+		{
+			current_animation = &a_north;
+			flip = false;
+		}
+
+		else
+		{
+			current_animation = &a_north_west;
+			flip = false;
+		}
+	}
+	else
+	{
+		if (direction.y > 0)
+		{
+			current_animation = &a_south_west;
+			flip = false;
+		}
+		else if (direction.y < 0)
+		{
+			current_animation = &a_north_west;
+			flip = true;
+		}
+	}
+}
+
+void Unit::UnitAttack()
+{
+	LookAtAttack();
+
+}
+
+void Unit::BuildingAttack()
+{
+	LookAtAttack();
+}
+
+void Unit::SetAttackingUnit(Unit * att_unit)
+{
+	attacked_unit = att_unit;
+}
+
+void Unit::SetAttackingBuilding(Building * att_building)
+{
+	attacked_building = att_building;
 }

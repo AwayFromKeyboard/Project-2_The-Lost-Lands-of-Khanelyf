@@ -4,16 +4,26 @@
 #include "Entity.h"
 #include "j1Pathfinding.h"
 
-enum unit_state {
+enum unit_state 
+{
 	unit_idle,
 	unit_move,
 	unit_attack,
+	unit_attacking,
 	unit_death,
 	unit_decompose,
 	unit_null
 };
 
+enum attack_state
+{
+	attack_unit,
+	attack_building,
+	attack_null
+};
+
 class GameObject;
+class Building;
 enum entity_name;
 
 class Unit : public Entity
@@ -43,10 +53,16 @@ public:
 	void SetDirection();
 
 	// Attack
-	bool IsInRange();
+	bool IsInRange(Entity* attacked_entity);
+	void LookAtAttack();
+	void UnitAttack();
+	void BuildingAttack();
+	void SetAttackingUnit(Unit* att_unit);
+	void SetAttackingBuilding(Building* att_building);
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
+	attack_state att_state = attack_state::attack_null;
 	entity_name type;
 	bool flip = false;
 	bool to_delete = true;
@@ -56,7 +72,8 @@ public:
 	iPoint destination = NULLPOINT;
 	bool has_destination = false;
 private:
-	Entity* attacked_entity = nullptr;
+	Unit* attacked_unit = nullptr;
+	Building* attacked_building = nullptr;
 public:
 	int life = 0;
 	int cost = 0;

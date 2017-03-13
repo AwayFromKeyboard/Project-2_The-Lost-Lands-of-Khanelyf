@@ -35,7 +35,7 @@ private:
 	UI_Image* general_ui_image = nullptr;
 
 	Hero* troop = nullptr;
-
+	Hero* troop2 = nullptr;
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect ui_r = NULLRECT;
 
