@@ -79,7 +79,7 @@ public:
 		return true;
 	}
 
-	virtual void OnCollision(Collider* c1, Collider* c2)
+	virtual void OnCollision(Collider* col1, Collider* col2)
 	{
 
 	}

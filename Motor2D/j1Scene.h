@@ -83,7 +83,7 @@ public:
 	// Blit choosing the layer
 	void LayerBlit(int layer, SDL_Texture* texture, iPoint pos, const SDL_Rect section = NULLRECT, float scale = -1.0f, SDL_RendererFlip _flip = SDL_FLIP_NONE,  double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
 	
-	void OnCollision(Collider* c1, Collider* c2);
+	void OnCollision(Collider* col1, Collider* col2);
 
 private:
 	// Blit in the layer order

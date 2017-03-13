@@ -75,10 +75,10 @@ bool j1Entity::CleanUp()
 	return ret;
 }
 
-void j1Entity::OnCollision(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		(*it)->OnColl(bodyA, bodyB, fixtureA, fixtureB);
+		(*it)->OnColl(col1, col2);
 }
 
 Entity* j1Entity::CreateEntity(entity_name entity)
