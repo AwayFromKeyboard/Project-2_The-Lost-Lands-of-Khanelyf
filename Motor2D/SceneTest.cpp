@@ -64,7 +64,7 @@ bool SceneTest::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) 
 		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
