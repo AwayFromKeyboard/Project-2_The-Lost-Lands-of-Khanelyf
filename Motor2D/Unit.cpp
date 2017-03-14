@@ -89,8 +89,10 @@ bool Unit::Update(float dt)
 	case unit_decompose:
 		if (death_timer.ReadSec() > 2)
 		{
+			offset = de_offset;
 			CheckDecomposeDirection();
-			if (current_animation->Finished()) {
+			if (current_animation->GetFrameIndex() == 4) {
+				current_animation->SetSpeed(0);
 				to_delete = true;
 			}
 		}
@@ -437,6 +439,7 @@ void Unit::UnitAttack()
 		{
 			state = unit_idle;
 			attacked_unit->state = unit_death;
+			attacked_unit->offset = attacked_unit->d_offset;
 		}
 	}
 }

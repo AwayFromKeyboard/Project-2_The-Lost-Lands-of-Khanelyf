@@ -406,7 +406,7 @@
           <rect x="1330" y="1202"/>
         </north>
       </death>
-      <decompose speed="10" w="86" h="67" offset_x="" offset_y="">
+      <decompose speed="3" w="86" h="67" offset_x="23" offset_y="15">
         <south>
           <rect x="0" y="1285"/>
           <rect x="87" y="1285"/>

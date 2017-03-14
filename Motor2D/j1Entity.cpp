@@ -16,7 +16,6 @@ bool j1Entity::Awake(pugi::xml_node &)
 {
 	bool ret = true;
 
-
 	return ret;
 }
 
