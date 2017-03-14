@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1Map.h"
 #include "Log.h"
+#include "j1Collisions.h"
 
 Hero::Hero()
 {
@@ -39,7 +40,9 @@ bool Hero::LoadEntity()
 	{
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
-		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
+		//game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
+		game_object->AddColisionBox(20, 54, COLLIDER_UNIT);
+
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 		
@@ -66,6 +69,7 @@ bool Hero::LoadEntity()
 
 		current_animation = &i_south;
 		offset = i_offset;
+
 	}
 	else LOG("\nERROR, no node found\n");
 	

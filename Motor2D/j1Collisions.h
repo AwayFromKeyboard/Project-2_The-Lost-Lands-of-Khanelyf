@@ -6,7 +6,7 @@
 #include "j1Module.h"
 
 
-enum COLLIDER_TYPE
+enum collider_type
 {
 	COLLIDER_NONE = -1,
 	COLLIDER_UNIT,
@@ -18,10 +18,10 @@ struct Collider
 {
 	SDL_Rect rect;
 	bool to_delete = false;
-	COLLIDER_TYPE type;
+	collider_type type;
 	j1Module* callback = nullptr;
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, collider_type type, j1Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
@@ -54,7 +54,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, collider_type type, j1Module* callback = nullptr);
 	bool EraseCollider(Collider* collider);
 	void DebugDraw();
 

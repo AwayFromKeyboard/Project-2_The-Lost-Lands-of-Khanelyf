@@ -86,7 +86,7 @@ bool Unit::Save(pugi::xml_node &) const
 	return true;
 }
 
-void Unit::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Unit::OnColl(Collider* col1, Collider* col2)
 {
 }
 

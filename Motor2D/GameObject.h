@@ -97,11 +97,15 @@ public:
 	// Returns the texture
 	SDL_Texture* GetTexture();
 
+	// Creates a colision box
+	void AddColisionBox(int x, int y, collider_type type);
+
 private:
 
 public:
-	PhysBody*      pbody = nullptr;
-	Animator*	   animator = nullptr;
+	PhysBody*		pbody = nullptr;
+	Animator*		animator = nullptr;
+	Collider*		collider = nullptr;
 
 private:
 	float		   gravity_scale = 0.0f;
