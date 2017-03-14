@@ -35,7 +35,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
 
-	if(renderer == nullptr)
+	if(renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -157,7 +157,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.w *= scale;
 	rect.h *= scale;
 
-	SDL_Point* p = nullptr;
+	SDL_Point* p = NULL;
 	SDL_Point pivot;
 
 	if(pivot_x != INT_MAX && pivot_y != INT_MAX)

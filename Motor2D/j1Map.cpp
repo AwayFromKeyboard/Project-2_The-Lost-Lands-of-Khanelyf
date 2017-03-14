@@ -443,7 +443,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	{
 		set->texture = App->tex->LoadTexture(PATH(folder.c_str(), image.attribute("source").as_string()));
 		int w, h;
-		SDL_QueryTexture(set->texture, nullptr, nullptr, &w, &h);
+		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
 
 		if (set->tex_width <= 0)
@@ -615,13 +615,13 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 				int i = (y*layer->width) + x;
 
 				int tile_id = layer->Get(x, y);
-				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : nullptr;
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
 
-				if (tileset != nullptr)
+				if (tileset != NULL)
 				{
 					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
 					/*TileType* ts = tileset->GetTileType(tile_id);
-					if(ts != nullptr)
+					if(ts != NULL)
 					{
 					map[i] = ts->properties.Get("walkable", 1);
 					}*/

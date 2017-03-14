@@ -2,7 +2,7 @@
 #define _Test_
 
 #include "Unit.h"
-#define	COLLISION_ADJUSTMENT iPoint(0, 0)
+#define	COLLISION_ADJUSTMENT iPoint(23, 25)
 
 class GameObject;
 class Hero : public Unit
@@ -27,7 +27,7 @@ public:
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
 public:
-	iPoint mouse_position = NULLPOINT;
+	iPoint mouse_position;
 
 	
 };

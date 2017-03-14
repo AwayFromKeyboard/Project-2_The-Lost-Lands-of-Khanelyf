@@ -1,6 +1,5 @@
 #include "Log.h"
 #include "Unit.h"
-#include "Building.h"
 #include "j1Entity.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -564,4 +563,3 @@ void Unit::CheckDecomposeDirection()
 		}
 	}
 }
-

@@ -409,7 +409,7 @@ vector<iPoint> j1PathFinding::CreatePath(const iPoint& origin, const iPoint& des
 		}
 	}
 	Path* path = new Path();
-	path->open.node_list.push_back(PathNode(0, 0, current_origin, nullptr));
+	path->open.node_list.push_back(PathNode(0, 0, current_origin, NULL));
 	path->origin = current_origin;
 	path->destination = destination;
 

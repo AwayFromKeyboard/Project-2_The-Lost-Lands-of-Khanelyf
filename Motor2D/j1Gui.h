@@ -18,7 +18,7 @@ enum ui_element
 	ui_image,
 	ui_scroll_bar,
 	ui_colored_rect,
-	ui_element_null,
+	ui_element_null
 };
 
 
@@ -30,8 +30,8 @@ class UI_Element;
 class UI_Window;
 class UI_Text;
 struct ElementItem {
-	UI_Element* data = nullptr;
-	double priority = 0;
+	UI_Element* data;
+	double priority;
 };
 
 class j1Gui : public j1Module
@@ -76,7 +76,7 @@ public:
 
 
 private:
-	SDL_Rect				selection_rect = NULLRECT;
+	SDL_Rect				selection_rect;
 
 public:
 	// Atlas --
@@ -150,7 +150,7 @@ protected:
 	bool CheckClickRect(int x, int y);
 
 public:
-	ui_element          type = ui_element::ui_element_null;
+	ui_element          type = ui_element_null;
 	SDL_Rect            rect = NULLRECT;
 
 	bool                print = true;
@@ -382,7 +382,7 @@ private:
 	SDL_Rect     camera_before = NULLRECT;
 
 	// Change text manually
-	std::string       text_change;
+	string       text_change;
 	bool         change = false;
 };
 
@@ -392,13 +392,13 @@ private:
 // -----------------------------------
 // Scroll Bar ------------------------
 
-class ScrollElement
+class scroll_element
 {
 public:
-	ScrollElement() {};
-	~ScrollElement() {};
+	scroll_element() {};
+	~scroll_element() {};
 
-	bool operator == (ScrollElement sc)
+	bool operator == (scroll_element sc)
 	{
 		if (sc.element == element && sc.starting_pos_x == starting_pos_x && sc.starting_pos_y == starting_pos_y)
 			return true; 
@@ -410,11 +410,11 @@ public:
 	int          starting_pos_y = 0;
 };
 
-class UI_ScrollBar : public UI_Element
+class UI_Scroll_Bar : public UI_Element
 {
 public:
-	UI_ScrollBar();
-	~UI_ScrollBar();
+	UI_Scroll_Bar();
+	~UI_Scroll_Bar();
 
 	void Set(iPoint pos, int w, int h, int button_size = 11);
 
@@ -445,7 +445,7 @@ public:
 
 	SDL_Rect             moving_rect = NULLRECT;
 
-	list<ScrollElement> elements;
+	list<scroll_element> elements;
 
 	int                  starting_h = 0;
 	int                  button_starting_h = 0;
