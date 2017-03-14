@@ -64,12 +64,18 @@ bool SceneTest::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) 
-		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+	{
+		//troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
+		if (App->map->WorldToMapPoint(troop->GetGameObject()->GetPos()) == p && troop->life > 0)
+		{
+			troop2->state = unit_attack;
+			troop2->SetAttackingUnit(troop);
+		}
 
+	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
-		troop2->state = unit_attack;
-		troop2->SetAttackingUnit(troop);
+		
 	}
 
 
@@ -92,10 +98,7 @@ bool SceneTest::Update(float dt)
 	{
 		troop->state = unit_move;
 	}
-	else
-	{
-		troop->state = unit_idle;
-	}
+
 
 	for (uint i = 0; i < troop->path.size(); i++)
 	{

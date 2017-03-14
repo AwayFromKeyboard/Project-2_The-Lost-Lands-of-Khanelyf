@@ -76,13 +76,16 @@ public:
 	void SetAttackingUnit(Unit* att_unit);
 	void SetAttackingBuilding(Building* att_building);
   
+	// Death
+	void CheckDeathDirection();
+
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
 	attack_state att_state = attack_state::attack_null;
 	entity_name type;
 	bool flip = false;
-	bool to_delete = true;
+	bool to_delete = false;
   
 public:
 	vector<iPoint> path;

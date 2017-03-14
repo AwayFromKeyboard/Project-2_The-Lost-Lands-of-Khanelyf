@@ -42,26 +42,31 @@ bool Unit::Update(float dt)
 {
 	switch (state) {
 	case unit_idle:
+		offset = i_offset;
 		CheckDirection();
 		break;
 	case unit_move:
 		FollowPath(dt);
 		break;
 	case unit_attack:
-		if (attacked_unit != nullptr && IsInRange(attacked_unit))
+		if (attacked_unit != nullptr)
 		{
-			att_state = attack_unit;
-			offset = a_offset;
+			if (IsInRange(attacked_unit))
+			{
+				att_state = attack_unit;
+				offset = a_offset;
+			}
+			else if (!IsInRange(attacked_unit))
+			{
+				state = unit_idle;
+				current_animation = &i_north;
+				att_state = attack_null;
+				offset = i_offset;
+				attacked_unit = nullptr;
+				break;
+			}
 		}
-		else if (!IsInRange(attacked_unit))
-		{
-			state = unit_idle;
-			current_animation = &i_north;
-			att_state = attack_null;
-			offset = i_offset;
-			attacked_unit = nullptr;
-			break;
-		}
+		
 		/*if (attacked_building != nullptr && IsInRange(attacked_building)) att_state = attack_building;
 		else if (!IsInRange(attacked_unit))
 		*/
@@ -76,6 +81,9 @@ bool Unit::Update(float dt)
 
 		break;
 	case unit_death:
+		CheckDeathDirection();
+		if (current_animation->Finished())
+			to_delete = true;
 		break;
 	case unit_decompose:
 		break;
@@ -87,13 +95,19 @@ bool Unit::Draw(float dt)
 {
 	bool ret = true;
 	
+	
 	return ret;
 }
 
 bool Unit::PostUpdate()
 {
 	bool ret = true;
-	
+
+	if (to_delete)
+	{
+		App->entity->DeleteEntity(this);
+	}
+
 	return ret;
 }
 
@@ -317,13 +331,14 @@ void Unit::LookAtMovement()
 			destination = north_east;
 			flip = true;
 		}
-
 	}
 }
 
 bool Unit::IsInRange(Entity* attacked_entity)
 {
 	bool ret = true;
+
+	if (attacked_entity == nullptr) return false;
 
 	iPoint attacked_pos = attacked_entity->GetGameObject()->GetPos();
 	iPoint pos = game_object->GetPos();
@@ -344,17 +359,20 @@ void Unit::LookAtAttack()
 	{
 		if (direction.y > 0)
 		{
+			direction = { 0,1 };
 			current_animation = &a_south;
 			flip = false;
 		}
 
 		else if (direction.y < 0)
 		{
+			direction = { 1,0 };
 			current_animation = &a_west;
 			flip = true;
 		}
 		else
 		{
+			direction = { +1,+0.5 };
 			current_animation = &a_south_west;
 			flip = true;
 		}
@@ -364,17 +382,20 @@ void Unit::LookAtAttack()
 	{
 		if (direction.y > 0)
 		{
+			direction = { -1,0 };
 			current_animation = &a_west;
 			flip = false;
 		}
 		else if (direction.y < 0)
 		{
+			direction = { 0,-1 };
 			current_animation = &a_north;
 			flip = false;
 		}
 
 		else
 		{
+			direction = { -1,-0.5 };
 			current_animation = &a_north_west;
 			flip = false;
 		}
@@ -383,11 +404,13 @@ void Unit::LookAtAttack()
 	{
 		if (direction.y > 0)
 		{
+			direction = { -1,0.5 };
 			current_animation = &a_south_west;
 			flip = false;
 		}
 		else if (direction.y < 0)
 		{
+			direction = { 1,-0.5 };
 			current_animation = &a_north_west;
 			flip = true;
 		}
@@ -398,6 +421,16 @@ void Unit::UnitAttack()
 {
 	LookAtAttack();
 
+	if (current_animation->Finished())
+	{
+		attacked_unit->life -= damage;
+		current_animation->Reset();
+		if (attacked_unit->life <= 0)
+		{
+			state = unit_idle;
+			attacked_unit->state = unit_death;
+		}
+	}
 }
 
 void Unit::BuildingAttack()
@@ -413,5 +446,58 @@ void Unit::SetAttackingUnit(Unit * att_unit)
 void Unit::SetAttackingBuilding(Building * att_building)
 {
 	attacked_building = att_building;
+}
+
+void Unit::CheckDeathDirection()
+{
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &d_west;
+			flip = true;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &d_south_west;
+			flip = true;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &d_north_west;
+			flip = true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			current_animation = &d_south;
+			flip = false;
+		}
+		else if (direction.y == -1)
+		{
+			current_animation = &d_north;
+			flip = false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &d_west;
+			flip = false;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &d_south_west;
+			flip = false;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &d_north_west;
+			flip = false;
+		}
+	}
 }
 

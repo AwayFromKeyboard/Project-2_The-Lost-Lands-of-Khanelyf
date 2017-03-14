@@ -70,6 +70,7 @@ bool j1Entity::CleanUp()
 		ret = (*it)->CleanUp();
 	}
 	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
+		App->entity->unit_game_objects_list.erase(it);
 		RELEASE(*it);
 	}
 	return ret;
