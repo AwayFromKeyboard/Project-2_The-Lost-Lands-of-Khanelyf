@@ -47,7 +47,7 @@ public:
 	virtual ~j1Collisions();
 
 	// Called before render is available
-	bool preUpdate();
+	bool PreUpdate();
 
 	bool Update();
 

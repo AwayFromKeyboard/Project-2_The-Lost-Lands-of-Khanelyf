@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "j1Pathfinding.h"
 
+struct Collider;
+
 enum unit_state {
 	unit_idle,
 	unit_move,
@@ -47,6 +49,7 @@ public:
 	entity_name type;
 	bool flip = false;
 	bool to_delete = true;
+
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
@@ -60,7 +63,11 @@ public:
 	int armor = 0;
 	int pierce_armor = 0;
 	int range = 0;
-	
+
+	iPoint position = NULLPOINT;
+
+	Collider* collision_box = nullptr;
+
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
 	iPoint m_offset = NULLPOINT;

@@ -144,12 +144,5 @@ SDL_Texture * GameObject::GetTexture()
 	return texture;
 }
 
-void GameObject::AddColisionBox(int x, int y, collider_type type)
-{
-	SDL_Rect rect = {GetPos().x, GetPos().y, x, y};
-	if (type != COLLIDER_NONE)
-		collider = App->collisions->AddCollider(rect, type, App->collisions);
-
-}
 
 

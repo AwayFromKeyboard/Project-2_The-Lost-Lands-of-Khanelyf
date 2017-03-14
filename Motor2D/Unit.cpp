@@ -7,9 +7,11 @@
 #include "Hero.h"
 #include "Entity.h"
 #include "Animation.h"
+#include "j1Collisions.h"
 
 Unit::Unit()
 {
+
 }
 
 Unit::~Unit()
@@ -26,7 +28,7 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
-	
+
 	return ret;
 }
 
@@ -39,6 +41,8 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
+	collision_box->rect = { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y, current_animation->GetAnimationFrame(dt).w, current_animation->GetAnimationFrame(dt).h };
+
 	switch (state) {
 	case unit_idle:
 		break;
@@ -52,6 +56,8 @@ bool Unit::Update(float dt)
 	case unit_decompose:
 		break;
 	}
+
+	
 	return true;
 }
 

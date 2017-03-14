@@ -18,7 +18,7 @@ j1Collisions::~j1Collisions()
 
 }
 
-bool j1Collisions::preUpdate()
+bool j1Collisions::PreUpdate()
 {
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
@@ -65,6 +65,8 @@ bool j1Collisions::Update()
 			}
 		}
 	}
+
+	DebugDraw();
 
 	return true;
 }
