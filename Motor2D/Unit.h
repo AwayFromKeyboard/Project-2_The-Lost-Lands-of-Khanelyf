@@ -78,7 +78,10 @@ public:
   
 	// Death
 	void CheckDeathDirection();
+	j1Timer death_timer;
 
+	//Decompose
+	void CheckDecomposeDirection();
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;

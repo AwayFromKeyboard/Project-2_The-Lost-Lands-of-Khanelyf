@@ -67,9 +67,6 @@ bool Unit::Update(float dt)
 			}
 		}
 		
-		/*if (attacked_building != nullptr && IsInRange(attacked_building)) att_state = attack_building;
-		else if (!IsInRange(attacked_unit))
-		*/
 		switch (att_state) {
 		case attack_unit:
 			UnitAttack();
@@ -82,10 +79,21 @@ bool Unit::Update(float dt)
 		break;
 	case unit_death:
 		CheckDeathDirection();
-		if (current_animation->Finished())
-			to_delete = true;
+		if (current_animation->GetFrameIndex() == 14)
+		{
+			death_timer.Start();
+			current_animation->SetSpeed(0);
+			state = unit_decompose;
+		}
 		break;
 	case unit_decompose:
+		if (death_timer.ReadSec() > 2)
+		{
+			CheckDecomposeDirection();
+			if (current_animation->Finished()) {
+				to_delete = true;
+			}
+		}
 		break;
 	}
 	return true;
@@ -496,6 +504,59 @@ void Unit::CheckDeathDirection()
 		else if (direction.y == -0.5)
 		{
 			current_animation = &d_north_west;
+			flip = false;
+		}
+	}
+}
+
+void Unit::CheckDecomposeDirection()
+{
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &de_west;
+			flip = true;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &de_south_west;
+			flip = true;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &de_north_west;
+			flip = true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			current_animation = &de_south;
+			flip = false;
+		}
+		else if (direction.y == -1)
+		{
+			current_animation = &de_north;
+			flip = false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &de_west;
+			flip = false;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &de_south_west;
+			flip = false;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &de_north_west;
 			flip = false;
 		}
 	}
