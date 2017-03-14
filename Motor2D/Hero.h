@@ -20,9 +20,6 @@ public:
 	// Draw and change animations
 	bool Draw(float dt);
 
-	// Post Update
-	bool PostUpdate();
-
 	// CleanUp
 	bool CleanUp();
 
