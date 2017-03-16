@@ -12,7 +12,6 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "GameObject.h"
-#include "j1Scene.h"
 
 SceneTest::SceneTest()
 {
@@ -60,7 +59,7 @@ bool SceneTest::PreUpdate()
 	p = App->map->WorldToMap(p.x, p.y);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p);
+		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
 	}
 
 	return true;
@@ -76,11 +75,15 @@ bool SceneTest::Update(float dt)
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
-	troop->path = App->pathfinding->GetPath();
+	
 
 	if (troop->path.size() > 0)
 	{
 		troop->state = unit_move;
+	}
+	else
+	{
+		troop->state = unit_idle;
 	}
 
 	for (uint i = 0; i < troop->path.size(); i++)
@@ -88,6 +91,8 @@ bool SceneTest::Update(float dt)
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+	
+
 	
 	return true;
 }
@@ -99,12 +104,6 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
-	if (App->scene->GetCurrentScene() != App->scene->scene_test)
-	{
-		App->gui->DeleteElement(cursor);
-		App->gui->DeleteElement(general_ui_window);
-	}
-
 	return true;
 }
 

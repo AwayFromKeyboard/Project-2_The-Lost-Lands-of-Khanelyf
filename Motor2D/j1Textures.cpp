@@ -87,10 +87,10 @@ SDL_Texture* const j1Textures::LoadTexture(const char* path)
 
 SDL_Surface * const j1Textures::LoadSurface(const char * path)
 {
-	SDL_Surface* surface = nullptr;
+	SDL_Surface* surface = NULL;
 	surface = IMG_Load_RW(App->fs->Load(path), 1);
 
-	if (surface == nullptr)
+	if (surface == NULL)
 	{
 		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
 	}
@@ -123,7 +123,7 @@ SDL_Texture* const j1Textures::SurfaceToTexture(SDL_Surface* surface)
 {
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 
-	if (texture == nullptr)
+	if (texture == NULL)
 	{
 		LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
 	}
@@ -134,7 +134,7 @@ SDL_Texture* const j1Textures::SurfaceToTexture(SDL_Surface* surface)
 // Retrieve size of a texture
 void j1Textures::GetSize(const SDL_Texture* texture, uint& width, uint& height) const
 {
-	SDL_QueryTexture((SDL_Texture*)texture, nullptr, nullptr, (int*) &width, (int*) &height);
+	SDL_QueryTexture((SDL_Texture*)texture, NULL, NULL, (int*) &width, (int*) &height);
 }
 
 Texture::Texture()
@@ -145,7 +145,7 @@ Texture::Texture(const char * path)
 {
 	SDL_Surface* surface = IMG_Load_RW(App->fs->Load(path), 1);
 
-	if (surface == nullptr)
+	if (surface == NULL)
 	{
 		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
 	}

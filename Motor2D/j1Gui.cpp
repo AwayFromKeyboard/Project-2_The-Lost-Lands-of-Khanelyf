@@ -836,8 +836,8 @@ UI_Element* UI_Window::CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool 
 
 UI_Element * UI_Window::CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size, bool _dinamic)
 {
-	UI_ScrollBar* ret = nullptr;
-	ret = new UI_ScrollBar();
+	UI_Scroll_Bar* ret = nullptr;
+	ret = new UI_Scroll_Bar();
 
 	if(ret != nullptr)
 	{
@@ -1650,15 +1650,15 @@ bool UI_Text_Input::MouseClick()
 	return false;
 }
 
-UI_ScrollBar::UI_ScrollBar()
+UI_Scroll_Bar::UI_Scroll_Bar()
 {
 }
 
-UI_ScrollBar::~UI_ScrollBar()
+UI_Scroll_Bar::~UI_Scroll_Bar()
 {
 }
 
-void UI_ScrollBar::Set(iPoint pos, int view_w, int view_h, int button_size)
+void UI_Scroll_Bar::Set(iPoint pos, int view_w, int view_h, int button_size)
 {
 	// Viewport
 	rect.x = pos.x;
@@ -1702,7 +1702,7 @@ void UI_ScrollBar::Set(iPoint pos, int view_w, int view_h, int button_size)
 	color.r = color.g = color.b = color.a = 255;
 }
 
-bool UI_ScrollBar::update()
+bool UI_Scroll_Bar::update()
 {
 	if (!enabled)
 		return false;
@@ -1715,7 +1715,7 @@ bool UI_ScrollBar::update()
 		App->render->DrawLine(min_bar_h, button_h->rect.y + (button_h->rect.h/2), max_bar_h, button_h->rect.y + (button_h->rect.h / 2), color.r, color.g, color.b, color.a);
 	}
 
-	for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		(*it).element->update();
 	
 	// --------------------
@@ -1738,16 +1738,16 @@ bool UI_ScrollBar::update()
 	return true;
 }
 
-bool UI_ScrollBar::cleanup()
+bool UI_Scroll_Bar::cleanup()
 {
 	ClearElements();
 
 	return true;
 }
 
-void UI_ScrollBar::AddElement(UI_Element * element)
+void UI_Scroll_Bar::AddElement(UI_Element * element)
 {
-	ScrollElement el;
+	scroll_element el;
 	el.element = element;
 	el.element->parent = parent;
 	el.starting_pos_x = element->rect.x;
@@ -1755,9 +1755,9 @@ void UI_ScrollBar::AddElement(UI_Element * element)
 	elements.push_back(el);
 }
 
-void UI_ScrollBar::DeleteScrollElement(UI_Element * element)
+void UI_Scroll_Bar::DeleteScrollElement(UI_Element * element)
 {
-	for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		if ((*it).element == element)
 		{
@@ -1768,11 +1768,11 @@ void UI_ScrollBar::DeleteScrollElement(UI_Element * element)
 	}
 }
 
-void UI_ScrollBar::ClearElements()
+void UI_Scroll_Bar::ClearElements()
 {
 	while (!elements.empty())
 	{
-		for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+		for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		{
 			App->gui->DeleteElement((*it).element);
 			elements.remove(*it);
@@ -1783,12 +1783,12 @@ void UI_ScrollBar::ClearElements()
 	elements.clear();
 }
 
-void UI_ScrollBar::ChangeHeightMovingRect()
+void UI_Scroll_Bar::ChangeHeightMovingRect()
 {
 	// Taking lowest element vertical --
 	int lowest = 0;
 
-	for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		if (((min_bar_v - moving_rect.y) + (*it).element->rect.y + (*it).element->rect.h + App->render->camera.y) > lowest)
 			lowest = ((min_bar_v - moving_rect.y) + (*it).element->rect.y + (*it).element->rect.h) + App->render->camera.y;
@@ -1817,11 +1817,11 @@ void UI_ScrollBar::ChangeHeightMovingRect()
 	max_bar_v = rect.y + rect.h;
 }
 
-void UI_ScrollBar::ChangeWidthMovingRect()
+void UI_Scroll_Bar::ChangeWidthMovingRect()
 {
 	// Take higher element horizontal --
 	int higher = 0;
-	for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		if (((min_bar_h - moving_rect.x) + (*it).element->rect.x + (*it).element->rect.w + App->render->camera.x) > higher)
 			higher = ((min_bar_h - moving_rect.x) + (*it).element->rect.x + (*it).element->rect.w) + App->render->camera.x;
@@ -1851,7 +1851,7 @@ void UI_ScrollBar::ChangeWidthMovingRect()
 	max_bar_h = min_bar_h + rect.w;
 }
 
-void UI_ScrollBar::MoveBarV()
+void UI_Scroll_Bar::MoveBarV()
 {
 	if (button_v->MouseClickEnterLeft())
 	{
@@ -1904,7 +1904,7 @@ void UI_ScrollBar::MoveBarV()
 		scroll_v = -floor((float)(position_bar * moving_distance) / bar_distance);
 		moving_rect.y = min_bar_v - scroll_v;
 
-		for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+		for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		{
 			(*it).element->rect.y = (*it).starting_pos_y - scroll_v - App->render->camera.y;
 		}
@@ -1913,7 +1913,7 @@ void UI_ScrollBar::MoveBarV()
 	{
 		moving_rect.y = min_bar_v - scroll_v;
 
-		for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+		for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		{
 			(*it).element->rect.y = (*it).starting_pos_y - scroll_v - App->render->camera.y;
 		}
@@ -1921,7 +1921,7 @@ void UI_ScrollBar::MoveBarV()
 
 }
 
-void UI_ScrollBar::MoveBarH()
+void UI_Scroll_Bar::MoveBarH()
 {
 	if (button_h->MouseClickEnterLeft())
 	{
@@ -1971,7 +1971,7 @@ void UI_ScrollBar::MoveBarH()
 		scroll_h = -floor((float)(position_bar * moving_distance) / bar_distance);
 		moving_rect.x = min_bar_h - scroll_h;
 
-		for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+		for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		{
 			(*it).element->rect.x = (*it).starting_pos_x - scroll_h - App->render->camera.x;
 		}
@@ -1980,7 +1980,7 @@ void UI_ScrollBar::MoveBarH()
 	{
 		moving_rect.x = min_bar_h - scroll_h;
 
-		for (list<ScrollElement>::iterator it = elements.begin(); it != elements.end(); it++)
+		for (list<scroll_element>::iterator it = elements.begin(); it != elements.end(); it++)
 		{
 			(*it).element->rect.x = (*it).starting_pos_x - scroll_h - App->render->camera.x;
 		}
