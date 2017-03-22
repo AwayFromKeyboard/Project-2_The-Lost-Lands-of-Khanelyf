@@ -42,15 +42,60 @@ bool Unit::Update(float dt)
 {
 	switch (state) {
 	case unit_idle:
+		offset = i_offset;
+		CheckDirection();
 		break;
 	case unit_move:
 		FollowPath(dt);
 		break;
 	case unit_attack:
+		if (attacked_unit != nullptr)
+		{
+			if (IsInRange(attacked_unit))
+			{
+				att_state = attack_unit;
+				offset = a_offset;
+			}
+			else if (!IsInRange(attacked_unit))
+			{
+				state = unit_idle;
+				current_animation = &i_north;
+				att_state = attack_null;
+				offset = i_offset;
+				attacked_unit = nullptr;
+				break;
+			}
+		}
+		
+		switch (att_state) {
+		case attack_unit:
+			UnitAttack();
+			break;
+		case attack_building:
+			BuildingAttack();
+			break;
+		}
+
 		break;
 	case unit_death:
+		CheckDeathDirection();
+		if (current_animation->GetFrameIndex() == 14)
+		{
+			death_timer.Start();
+			current_animation->SetSpeed(0);
+			state = unit_decompose;
+		}
 		break;
 	case unit_decompose:
+		if (death_timer.ReadSec() > 2)
+		{
+			offset = de_offset;
+			CheckDecomposeDirection();
+			if (current_animation->GetFrameIndex() == 4) {
+				current_animation->SetSpeed(0);
+				to_delete = true;
+			}
+		}
 		break;
 	}
 	return true;
@@ -72,6 +117,11 @@ bool Unit::Draw(float dt)
 bool Unit::PostUpdate()
 {
 	bool ret = true;
+
+	if (to_delete)
+	{
+		App->entity->DeleteEntity(this);
+	}
 
 
 	return ret;
@@ -113,73 +163,410 @@ vector<iPoint> Unit::GetPath()const
 	return path;
 }
 
-void Unit::FollowPath(float dt)
+void Unit::CheckDirection()
 {
-	if (has_destination)
+	if (direction.x == 1)
 	{
-		SetDirection();
-
-		fPoint pos = game_object->fGetPos();
-
-		pos.x += direction.x * speed;
-		pos.y += direction.y * speed;
-
-		game_object->SetPos(pos);
-
-		if (App->map->WorldToMapPoint(game_object->GetPos()) == destination) {
-			if (path.size() > 0)
-			{
-				destination = path.front();
-				path.erase(path.begin());
-				SetDirection();
-			}
-			else
-			{
-				state = unit_idle;
-				has_destination = false;
-			}
+		if (direction.y == 0)
+		{
+			current_animation = &i_west;
+			flip = true;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &i_south_west;
+			flip = true;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &i_north_west;
+			flip = true;
 		}
 	}
-	else
+	else if (direction.x == 0)
 	{
-		if (path.size() > 0)
+		if (direction.y == 1)
 		{
-			destination = path.front();
-			path.erase(path.begin());
-			SetDirection();
+			current_animation = &i_south;
+			flip = false;
 		}
-		else
+		else if (direction.y == -1)
 		{
-			has_destination = false;
-			state = unit_idle;
+			current_animation = &i_north;
+			flip = false;
 		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &i_west;
+			flip = false;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &i_south_west;
+			flip = false;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &i_north_west;
+			flip = false;
+		}
+	}
+}
+
+void Unit::FollowPath(float dt)
+{
+	SetDirection();
+
+	fPoint pos = game_object->fGetPos();
+
+	pos.x += direction.x * speed;
+	pos.y += direction.y * speed;
+
+	game_object->SetPos(pos);
+
+	if (path.size() == 0)
+	{
+		state = unit_idle;
+		has_destination = false;
 	}
 }
 
 void Unit::SetDirection()
 {
-	iPoint position = game_object->GetPos();
-	iPoint position_m = App->map->WorldToMap(position.x, position.y);
-
-	if (position_m == destination)
-	{
-		if (path.size() > 0)
-		{
-			destination = path.front();
-			path.erase(path.begin());
-			SetDirection();
-		}
+	if (path.size() == 0){
 		return;
 	}
 
-	iPoint destination_w(App->map->MapToWorld(destination.x, destination.y));
+	iPoint position = game_object->GetPos();
+	switch (destination) {
+	case south:
+		break;
+	case north:
+		position.y += offset.y;
+		break;
+	case north_east:
+		position.y += offset.y;
+	case south_east:
+	case east:
+		position.x -= offset.x;
+		break;
+	case north_west:
+		position.y += offset.y;
+	case south_west:
+	case west:
+		position.x += offset.x;
+		break;
+	}
 
-	direction = fPoint(destination_w.x - position.x, destination_w.y - position.y);
-	
-	if (direction.x > 0) direction.x = 1;
-	else if (direction.x < 0) direction.x = -1;
-	if (direction.y > 0) direction.y = 1;
-	else if (direction.y < 0) direction.y = -1;
+	iPoint position_m = App->map->WorldToMapPoint(position);
+
+	if (position_m == path.front()) {
+			path.erase(path.begin());
+			SetDirection();
+			return;
+	}
+
+	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
+
+	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
+
+	LookAtMovement();
 
 	has_destination = true;
+}
+
+void Unit::LookAtMovement()
+{
+	if (direction.x > 0) 
+	{
+		if (direction.y > 0)
+		{
+			direction = { 0,1 };
+			current_animation = &m_south;
+			destination = south;
+			flip = false;
+		}
+
+		else if (direction.y < 0)
+		{
+			direction = { 1,0 };
+			current_animation = &m_west;
+			destination = east;
+			flip = true;
+		}
+		else
+		{
+			direction = { +1,+0.5 };
+			current_animation = &m_south_west;
+			destination = south_east;
+			flip = true;
+		}
+
+	}
+	else if (direction.x < 0) 
+	{
+		if (direction.y > 0)
+		{
+			direction = { -1,0 };
+			current_animation = &m_west;
+			destination = west;
+			flip = false;
+		}
+		else if (direction.y < 0)
+		{
+			direction = { 0,-1 };
+			current_animation = &m_north;
+			destination = north;
+			flip = false;
+		}
+
+		else
+		{
+			direction = { -1,-0.5 };
+			current_animation = &m_north_west;
+			destination = north_west;
+			flip = false;
+		}
+	}
+	else 
+	{
+		if (direction.y > 0)
+		{
+			direction = { -1,0.5 };
+			current_animation = &m_south_west;
+			destination = south_west;
+			flip = false;
+		}
+		else if (direction.y < 0)
+		{
+			direction = { 1,-0.5 };
+			current_animation = &m_north_west;
+			destination = north_east;
+			flip = true;
+		}
+	}
+}
+
+bool Unit::IsInRange(Entity* attacked_entity)
+{
+	bool ret = true;
+
+	if (attacked_entity == nullptr) return false;
+
+	iPoint attacked_pos = attacked_entity->GetGameObject()->GetPos();
+	iPoint pos = game_object->GetPos();
+	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
+	pos = App->map->WorldToMapPoint(pos);
+
+	direction.x = attacked_pos.x - pos.x;
+	direction.y = attacked_pos.y - pos.y;
+
+	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
+
+	return ret;
+}
+
+void Unit::LookAtAttack()
+{
+	if (direction.x > 0)
+	{
+		if (direction.y > 0)
+		{
+			direction = { 0,1 };
+			current_animation = &a_south;
+			flip = false;
+		}
+
+		else if (direction.y < 0)
+		{
+			direction = { 1,0 };
+			current_animation = &a_west;
+			flip = true;
+		}
+		else
+		{
+			direction = { +1,+0.5 };
+			current_animation = &a_south_west;
+			flip = true;
+		}
+
+	}
+	else if (direction.x < 0)
+	{
+		if (direction.y > 0)
+		{
+			direction = { -1,0 };
+			current_animation = &a_west;
+			flip = false;
+		}
+		else if (direction.y < 0)
+		{
+			direction = { 0,-1 };
+			current_animation = &a_north;
+			flip = false;
+		}
+
+		else
+		{
+			direction = { -1,-0.5 };
+			current_animation = &a_north_west;
+			flip = false;
+		}
+	}
+	else
+	{
+		if (direction.y > 0)
+		{
+			direction = { -1,0.5 };
+			current_animation = &a_south_west;
+			flip = false;
+		}
+		else if (direction.y < 0)
+		{
+			direction = { 1,-0.5 };
+			current_animation = &a_north_west;
+			flip = true;
+		}
+	}
+}
+
+void Unit::UnitAttack()
+{
+	LookAtAttack();
+
+	if (current_animation->Finished())
+	{
+		attacked_unit->life -= damage;
+		current_animation->Reset();
+		if (attacked_unit->life <= 0)
+		{
+			state = unit_idle;
+			attacked_unit->state = unit_death;
+			attacked_unit->offset = attacked_unit->d_offset;
+		}
+	}
+}
+
+void Unit::BuildingAttack()
+{
+	LookAtAttack();
+}
+
+void Unit::SetAttackingUnit(Unit * att_unit)
+{
+	attacked_unit = att_unit;
+}
+
+void Unit::SetAttackingBuilding(Building * att_building)
+{
+	attacked_building = att_building;
+}
+
+void Unit::CheckDeathDirection()
+{
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &d_west;
+			flip = true;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &d_south_west;
+			flip = true;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &d_north_west;
+			flip = true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			current_animation = &d_south;
+			flip = false;
+		}
+		else if (direction.y == -1)
+		{
+			current_animation = &d_north;
+			flip = false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &d_west;
+			flip = false;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &d_south_west;
+			flip = false;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &d_north_west;
+			flip = false;
+		}
+	}
+}
+
+void Unit::CheckDecomposeDirection()
+{
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &de_west;
+			flip = true;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &de_south_west;
+			flip = true;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &de_north_west;
+			flip = true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			current_animation = &de_south;
+			flip = false;
+		}
+		else if (direction.y == -1)
+		{
+			current_animation = &de_north;
+			flip = false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			current_animation = &de_west;
+			flip = false;
+		}
+		else if (direction.y == 0.5)
+		{
+			current_animation = &de_south_west;
+			flip = false;
+		}
+		else if (direction.y == -0.5)
+		{
+			current_animation = &de_north_west;
+			flip = false;
+		}
+	}
 }

@@ -106,7 +106,7 @@ unsigned int j1FileSystem::Load(const char* file, char** buffer) const
 
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
 
-	if(fs_file != nullptr)
+	if(fs_file != NULL)
 	{
 		PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);
 
@@ -141,13 +141,13 @@ SDL_RWops* j1FileSystem::Load(const char* file) const
 	if(size > 0)
 	{
 		SDL_RWops* r = SDL_RWFromConstMem(buffer, size);
-		if(r != nullptr)
+		if(r != NULL)
 			r->close = close_sdl_rwops;
 
 		return r;
 	}
 	else
-		return nullptr;
+		return NULL;
 }
 
 int close_sdl_rwops(SDL_RWops *rw)
@@ -164,7 +164,7 @@ unsigned int j1FileSystem::Save(const char* file, const char* buffer, unsigned i
 
 	PHYSFS_file* fs_file = PHYSFS_openWrite(file);
 
-	if(fs_file != nullptr)
+	if(fs_file != NULL)
 	{
 		PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void*)buffer, 1, size);
 		if(written != size)

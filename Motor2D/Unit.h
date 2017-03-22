@@ -9,8 +9,18 @@ enum unit_state {
 	unit_move,
 	unit_attack,
 	unit_death,
-	unit_decompose,
-	unit_null
+	unit_decompose
+};
+
+enum unit_direction {
+	north = 0,
+	south,
+	west,
+	east,
+	north_west,
+	north_east,
+	south_west,
+	south_east
 };
 
 class GameObject;
@@ -18,6 +28,9 @@ enum entity_name;
 
 class Unit : public Entity
 {
+private:
+	unit_direction destination;
+
 public:
 	Unit();
 	~Unit();
@@ -39,19 +52,38 @@ public:
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
 	vector<iPoint> GetPath() const;
+	void CheckDirection();
 	void FollowPath(float dt);
 	void SetDirection();
+	void LookAtMovement();
+
+	// Attack
+	bool IsInRange(Entity* attacked_entity);
+	void LookAtAttack();
+	void UnitAttack();
+	void BuildingAttack();
+	void SetAttackingUnit(Unit* att_unit);
+	void SetAttackingBuilding(Building* att_building);
+  
+	// Death
+	void CheckDeathDirection();
+	j1Timer death_timer;
+
+	//Decompose
+	void CheckDecomposeDirection();
+  
 public:
 	GameObject* game_object = nullptr;
-	unit_state state = unit_state::unit_null;
+	unit_state state;
 	entity_name type;
 	bool flip = false;
-	bool to_delete = true;
+	bool to_delete = false; //WTF Simon
+  
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
-	iPoint destination = NULLPOINT;
 	bool has_destination = false;
+  
 public:
 	int life = 0;
 	int cost = 0;
@@ -61,14 +93,14 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 	
-	iPoint offset = NULLPOINT;
-	iPoint i_offset = NULLPOINT;
-	iPoint m_offset = NULLPOINT;
-	iPoint a_offset = NULLPOINT;
-	iPoint d_offset = NULLPOINT;
-	iPoint de_offset = NULLPOINT;
+	iPoint offset;
+	iPoint i_offset;
+	iPoint m_offset;
+	iPoint a_offset;
+	iPoint d_offset;
+	iPoint de_offset;
 
-	Animation* current_animation = nullptr;
+	Animation* current_animation;
 	// Idle
 	Animation i_south;
 	Animation i_south_west;

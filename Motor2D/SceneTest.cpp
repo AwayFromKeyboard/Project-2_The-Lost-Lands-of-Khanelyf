@@ -12,7 +12,6 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "GameObject.h"
-#include "j1Scene.h"
 
 SceneTest::SceneTest()
 {
@@ -63,11 +62,20 @@ bool SceneTest::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 
-	CheckUnitCreation(p);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) 
+CheckUnitCreation(p);
+  
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p);
+		//troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
+		if (App->map->WorldToMapPoint(troop->GetGameObject()->GetPos()) == p && troop->life > 0)
+		{
+			troop2->state = unit_attack;
+			troop2->SetAttackingUnit(troop);
+		}
+
+	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
 	}
 
 	return true;
@@ -83,18 +91,21 @@ bool SceneTest::Update(float dt)
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
-	troop->path = App->pathfinding->GetPath();
+	
 
 	if (troop->path.size() > 0)
 	{
 		troop->state = unit_move;
 	}
 
+
 	for (uint i = 0; i < troop->path.size(); i++)
 	{
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+	
+
 	
 	return true;
 }
