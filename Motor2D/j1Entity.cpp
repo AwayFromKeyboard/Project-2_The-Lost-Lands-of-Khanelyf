@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Hero.h"
 #include "Log.h"
+#include "GameObject.h"
 
 j1Entity::j1Entity()
 {
@@ -113,5 +114,35 @@ void j1Entity::DeleteEntity(Entity* entity)
 	RELEASE(entity);
 }
 
+void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
+{
+	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
+	{
+		iPoint unit = (*it)->GetGameObject()->GetPos();
+		
+		if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
+		{
+			(*it)->SetSelected(true);
+		}
+		else if (unit.x < select_rect.x && unit.x > select_rect.w && unit.y < select_rect.y && unit.y > select_rect.h)
+		{
+			(*it)->SetSelected(true);
+		}
+		else if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y < select_rect.y && unit.y > select_rect.h)
+		{
+			(*it)->SetSelected(true);
+		}
+		else if (unit.x < select_rect.x && unit.x > select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
+		{
+			(*it)->SetSelected(true);
+		}
+	}
+}
 
-
+void j1Entity::UnselectEverything()
+{
+	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
+	{
+		(*it)->SetSelected(false);
+	}
+}

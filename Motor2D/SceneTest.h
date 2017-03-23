@@ -37,6 +37,7 @@ private:
 	
 
 	Hero* troop = nullptr;
+	Hero* troop2 = nullptr;
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;

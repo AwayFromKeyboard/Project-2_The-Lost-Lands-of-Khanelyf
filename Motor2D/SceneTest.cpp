@@ -47,20 +47,15 @@ bool SceneTest::Start()
 	troop = (Hero*)App->entity->CreateEntity(player);
 	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
 	troop->game_object->SetPos(pos);
+	troop2 = (Hero*)App->entity->CreateEntity(player);
+	fPoint pos2(App->map->MapToWorld(13, 2).x, App->map->MapToWorld(13, 2).y);
+	troop2->game_object->SetPos(pos2);
 	SDL_ShowCursor(0);
 	return true;
 }
 
 bool SceneTest::PreUpdate()
 {
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
-	}
 
 	return true;
 }
@@ -74,25 +69,6 @@ bool SceneTest::Update(float dt)
 
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
-
-	
-
-	if (troop->path.size() > 0)
-	{
-		troop->state = unit_move;
-	}
-	else
-	{
-		troop->state = unit_idle;
-	}
-
-	for (uint i = 0; i < troop->path.size(); i++)
-	{
-		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
-		App->render->Blit(debug_tex, pos.x, pos.y);
-	}
-	
-
 	
 	return true;
 }

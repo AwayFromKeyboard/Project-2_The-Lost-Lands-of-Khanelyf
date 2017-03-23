@@ -17,6 +17,8 @@ enum entity_name
 class Entity;
 class Player;
 class Test;
+struct SDL_Rect;
+
 class j1Entity : public j1Module
 {
 public:
@@ -48,6 +50,9 @@ public:
 
 	Entity* CreateEntity(entity_name entity);
 	void DeleteEntity(Entity* entity);
+
+	void SelectInQuad(const SDL_Rect& select_rect);
+	void UnselectEverything();
 
 private:
 

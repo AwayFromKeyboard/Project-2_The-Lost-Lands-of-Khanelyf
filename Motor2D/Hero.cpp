@@ -88,13 +88,16 @@ bool Hero::Draw(float dt)
 	}
 	else
 		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
-
+	
 	return ret;
 }
 
 bool Hero::PostUpdate()
 {
 	bool ret = true;
+	
+	if (GetSelected())
+		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }
