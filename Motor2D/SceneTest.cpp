@@ -50,13 +50,27 @@ bool SceneTest::Start()
 	troop2 = (Hero*)App->entity->CreateEntity(player);
 	fPoint pos2(App->map->MapToWorld(13, 2).x, App->map->MapToWorld(13, 2).y);
 	troop2->game_object->SetPos(pos2);
+
+  gold = 1000;
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
+
 	SDL_ShowCursor(0);
 	return true;
 }
 
 bool SceneTest::PreUpdate()
 {
-
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+  
+  CheckUnitCreation(p);
+  
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
+	}
+  
 	return true;
 }
 
@@ -69,7 +83,7 @@ bool SceneTest::Update(float dt)
 
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
-	
+
 	return true;
 }
 
@@ -80,6 +94,13 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
+	if (App->scene->GetCurrentScene() != App->scene->scene_test)
+	{
+		App->gui->DeleteElement(cursor);
+		App->gui->DeleteElement(general_ui_window);
+		App->gui->DeleteElement(gold_txt);
+	}
+
 	return true;
 }
 
@@ -95,4 +116,20 @@ bool SceneTest::Save(pugi::xml_node &) const
 
 void SceneTest::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
+}
+
+void SceneTest::CheckUnitCreation(iPoint p)
+{
+	std::stringstream oss;
+	oss << "Gold: " << gold;
+	std::string txt = oss.str();
+	gold_txt->SetText(txt);
+
+	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
+	{
+		gold -= TROOP_PRICE;
+		troop = (Hero*)App->entity->CreateEntity(player);
+		fPoint pos(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y);
+		troop->game_object->SetPos(pos);
+	}
 }

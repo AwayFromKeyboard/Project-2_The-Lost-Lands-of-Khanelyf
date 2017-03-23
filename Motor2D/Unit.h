@@ -56,16 +56,34 @@ public:
 	void FollowPath(float dt);
 	void SetDirection();
 	void LookAtMovement();
+
+	// Attack
+	bool IsInRange(Entity* attacked_entity);
+	void LookAtAttack();
+	void UnitAttack();
+	void BuildingAttack();
+	void SetAttackingUnit(Unit* att_unit);
+	void SetAttackingBuilding(Building* att_building);
+  
+	// Death
+	void CheckDeathDirection();
+	j1Timer death_timer;
+
+	//Decompose
+	void CheckDecomposeDirection();
+  
 public:
 	GameObject* game_object = nullptr;
 	unit_state state;
 	entity_name type;
 	bool flip = false;
-	bool to_delete = true;
+	bool to_delete = false; //WTF Simon
+  
 public:
 	vector<iPoint> path;
-	fPoint direction;
+	fPoint direction = NULLPOINT;
 	bool has_destination = false;
+  
 public:
 	int life = 0;
 	int cost = 0;
@@ -113,6 +131,9 @@ public:
 	Animation de_west;
 	Animation de_north_west;
 	Animation de_north;
+
+public:
+	bool is_selected = false;
 };
 
 #endif
