@@ -23,8 +23,15 @@ enum unit_direction {
 	south_east
 };
 
+enum attack_state {
+	attack_unit,
+	attack_building,
+	attack_null
+};
+
 class GameObject;
 enum entity_name;
+class Building;
 
 class Unit : public Entity
 {
@@ -83,7 +90,10 @@ public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
 	bool has_destination = false;
-  
+public:
+	Unit* attacked_unit = nullptr;
+	Building* attacked_building = nullptr;
+	attack_state att_state = attack_state::attack_null;
 public:
 	int life = 0;
 	int cost = 0;

@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "SceneTest.h"
+#include "j1Scene.h"
 #include <sstream>
 #include "j1Entity.h"
 #include "Hero.h"
