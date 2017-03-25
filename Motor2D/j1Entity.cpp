@@ -3,6 +3,7 @@
 #include "Hero.h"
 #include "Log.h"
 #include "GameObject.h"
+#include "j1Input.h"
 
 j1Entity::j1Entity()
 {
@@ -34,6 +35,8 @@ bool j1Entity::PreUpdate()
 	for(list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 		ret = (*it)->PreUpdate();
 
+	AddGroup();
+	
 	return ret;
 }
 
@@ -47,7 +50,8 @@ bool j1Entity::Update(float dt)
 		(*it)->Draw(dt);
 	}
 
-	
+	ManageGroup();
+
 	return ret;
 }
 
@@ -57,6 +61,7 @@ bool j1Entity::PostUpdate()
 
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 		ret = (*it)->PostUpdate();
+
 
 	return ret;
 }
@@ -73,6 +78,19 @@ bool j1Entity::CleanUp()
 		App->entity->unit_game_objects_list.erase(it);
 		RELEASE(*it);
 	}
+	for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+		selected.erase(it);
+	}
+	selected.clear();
+	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
+		for (std::list<Entity*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
+			(*it).group.erase(it2);
+		}
+		(*it).group.clear();
+		(*it).key_id = 0;
+	}
+	lists_selected.clear();
+
 	return ret;
 }
 
@@ -136,6 +154,9 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 		{
 			(*it)->SetSelected(true);
 		}
+
+		if ((*it)->GetSelected())
+			selected.push_back(*it);
 	}
 }
 
@@ -143,6 +164,40 @@ void j1Entity::UnselectEverything()
 {
 	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 	{
+		if ((*it)->GetSelected())
 		(*it)->SetSelected(false);
+	}
+	for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+		selected.erase(it);
+	}
+	selected.clear();
+}
+
+void j1Entity::AddGroup()
+{
+	if (selected.size() > 0 && App->input->GetNumPressed() >= 30 && App->input->GetNumPressed() <= 39) {
+		SelectedList new_group;
+		new_group.key_id = App->input->GetNumPressed();
+		for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
+			if ((*it).key_id == new_group.key_id) {
+				lists_selected.erase(it);
+			}
+		}
+		for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+			new_group.group.push_back(*it);
+		}
+		lists_selected.push_back(new_group);
+	}
+}
+
+void j1Entity::ManageGroup()
+{
+	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
+		if (App->input->GetKey((*it).key_id) == key_down) {
+			UnselectEverything();
+			for (std::list<Entity*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
+				(*it2)->SetSelected(true);
+			}
+		}
 	}
 }

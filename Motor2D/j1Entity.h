@@ -19,6 +19,11 @@ class Player;
 class Test;
 struct SDL_Rect;
 
+struct SelectedList {
+	std::list<Entity*> group;
+	int key_id = 0;
+};
+
 class j1Entity : public j1Module
 {
 public:
@@ -54,6 +59,9 @@ public:
 	void SelectInQuad(const SDL_Rect& select_rect);
 	void UnselectEverything();
 
+	void AddGroup();
+	void ManageGroup();
+
 private:
 
 public:
@@ -61,6 +69,9 @@ public:
 	std::list<Entity*> entity_list;
 	std::list<GameObject*> unit_game_objects_list;
 	std::list<GameObject*> building_game_objects_list;
+
+	std::list<SelectedList> lists_selected;
+	std::list<Entity*> selected;
 };
 
 #endif // __j1ENTITY_H__

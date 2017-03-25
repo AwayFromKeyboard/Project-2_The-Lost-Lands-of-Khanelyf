@@ -66,6 +66,8 @@ public:
 		return mouse_buttons[id - 1];
 	}
 
+	int GetNumPressed() const;
+
 	// Check if a certain window event happened
 	bool GetWindowEvent(int code);
 

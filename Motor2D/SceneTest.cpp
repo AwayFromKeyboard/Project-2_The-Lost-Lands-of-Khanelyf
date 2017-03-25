@@ -52,7 +52,7 @@ bool SceneTest::Start()
 	fPoint pos2(App->map->MapToWorld(13, 2).x, App->map->MapToWorld(13, 2).y);
 	troop2->game_object->SetPos(pos2);
 
-  gold = 1000;
+	gold = 1000;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
 
 	SDL_ShowCursor(0);
@@ -66,11 +66,7 @@ bool SceneTest::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
   
-  CheckUnitCreation(p);
-  
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
-		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
-	}
+	CheckUnitCreation(p);
   
 	return true;
 }
