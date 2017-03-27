@@ -46,11 +46,23 @@ bool Unit::Update(float dt)
 
 	switch (state) {
 	case unit_idle:
+		idle_collision->print_collider = true;
+		walk_collision->print_collider = false;
+		attack_collision->print_collider = false;
+
 		break;
 	case unit_move:
+		
 		FollowPath(dt);
+		idle_collision->print_collider = false;
+		walk_collision->print_collider = true;
+		attack_collision->print_collider = false;
 		break;
 	case unit_attack:
+		
+		idle_collision->print_collider = false;
+		walk_collision->print_collider = false;
+		attack_collision->print_collider = true;
 		break;
 	case unit_death:
 		break;

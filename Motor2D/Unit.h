@@ -66,7 +66,10 @@ public:
 
 	iPoint position = NULLPOINT;
 
-	Collider* collision_box = nullptr;
+	Collider* idle_collision = nullptr;
+	Collider* walk_collision = nullptr;
+	Collider* attack_collision = nullptr;
+	
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;

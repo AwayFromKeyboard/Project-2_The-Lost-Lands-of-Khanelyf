@@ -82,14 +82,17 @@ void j1Collisions::DebugDraw()
 			if (colliders[i] == nullptr)
 				continue;
 
-			switch (colliders[i]->type)
+			if (colliders[i]->print_collider == true)
 			{
-			case COLLIDER_NONE: // white
-				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
-				break;
-			case COLLIDER_UNIT: // red
-				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
-				break;
+				switch (colliders[i]->type)
+				{
+				case COLLIDER_NONE: // white
+					App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+					break;
+				case COLLIDER_UNIT: // yellow
+					App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
+					break;
+				}
 			}
 		}
 	}

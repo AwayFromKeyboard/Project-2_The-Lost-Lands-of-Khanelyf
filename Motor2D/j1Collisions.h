@@ -19,6 +19,7 @@ struct Collider
 	SDL_Rect rect;
 	bool to_delete = false;
 	collider_type type;
+	bool print_collider = false;
 	j1Module* callback = nullptr;
 
 	Collider(SDL_Rect rectangle, collider_type type, j1Module* callback = nullptr) :
