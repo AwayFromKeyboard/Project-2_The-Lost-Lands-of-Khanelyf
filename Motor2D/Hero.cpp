@@ -41,7 +41,7 @@ bool Hero::LoadEntity()
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
 		position = iPoint(150, 150);
-		collision_box = App->collisions->AddCollider(NULLRECT, COLLIDER_UNIT, App->collisions);
+		collision_box = App->collisions->AddCollider({ position.x, position.y, 20, 54}, COLLIDER_UNIT, App->collisions);
 
 		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);	
 		game_object->SetListener((j1Module*)App->entity);
@@ -87,6 +87,8 @@ bool Hero::Start()
 bool Hero::Draw(float dt)
 {
 	bool ret = true;
+
+	App->collisions->DebugDraw();
 
 	if (flip) {
 		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);

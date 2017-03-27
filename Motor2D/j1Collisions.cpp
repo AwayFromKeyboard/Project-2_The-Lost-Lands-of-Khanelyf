@@ -33,7 +33,7 @@ bool j1Collisions::PreUpdate()
 	return true;
 }
 
-bool j1Collisions::Update()
+bool j1Collisions::Update(float dt)
 {
 	Collider* col1;
 	Collider* col2;
@@ -77,7 +77,7 @@ void j1Collisions::DebugDraw()
 	if (App->debug_mode == false)
 		debug = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down && App->debug_mode == true)
+	if (App->input->GetKey(SDL_SCANCODE_F3) == key_down && App->debug_mode == true)
 		debug = !debug;
 
 	if (debug == true)
@@ -94,8 +94,8 @@ void j1Collisions::DebugDraw()
 		case COLLIDER_NONE: // white
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
-		case COLLIDER_UNIT: // green
-			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
+		case COLLIDER_UNIT: // red
+			App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
 			break;
 		}
 	}

@@ -41,7 +41,9 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	collision_box->rect = { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y, current_animation->GetAnimationFrame(dt).w, current_animation->GetAnimationFrame(dt).h };
+	//collision_box->rect = { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y, current_animation->GetAnimationFrame(dt).w, current_animation->GetAnimationFrame(dt).h };
+	//collision_box->rect = {position.x, position.y, current_animation->GetAnimationFrame(dt).w, current_animation->GetAnimationFrame(dt).h };
+	collision_box->SetPos(position.x, position.y);
 
 	switch (state) {
 	case unit_idle:
