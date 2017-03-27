@@ -48,7 +48,7 @@ bool Unit::Update(float dt)
 		walk_collision->print_collider = false;
 		attack_collision->print_collider = false;
 
-		idle_collision->SetPos(game_object->fGetPos().x - 8, game_object->fGetPos().y - 24);
+		idle_collision->SetPos(position.x, position.y);
 
 		break;
 	case unit_move:
@@ -58,7 +58,7 @@ bool Unit::Update(float dt)
 		walk_collision->print_collider = true;
 		attack_collision->print_collider = false;
 		
-		walk_collision->SetPos(game_object->fGetPos().x - 8, game_object->fGetPos().y - 24);
+		walk_collision->SetPos(position.x, position.y);
 		break;
 	case unit_attack:
 		
@@ -66,7 +66,7 @@ bool Unit::Update(float dt)
 		walk_collision->print_collider = false;
 		attack_collision->print_collider = true;
 
-		attack_collision->SetPos(game_object->fGetPos().x - 8, game_object->fGetPos().y - 24);
+		attack_collision->SetPos(position.x, position.y);
 		break;
 
 	case unit_death:
@@ -138,6 +138,9 @@ void Unit::FollowPath(float dt)
 
 		pos.x += direction.x * speed;
 		pos.y += direction.y * speed;
+
+		position.x = pos.x - 8;
+		position.y = pos.y - 24;
 
 		game_object->SetPos(pos);
 
