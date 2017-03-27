@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Hero.h"
 #include "Log.h"
+#include "j1Collisions.h"
 
 j1Entity::j1Entity()
 {
@@ -57,7 +58,7 @@ bool j1Entity::PostUpdate()
 
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 		ret = (*it)->PostUpdate();
-
+	App->collisions->DebugDraw();
 	return ret;
 }
 

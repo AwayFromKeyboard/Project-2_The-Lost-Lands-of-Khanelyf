@@ -66,37 +66,31 @@ bool j1Collisions::Update(float dt)
 		}
 	}
 
-	DebugDraw();
-
 	return true;
 }
 
 void j1Collisions::DebugDraw()
 {
-
-	if (App->debug_mode == false)
-		debug = true;
-
-	if (App->input->GetKey(SDL_SCANCODE_F3) == key_down && App->debug_mode == true)
+	if (App->input->GetKey(SDL_SCANCODE_F3) == key_down)
 		debug = !debug;
 
 	if (debug == true)
-		return;
-
-	Uint8 alpha = 80;
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		if (colliders[i] == nullptr)
-			continue;
-
-		switch (colliders[i]->type)
+		Uint8 alpha = 80;
+		for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		{
-		case COLLIDER_NONE: // white
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
-			break;
-		case COLLIDER_UNIT: // red
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
-			break;
+			if (colliders[i] == nullptr)
+				continue;
+
+			switch (colliders[i]->type)
+			{
+			case COLLIDER_NONE: // white
+				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+				break;
+			case COLLIDER_UNIT: // red
+				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
+				break;
+			}
 		}
 	}
 }

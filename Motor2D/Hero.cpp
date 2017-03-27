@@ -88,8 +88,6 @@ bool Hero::Draw(float dt)
 {
 	bool ret = true;
 
-	App->collisions->DebugDraw();
-
 	if (flip) {
 		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 	}
