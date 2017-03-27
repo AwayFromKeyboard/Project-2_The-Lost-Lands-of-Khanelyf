@@ -41,14 +41,14 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	//collision_box->rect = { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y, current_animation->GetAnimationFrame(dt).w, current_animation->GetAnimationFrame(dt).h };
-	//collision_box->rect = {position.x, position.y, current_animation->GetAnimationFrame(dt).w, current_animation->GetAnimationFrame(dt).h };
 
 	switch (state) {
 	case unit_idle:
 		idle_collision->print_collider = true;
 		walk_collision->print_collider = false;
 		attack_collision->print_collider = false;
+
+		idle_collision->SetPos(game_object->fGetPos().x - 8, game_object->fGetPos().y - 24);
 
 		break;
 	case unit_move:
@@ -57,20 +57,24 @@ bool Unit::Update(float dt)
 		idle_collision->print_collider = false;
 		walk_collision->print_collider = true;
 		attack_collision->print_collider = false;
+		
+		walk_collision->SetPos(game_object->fGetPos().x - 8, game_object->fGetPos().y - 24);
 		break;
 	case unit_attack:
 		
 		idle_collision->print_collider = false;
 		walk_collision->print_collider = false;
 		attack_collision->print_collider = true;
+
+		attack_collision->SetPos(game_object->fGetPos().x - 8, game_object->fGetPos().y - 24);
 		break;
+
 	case unit_death:
 		break;
 	case unit_decompose:
 		break;
 	}
 
-	
 	return true;
 }
 
