@@ -60,10 +60,10 @@ bool Hero::LoadEntity()
 		game_object->LoadAnimationsFromUnitsXML(node, this);
 
 		i_offset.create(node.child("idle").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		a_offset.create(node.child("attack").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		d_offset.create(node.child("death").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		de_offset.create(node.child("decompose").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("move").attribute("offset_y").as_int());
+		a_offset.create(node.child("attack").attribute("offset_x").as_int(), node.child("attack").attribute("offset_y").as_int());
+		d_offset.create(node.child("death").attribute("offset_x").as_int(), node.child("death").attribute("offset_y").as_int());
+		de_offset.create(node.child("decompose").attribute("offset_x").as_int(), node.child("decompose").attribute("offset_y").as_int());
 
 		current_animation = &i_south;
 		offset = i_offset;
@@ -82,9 +82,25 @@ bool Hero::Start()
 	return ret;
 }
 
+bool Hero::Draw(float dt)
+{
+	bool ret = true;
+
+	if (flip) {
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+	}
+	else
+		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+	
+	return ret;
+}
+
 bool Hero::PostUpdate()
 {
 	bool ret = true;
+	
+	if (GetSelected())
+		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }
