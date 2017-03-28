@@ -175,18 +175,32 @@ void j1Entity::UnselectEverything()
 
 void j1Entity::AddGroup()
 {
-	if (selected.size() > 0 && App->input->GetNumPressed() >= 30 && App->input->GetNumPressed() <= 39) {
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == key_repeat) {
 		SelectedList new_group;
-		new_group.key_id = App->input->GetNumPressed();
-		for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
-			if ((*it).key_id == new_group.key_id) {
-				lists_selected.erase(it);
+		new_group.key_id = NULL;
+
+		if (App->input->GetKey(SDL_SCANCODE_1) == key_down) new_group.key_id = SDL_SCANCODE_1;
+		if (App->input->GetKey(SDL_SCANCODE_2) == key_down) new_group.key_id = SDL_SCANCODE_2;
+		if (App->input->GetKey(SDL_SCANCODE_3) == key_down) new_group.key_id = SDL_SCANCODE_3;
+		if (App->input->GetKey(SDL_SCANCODE_4) == key_down) new_group.key_id = SDL_SCANCODE_4;
+		if (App->input->GetKey(SDL_SCANCODE_5) == key_down) new_group.key_id = SDL_SCANCODE_5;
+		if (App->input->GetKey(SDL_SCANCODE_6) == key_down) new_group.key_id = SDL_SCANCODE_6;
+		if (App->input->GetKey(SDL_SCANCODE_7) == key_down) new_group.key_id = SDL_SCANCODE_7;
+		if (App->input->GetKey(SDL_SCANCODE_8) == key_down) new_group.key_id = SDL_SCANCODE_8;
+		if (App->input->GetKey(SDL_SCANCODE_9) == key_down) new_group.key_id = SDL_SCANCODE_9;
+		if (App->input->GetKey(SDL_SCANCODE_0) == key_down) new_group.key_id = SDL_SCANCODE_0;
+
+		if (selected.size() > 0 && new_group.key_id != NULL) {
+			for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
+				if ((*it).key_id == new_group.key_id) {
+					lists_selected.erase(it);
+				}
 			}
+			for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+				new_group.group.push_back(*it);
+			}
+			lists_selected.push_back(new_group);
 		}
-		for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
-			new_group.group.push_back(*it);
-		}
-		lists_selected.push_back(new_group);
 	}
 }
 

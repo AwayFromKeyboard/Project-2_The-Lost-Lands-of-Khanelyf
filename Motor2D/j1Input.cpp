@@ -184,19 +184,6 @@ void j1Input::SetMouseWorld(int& x, int& y)
 	mouse_y = y;
 }
 
-int j1Input::GetNumPressed() const
-{
-	if (GetKey(SDL_SCANCODE_1) == key_down) return SDL_SCANCODE_1;
-	else if (GetKey(SDL_SCANCODE_2) == key_down) return SDL_SCANCODE_2;
-	else if (GetKey(SDL_SCANCODE_3) == key_down) return SDL_SCANCODE_3;
-	else if (GetKey(SDL_SCANCODE_4) == key_down) return SDL_SCANCODE_4;
-	else if (GetKey(SDL_SCANCODE_5) == key_down) return SDL_SCANCODE_5;
-	else if (GetKey(SDL_SCANCODE_6) == key_down) return SDL_SCANCODE_6;
-	else if (GetKey(SDL_SCANCODE_7) == key_down) return SDL_SCANCODE_7;
-	else if (GetKey(SDL_SCANCODE_8) == key_down) return SDL_SCANCODE_8;
-	else if (GetKey(SDL_SCANCODE_9) == key_down) return SDL_SCANCODE_9;
-	else if (GetKey(SDL_SCANCODE_0) == key_down) return SDL_SCANCODE_0;
-}
 
 void j1Input::GetMousePosition(int& x, int& y)
 {
