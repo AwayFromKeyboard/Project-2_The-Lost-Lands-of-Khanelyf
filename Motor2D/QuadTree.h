@@ -1,11 +1,10 @@
 #ifndef _QUAD_TREE_H_
 #define _QUAD_TREE_H_
 
-//TODO 1
-
 #include <list>
 #include <vector>
-#include "Collision.h"
+#include "j1Collisions.h"
+#include "SDL\include\SDL.h"
 
 #define MAX_OBJECTS 2 //Number of obects in a node before split
 #define NODE_COUNT 4 //4 nodes. NW, NE, SW, SE. 

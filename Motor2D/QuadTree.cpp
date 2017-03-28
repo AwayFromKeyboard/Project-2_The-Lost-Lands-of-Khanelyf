@@ -1,7 +1,5 @@
 #include "QuadTree.h"
 
-//TODO 2
-
 QuadTree::QuadTree(SDL_Rect nodeBounds)
 {
 	node[0] = node[1] = node[2] = node[3] = nullptr;

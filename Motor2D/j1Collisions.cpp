@@ -46,37 +46,36 @@ bool j1Collisions::Update(float dt)
 	Collider* col1;
 	Collider* col2;
 
-	for (std::list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it) 
-	{
-		// skip empty colliders
-		if ((*it) == nullptr)
-			continue;
+	//for (std::list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it) 
+	//{
+	//	// skip empty colliders
+	//	if ((*it) == nullptr)
+	//		continue;
 
-		col1 = (*it);
+	//	col1 = (*it);
 
-		// avoid checking collisions already checked
-		for (std::list<Collider*>::iterator it2 = colliders.begin(); it2 != colliders.end(); ++it2)
-		{
-			// skip empty colliders
-			if ((*it2) == nullptr)
-				continue;
+	//	// avoid checking collisions already checked
+	//	for (std::list<Collider*>::iterator it2 = colliders.begin(); it2 != colliders.end(); ++it2)
+	//	{
+	//		// skip empty colliders
+	//		if ((*it2) == nullptr)
+	//			continue;
 
-			col2 = (*it2);
+	//		col2 = (*it2);
 
-			if (col1->CheckCollision(col2->rect) == true)
-			{
-				if (matrix[col1->type][col2->type] && col1->callback)
-					col1->callback->OnCollision(col1, col2);
-				if (matrix[col2->type][col1->type] && col2->callback)
-					col2->callback->OnCollision(col2, col1);
+	//		if (col1->CheckCollision(col2->rect) == true)
+	//		{
+	//			if (matrix[col1->type][col2->type] && col1->callback)
+	//				col1->callback->OnCollision(col1, col2);
+	//			if (matrix[col2->type][col1->type] && col2->callback)
+	//				col2->callback->OnCollision(col2, col1);
 
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 
 
-	//QuadTree needs to be finished first
-	/*quadTree->ClearTree();
+	quadTree->ClearTree();
 
 	for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); it++) {
 		quadTree->Insert(*it);
@@ -111,7 +110,7 @@ bool j1Collisions::Update(float dt)
 		if (nodeList[i] != nullptr) {
 			App->render->DrawQuad(nodeList[i]->nodeRect, 255, 255, 255, 255, false);
 		}
-	}*/
+	}
 
 	return true;
 }
