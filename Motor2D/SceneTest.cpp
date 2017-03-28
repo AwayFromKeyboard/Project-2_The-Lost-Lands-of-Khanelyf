@@ -48,6 +48,10 @@ bool SceneTest::Start()
 	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
 	troop->game_object->SetPos(pos);
 
+	troop2 = (Hero*)App->entity->CreateEntity(player);
+	fPoint pos2(App->map->MapToWorld(13, 1).x, App->map->MapToWorld(13, 1).y);
+	troop2->game_object->SetPos(pos2);
+
 	gold = 1000;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
 
@@ -117,12 +121,12 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
-	if (App->scene->GetCurrentScene() != App->scene->scene_test)
+	/*if (App->scene->GetCurrentScene() != App->scene->scene_test)
 	{
 		App->gui->DeleteElement(cursor);
 		App->gui->DeleteElement(general_ui_window);
 		App->gui->DeleteElement(gold_txt);
-	}
+	}*/
 
 	return true;
 }
