@@ -20,6 +20,9 @@ public:
 	// Post Update
 	bool PostUpdate();
 
+	// Draw
+	bool Draw(float dt);
+
 	// CleanUp
 	bool CleanUp();
 
