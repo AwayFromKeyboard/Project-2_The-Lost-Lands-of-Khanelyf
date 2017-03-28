@@ -89,13 +89,6 @@ bool Hero::Start()
 	return ret;
 }
 
-bool Hero::PostUpdate()
-{
-	bool ret = true;
-
-	return ret;
-}
-
 bool Hero::CleanUp()
 {
 	bool ret = true;

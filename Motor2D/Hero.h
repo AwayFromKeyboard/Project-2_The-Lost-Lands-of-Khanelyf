@@ -17,9 +17,6 @@ public:
 	// Start variables
 	bool Start();
 
-	// Post Update
-	bool PostUpdate();
-
 	// CleanUp
 	bool CleanUp();
 
