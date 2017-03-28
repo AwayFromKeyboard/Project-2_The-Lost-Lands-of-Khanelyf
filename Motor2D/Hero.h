@@ -17,9 +17,6 @@ public:
 	// Start variables
 	bool Start();
 
-	// Draw and change animations
-	bool Draw(float dt);
-
 	// Post Update
 	bool PostUpdate();
 
@@ -30,7 +27,7 @@ public:
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
 public:
-	iPoint mouse_position = NULLPOINT;
+	iPoint mouse_position;
 
 	
 };

@@ -123,14 +123,14 @@ public:
 
 	bool			    debug_mode = false;
 
-	collision_filters* cf = nullptr;
+	collision_filters* cf;
 
 private:
 
 	bool                end_program = false;
 
 	list<j1Module*>  	modules;
-	int					argc = 0;
+	int					argc;
 	char**				args;
 
 	string		    	title;

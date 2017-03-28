@@ -72,7 +72,8 @@ bool Hero::LoadEntity()
 
 		current_animation = &i_south;
 		offset = i_offset;
-
+		direction = { 0, 1 };
+		App->entity->unit_game_objects_list.push_back(game_object);
 	}
 	else LOG("\nERROR, no node found\n");
 	
@@ -82,19 +83,6 @@ bool Hero::LoadEntity()
 bool Hero::Start()
 {
 	bool ret = true;
-
-	return ret;
-}
-
-bool Hero::Draw(float dt)
-{
-	bool ret = true;
-
-	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
-	}
-	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 
 	return ret;
 }
@@ -111,11 +99,13 @@ bool Hero::CleanUp()
 	bool ret = true;
 
 	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
-		if ((*it) == game_object) {
-			App->entity->unit_game_objects_list.erase(it++);
+		if (*it == game_object)
+		{	
+			App->entity->unit_game_objects_list.erase(it);
+			RELEASE(*it);
 		}
 	}
-
+	
 	return ret;
 }
 

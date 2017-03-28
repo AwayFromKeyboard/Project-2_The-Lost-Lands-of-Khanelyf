@@ -22,7 +22,7 @@ enum main_state
 	exit_
 };
 
-j1App* App = nullptr;
+j1App* App = NULL;
 
 int main(int argc, char* args[])
 {
@@ -42,7 +42,7 @@ int main(int argc, char* args[])
 
 			App = new j1App(argc, args);
 
-			if(App != nullptr)
+			if(App != NULL)
 				state = awake;
 			else
 				state = fail;

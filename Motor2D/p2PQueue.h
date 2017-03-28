@@ -56,7 +56,7 @@ public:
 		unsigned int result = 0;
 		p2PQueue_item<tdata>* tmp;
 
-		for (tmp = start; tmp != nullptr; tmp = tmp->next)
+		for (tmp = start; tmp != NULL; tmp = tmp->next)
 			++result;
 
 		return result;
@@ -69,7 +69,7 @@ public:
 	{
 		p2PQueue_item<tdata>* tmp = start;
 
-		while (tmp != nullptr && tmp->next != nullptr)
+		while (tmp != NULL && tmp->next != NULL)
 			tmp = tmp->next;
 
 		return tmp;
@@ -85,7 +85,7 @@ public:
 
 		p2PQueue_item<tdata>* last = GetLast();
 
-		if (last == nullptr)
+		if (last == NULL)
 		{
 			start = p_data_item;
 		}
@@ -136,13 +136,13 @@ public:
 		unsigned int i = 0;
 		p2PQueue_item<tdata>* tmp;
 
-		for (tmp = start; tmp != nullptr && i < index; tmp = tmp->next)
+		for (tmp = start; tmp != NULL && i < index; tmp = tmp->next)
 			++i;
 
-		if (tmp != nullptr)
+		if (tmp != NULL)
 			return &(tmp->data);
 
-		return nullptr;
+		return NULL;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public:
 		p2PQueue_item<tdata>*   p_next;
 		p_data = start;
 
-		while (p_data != nullptr)
+		while (p_data != NULL)
 		{
 			p_next = p_data->next;
 			RELEASE(p_data);

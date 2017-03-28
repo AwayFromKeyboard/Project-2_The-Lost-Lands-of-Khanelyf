@@ -344,11 +344,11 @@ void j1App::GetSaveGames(std::list<std::string>& list_to_fill) const
 
 void j1App::LoadXML(const char * path, pugi::xml_document & doc)
 {
-	char* buf = nullptr;
+	char* buf = NULL;
 	int size = App->fs->Load(path, &buf);
 	pugi::xml_parse_result result = doc.load_buffer(buf, size);
 	
-	if (buf == nullptr)
+	if (buf == NULL)
 		LOG("Error loading '%s', probably wrong XML file name", path);
 	else
 		LOG("Succes loading '%s'", path);

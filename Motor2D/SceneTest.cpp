@@ -12,7 +12,6 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "GameObject.h"
-#include "j1Scene.h"
 
 SceneTest::SceneTest()
 {
@@ -48,6 +47,10 @@ bool SceneTest::Start()
 	troop = (Hero*)App->entity->CreateEntity(player);
 	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
 	troop->game_object->SetPos(pos);
+
+	gold = 1000;
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
+
 	SDL_ShowCursor(0);
 	return true;
 }
@@ -59,8 +62,20 @@ bool SceneTest::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
-		App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p);
+CheckUnitCreation(p);
+  
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+	{
+		//troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
+		if (App->map->WorldToMapPoint(troop->GetGameObject()->GetPos()) == p && troop->life > 0)
+		{
+			troop2->state = unit_attack;
+			troop2->SetAttackingUnit(troop);
+		}
+
+	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
 	}
 
 	return true;
@@ -76,18 +91,21 @@ bool SceneTest::Update(float dt)
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
-	troop->path = App->pathfinding->GetPath();
+	
 
 	if (troop->path.size() > 0)
 	{
 		troop->state = unit_move;
 	}
 
+
 	for (uint i = 0; i < troop->path.size(); i++)
 	{
 		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+	
+
 	
 	return true;
 }
@@ -103,6 +121,7 @@ bool SceneTest::CleanUp()
 	{
 		App->gui->DeleteElement(cursor);
 		App->gui->DeleteElement(general_ui_window);
+		App->gui->DeleteElement(gold_txt);
 	}
 
 	return true;
@@ -120,4 +139,20 @@ bool SceneTest::Save(pugi::xml_node &) const
 
 void SceneTest::OnColl(Collider* c1, Collider* c2)
 {
+}
+
+void SceneTest::CheckUnitCreation(iPoint p)
+{
+	std::stringstream oss;
+	oss << "Gold: " << gold;
+	std::string txt = oss.str();
+	gold_txt->SetText(txt);
+
+	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
+	{
+		gold -= TROOP_PRICE;
+		troop = (Hero*)App->entity->CreateEntity(player);
+		fPoint pos(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y);
+		troop->game_object->SetPos(pos);
+	}
 }
