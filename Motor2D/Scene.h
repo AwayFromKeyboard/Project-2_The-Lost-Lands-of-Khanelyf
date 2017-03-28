@@ -34,7 +34,7 @@ public:
 		return true;
 	}
 
-	virtual void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB) {};
+	virtual void OnColl(Collider* c1, Collider* c2) {};
 
 	virtual void OnCommand(std::list<std::string>& tokens) {}
 

@@ -7,10 +7,12 @@
 #include "Hero.h"
 #include "Entity.h"
 #include "Animation.h"
+#include "j1Collisions.h"
 #include "j1Scene.h"
 
 Unit::Unit()
 {
+
 }
 
 Unit::~Unit()
@@ -27,7 +29,7 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
-	
+
 	return ret;
 }
 
@@ -40,14 +42,29 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
+
 	switch (state) {
 	case unit_idle:
+
+		idle_collision->print_collider = true;
+		walk_collision->print_collider = false;
+		attack_collision->print_collider = false;
+
+		idle_collision->SetPos(position.x, position.y);
 		offset = i_offset;
 		CheckDirection();
 		break;
+
 	case unit_move:
+		
 		FollowPath(dt);
+		idle_collision->print_collider = false;
+		walk_collision->print_collider = true;
+		attack_collision->print_collider = false;
+		
+		walk_collision->SetPos(position.x, position.y);
 		break;
+
 	case unit_attack:
 		if (attacked_unit != nullptr)
 		{
@@ -77,6 +94,7 @@ bool Unit::Update(float dt)
 		}
 
 		break;
+
 	case unit_death:
 		CheckDeathDirection();
 		if (current_animation->GetFrameIndex() == 14)
@@ -98,6 +116,7 @@ bool Unit::Update(float dt)
 		}
 		break;
 	}
+
 	return true;
 }
 
@@ -144,7 +163,7 @@ bool Unit::Save(pugi::xml_node &) const
 	return true;
 }
 
-void Unit::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Unit::OnColl(Collider* col1, Collider* col2)
 {
 }
 
@@ -570,3 +589,4 @@ void Unit::CheckDecomposeDirection()
 		}
 	}
 }
+

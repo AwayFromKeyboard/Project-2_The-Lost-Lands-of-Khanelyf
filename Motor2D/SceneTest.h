@@ -28,7 +28,7 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	void OnColl(Collider* c1, Collider* c2);
 
 	void CheckUnitCreation(iPoint p);
 

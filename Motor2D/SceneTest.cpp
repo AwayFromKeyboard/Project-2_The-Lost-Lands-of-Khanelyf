@@ -137,7 +137,7 @@ bool SceneTest::Save(pugi::xml_node &) const
 	return true;
 }
 
-void SceneTest::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void SceneTest::OnColl(Collider* c1, Collider* c2)
 {
 }
 

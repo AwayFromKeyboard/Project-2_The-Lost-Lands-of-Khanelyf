@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1Map.h"
 #include "Log.h"
+#include "j1Collisions.h"
 
 Hero::Hero()
 {
@@ -39,8 +40,12 @@ bool Hero::LoadEntity()
 	{
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
+		position = iPoint(378, 164);
+		idle_collision = App->collisions->AddCollider({ position.x, position.y, 20, 50}, COLLIDER_UNIT, App->collisions); // add w/h in xml file and replace the numbers by the values in the document
+		walk_collision = App->collisions->AddCollider({ position.x, position.y, 25, 54 }, COLLIDER_UNIT, App->collisions);
+		attack_collision = App->collisions->AddCollider({ position.x, position.y, 30, 54 }, COLLIDER_UNIT, App->collisions);
 
-		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 20, fixture_type::f_t_null);
+		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);	
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 		

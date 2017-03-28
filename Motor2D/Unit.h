@@ -4,12 +4,22 @@
 #include "Entity.h"
 #include "j1Pathfinding.h"
 
+struct Collider;
+
 enum unit_state {
 	unit_idle,
 	unit_move,
 	unit_attack,
+	unit_attacking,
 	unit_death,
-	unit_decompose
+	unit_decompose,
+	unit_null
+};
+
+enum attack_state {
+	attack_unit,
+	attack_building,
+	attack_null
 };
 
 enum unit_direction {
@@ -25,6 +35,7 @@ enum unit_direction {
 
 class GameObject;
 enum entity_name;
+class Building;
 
 class Unit : public Entity
 {
@@ -46,7 +57,7 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	void OnColl(Collider* col1, Collider* col2);
 	GameObject* GetGameObject();
 
 	// Pathfinding
@@ -74,15 +85,20 @@ public:
   
 public:
 	GameObject* game_object = nullptr;
-	unit_state state;
-	entity_name type;
+	unit_state state = unit_state::unit_null;
+	attack_state att_state = attack_state::attack_null;	entity_name type;
 	bool flip = false;
 	bool to_delete = false; //WTF Simon
   
+
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
 	bool has_destination = false;
+
+private:
+	Unit* attacked_unit = nullptr;
+	Building* attacked_building = nullptr;
   
 public:
 	int life = 0;
@@ -92,13 +108,19 @@ public:
 	int armor = 0;
 	int pierce_armor = 0;
 	int range = 0;
-	
-	iPoint offset;
-	iPoint i_offset;
-	iPoint m_offset;
-	iPoint a_offset;
-	iPoint d_offset;
-	iPoint de_offset;
+
+	iPoint position = NULLPOINT;
+
+	Collider* idle_collision = nullptr;
+	Collider* walk_collision = nullptr;
+	Collider* attack_collision = nullptr;
+
+	iPoint offset = NULLPOINT;
+	iPoint i_offset = NULLPOINT;
+	iPoint m_offset = NULLPOINT;
+	iPoint a_offset = NULLPOINT;
+	iPoint d_offset = NULLPOINT;
+	iPoint de_offset = NULLPOINT;
 
 	Animation* current_animation;
 	// Idle
@@ -137,3 +159,4 @@ public:
 };
 
 #endif
+
