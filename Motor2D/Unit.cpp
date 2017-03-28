@@ -244,6 +244,9 @@ void Unit::FollowPath(float dt)
 	pos.x += direction.x * speed;
 	pos.y += direction.y * speed;
 
+	position.x = pos.x - 8;
+	position.y = pos.y - 24;
+
 	game_object->SetPos(pos);
 
 	if (path.size() == 0)
