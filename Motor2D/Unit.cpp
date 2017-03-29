@@ -42,7 +42,7 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-
+	position = { game_object->GetPos().x - 7, game_object->GetPos().y - 24 };
 	switch (state) {
 	case unit_idle:
 
@@ -102,6 +102,10 @@ bool Unit::Update(float dt)
 			death_timer.Start();
 			current_animation->SetSpeed(0);
 			state = unit_decompose;
+
+			App->collisions->EraseCollider(idle_collision);
+			App->collisions->EraseCollider(walk_collision);
+			App->collisions->EraseCollider(attack_collision);
 		}
 		break;
 	case unit_decompose:

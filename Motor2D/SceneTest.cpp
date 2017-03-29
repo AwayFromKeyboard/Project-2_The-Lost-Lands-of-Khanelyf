@@ -12,6 +12,7 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "GameObject.h"
+#include "j1Collisions.h"
 
 SceneTest::SceneTest()
 {
