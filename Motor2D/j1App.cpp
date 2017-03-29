@@ -19,6 +19,7 @@
 #include "j1Console.h"
 #include "j1Physics.h"
 #include "j1Entity.h"
+#include "j1Collisions.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -38,7 +39,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new j1Gui();
 	console = new j1Console();
 	physics = new j1Physics();
+	collisions = new j1Collisions();
 	entity = new j1Entity();
+
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -52,7 +55,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(font);
 	AddModule(physics);
 	AddModule(console);
+	AddModule(collisions);
 	AddModule(entity);
+	
 
 	// Scene
 	AddModule(scene);

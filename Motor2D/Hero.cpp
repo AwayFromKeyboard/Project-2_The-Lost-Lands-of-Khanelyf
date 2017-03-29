@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1Map.h"
 #include "Log.h"
+#include "j1Collisions.h"
 
 Hero::Hero()
 {
@@ -39,7 +40,12 @@ bool Hero::LoadEntity()
 	{
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
-		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);
+		position = { 0, 0 };
+		idle_collision = App->collisions->AddCollider({ position.x, position.y, 25, 52}, COLLIDER_UNIT, App->collisions); // add w/h in xml file and replace the numbers by the values in the document
+		walk_collision = App->collisions->AddCollider({ position.x, position.y, 25, 52 }, COLLIDER_UNIT, App->collisions);
+		attack_collision = App->collisions->AddCollider({ position.x, position.y, 30, 54 }, COLLIDER_UNIT, App->collisions);
+
+		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);	
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 		
@@ -66,6 +72,10 @@ bool Hero::LoadEntity()
 
 		current_animation = &i_south;
 		offset = i_offset;
+		direction = { 0, 1 };
+		App->entity->unit_game_objects_list.push_back(game_object);
+
+		state = unit_state::unit_idle;
 	}
 	else LOG("\nERROR, no node found\n");
 	
@@ -79,36 +89,18 @@ bool Hero::Start()
 	return ret;
 }
 
-bool Hero::Draw(float dt)
-{
-	bool ret = true;
-
-	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
-	}
-	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
-
-	return ret;
-}
-
-bool Hero::PostUpdate()
-{
-	bool ret = true;
-
-	return ret;
-}
-
 bool Hero::CleanUp()
 {
 	bool ret = true;
 
 	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
-		if ((*it) == game_object) {
-			App->entity->unit_game_objects_list.erase(it++);
+		if (*it == game_object)
+		{	
+			App->entity->unit_game_objects_list.erase(it);
+			RELEASE(*it);
 		}
 	}
-
+	
 	return ret;
 }
 

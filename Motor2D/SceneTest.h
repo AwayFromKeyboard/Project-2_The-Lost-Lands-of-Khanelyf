@@ -10,6 +10,9 @@ class b2Fixture;
 class Parallax;
 class Hero;
 
+#define TROOP_PRICE 20
+#define TROOP_OFFSET 1
+
 class SceneTest : public Scene
 {
 public:
@@ -25,7 +28,9 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	void OnColl(Collider* c1, Collider* c2);
+
+	void CheckUnitCreation(iPoint p);
 
 private:
 	UI_Window* cursor_window = nullptr;
@@ -37,12 +42,15 @@ private:
 	
 
 	Hero* troop = nullptr;
+	Hero* troop2 = nullptr;
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;
 
 private:
-	SDL_Texture* debug_tex;
+	int gold = 0;
+	UI_Text* gold_txt = nullptr;
+	SDL_Texture* debug_tex = nullptr;
 };
 
 #endif // _SceneTest_H_

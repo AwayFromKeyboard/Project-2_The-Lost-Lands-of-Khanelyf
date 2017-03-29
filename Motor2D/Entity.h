@@ -37,7 +37,7 @@ public:
 		return true;
 	}
 
-	virtual void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB) {};
+	virtual void OnColl(Collider* col1, Collider* col2) {};
 
 	virtual GameObject* GetGameObject() {
 		return nullptr;
