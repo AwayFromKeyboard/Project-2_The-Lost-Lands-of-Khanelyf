@@ -42,7 +42,7 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	position = { game_object->GetPos().x - 7, game_object->GetPos().y - 24 };
+	position = { game_object->GetPos().x - 7, game_object->GetPos().y };
 	switch (state) {
 	case unit_idle:
 
@@ -169,6 +169,10 @@ bool Unit::Save(pugi::xml_node &) const
 
 void Unit::OnColl(Collider* col1, Collider* col2)
 {
+	if (col1 != nullptr && (col2->type == COLLIDER_UNIT))
+	{
+		
+	}
 }
 
 GameObject * Unit::GetGameObject()

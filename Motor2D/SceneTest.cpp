@@ -72,10 +72,10 @@ CheckUnitCreation(p);
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
 		//troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
-		if (App->map->WorldToMapPoint(troop->GetGameObject()->GetPos()) == p && troop->life > 0)
+		if (App->map->WorldToMapPoint(troop2->GetGameObject()->GetPos()) == p && troop2->life > 0)
 		{
-			troop2->state = unit_attack;
-			troop2->SetAttackingUnit(troop);
+			troop->state = unit_attack;
+			troop->SetAttackingUnit(troop2);
 		}
 
 	}
@@ -142,8 +142,12 @@ bool SceneTest::Save(pugi::xml_node &) const
 	return true;
 }
 
-void SceneTest::OnColl(Collider* c1, Collider* c2)
+void SceneTest::OnColl(Collider* col1, Collider* col2)
 {
+	if (col1 != nullptr && (col2->type == COLLIDER_UNIT))
+	{
+		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), App->map->WorldToMapPoint(troop->game_object->GetPos())));
+	}
 }
 
 void SceneTest::CheckUnitCreation(iPoint p)
