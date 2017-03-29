@@ -23,7 +23,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("iso_walk.tmx") == true)
+	if (App->map->Load("map_vertical_slice.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
