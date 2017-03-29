@@ -13213,7 +13213,11 @@
    <tile gid="1"/>
   </data>
  </layer>
- <layer name="collisions" width="120" height="110" visible="0">
+ <layer name="Colisions" width="120" height="110">
+   <properties>
+     <property name="Navigation" value="1"/>
+     <property name="Nodraw" value="1"/>
+   </properties>
   <data>
    <tile gid="26"/>
    <tile gid="26"/>
