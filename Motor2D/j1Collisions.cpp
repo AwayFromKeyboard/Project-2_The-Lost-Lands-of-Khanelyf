@@ -6,6 +6,7 @@
 #include "j1Collisions.h"
 #include "QuadTree.h"
 #include "j1Window.h"
+#include "j1Map.h"
 
 
 j1Collisions::j1Collisions()
@@ -20,9 +21,9 @@ j1Collisions::~j1Collisions()
 
 bool j1Collisions::Start() 
 {
-	uint w, h;
-	App->win->GetWindowSize(w, h);
-	quadTree = new QuadTree({ -App->render->camera.x,0,(int)w,(int)h });
+	uint h = App->map->data.height;
+	uint w = App->map->data.width;
+	quadTree = new QuadTree({ 0,0,(int)w,(int)h });
 	return true;
 }
 
