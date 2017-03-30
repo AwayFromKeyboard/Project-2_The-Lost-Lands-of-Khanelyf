@@ -60,6 +60,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void UpdateQuadtree();
+
 	Collider* AddCollider(SDL_Rect rect, collider_type type, j1Module* callback = nullptr);
 	bool EraseCollider(Collider* collider);
 	void DebugDraw();

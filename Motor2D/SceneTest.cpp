@@ -35,6 +35,8 @@ bool SceneTest::Start()
 	}
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
 
+	App->collisions->UpdateQuadtree();
+
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 1, 37, 40 };
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);

@@ -21,9 +21,7 @@ j1Collisions::~j1Collisions()
 
 bool j1Collisions::Start() 
 {
-	uint h = App->map->data.height;
-	uint w = App->map->data.width;
-	quadTree = new QuadTree({ 0,0,(int)w,(int)h });
+	quadTree = nullptr;
 	return true;
 }
 
@@ -160,6 +158,13 @@ bool j1Collisions::CleanUp()
 	}
 
 	return true;
+}
+
+void j1Collisions::UpdateQuadtree() {
+	if (quadTree != nullptr) {
+		delete[] quadTree;
+	}
+	quadTree = new QuadTree({ 0,0,App->map->data.width,App->map->data.height });
 }
 
 Collider* j1Collisions::AddCollider(SDL_Rect rect, collider_type type, j1Module* callback)
