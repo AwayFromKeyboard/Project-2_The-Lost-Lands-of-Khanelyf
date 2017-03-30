@@ -16,11 +16,12 @@ enum entity_name
 
 class Entity;
 class Player;
+class Unit;
 class Test;
 struct SDL_Rect;
 
 struct SelectedList {
-	std::list<Entity*> group;
+	std::list<Unit*> group;
 	int key_id = 0;
 };
 
@@ -71,7 +72,7 @@ public:
 	std::list<GameObject*> building_game_objects_list;
 
 	std::list<SelectedList> lists_selected;
-	std::list<Entity*> selected;
+	std::list<Unit*> selected;
 };
 
 #endif // __j1ENTITY_H__

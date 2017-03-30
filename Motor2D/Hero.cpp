@@ -39,8 +39,7 @@ bool Hero::LoadEntity()
 	{
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
-
-		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 20, fixture_type::f_t_null);
+		game_object->CreateCollision(COLLISION_ADJUSTMENT, 15, 40, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 		

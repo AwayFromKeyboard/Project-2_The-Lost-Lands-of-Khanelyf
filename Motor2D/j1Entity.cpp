@@ -78,12 +78,12 @@ bool j1Entity::CleanUp()
 		App->entity->unit_game_objects_list.erase(it);
 		RELEASE(*it);
 	}
-	for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
 		selected.erase(it);
 	}
 	selected.clear();
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
-		for (std::list<Entity*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
+		for (std::list<Unit*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
 			(*it).group.erase(it2);
 		}
 		(*it).group.clear();
@@ -156,7 +156,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 		}
 
 		if ((*it)->GetSelected())
-			selected.push_back(*it);
+			selected.push_back((Unit*)*it);
 	}
 }
 
@@ -167,7 +167,7 @@ void j1Entity::UnselectEverything()
 		if ((*it)->GetSelected())
 		(*it)->SetSelected(false);
 	}
-	for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
 		selected.erase(it);
 	}
 	selected.clear();
@@ -196,7 +196,7 @@ void j1Entity::AddGroup()
 					lists_selected.erase(it);
 				}
 			}
-			for (std::list<Entity*>::iterator it = selected.begin(); it != selected.end(); it++) {
+			for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
 				new_group.group.push_back(*it);
 			}
 			lists_selected.push_back(new_group);
@@ -209,7 +209,9 @@ void j1Entity::ManageGroup()
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
 		if (App->input->GetKey((*it).key_id) == key_down) {
 			UnselectEverything();
-			for (std::list<Entity*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
+			selected.clear();
+			for (std::list<Unit*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
+				selected.push_back(*it2);
 				(*it2)->SetSelected(true);
 			}
 		}
