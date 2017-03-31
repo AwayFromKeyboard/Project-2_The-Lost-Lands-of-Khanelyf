@@ -3,6 +3,12 @@
 #include "j1Window.h"
 #include "j1Input.h"
 
+// Camera limits -- Modify when the map changes -- 
+#define MAP_TOP		30
+#define MAP_BOTTOM	-380
+#define MAP_LEFT	810
+#define MAP_RIGHT	-90
+
 void Scene::InitCameraMovement()
 {
 	movement_window_u = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, -1), App->win->_GetWindowSize().x - 2 * MOVEMENT_AREA, MOVEMENT_AREA, 5);
@@ -36,31 +42,39 @@ void Scene::InitCameraMovement()
 void Scene::UpdateCameraMovement()
 {
 	if (movement_window_u_l->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_UP) == key_repeat && App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat)) {
-		App->render->camera.x += CAMERA_SPEED;
-		App->render->camera.y += CAMERA_SPEED;
+		if (App->render->camera.x <= MAP_LEFT) // Blocks camera in the left limit but allows movement in the other direction
+			App->render->camera.x += CAMERA_SPEED;
+		if (App->render->camera.y <= MAP_TOP)
+			App->render->camera.y += CAMERA_SPEED;
 	}
 	else if (movement_window_u_r->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_UP) == key_repeat && App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat)) {
-		App->render->camera.x -= CAMERA_SPEED;
-		App->render->camera.y += CAMERA_SPEED;
+		if (App->render->camera.x >= MAP_RIGHT)
+			App->render->camera.x -= CAMERA_SPEED;
+		if (App->render->camera.y <= MAP_TOP)
+			App->render->camera.y += CAMERA_SPEED;
 	}
 	else if (movement_window_d_l->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat && App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat)) {
-		App->render->camera.x += CAMERA_SPEED;
-		App->render->camera.y -= CAMERA_SPEED;
+		if (App->render->camera.x <= MAP_LEFT)
+			App->render->camera.x += CAMERA_SPEED;
+		if (App->render->camera.y >= MAP_BOTTOM)
+			App->render->camera.y -= CAMERA_SPEED;
 	}
 	else if (movement_window_d_r->MouseEnter() || (App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat && App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat)) {
-		App->render->camera.x -= CAMERA_SPEED;
+		if (App->render->camera.x >= MAP_RIGHT)
+			App->render->camera.x -= CAMERA_SPEED;
+		if (App->render->camera.y >= MAP_BOTTOM)
+			App->render->camera.y -= CAMERA_SPEED;
+	}
+	else if ((movement_window_u->MouseEnter() || App->input->GetKey(SDL_SCANCODE_UP) == key_repeat) && App->render->camera.y <= MAP_TOP) {
+			App->render->camera.y += CAMERA_SPEED;
+	}
+	else if ((movement_window_d->MouseEnter() || App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat) && App->render->camera.y >= MAP_BOTTOM) {
 		App->render->camera.y -= CAMERA_SPEED;
 	}
-	else if (movement_window_u->MouseEnter() || App->input->GetKey(SDL_SCANCODE_UP) == key_repeat) {
-		App->render->camera.y += CAMERA_SPEED;
-	}
-	else if (movement_window_d->MouseEnter() || App->input->GetKey(SDL_SCANCODE_DOWN) == key_repeat) {
-		App->render->camera.y -= CAMERA_SPEED;
-	}
-	else if (movement_window_l->MouseEnter() || App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat) {
+	else if ((movement_window_l->MouseEnter() || App->input->GetKey(SDL_SCANCODE_LEFT) == key_repeat) && App->render->camera.x <= MAP_LEFT) {
 		App->render->camera.x += CAMERA_SPEED;
 	}
-	else if (movement_window_r->MouseEnter() || App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat) {
+	else if ((movement_window_r->MouseEnter() || App->input->GetKey(SDL_SCANCODE_RIGHT) == key_repeat) && App->render->camera.x >= MAP_RIGHT) {
 		App->render->camera.x -= CAMERA_SPEED;
 	}
 	
