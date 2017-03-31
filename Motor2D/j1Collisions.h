@@ -4,7 +4,11 @@
 #define MAX_COLLIDERS 200
 
 #include "j1Module.h"
+#include <list>
+#include <vector>
+#include "SDL/include/SDL.h"
 
+class QuadTree;
 
 enum collider_type
 {
@@ -50,10 +54,13 @@ public:
 	// Called before render is available
 	bool PreUpdate();
 
+	bool Start();
 	bool Update(float dt);
 
 	// Called before quitting
 	bool CleanUp();
+
+	void UpdateQuadtree();
 
 	Collider* AddCollider(SDL_Rect rect, collider_type type, j1Module* callback = nullptr);
 	bool EraseCollider(Collider* collider);
@@ -61,9 +68,14 @@ public:
 
 private:
 
-	Collider* colliders[MAX_COLLIDERS];
+	std::list<Collider*> colliders;
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
+
+	int quadTreeChecks;
+	QuadTree* quadTree;
+	std::vector<QuadTree*> nodeList;
+	std::list<Collider*> potentialCollisionList;
 };
 
 #endif
