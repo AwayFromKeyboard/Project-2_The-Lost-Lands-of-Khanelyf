@@ -82,34 +82,9 @@ bool j1Collisions::Update(float dt)
 
 	quadTreeChecks = 0;
 
-	for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); it++) {
-		potentialCollisionList.clear();
-		quadTree->Retrieve(potentialCollisionList, *it);
-		if (potentialCollisionList.size() > 0) {
-			for (list<Collider*>::iterator it2 = potentialCollisionList.begin(); it2 != potentialCollisionList.end(); it2++) {
-				if ((*it)->CheckCollision((*it2)->rect)) {
-					if (matrix[(*it)->type][(*it2)->type] && (*it)->callback)
-						(*it)->callback->OnCollision((*it), (*it2));
-
-					if (matrix[(*it2)->type][(*it)->type] && (*it2)->callback)
-						(*it2)->callback->OnCollision((*it2), (*it));
-				}
-				quadTreeChecks++;
-				App->render->DrawQuad((*it2)->rect, 0, 255, 0, 255, false);
-				App->render->DrawLine((*it)->rect.x + (*it)->rect.w / 2, (*it)->rect.y + (*it)->rect.h / 2, (*it2)->rect.x + (*it2)->rect.w / 2, (*it2)->rect.y + (*it2)->rect.h / 2, 255, 255, 255, 255);
-			}
-		}
-	}
-
 
 	nodeList.clear();
 	quadTree->GetNodes(nodeList);
-
-	for (int i = 0; i < nodeList.size(); i++) {
-		if (nodeList[i] != nullptr) {
-			App->render->DrawQuad(nodeList[i]->nodeRect, 255, 255, 255, 255, false);
-		}
-	}
 
 	return true;
 }
@@ -140,6 +115,31 @@ void j1Collisions::DebugDraw()
 				}
 			}
 		}
+
+		for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); it++) {
+			potentialCollisionList.clear();
+			quadTree->Retrieve(potentialCollisionList, *it);
+			if (potentialCollisionList.size() > 0) {
+				for (list<Collider*>::iterator it2 = potentialCollisionList.begin(); it2 != potentialCollisionList.end(); it2++) {
+					if ((*it)->CheckCollision((*it2)->rect)) {
+						if (matrix[(*it)->type][(*it2)->type] && (*it)->callback)
+							(*it)->callback->OnCollision((*it), (*it2));
+
+						if (matrix[(*it2)->type][(*it)->type] && (*it2)->callback)
+							(*it2)->callback->OnCollision((*it2), (*it));
+					}
+					quadTreeChecks++;
+					App->render->DrawQuad((*it2)->rect, 0, 255, 0, 255, false);
+					App->render->DrawLine((*it)->rect.x + (*it)->rect.w / 2, (*it)->rect.y + (*it)->rect.h / 2, (*it2)->rect.x + (*it2)->rect.w / 2, (*it2)->rect.y + (*it2)->rect.h / 2, 255, 255, 255, 255);
+				}
+			}
+		}
+
+		for (int i = 0; i < nodeList.size(); i++) {
+			if (nodeList[i] != nullptr) {
+				App->render->DrawQuad(nodeList[i]->nodeRect, 255, 255, 255, 255, false);
+			}
+		}
 	}
 }
 
@@ -164,7 +164,8 @@ void j1Collisions::UpdateQuadtree() {
 	if (quadTree != nullptr) {
 		delete[] quadTree;
 	}
-	quadTree = new QuadTree({ 0,0,App->map->data.width,App->map->data.height });
+	quadTree = new QuadTree({ -App->map->data.height * App->map->data.tile_height + App->map->data.tile_height, 17,
+		App->map->data.width * App->map->data.tile_width, App->map->data.height * App->map->data.tile_height });
 }
 
 Collider* j1Collisions::AddCollider(SDL_Rect rect, collider_type type, j1Module* callback)
