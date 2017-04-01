@@ -48,7 +48,7 @@ void j1Map::Draw()
 		MapLayer* layer = *item;
 
 		if(!App->debug_mode && layer->properties.Get("Nodraw") != 0)
-		continue;
+			continue;
 
 		int x_ini, x_end;
 		TilesToDraw_x(x_ini, x_end, *item);
