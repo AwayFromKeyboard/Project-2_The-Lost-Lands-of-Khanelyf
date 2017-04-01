@@ -67,8 +67,8 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
-
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					//magic numbers +30 to fix
+					App->render->Blit(tileset->texture, pos.x+32, pos.y+30, &r);
 				}
 			}
 			count++;
