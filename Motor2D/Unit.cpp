@@ -42,7 +42,7 @@ bool Unit::PreUpdate()
 	p = App->map->WorldToMap(p.x, p.y);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && GetSelected()) {
-		SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), p));
+		path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), p);
 	}
 
 	if (path.size() > 0)

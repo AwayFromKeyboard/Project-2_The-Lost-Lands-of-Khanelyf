@@ -90,6 +90,7 @@ public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
 	bool has_destination = false;
+	uint path_id;
 public:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
