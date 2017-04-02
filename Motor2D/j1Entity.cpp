@@ -1,6 +1,7 @@
 #include "j1Entity.h"
 #include "Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
 #include "Log.h"
 #include "GameObject.h"
 #include "j1Input.h"
@@ -111,6 +112,9 @@ Entity* j1Entity::CreateEntity(entity_name entity)
 	case player:
 		ret = new Hero();
 		break;
+	case enemy: 
+		ret = new Barbarian();
+		break;
 	default:
 		break;
 	}
@@ -169,8 +173,11 @@ void j1Entity::UnselectEverything()
 		if ((*it)->GetSelected())
 		(*it)->SetSelected(false);
 	}
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
-		selected.erase(it);
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {  //needs revision
+		if(!selected.empty())
+			selected.erase(it);
+		else
+			break;
 	}
 	selected.clear();
 }

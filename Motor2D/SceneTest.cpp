@@ -12,6 +12,7 @@
 #include <sstream>
 #include "j1Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
 #include "Unit.h"
 #include "GameObject.h"
 #include "j1Collisions.h"
@@ -53,7 +54,7 @@ bool SceneTest::Start()
 	fPoint pos(App->map->MapToWorld(25, 30).x, App->map->MapToWorld(25, 30).y);
 	troop->game_object->SetPos(pos);
 	
-	troop2 = (Hero*)App->entity->CreateEntity(player);
+	troop2 = (Barbarian*)App->entity->CreateEntity(enemy);
 	fPoint pos2(App->map->MapToWorld(25, 32).x, App->map->MapToWorld(25, 32).y);
 	troop2->game_object->SetPos(pos2);
 

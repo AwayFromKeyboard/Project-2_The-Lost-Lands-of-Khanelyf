@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "j1Map.h"
 #include "Hero.h"
+#include "Barbarian.h"
 #include "Entity.h"
 #include "Animation.h"
 #include "j1Collisions.h"
