@@ -42,9 +42,8 @@ bool Bulding::PostUpdate()
 
 bool Bulding::CleanUp()
 {
-	for (std::list<GameObject*>::iterator it = App->entity->building_game_objects_list.begin(); it != App->entity->building_game_objects_list.end(); it++) {
+	for (std::list<GameObject*>::iterator it = App->entity->building_game_objects_list.begin(); it != App->entity->building_game_objects_list.end(); it++)
 		RELEASE(*it);
-	}
 	App->entity->building_game_objects_list.clear();
 
 	return true;

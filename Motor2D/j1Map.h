@@ -25,9 +25,7 @@ struct Properties
 		item = list.front();
 
 		for (std::list<Property*>::iterator prop = list.begin(); prop != list.end(); ++prop)
-		{
 			RELEASE(*prop);
-		}
 
 		list.clear();
 	}

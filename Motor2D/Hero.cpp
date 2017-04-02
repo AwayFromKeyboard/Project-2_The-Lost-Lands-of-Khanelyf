@@ -45,7 +45,7 @@ bool Hero::LoadEntity()
 		walk_collision = App->collisions->AddCollider({ position.x, position.y, 25, 20 }, COLLIDER_UNIT, App->collisions);
 		attack_collision = App->collisions->AddCollider({ position.x, position.y, 30, 20 }, COLLIDER_UNIT, App->collisions);
 
-		game_object->CreateCollision(COLLISION_ADJUSTMENT, 20, 54, fixture_type::f_t_null);	
+		game_object->CreateCollision(COLLISION_ADJUSTMENT, 15, 40, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 		
@@ -65,10 +65,10 @@ bool Hero::LoadEntity()
 		game_object->LoadAnimationsFromUnitsXML(node, this);
 
 		i_offset.create(node.child("idle").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		a_offset.create(node.child("attack").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		d_offset.create(node.child("death").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
-		de_offset.create(node.child("decompose").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
+		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("move").attribute("offset_y").as_int());
+		a_offset.create(node.child("attack").attribute("offset_x").as_int(), node.child("attack").attribute("offset_y").as_int());
+		d_offset.create(node.child("death").attribute("offset_x").as_int(), node.child("death").attribute("offset_y").as_int());
+		de_offset.create(node.child("decompose").attribute("offset_x").as_int(), node.child("decompose").attribute("offset_y").as_int());
 
 		current_animation = &i_south;
 		offset = i_offset;
@@ -86,21 +86,6 @@ bool Hero::Start()
 {
 	bool ret = true;
 
-	return ret;
-}
-
-bool Hero::CleanUp()
-{
-	bool ret = true;
-
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
-		if (*it == game_object)
-		{	
-			App->entity->unit_game_objects_list.erase(it);
-			RELEASE(*it);
-		}
-	}
-	
 	return ret;
 }
 

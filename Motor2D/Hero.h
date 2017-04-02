@@ -2,7 +2,7 @@
 #define _Test_
 
 #include "Unit.h"
-#define	COLLISION_ADJUSTMENT iPoint(23, 25)
+#define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
 class GameObject;
 class Hero : public Unit
@@ -16,9 +16,6 @@ public:
 
 	// Start variables
 	bool Start();
-
-	// CleanUp
-	bool CleanUp();
 
 	// On Collision
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);

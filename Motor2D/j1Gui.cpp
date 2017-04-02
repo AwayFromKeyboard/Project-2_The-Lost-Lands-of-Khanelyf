@@ -6,6 +6,7 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Gui.h"
+#include "j1Entity.h"
 #include "Functions.h"
 
 #include <iostream> 
@@ -160,6 +161,7 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {
 	CursorSelection();
+
 	return true;
 }
 
@@ -472,18 +474,26 @@ void j1Gui::DeleteElement(UI_Element* element)
 
 void j1Gui::CursorSelection()
 {
+	int x, y;
+	App->input->GetMouseWorld(x, y);
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->input->GetMouseWorld(selection_rect.x, selection_rect.y);
+		App->entity->UnselectEverything();
+		selection_rect.x = x;
+		selection_rect.y = y;
+		selection_rect.w = selection_rect.x;
+		selection_rect.h = selection_rect.y;
 	}
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
+	{	
+		selection_rect.w = x;
+		selection_rect.h = y;
+		App->render->DrawQuad({ selection_rect.x, selection_rect.y, selection_rect.w - selection_rect.x, selection_rect.h - selection_rect.y }, 255, 255, 255, 255, false);
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up)
 	{
-		iPoint position;
-		App->input->GetMouseWorld(position.x, position.y);
-		selection_rect.w = position.x - selection_rect.x;
-		selection_rect.h = position.y - selection_rect.y;
-		App->render->DrawQuad(selection_rect, 255, 255, 255, 255, false);
+		App->entity->SelectInQuad(selection_rect);
 	}
 }
 
