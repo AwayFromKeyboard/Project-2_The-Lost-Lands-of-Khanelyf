@@ -17,9 +17,6 @@ public:
 	// Start variables
 	bool Start();
 
-	// CleanUp
-	bool CleanUp();
-
 	// On Collision
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 

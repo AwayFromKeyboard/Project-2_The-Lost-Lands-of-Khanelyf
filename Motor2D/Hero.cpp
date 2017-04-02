@@ -89,21 +89,6 @@ bool Hero::Start()
 	return ret;
 }
 
-bool Hero::CleanUp()
-{
-	bool ret = true;
-
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
-		if (*it == game_object)
-		{	
-			App->entity->unit_game_objects_list.erase(it);
-			RELEASE(*it);
-		}
-	}
-	
-	return ret;
-}
-
 void Hero::OnColl(PhysBody* bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
 
