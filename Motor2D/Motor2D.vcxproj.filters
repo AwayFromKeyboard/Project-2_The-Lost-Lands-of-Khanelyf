@@ -49,6 +49,9 @@
     <ClCompile Include="j1Console.cpp">
       <Filter>Engine\1. Modules =========</Filter>
     </ClCompile>
+    <ClCompile Include="j1Collisions.cpp">
+      <Filter>Engine\1. Modules =========</Filter>
+    </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <Filter>Engine\3. Scenes ==========\MainScene</Filter>
     </ClCompile>
@@ -90,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\3. Scenes ==========</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Engine\2. Components ======</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,9 @@
       <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
     <ClInclude Include="j1Console.h">
+      <Filter>Engine\1. Modules =========</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Collisions.h">
       <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
     <ClInclude Include="j1Scene.h">
@@ -204,6 +213,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Hero.h">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Engine\2. Components ======</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -130,10 +130,11 @@ void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_
 	layer_list.push(lblit);
 }
 
-void j1Scene::OnCollision(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void j1Scene::OnCollision(Collider* c1, Collider* c2)
 {
-	for(list<Scene*>::iterator it = scenes.begin(); it != scenes.end(); it++)
-		(*it)->OnColl(bodyA, bodyB, fixtureA, fixtureB);
+	// CONVERT
+	/*for(list<Scene*>::iterator it = scenes.begin(); it != scenes.end(); it++)
+		(*it)->OnColl(bodyA, bodyB, fixtureA, fixtureB);*/
 }
 
 void j1Scene::DoLayerBlit()

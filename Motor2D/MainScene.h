@@ -20,7 +20,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	void OnColl(Collider* c1, Collider* c2);
 
 	GameObject* go = nullptr;
 	Parallax* p1 = nullptr;

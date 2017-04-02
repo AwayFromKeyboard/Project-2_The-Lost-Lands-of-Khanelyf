@@ -8,10 +8,12 @@
 #include "Hero.h"
 #include "Entity.h"
 #include "Animation.h"
+#include "j1Collisions.h"
 #include "j1Scene.h"
 
 Unit::Unit()
 {
+
 }
 
 Unit::~Unit()
@@ -28,7 +30,7 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
-	
+
 	return ret;
 }
 
@@ -59,14 +61,29 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
+	position = { game_object->GetPos().x - 7, game_object->GetPos().y };
 	switch (state) {
 	case unit_idle:
+
+		idle_collision->print_collider = true;
+		walk_collision->print_collider = false;
+		attack_collision->print_collider = false;
+
+		idle_collision->SetPos(position.x, position.y);
 		offset = i_offset;
 		CheckDirection();
 		break;
+
 	case unit_move:
+		
 		FollowPath(dt);
+		idle_collision->print_collider = false;
+		walk_collision->print_collider = true;
+		attack_collision->print_collider = false;
+		
+		walk_collision->SetPos(position.x, position.y);
 		break;
+
 	case unit_attack:
 		if (attacked_unit != nullptr)
 		{
@@ -96,6 +113,7 @@ bool Unit::Update(float dt)
 		}
 
 		break;
+
 	case unit_death:
 		CheckDeathDirection();
 		if (current_animation->GetFrameIndex() == 14)
@@ -103,6 +121,10 @@ bool Unit::Update(float dt)
 			death_timer.Start();
 			current_animation->SetSpeed(0);
 			state = unit_decompose;
+
+			App->collisions->EraseCollider(idle_collision);
+			App->collisions->EraseCollider(walk_collision);
+			App->collisions->EraseCollider(attack_collision);
 		}
 		break;
 	case unit_decompose:
@@ -117,6 +139,7 @@ bool Unit::Update(float dt)
 		}
 		break;
 	}
+
 	return true;
 }
 
@@ -136,6 +159,10 @@ bool Unit::Draw(float dt)
 bool Unit::PostUpdate()
 {
 	bool ret = true;
+
+
+	if (GetSelected())
+		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
 	if (to_delete)
 	{
@@ -163,8 +190,12 @@ bool Unit::Save(pugi::xml_node &) const
 	return true;
 }
 
-void Unit::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Unit::OnColl(Collider* col1, Collider* col2)
 {
+	if (col1 != nullptr && (col2->type == COLLIDER_UNIT))
+	{
+		
+	}
 }
 
 GameObject * Unit::GetGameObject()
@@ -589,3 +620,4 @@ void Unit::CheckDecomposeDirection()
 		}
 	}
 }
+

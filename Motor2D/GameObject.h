@@ -100,8 +100,8 @@ public:
 private:
 
 public:
-	PhysBody*      pbody = nullptr;
-	Animator*	   animator = nullptr;
+	PhysBody*		pbody = nullptr;
+	Animator*		animator = nullptr;
 
 private:
 	float		   gravity_scale = 0.0f;

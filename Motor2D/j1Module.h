@@ -15,7 +15,7 @@
 using namespace std;
 
 class j1App;
-class PhysBody;
+class Collider;
 class b2Fixture;
 
 class j1Module
@@ -79,7 +79,7 @@ public:
 		return true;
 	}
 
-	virtual void OnCollision(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB)
+	virtual void OnCollision(Collider* col1, Collider* col2)
 	{
 
 	}

@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
@@ -110,6 +112,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
@@ -140,6 +143,7 @@
     <ClInclude Include="Parallax.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />

@@ -1,10 +1,11 @@
 #include "GameObject.h"
-#include "j1Physics.h"
+//#include "j1Physics.h"
 #include "Animation.h"
 #include "Defs.h"
 #include "j1Physics.h"
 #include "Functions.h" 
 #include "Unit.h"
+#include "j1Collisions.h"
 
 GameObject::GameObject(iPoint _pos, int _cat, int _mask, pbody_type pb_type, float _gravity_scale,  float _density, float _friction) : gravity_scale(_gravity_scale), density(_density), friction(_friction), cat(_cat), mask(_mask)
 {

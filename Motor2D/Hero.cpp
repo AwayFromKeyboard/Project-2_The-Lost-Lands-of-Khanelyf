@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1Map.h"
 #include "Log.h"
+#include "j1Collisions.h"
 
 Hero::Hero()
 {
@@ -38,6 +39,11 @@ bool Hero::LoadEntity()
 	if (node)
 	{
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
+
+		position = { 0, 0 };
+		idle_collision = App->collisions->AddCollider({ position.x, position.y, 25, 20}, COLLIDER_UNIT, App->collisions); // add w/h in xml file and replace the numbers by the values in the document
+		walk_collision = App->collisions->AddCollider({ position.x, position.y, 25, 20 }, COLLIDER_UNIT, App->collisions);
+		attack_collision = App->collisions->AddCollider({ position.x, position.y, 30, 20 }, COLLIDER_UNIT, App->collisions);
 
 		game_object->CreateCollision(COLLISION_ADJUSTMENT, 15, 40, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
@@ -68,6 +74,8 @@ bool Hero::LoadEntity()
 		offset = i_offset;
 		direction = { 0, 1 };
 		App->entity->unit_game_objects_list.push_back(game_object);
+
+		state = unit_state::unit_idle;
 	}
 	else LOG("\nERROR, no node found\n");
 	
@@ -77,16 +85,6 @@ bool Hero::LoadEntity()
 bool Hero::Start()
 {
 	bool ret = true;
-
-	return ret;
-}
-
-bool Hero::PostUpdate()
-{
-	bool ret = true;
-	
-	if (GetSelected())
-		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }

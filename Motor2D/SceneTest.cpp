@@ -14,6 +14,7 @@
 #include "Hero.h"
 #include "Unit.h"
 #include "GameObject.h"
+#include "j1Collisions.h"
 
 SceneTest::SceneTest()
 {
@@ -25,7 +26,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("iso_walk.tmx") == true)
+	if (App->map->Load("map_vertical_slice.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -35,6 +36,8 @@ bool SceneTest::Start()
 		RELEASE_ARRAY(data);
 	}
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
+
+	App->collisions->UpdateQuadtree();
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 1, 37, 40 };
@@ -47,8 +50,9 @@ bool SceneTest::Start()
 	InitCameraMovement();
 
 	troop = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
+	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(70, 0).y);
 	troop->game_object->SetPos(pos);
+	
 	troop2 = (Hero*)App->entity->CreateEntity(player);
 	fPoint pos2(App->map->MapToWorld(13, 2).x, App->map->MapToWorld(13, 2).y);
 	troop2->game_object->SetPos(pos2);
@@ -66,7 +70,7 @@ bool SceneTest::PreUpdate()
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
-  
+
 	CheckUnitCreation(p);
   
 	return true;
@@ -92,12 +96,12 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
-	if (App->scene->GetCurrentScene() != App->scene->scene_test)
+	/*if (App->scene->GetCurrentScene() != App->scene->scene_test)
 	{
 		App->gui->DeleteElement(cursor);
 		App->gui->DeleteElement(general_ui_window);
 		App->gui->DeleteElement(gold_txt);
-	}
+	}*/
 
 	return true;
 }
@@ -112,7 +116,7 @@ bool SceneTest::Save(pugi::xml_node &) const
 	return true;
 }
 
-void SceneTest::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void SceneTest::OnColl(Collider* col1, Collider* col2)
 {
 }
 
