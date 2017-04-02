@@ -50,11 +50,11 @@ bool SceneTest::Start()
 	InitCameraMovement();
 
 	troop = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(70, 0).y);
+	fPoint pos(App->map->MapToWorld(25, 30).x, App->map->MapToWorld(25, 30).y);
 	troop->game_object->SetPos(pos);
 	
 	troop2 = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos2(App->map->MapToWorld(13, 2).x, App->map->MapToWorld(13, 2).y);
+	fPoint pos2(App->map->MapToWorld(25, 32).x, App->map->MapToWorld(25, 32).y);
 	troop2->game_object->SetPos(pos2);
 
 	gold = 1000;
