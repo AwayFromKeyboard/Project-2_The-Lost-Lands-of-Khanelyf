@@ -24,7 +24,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("iso_walk.tmx") == true)
+	if (App->map->Load("map_vertical_slice.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -48,11 +48,11 @@ bool SceneTest::Start()
 	InitCameraMovement();
 
 	troop = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
+	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(70, 0).y);
 	troop->game_object->SetPos(pos);
 
 	troop2 = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos2(App->map->MapToWorld(13, 1).x, App->map->MapToWorld(13, 1).y);
+	fPoint pos2(App->map->MapToWorld(13, 1).x, App->map->MapToWorld(71, 1).y);
 	troop2->game_object->SetPos(pos2);
 
 	gold = 1000;
