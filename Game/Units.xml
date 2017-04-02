@@ -767,4 +767,351 @@
       </decompose>
     </animations>
   </unit>
+<unit type="Barbarian">
+    <texture value="textures/Barbarian.png"/>
+    <cost value="5"/>
+    <speed value="2"/>
+    <damage value="15"/>
+    <armor value="0"/>
+    <pierce_armor value="0"/>
+    <range value="1"/>
+    <life value="30"/>
+    <animations> <!--10 23-->
+      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
+        <south>
+          <rect x="1" y="1"/>
+          <rect x="33" y="1"/>
+          <rect x="65" y="1"/>
+          <rect x="97" y="1"/>
+          <rect x="129" y="1"/>
+          <rect x="161" y="1"/>
+          <rect x="193" y="1"/>
+          <rect x="225" y="1"/>
+          <rect x="257" y="1"/>
+          <rect x="289" y="1"/>
+        </south>
+        <south_west>
+          <rect x="1" y="51"/>
+          <rect x="33" y="51"/>
+          <rect x="65" y="51"/>
+          <rect x="97" y="51"/>
+          <rect x="129" y="51"/>
+          <rect x="161" y="51"/>
+          <rect x="193" y="51"/>
+          <rect x="225" y="51"/>
+          <rect x="257" y="51"/>
+          <rect x="289" y="51"/>
+        </south_west>
+        <west>
+          <rect x="1" y="101"/>
+          <rect x="33" y="101"/>
+          <rect x="65" y="101"/>
+          <rect x="97" y="101"/>
+          <rect x="129" y="101"/>
+          <rect x="161" y="101"/>
+          <rect x="193" y="101"/>
+          <rect x="225" y="101"/>
+          <rect x="257" y="101"/>
+          <rect x="289" y="101"/>
+        </west>
+        <north_west>
+          <rect x="1" y="151"/>
+          <rect x="33" y="151"/>
+          <rect x="65" y="151"/>
+          <rect x="97" y="151"/>
+          <rect x="129" y="151"/>
+          <rect x="161" y="151"/>
+          <rect x="193" y="151"/>
+          <rect x="225" y="151"/>
+          <rect x="257" y="151"/>
+          <rect x="289" y="151"/>
+        </north_west>
+        <north>
+          <rect x="1" y="201"/>
+          <rect x="33" y="201"/>
+          <rect x="65" y="201"/>
+          <rect x="97" y="201"/>
+          <rect x="129" y="201"/>
+          <rect x="161" y="201"/>
+          <rect x="193" y="201"/>
+          <rect x="225" y="201"/>
+          <rect x="257" y="201"/>
+          <rect x="289" y="201"/>
+        </north>
+      </idle>
+      <move speed="10" w="32" h="49" offset_x="" offset_y="">
+        <south>
+          <rect x="1" y="251"/>
+          <rect x="36" y="251"/>
+          <rect x="71" y="251"/>
+          <rect x="106" y="251"/>
+          <rect x="141" y="251"/>
+          <rect x="176" y="251"/>
+          <rect x="211" y="251"/>
+          <rect x="246" y="251"/>
+          <rect x="281" y="251"/>
+          <rect x="316" y="251"/>
+        </south>
+        <south_west>
+          <rect x="1" y="303"/>
+          <rect x="36" y="303"/>
+          <rect x="71" y="303"/>
+          <rect x="106" y="303"/>
+          <rect x="141" y="303"/>
+          <rect x="176" y="303"/>
+          <rect x="211" y="303"/>
+          <rect x="246" y="303"/>
+          <rect x="281" y="303"/>
+          <rect x="316" y="303"/>
+        </south_west>
+        <west>
+          <rect x="1" y="355"/>
+          <rect x="36" y="355"/>
+          <rect x="71" y="355"/>
+          <rect x="106" y="355"/>
+          <rect x="141" y="355"/>
+          <rect x="176" y="355"/>
+          <rect x="211" y="355"/>
+          <rect x="246" y="355"/>
+          <rect x="281" y="355"/>
+          <rect x="316" y="355"/>
+        </west>
+        <north_west>
+          <rect x="1" y="407"/>
+          <rect x="36" y="407"/>
+          <rect x="71" y="407"/>
+          <rect x="106" y="407"/>
+          <rect x="141" y="407"/>
+          <rect x="176" y="407"/>
+          <rect x="211" y="407"/>
+          <rect x="246" y="407"/>
+          <rect x="281" y="407"/>
+          <rect x="316" y="407"/>
+        </north_west>
+        <north>
+          <rect x="1" y="459"/>
+          <rect x="36" y="459"/>
+          <rect x="71" y="459"/>
+          <rect x="106" y="459"/>
+          <rect x="141" y="459"/>
+          <rect x="176" y="459"/>
+          <rect x="211" y="459"/>
+          <rect x="246" y="459"/>
+          <rect x="281" y="459"/>
+          <rect x="316" y="459"/>
+        </north>
+      </move>
+      <attack speed="10" w="65" h="55" offset_x="" offset_y="">
+        <south>
+          <rect x="1" y="511"/>
+          <rect x="69" y="511"/>
+          <rect x="137" y="511"/>
+          <rect x="205" y="511"/>
+          <rect x="273" y="511"/>
+          <rect x="341" y="511"/>
+          <rect x="409" y="511"/>
+          <rect x="477" y="511"/>
+          <rect x="545" y="511"/>
+          <rect x="613" y="511"/>
+          <rect x="681" y="511"/>
+          <rect x="749" y="511"/>
+          <rect x="817" y="511"/>
+          <rect x="885" y="511"/>
+          <rect x="953" y="511"/>
+        </south>
+        <south_west>
+          <rect x="1" y="569"/>
+          <rect x="69" y="569"/>
+          <rect x="137" y="569"/>
+          <rect x="205" y="569"/>
+          <rect x="273" y="569"/>
+          <rect x="341" y="569"/>
+          <rect x="409" y="569"/>
+          <rect x="477" y="569"/>
+          <rect x="545" y="569"/>
+          <rect x="613" y="569"/>
+          <rect x="681" y="569"/>
+          <rect x="749" y="569"/>
+          <rect x="817" y="569"/>
+          <rect x="885" y="569"/>
+          <rect x="953" y="569"/>
+        </south_west>
+        <west>
+          <rect x="1" y="627"/>
+          <rect x="69" y="627"/>
+          <rect x="137" y="627"/>
+          <rect x="205" y="627"/>
+          <rect x="273" y="627"/>
+          <rect x="341" y="627"/>
+          <rect x="409" y="627"/>
+          <rect x="477" y="627"/>
+          <rect x="545" y="627"/>
+          <rect x="613" y="627"/>
+          <rect x="681" y="627"/>
+          <rect x="749" y="627"/>
+          <rect x="817" y="627"/>
+          <rect x="885" y="627"/>
+          <rect x="953" y="627"/>
+        </west>
+        <north_west>
+          <rect x="1" y="685"/>
+          <rect x="69" y="685"/>
+          <rect x="137" y="685"/>
+          <rect x="205" y="685"/>
+          <rect x="273" y="685"/>
+          <rect x="341" y="685"/>
+          <rect x="409" y="685"/>
+          <rect x="477" y="685"/>
+          <rect x="545" y="685"/>
+          <rect x="613" y="685"/>
+          <rect x="681" y="685"/>
+          <rect x="749" y="685"/>
+          <rect x="817" y="685"/>
+          <rect x="885" y="685"/>
+          <rect x="953" y="685"/>
+        </north_west>
+        <north>
+          <rect x="1" y="743"/>
+          <rect x="69" y="743"/>
+          <rect x="137" y="743"/>
+          <rect x="205" y="743"/>
+          <rect x="273" y="743"/>
+          <rect x="341" y="743"/>
+          <rect x="409" y="743"/>
+          <rect x="477" y="743"/>
+          <rect x="545" y="743"/>
+          <rect x="613" y="743"/>
+          <rect x="681" y="743"/>
+          <rect x="749" y="743"/>
+          <rect x="817" y="743"/>
+          <rect x="885" y="743"/>
+          <rect x="953" y="743"/>
+        </north>
+      </attack>
+      <death speed="10" w="82" h="72" offset_x="30" offset_y="30">
+        <south>
+          <rect x="1" y="801"/>
+          <rect x="86" y="801"/>
+          <rect x="171" y="801"/>
+          <rect x="256" y="801"/>
+          <rect x="341" y="801"/>
+          <rect x="426" y="801"/>
+          <rect x="511" y="801"/>
+          <rect x="596" y="801"/>
+          <rect x="681" y="801"/>
+          <rect x="766" y="801"/>
+          <rect x="851" y="801"/>
+          <rect x="936" y="801"/>
+          <rect x="1021" y="801"/>
+          <rect x="1106" y="801"/>
+          <rect x="1191" y="801"/>
+        </south>
+        <south_west>
+          <rect x="1" y="876"/>
+          <rect x="86" y="876"/>
+          <rect x="171" y="876"/>
+          <rect x="256" y="876"/>
+          <rect x="341" y="876"/>
+          <rect x="426" y="876"/>
+          <rect x="511" y="876"/>
+          <rect x="596" y="876"/>
+          <rect x="681" y="876"/>
+          <rect x="766" y="876"/>
+          <rect x="851" y="876"/>
+          <rect x="936" y="876"/>
+          <rect x="1021" y="876"/>
+          <rect x="1106" y="876"/>
+          <rect x="1191" y="876"/>
+        </south_west>
+        <west>
+          <rect x="1" y="951"/>
+          <rect x="86" y="951"/>
+          <rect x="171" y="951"/>
+          <rect x="256" y="951"/>
+          <rect x="341" y="951"/>
+          <rect x="426" y="951"/>
+          <rect x="511" y="951"/>
+          <rect x="596" y="951"/>
+          <rect x="681" y="951"/>
+          <rect x="766" y="951"/>
+          <rect x="851" y="951"/>
+          <rect x="936" y="951"/>
+          <rect x="1021" y="951"/>
+          <rect x="1106" y="951"/>
+          <rect x="1191" y="951"/>
+        </west>
+        <north_west>
+          <rect x="1" y="1026"/>
+          <rect x="86" y="1026"/>
+          <rect x="171" y="1026"/>
+          <rect x="256" y="1026"/>
+          <rect x="341" y="1026"/>
+          <rect x="426" y="1026"/>
+          <rect x="511" y="1026"/>
+          <rect x="596" y="1026"/>
+          <rect x="681" y="1026"/>
+          <rect x="766" y="1026"/>
+          <rect x="851" y="1026"/>
+          <rect x="936" y="1026"/>
+          <rect x="1021" y="1026"/>
+          <rect x="1106" y="1026"/>
+          <rect x="1191" y="1026"/>
+        </north_west>
+        <north>
+          <rect x="1" y="1101"/>
+          <rect x="86" y="1101"/>
+          <rect x="171" y="1101"/>
+          <rect x="256" y="1101"/>
+          <rect x="341" y="1101"/>
+          <rect x="426" y="1101"/>
+          <rect x="511" y="1101"/>
+          <rect x="596" y="1101"/>
+          <rect x="681" y="1101"/>
+          <rect x="766" y="1101"/>
+          <rect x="851" y="1101"/>
+          <rect x="936" y="1101"/>
+          <rect x="1021" y="1101"/>
+          <rect x="1106" y="1101"/>
+          <rect x="1191" y="1101"/>
+        </north>
+      </death>
+      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15">
+        <south>
+          <rect x="1" y="1176"/>
+          <rect x="86" y="1176"/>
+          <rect x="171" y="1176"/>
+          <rect x="256" y="1176"/>
+          <rect x="341" y="1176"/>
+        </south>
+        <south_west>
+          <rect x="1" y="1244"/>
+          <rect x="86" y="1244"/>
+          <rect x="171" y="1244"/>
+          <rect x="256" y="1244"/>
+          <rect x="341" y="1244"/>
+        </south_west>
+        <west>
+          <rect x="1" y="1312"/>
+          <rect x="86" y="1312"/>
+          <rect x="171" y="1312"/>
+          <rect x="256" y="1312"/>
+          <rect x="341" y="1312"/>
+        </west>
+        <north_west>
+          <rect x="1" y="1380"/>
+          <rect x="86" y="1380"/>
+          <rect x="171" y="1380"/>
+          <rect x="256" y="1380"/>
+          <rect x="341" y="1380"/>
+        </north_west>
+        <north>
+          <rect x="1" y="1448"/>
+          <rect x="86" y="1448"/>
+          <rect x="171" y="1448"/>
+          <rect x="256" y="1448"/>
+          <rect x="341" y="1448"/>
+        </north>
+      </decompose>
+    </animations>
+  </unit>
 </units>
