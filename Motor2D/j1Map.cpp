@@ -221,25 +221,13 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	std::list<TileSet*>::iterator item;
-	item = data.tilesets.begin();
-
-	while (item != data.tilesets.end())
-	{
-		RELEASE(*item);
-		item++;
-	}
+	for (std::list<TileSet*>::iterator it = data.tilesets.begin(); it != data.tilesets.end(); ++it) 
+		RELEASE(*it);
 	data.tilesets.clear();
 
 	// Remove all layers
-	std::list<MapLayer*>::iterator item2;
-	item2 = data.layers.begin();
-
-	while (item2 != data.layers.end())
-	{
-		RELEASE(*item2);
-		item2++;
-	}
+	for (std::list<MapLayer*>::iterator it = data.layers.begin(); it != data.layers.end(); ++it)
+		RELEASE(*it);
 	data.layers.clear();
 
 	// Clean up the pugui tree

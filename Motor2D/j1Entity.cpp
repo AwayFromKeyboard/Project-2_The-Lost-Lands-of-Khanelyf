@@ -76,14 +76,14 @@ bool j1Entity::CleanUp()
 	{
 		ret = (*it)->CleanUp();
 	}
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) {
-		App->entity->unit_game_objects_list.erase(it);
+	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) 
 		RELEASE(*it);
-	}
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
+	App->entity->unit_game_objects_list.clear();
+
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) 
 		selected.erase(it);
-	}
 	selected.clear();
+
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
 		for (std::list<Unit*>::iterator it2 = (*it).group.begin(); it2 != (*it).group.end(); it2++) {
 			(*it).group.erase(it2);

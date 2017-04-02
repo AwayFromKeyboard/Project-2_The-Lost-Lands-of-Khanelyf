@@ -21,12 +21,8 @@ bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
-	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();) {
+	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();++it)
 		RELEASE(it->second);
-		std::map<uint, Path*>::iterator tmp = it;
-		++it;
-		paths.erase(tmp);
-	}
 	paths.clear();
 
 	RELEASE_ARRAY(map);
@@ -47,6 +43,7 @@ bool j1PathFinding::PreUpdate()
 				if (iterations >= 8)
 					can_calculate = false;
 			}
+			++it;
 		}
 		else
 		{
@@ -56,12 +53,8 @@ bool j1PathFinding::PreUpdate()
 				}
 			}
 			RELEASE(it->second);
-			std::map<uint, Path*>::iterator tmp = it;
-			++it;
-			paths.erase(tmp);
+			it = paths.erase(it);
 		}
-	
-		++it;
 	}
 
 	return true;

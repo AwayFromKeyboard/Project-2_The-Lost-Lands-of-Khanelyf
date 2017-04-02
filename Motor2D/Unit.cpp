@@ -175,9 +175,12 @@ bool Unit::PostUpdate()
 
 bool Unit::CleanUp()
 {
+	bool ret = true;
+
+	App->entity->unit_game_objects_list.remove(game_object);
 	RELEASE(game_object);
 
-	return true;
+	return ret;
 }
 
 bool Unit::Load(pugi::xml_node &)
