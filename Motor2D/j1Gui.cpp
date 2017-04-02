@@ -225,33 +225,38 @@ void j1Gui::GetChilds(UI_Element * element, list<UI_Element*>& visited)
 {
 	list<UI_Element*> frontier;
 
+
 	visited.push_back(element);
 
-	// Add the current childs
-	for (list<UI_Element*>::iterator it = element->childs.begin(); it != element->childs.end(); it++)
-		frontier.push_back(*it);
-
+	if (!element->childs.empty())
+	{
+		// Add the current childs
+		for (list<UI_Element*>::iterator it = element->childs.begin(); it != element->childs.end(); it++)
+			frontier.push_back(*it);
+	}
 
 	// Navigate through all the childs and add them
 
 	int end = 0;
-	while (!frontier.empty())
-	{
-		for (list<UI_Element*>::iterator fr = frontier.begin(); fr != frontier.end(); fr++)
+	if (!frontier.empty()) {
+		list<UI_Element*>::iterator fr = frontier.begin();
+		while (!frontier.empty())
 		{
 			list<UI_Element*>::iterator find = std::find(visited.begin(), visited.end(), *fr);
 			if (find == visited.end() && *fr != element)
 			{
 				visited.push_back(*fr);
-				for (list<UI_Element*>::iterator ch = (*fr)->childs.begin(); ch != (*fr)->childs.end(); ch++)
+				if (!(*fr)->childs.empty())
 				{
-					frontier.push_back(*ch);
+					for (list<UI_Element*>::iterator ch = (*fr)->childs.begin(); ch != (*fr)->childs.end(); ch++)
+					{
+						frontier.push_back(*ch);
+					}
 				}
 			}
-			frontier.erase(fr);
+			fr = frontier.erase(fr);
 		}
 	}
-
 	// ---------------------------------------
 }
 
