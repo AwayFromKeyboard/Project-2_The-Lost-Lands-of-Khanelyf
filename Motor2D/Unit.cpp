@@ -1,6 +1,7 @@
 #include "Log.h"
 #include "Unit.h"
 #include "j1Entity.h"
+#include "j1Input.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "j1Map.h"
@@ -37,6 +38,24 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 	
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && GetSelected()) {
+		path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), p);
+	}
+
+	if (path.size() > 0)
+	{
+		state = unit_move;
+	}
+	else
+	{
+		state = unit_idle;
+	}
+
 	return ret;
 }
 
@@ -140,6 +159,10 @@ bool Unit::Draw(float dt)
 bool Unit::PostUpdate()
 {
 	bool ret = true;
+
+
+	if (GetSelected())
+		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
 	if (to_delete)
 	{

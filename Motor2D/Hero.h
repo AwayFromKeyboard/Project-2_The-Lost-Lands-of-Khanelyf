@@ -2,7 +2,7 @@
 #define _Test_
 
 #include "Unit.h"
-#define	COLLISION_ADJUSTMENT iPoint(23, 25)
+#define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
 class GameObject;
 class Hero : public Unit

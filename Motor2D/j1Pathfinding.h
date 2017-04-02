@@ -5,6 +5,8 @@
 #include "Point.h"
 #include <list>
 #include <vector>
+#include <map>
+#include "j1Timer.h"
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
@@ -34,10 +36,10 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	vector<iPoint> CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(const iPoint& origin, const iPoint& destination);
 
-	vector<iPoint> GetPath() const;
-	std::list<Path*> GetPaths() const;
+	vector<iPoint> GetPath(uint id) const;
+	std::map<uint, Path*> GetPaths() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -52,8 +54,13 @@ public:
 
 private:
 	iPoint FindNearestWalkable(const iPoint& origin);
-	void CalculatePath(Path* path);
+	int CalculatePath(Path* path, int max_iterations);
 private:
+	// Timer
+	j1Timer timer;
+	
+	// Paths ID
+	uint current_id = 0;
 
 	// size of the map
 	uint width;
@@ -61,7 +68,7 @@ private:
 	// all map walkability values [0..255]
 	uchar* map;
 	// we store the created paths here
-	std::list<Path*> paths;
+	std::map<uint, Path*> paths;
 };
 
 // ---------------------------------------------------------------------

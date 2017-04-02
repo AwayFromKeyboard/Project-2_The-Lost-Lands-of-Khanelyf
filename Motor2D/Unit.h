@@ -86,20 +86,20 @@ public:
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
-	attack_state att_state = attack_state::attack_null;	entity_name type;
+	entity_name type;
 	bool flip = false;
-	bool to_delete = false; //WTF Simon
+	bool to_delete = false;
   
 
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
 	bool has_destination = false;
-
-private:
+	uint path_id;
+public:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
-  
+	attack_state att_state = attack_state::attack_null;
 public:
 	int life = 0;
 	int cost = 0;

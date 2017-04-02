@@ -119,6 +119,11 @@ void j1Scene::ChangeScene(Scene * new_scene)
 	current_scene->Start();
 }
 
+Scene * j1Scene::GetCurrentScene()
+{
+	return current_scene;
+}
+
 void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_Rect section, float scale, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)
 {
 	layer_blit lblit(texture, pos, section, scale, flip, angle, pivot_x, pivot_y, layer);

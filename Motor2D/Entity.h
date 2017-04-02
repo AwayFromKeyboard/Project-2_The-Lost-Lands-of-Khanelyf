@@ -43,7 +43,14 @@ public:
 		return nullptr;
 	}
 
-public:
+	void SetSelected(bool _selected) {
+		selected = _selected;
+	}
+	bool GetSelected() {
+		return selected;
+	}
+private:
+	bool selected = false;
 };
 
 #endif
