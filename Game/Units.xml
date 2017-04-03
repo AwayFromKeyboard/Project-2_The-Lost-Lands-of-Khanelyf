@@ -108,7 +108,7 @@
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="100"/>
-    <collision_box w="22" h="20" offset_x="-8" offset_y="0"/>
+    <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations> <!--10 23-->
       <idle speed="10" w="29" h="48" offset_x="10" offset_y="23">
         <south>
@@ -778,7 +778,7 @@
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="30"/>
-    <collision_box w="23" h="20" offset_x="-5" offset_y="0"/>
+    <collision_box w="23" h="44" offset_x="-5" offset_y="-21"/>
     <animations> <!--10 23-->
       <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
         <south>
@@ -1126,7 +1126,7 @@
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="30"/>
-    <collision_box w="23" h="20" offset_x="-5" offset_y="0"/>
+    <collision_box w="23" h="44" offset_x="-5" offset_y="-20"/>
     <animations>
       <!--10 23-->
       <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
@@ -1475,7 +1475,7 @@
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="30"/>
-    <collision_box w="23" h="20" offset_x="-5" offset_y="0"/>
+    <collision_box w="23" h="44" offset_x="-5" offset_y="-21"/>
     <animations>
       <!--10 23-->
       <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
