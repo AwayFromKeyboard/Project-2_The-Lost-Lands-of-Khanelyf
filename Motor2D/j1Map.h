@@ -121,10 +121,13 @@ public:
 	bool Load(const char* path);
 
 	iPoint MapToWorld(int x, int y) const;
+	fPoint FMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMapPoint(iPoint position) const;
 	iPoint MapToWorldPoint(iPoint position) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+	void GetEntitiesSpawn() const;
 
 private:
 
