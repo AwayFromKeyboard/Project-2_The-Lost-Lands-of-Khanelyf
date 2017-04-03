@@ -81,8 +81,7 @@ bool j1Entity::CleanUp()
 		RELEASE(*it);
 	App->entity->unit_game_objects_list.clear();
 
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) 
-		selected.erase(it);	//crashes at 2nd iteration ()
+	//crashes at 2nd iteration ()
 	selected.clear();
 
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
