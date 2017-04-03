@@ -29,6 +29,7 @@ class j1Console;
 class j1Physics;
 class j1Entity;
 class j1Collisions;
+class Player;
 
 class j1App
 {
@@ -117,6 +118,7 @@ public:
 	j1Physics*			physics = nullptr;
 	j1Entity*			entity = nullptr;
 	j1Collisions*		collisions = nullptr;
+	Player*				player = nullptr;
 
 	// Console logs
 	list<string>        logs;
