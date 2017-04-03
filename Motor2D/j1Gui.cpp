@@ -477,7 +477,6 @@ void j1Gui::CursorSelection()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->entity->UnselectEverything();
 		selection_rect.x = x;
 		selection_rect.y = y;
 		selection_rect.w = selection_rect.x;

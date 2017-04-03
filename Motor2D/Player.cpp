@@ -54,6 +54,7 @@ bool Player::Update(float dt)
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
+		App->entity->UnselectEverything();
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 			
