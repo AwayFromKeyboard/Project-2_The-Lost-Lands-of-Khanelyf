@@ -57,10 +57,9 @@ bool Player::Update(float dt)
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 			
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.w) {
+			if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
 				(*it)->SetSelected(true);
 			}
-
 			if ((*it)->GetSelected())
 				App->entity->selected.push_back((Unit*)*it);
 		}
