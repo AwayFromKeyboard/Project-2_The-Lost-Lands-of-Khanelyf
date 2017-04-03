@@ -83,10 +83,11 @@ bool Unit::Update(float dt)
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
 				state = unit_state::unit_attack;
+				has_moved = false;
 			}
-			else if (!IsInRange(attacked_unit) && !has_moved){
+			else if (!IsInRange(attacked_unit) && !has_moved) {
 				has_moved = true;
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), attacked_unit->game_object->GetPos());
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
 			}
 			else if (!IsInRange(attacked_unit) && has_moved) {
 				FollowPath(dt);

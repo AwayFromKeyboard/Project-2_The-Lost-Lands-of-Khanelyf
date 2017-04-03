@@ -91,7 +91,7 @@ bool Player::Update(float dt)
 					mouse_over_entity = true;
 					break;
 				case entity_type::npc:
-					MoveToTile(p);
+					SetAttackingEnemy((Unit*)*it);
 					mouse_over_entity = true;
 					break;
 				case entity_type::player:
