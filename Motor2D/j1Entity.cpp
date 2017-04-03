@@ -173,11 +173,11 @@ void j1Entity::UnselectEverything()
 		if ((*it)->GetSelected())
 		(*it)->SetSelected(false);
 	}
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {  //needs revision
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end();) { 
 		if(!selected.empty())
-			selected.erase(it);
+			it = selected.erase(it);
 		else
-			break;
+			it++;
 	}
 	selected.clear();
 }
