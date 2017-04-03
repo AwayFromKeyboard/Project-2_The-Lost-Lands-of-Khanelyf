@@ -39,7 +39,7 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0) 
+	if (attacked_unit == nullptr && life > 0 && state != unit_state::unit_move_to_enemy) 
 	{
 		if (path.size() > 0)
 		{
@@ -83,7 +83,8 @@ bool Unit::Update(float dt)
 			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
 		}
 		if (!IsInRange(attacked_unit) && has_moved) {
-			FollowPath(dt);
+			if (path.size() > 0)
+				FollowPath(dt);
 		}
 	}
 		break;

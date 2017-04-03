@@ -131,6 +131,7 @@ void Player::MoveToTile(iPoint tile) {
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), tile);
 		(*it)->state = unit_state::unit_move;
+		(*it)->attacked_unit = nullptr;
 	}
 }
 
