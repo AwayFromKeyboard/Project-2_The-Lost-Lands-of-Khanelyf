@@ -39,8 +39,6 @@ private:
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
 
-	
-
 	Hero* troop = nullptr;
 	Hero* troop2 = nullptr;
 
