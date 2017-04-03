@@ -59,6 +59,7 @@ public:
 
 	void OnColl(Collider* col1, Collider* col2);
 	GameObject* GetGameObject();
+	Collider* GetCollider();
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);

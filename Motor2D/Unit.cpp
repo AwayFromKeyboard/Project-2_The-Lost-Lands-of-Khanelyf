@@ -206,6 +206,11 @@ GameObject * Unit::GetGameObject()
 	return game_object;
 }
 
+Collider * Unit::GetCollider()
+{
+	return idle_collision;
+}
+
 void Unit::SetPath(vector<iPoint> _path)
 {
 	path = _path;

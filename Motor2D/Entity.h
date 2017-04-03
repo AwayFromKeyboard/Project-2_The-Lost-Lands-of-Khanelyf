@@ -43,6 +43,10 @@ public:
 		return nullptr;
 	}
 
+	virtual Collider* GetCollider() {
+		return nullptr;
+	}
+
 	void SetSelected(bool _selected) {
 		selected = _selected;
 	}
