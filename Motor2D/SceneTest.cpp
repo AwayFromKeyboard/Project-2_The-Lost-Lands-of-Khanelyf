@@ -13,6 +13,7 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "Barbarian.h"
+#include "Swordsman.h"
 #include "Unit.h"
 #include "GameObject.h"
 #include "j1Collisions.h"

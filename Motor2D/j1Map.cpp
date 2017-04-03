@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "Barbarian.h"
+#include "Swordsman.h"
 #include "j1App.h"
 #include "GameObject.h"
 #include <sstream> 

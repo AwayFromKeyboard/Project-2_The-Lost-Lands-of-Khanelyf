@@ -22,8 +22,6 @@ public:
 
 public:
 	iPoint mouse_position;
-
-	
 };
 
 #endif
