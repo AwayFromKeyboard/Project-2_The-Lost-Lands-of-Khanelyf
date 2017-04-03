@@ -7,6 +7,7 @@
 #include "j1Map.h"
 #include "Hero.h"
 #include "Barbarian.h"
+#include "Swordsman.h"
 #include "Entity.h"
 #include "Animation.h"
 #include "j1Collisions.h"

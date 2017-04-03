@@ -97,6 +97,9 @@
     <ClCompile Include="Barbarian.cpp">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClCompile>
+    <ClCompile Include="Swordsman.cpp">
+      <Filter>Engine\4. Entities ==========\Troops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -215,6 +218,9 @@
       <Filter>Engine\2. Components ======</Filter>
     </ClInclude>
     <ClInclude Include="Barbarian.h">
+      <Filter>Engine\4. Entities ==========\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="Swordsman.h">
       <Filter>Engine\4. Entities ==========\Troops</Filter>
     </ClInclude>
   </ItemGroup>

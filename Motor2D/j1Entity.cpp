@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Hero.h"
 #include "Barbarian.h"
+#include "Swordsman.h"
 #include "Log.h"
 #include "GameObject.h"
 #include "j1Input.h"
