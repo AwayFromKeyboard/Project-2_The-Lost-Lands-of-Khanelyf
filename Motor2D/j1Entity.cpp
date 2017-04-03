@@ -108,7 +108,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 	switch (name)
 	{
 	case hero:
-		ret = new Hero();
+		ret = new Hero(type);
 		break;
 	case barbarian:
 		ret = new Barbarian(type);

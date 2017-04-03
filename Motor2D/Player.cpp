@@ -59,7 +59,7 @@ bool Player::Update(float dt)
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 			
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+			if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)) {
 				(*it)->SetSelected(true);
 			}
 			if ((*it)->GetSelected())
@@ -91,7 +91,7 @@ bool Player::Update(float dt)
 					mouse_over_entity = true;
 					break;
 				case entity_type::npc:
-					SetAttackingEnemy((Unit*)*it);
+					MoveToTile(p);
 					mouse_over_entity = true;
 					break;
 				case entity_type::player:
@@ -102,12 +102,14 @@ bool Player::Update(float dt)
 					break;
 				}
 			}
+
+			if (mouse_over_entity)
+				continue;
 		}
 		
 		if (!mouse_over_entity) {
 			MoveToTile(p);
 		}
-		
 	}
 
 	return ret;

@@ -8,7 +8,7 @@ class GameObject;
 class Hero : public Unit
 {
 public:
-	Hero();
+	Hero(entity_type _type);
 	~Hero();
 
 	// Load animations
