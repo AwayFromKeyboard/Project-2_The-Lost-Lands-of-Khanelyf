@@ -112,9 +112,7 @@ public:
 
 	iPoint position = NULLPOINT;
 
-	Collider* idle_collision = nullptr;
-	Collider* walk_collision = nullptr;
-	Collider* attack_collision = nullptr;
+	Collider* collision = nullptr;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
