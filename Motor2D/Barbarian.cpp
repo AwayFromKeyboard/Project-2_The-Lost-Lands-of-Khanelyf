@@ -13,8 +13,9 @@
 #include "Log.h"
 #include "j1Collisions.h"
 
-Barbarian::Barbarian()
+Barbarian::Barbarian(entity_state state)
 {
+	barbarian_state = state;
 }
 
 Barbarian::~Barbarian()
@@ -30,7 +31,17 @@ bool Barbarian::LoadEntity()
 	App->LoadXML("Units.xml", doc);
 	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
 	{
-		if (TextCmp(unit.attribute("type").as_string(), "Barbarian"))
+		if (TextCmp(unit.attribute("type").as_string(), "Barbarian_enemy") && barbarian_state == enemy)
+		{
+			node = unit;
+			break;
+		}
+		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_ally") && barbarian_state == ally)
+		{
+			node = unit;
+			break;
+		}
+		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_npc") && barbarian_state == npc)
 		{
 			node = unit;
 			break;
@@ -48,8 +59,6 @@ bool Barbarian::LoadEntity()
 		game_object->CreateCollision(COLLISION_ADJUSTMENT, 15, 40, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
-
-		type = enemy;
 
 		cost = node.child("cost").attribute("value").as_int();
 		speed = node.child("speed").attribute("value").as_float();

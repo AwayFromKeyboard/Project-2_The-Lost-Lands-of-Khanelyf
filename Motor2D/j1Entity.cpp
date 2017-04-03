@@ -103,17 +103,18 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 		(*it)->OnColl(col1, col2);
 }
 
-Entity* j1Entity::CreateEntity(entity_name entity)
+Entity* j1Entity::CreateEntity(entity_name name, entity_state state)
 {
 	Entity* ret = nullptr;
 
-	switch (entity)
+	switch (name)
 	{
-	case player:
+	case hero:
 		ret = new Hero();
 		break;
-	case enemy: 
-		ret = new Barbarian();
+	case barbarian:
+		ret = new Barbarian(state);
+		
 		break;
 	default:
 		break;

@@ -50,11 +50,11 @@ bool SceneTest::Start()
 	
 	InitCameraMovement();
 
-	troop = (Hero*)App->entity->CreateEntity(player);
+	troop = (Hero*)App->entity->CreateEntity(hero, player);
 	fPoint pos(App->map->MapToWorld(25, 30).x, App->map->MapToWorld(25, 30).y);
 	troop->game_object->SetPos(pos);
 	
-	troop2 = (Barbarian*)App->entity->CreateEntity(enemy);
+	troop2 = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
 	fPoint pos2(App->map->MapToWorld(25, 32).x, App->map->MapToWorld(25, 32).y);
 	troop2->game_object->SetPos(pos2);
 
@@ -131,7 +131,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
 	{
 		gold -= TROOP_PRICE;
-		troop = (Hero*)App->entity->CreateEntity(player);
+		troop = (Hero*)App->entity->CreateEntity(hero, player);
 		fPoint pos(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y);
 		troop->game_object->SetPos(pos);
 	}

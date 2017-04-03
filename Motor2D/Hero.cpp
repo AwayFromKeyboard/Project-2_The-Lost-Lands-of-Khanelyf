@@ -48,8 +48,6 @@ bool Hero::LoadEntity()
 		game_object->CreateCollision(COLLISION_ADJUSTMENT, 15, 40, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
-		
-		type = player;
 
 		cost = node.child("cost").attribute("value").as_int();
 		speed = node.child("speed").attribute("value").as_float();
