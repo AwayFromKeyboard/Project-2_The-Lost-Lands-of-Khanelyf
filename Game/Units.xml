@@ -100,7 +100,7 @@
   </unit>
   -->
   <unit type="Hero">
-    <texture value="textures/Hero_1.png"/>
+    <texture value="textures/Hero.png"/>
     <cost value="0"/>
     <speed value="2"/>
     <damage value="20"/>
@@ -447,8 +447,8 @@
       </decompose>
     </animations>
   </unit>
-  <unit type="Hero2">
-    <texture value="textures/Hero.png"/>
+  <unit type="Swordsman">
+    <texture value="textures/Swordsman.png"/>
     <cost value="0"/>
     <speed value="2"/>
     <damage value="0"/>
