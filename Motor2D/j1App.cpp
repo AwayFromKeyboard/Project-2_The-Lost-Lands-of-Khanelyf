@@ -274,7 +274,7 @@ bool j1App::CleanUp()
 	// Cleaning up in reverse order
 	for (list<j1Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend(); it++)
 	{
-		ret = (*it)->CleanUp(); // crashes at 3rd iteration if a unit has been moved
+		ret = (*it)->CleanUp();
 	}
 
 	PERF_PEEK(ptimer);
