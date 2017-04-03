@@ -62,8 +62,8 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	position = { game_object->GetPos().x + collision->offset_x, game_object->GetPos().y + collision->offset_y };
-	collision->SetPos(position.x, position.y);
+	position = { game_object->GetPos().x, game_object->GetPos().y };
+	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 	
 	switch (state) {
 	case unit_idle:
