@@ -10,8 +10,17 @@ class GameObject;
 
 enum entity_name
 {
-	player,
+	hero,
+	barbarian,
 	test
+};
+
+enum entity_state
+{
+	player,
+	ally,
+	npc,
+	enemy
 };
 
 class Entity;
@@ -54,7 +63,7 @@ public:
 
 	void OnCollision(Collider* col1, Collider* col2);
 
-	Entity* CreateEntity(entity_name entity);
+	Entity* CreateEntity(entity_name name, entity_state state);
 	void DeleteEntity(Entity* entity);
 
 	void SelectInQuad(const SDL_Rect& select_rect);

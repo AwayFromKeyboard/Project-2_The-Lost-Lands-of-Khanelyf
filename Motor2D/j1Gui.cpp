@@ -453,7 +453,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 		if ((*ch)->parent_element != nullptr && (*ch)->parent_element->childs.size() > 0)
 			(*ch)->parent_element->childs.remove(*ch);
 
-		if ((*ch)->type == ui_window && windows.size() > 0)
+		if ((*ch)->type == ui_window && windows.size() > 0) //crash after quit
 			windows.remove((UI_Window*)*ch);
 
 			// Delete from pQ

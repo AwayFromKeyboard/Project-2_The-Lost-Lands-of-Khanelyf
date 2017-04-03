@@ -7,7 +7,6 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Scene.h"
-#include "MainScene.h"
 #include "SceneTest.h"
 #include "j1Console.h"
 
@@ -41,10 +40,8 @@ bool j1Scene::Start()
 	LOG("Start module scene");
 
 	// Create scenes
-	main_scene = new MainScene();
 	scene_test = new SceneTest();
 
-	scenes.push_back(main_scene);
 	scenes.push_back(scene_test);
 	// -------------
 

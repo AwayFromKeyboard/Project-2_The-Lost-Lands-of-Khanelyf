@@ -1,6 +1,7 @@
 #include "j1Entity.h"
 #include "Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
 #include "Log.h"
 #include "GameObject.h"
 #include "j1Input.h"
@@ -80,8 +81,6 @@ bool j1Entity::CleanUp()
 		RELEASE(*it);
 	App->entity->unit_game_objects_list.clear();
 
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) 
-		selected.erase(it);
 	selected.clear();
 
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
@@ -102,14 +101,18 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 		(*it)->OnColl(col1, col2);
 }
 
-Entity* j1Entity::CreateEntity(entity_name entity)
+Entity* j1Entity::CreateEntity(entity_name name, entity_state state)
 {
 	Entity* ret = nullptr;
 
-	switch (entity)
+	switch (name)
 	{
-	case player:
+	case hero:
 		ret = new Hero();
+		break;
+	case barbarian:
+		ret = new Barbarian(state);
+		
 		break;
 	default:
 		break;
@@ -169,8 +172,11 @@ void j1Entity::UnselectEverything()
 		if ((*it)->GetSelected())
 		(*it)->SetSelected(false);
 	}
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
-		selected.erase(it);
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end();) { 
+		if(!selected.empty())
+			it = selected.erase(it);
+		else
+			it++;
 	}
 	selected.clear();
 }

@@ -7,7 +7,6 @@
 #include <queue>
 
 struct SDL_Texture;
-class MainScene;
 class SceneTest;
 
 // LayerBlit struct
@@ -88,7 +87,6 @@ private:
 
 public:
 	// Scenes
-	MainScene*           main_scene = nullptr;
 	SceneTest*		     scene_test = nullptr;
 private:
 	// Layer Blit list
