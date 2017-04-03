@@ -10,6 +10,7 @@
 #include "Entity.h"
 #include "j1Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
 #include "j1App.h"
 #include "GameObject.h"
 #include <sstream> 
@@ -658,7 +659,6 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 void j1Map::GetEntitiesSpawn() const
 {
-	Hero* hero;
 
 	for (std::list<MapLayer*>::const_iterator item = data.layers.begin(); item != data.layers.end(); item++)
 	{
@@ -680,18 +680,27 @@ void j1Map::GetEntitiesSpawn() const
 						int relative_id = id - tileset->firstgid;
 						switch (id)
 						{
-						case 27: // Hero 
-							hero = (Hero*)App->entity->CreateEntity(player);
-							hero->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
-							break;
+						case 27: // Hero
+						{
+							Hero* player_unit = (Hero*)App->entity->CreateEntity(hero, player);
+							player_unit->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						}
+						break;
+						
 						case 28: // Enemies (probably swordsmans)
-							hero = (Hero*)App->entity->CreateEntity(player);
-							hero->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						{
+							Barbarian* barb_enemy = (Barbarian*)App->entity->CreateEntity(barbarian, enemy);
+							barb_enemy->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						}
 						break;
-						case 29: // NPC 
-							hero = (Hero*)App->entity->CreateEntity(player);
-							hero->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						
+						case 29: // NPC
+						{
+							Barbarian* barb_npc = (Barbarian*)App->entity->CreateEntity(barbarian, npc);
+							barb_npc->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						}
 						break;
+						
 						}
 					}
 				}		
