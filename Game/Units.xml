@@ -9,6 +9,7 @@
     <pierce_armor value=""/>
     <range value=""/>
     <life value=""/>
+    <collision_box w="" h="" offset_x="" offset_y=""/>
     <animations>
       <idle speed="" w="" h="" offset_x="" offset_y="">
         <south>
@@ -102,11 +103,12 @@
     <texture value="textures/Hero_1.png"/>
     <cost value="0"/>
     <speed value="2"/>
-    <damage value="1"/>
-    <armor value="2"/>
+    <damage value="20"/>
+    <armor value="10"/>
     <pierce_armor value="0"/>
     <range value="1"/>
-    <life value="2"/>
+    <life value="100"/>
+    <collision_box w="22" h="20" offset_x="-8" offset_y="0"/>
     <animations> <!--10 23-->
       <idle speed="10" w="29" h="48" offset_x="10" offset_y="23">
         <south>
@@ -776,6 +778,7 @@
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="30"/>
+    <collision_box w="23" h="20" offset_x="-5" offset_y="0"/>
     <animations> <!--10 23-->
       <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
         <south>

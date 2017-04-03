@@ -62,15 +62,12 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	position = { game_object->GetPos().x - 7, game_object->GetPos().y };
+	position = { game_object->GetPos().x + collision->offset_x, game_object->GetPos().y + collision->offset_y };
+	collision->SetPos(position.x, position.y);
+	
 	switch (state) {
 	case unit_idle:
 
-		idle_collision->print_collider = true;
-		walk_collision->print_collider = false;
-		attack_collision->print_collider = false;
-
-		idle_collision->SetPos(position.x, position.y);
 		offset = i_offset;
 		CheckDirection();
 		break;
@@ -78,11 +75,7 @@ bool Unit::Update(float dt)
 	case unit_move:
 		
 		FollowPath(dt);
-		idle_collision->print_collider = false;
-		walk_collision->print_collider = true;
-		attack_collision->print_collider = false;
 		
-		walk_collision->SetPos(position.x, position.y);
 		break;
 
 	case unit_attack:
@@ -123,9 +116,7 @@ bool Unit::Update(float dt)
 			current_animation->SetSpeed(0);
 			state = unit_decompose;
 
-			App->collisions->EraseCollider(idle_collision);
-			App->collisions->EraseCollider(walk_collision);
-			App->collisions->EraseCollider(attack_collision);
+			App->collisions->EraseCollider(collision);
 		}
 		break;
 	case unit_decompose:

@@ -41,9 +41,9 @@ bool Barbarian::LoadEntity()
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
 		position = { 0, 0 };
-		idle_collision = App->collisions->AddCollider({ position.x, position.y, 25, 20 }, COLLIDER_UNIT, App->collisions); // add w/h in xml file and replace the numbers by the values in the document
-		walk_collision = App->collisions->AddCollider({ position.x, position.y, 25, 20 }, COLLIDER_UNIT, App->collisions);
-		attack_collision = App->collisions->AddCollider({ position.x, position.y, 30, 20 }, COLLIDER_UNIT, App->collisions);
+		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
+		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
+		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
 
 		game_object->CreateCollision(COLLISION_ADJUSTMENT, 15, 40, fixture_type::f_t_null);
 		game_object->SetListener((j1Module*)App->entity);
