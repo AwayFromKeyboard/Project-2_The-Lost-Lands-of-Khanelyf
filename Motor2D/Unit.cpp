@@ -38,15 +38,6 @@ bool Unit::Start()
 bool Unit::PreUpdate()
 {
 	bool ret = true;
-	
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && GetSelected()) {
-		path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), p);
-	}
 
 	if (path.size() > 0)
 	{
@@ -201,6 +192,11 @@ GameObject * Unit::GetGameObject()
 Collider * Unit::GetCollider()
 {
 	return collision;
+}
+
+entity_type Unit::GetType()
+{
+	return type;
 }
 
 void Unit::SetPath(vector<iPoint> _path)

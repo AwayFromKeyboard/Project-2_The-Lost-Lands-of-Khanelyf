@@ -4,6 +4,7 @@
 #include "Unit.h"
 #include "j1Gui.h"
 #include "j1Entity.h"
+#include "j1Map.h"
 #include "j1Collisions.h"
 #include "j1Entity.h"
 #include "GameObject.h"
@@ -65,6 +66,27 @@ bool Player::Update(float dt)
 				App->entity->selected.push_back((Unit*)*it);
 		}
 
+	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+		iPoint mouse;
+		App->input->GetMouseWorld(mouse.x, mouse.y);
+		iPoint mouse_pathfinding;
+		App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+		iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+		p = App->map->WorldToMap(p.x, p.y);
+
+		//for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		//	Collider* unit = (*it)->GetCollider();
+
+		//	if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+		//		//if ((*it)->GetType())
+		//	}
+
+		//}
+
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+			(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), p);
+		}
 	}
 
 	return ret;
