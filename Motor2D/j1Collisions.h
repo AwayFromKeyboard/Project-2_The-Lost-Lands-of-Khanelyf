@@ -70,12 +70,14 @@ private:
 
 	std::list<Collider*> colliders;
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
-	bool debug = false;
 
 	int quadTreeChecks;
 	QuadTree* quadTree;
 	std::vector<QuadTree*> nodeList;
 	std::list<Collider*> potentialCollisionList;
+
+public:
+	bool debug = false;
 };
 
 #endif

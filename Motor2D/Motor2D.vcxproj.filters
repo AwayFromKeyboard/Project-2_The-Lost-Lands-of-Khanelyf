@@ -94,7 +94,9 @@
     <ClCompile Include="QuadTree.cpp">
       <Filter>Engine\2. Components ======</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Engine\1. Modules =========</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

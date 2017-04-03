@@ -91,9 +91,6 @@ bool j1Collisions::Update(float dt)
 
 void j1Collisions::DebugDraw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F3) == key_down)
-		debug = !debug;
-
 	if (debug == true)
 	{
 		Uint8 alpha = 80;

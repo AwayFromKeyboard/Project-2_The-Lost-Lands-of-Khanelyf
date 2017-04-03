@@ -160,9 +160,6 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
-		debug_mode = !debug_mode;
-
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 		ret = false;
 
@@ -467,10 +464,6 @@ void j1App::FrameRateCalculations()
 	{
 		j1PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
-	}
-
-	if (input->GetKey(SDL_SCANCODE_F10) == key_down) {
-		ShellExecute(NULL, "open", "https://github.com/viriato22/Project_2/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 	}
 
 	if (debug_mode && !debug_window->enabled)
