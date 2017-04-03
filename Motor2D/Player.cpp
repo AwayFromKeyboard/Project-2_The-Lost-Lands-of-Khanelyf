@@ -79,7 +79,7 @@ bool Player::Update(float dt)
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
 				switch ((*it)->GetType())
 				{
 				case entity_type::ally:
@@ -130,6 +130,7 @@ bool Player::CleanUp()
 void Player::MoveToTile(iPoint tile) {
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), tile);
+		(*it)->state = unit_state::unit_move;
 	}
 }
 
