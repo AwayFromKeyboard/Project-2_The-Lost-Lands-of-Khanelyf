@@ -74,19 +74,40 @@ bool Player::Update(float dt)
 		App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
 		iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
 		p = App->map->WorldToMap(p.x, p.y);
+		bool mouse_over_entity = false;
 
-		//for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		//	Collider* unit = (*it)->GetCollider();
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+			Collider* unit = (*it)->GetCollider();
 
-		//	if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-		//		//if ((*it)->GetType())
-		//	}
-
-		//}
-
-		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
-			(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), p);
+			if (mouse.x > unit->rect.x && mouse.x < unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+				switch ((*it)->GetType())
+				{
+				case entity_type::ally:
+					MoveToTile(p);
+					mouse_over_entity = true;
+					break;
+				case entity_type::enemy:
+					SetAttackingEnemy((Unit*)*it);
+					mouse_over_entity = true;
+					break;
+				case entity_type::npc:
+					MoveToTile(p);
+					mouse_over_entity = true;
+					break;
+				case entity_type::player:
+					MoveToTile(p);
+					mouse_over_entity = true;
+					break;
+				default:
+					break;
+				}
+			}
 		}
+		
+		if (!mouse_over_entity) {
+			MoveToTile(p);
+		}
+		
 	}
 
 	return ret;
@@ -102,4 +123,17 @@ bool Player::CleanUp()
 {
 	bool ret = true;
 	return ret;
+}
+
+void Player::MoveToTile(iPoint tile) {
+	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), tile);
+	}
+}
+
+void Player::SetAttackingEnemy(Unit* enemy) {
+	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+		(*it)->SetAttackingUnit(enemy);
+		(*it)->state = unit_state::unit_move_to_enemy;
+	}
 }

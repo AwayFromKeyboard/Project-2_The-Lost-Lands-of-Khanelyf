@@ -39,14 +39,23 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (path.size() > 0)
+	if (attacked_unit == nullptr) 
 	{
-		state = unit_move;
+		if (path.size() > 0)
+		{
+			state = unit_move;
+		}
+		else
+		{
+			state = unit_idle;
+		}
 	}
-	else
-	{
-		state = unit_idle;
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == key_down) {
+		App->pathfinding->DeletePath(path_id);
+		path.clear();
 	}
+
 
 	return ret;
 }
@@ -57,19 +66,39 @@ bool Unit::Update(float dt)
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 	
 	switch (state) {
-	case unit_idle:
-
+	case unit_state::unit_idle:
 		offset = i_offset;
 		CheckDirection();
 		break;
 
-	case unit_move:
-		
+	case unit_state::unit_move:
 		FollowPath(dt);
-		
 		break;
 
-	case unit_attack:
+	case unit_state::unit_move_to_enemy:
+	{
+		if (attacked_unit != nullptr)
+		{
+			if (IsInRange(attacked_unit)) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				state = unit_state::unit_attack;
+			}
+			else if (!IsInRange(attacked_unit) && !has_moved){
+				has_moved = true;
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), attacked_unit->game_object->GetPos());
+			}
+			else if (!IsInRange(attacked_unit) && has_moved) {
+				FollowPath(dt);
+			}
+		}
+		else {
+			state = unit_state::unit_idle;
+		}
+	}
+		break;
+
+	case unit_state::unit_attack:
 		if (attacked_unit != nullptr)
 		{
 			if (IsInRange(attacked_unit))
@@ -79,7 +108,7 @@ bool Unit::Update(float dt)
 			}
 			else if (!IsInRange(attacked_unit))
 			{
-				state = unit_idle;
+				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
 				offset = i_offset;
@@ -99,18 +128,18 @@ bool Unit::Update(float dt)
 
 		break;
 
-	case unit_death:
+	case unit_state::unit_death:
 		CheckDeathDirection();
 		if (current_animation->GetFrameIndex() == 14)
 		{
 			death_timer.Start();
 			current_animation->SetSpeed(0);
-			state = unit_decompose;
+			state = unit_state::unit_decompose;
 
 			App->collisions->EraseCollider(collision);
 		}
 		break;
-	case unit_decompose:
+	case unit_state::unit_decompose:
 		if (death_timer.ReadSec() > 2)
 		{
 			offset = de_offset;
