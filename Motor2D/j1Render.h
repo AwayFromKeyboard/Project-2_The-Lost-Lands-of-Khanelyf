@@ -56,6 +56,7 @@ public:
 	SDL_Rect		camera = NULLRECT;
 	SDL_Rect		viewport = NULLRECT;
 	SDL_Color		background = NULLCOLOR;
+	iPoint			camera_offset = NULLPOINT;
 };
 
 #endif // __j1RENDER_H__
