@@ -77,7 +77,7 @@
       <Filter>Engine\5. Tools ===========</Filter>
     </ClCompile>
     <ClCompile Include="SceneTest.cpp">
-      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
+      <Filter>Engine\3. Scenes ==========\SceneTest</Filter>
     </ClCompile>
     <ClCompile Include="Unit.cpp">
       <Filter>Engine\4. Entities ==========</Filter>
@@ -194,7 +194,7 @@
       <Filter>Engine\5. Tools ===========</Filter>
     </ClInclude>
     <ClInclude Include="SceneTest.h">
-      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
+      <Filter>Engine\3. Scenes ==========\SceneTest</Filter>
     </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Engine\4. Entities ==========</Filter>
@@ -229,9 +229,6 @@
     <Filter Include="Engine\3. Scenes ==========">
       <UniqueIdentifier>{e07660eb-d36f-4cc9-af59-324d31c2f2f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3. Scenes ==========\MainScene">
-      <UniqueIdentifier>{11114207-2dc8-4d4e-8574-9953eccbdbc7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\4. Entities ==========">
       <UniqueIdentifier>{1fe24bf0-1db6-45b2-aa68-fef0607a5a12}</UniqueIdentifier>
     </Filter>
@@ -243,6 +240,9 @@
     </Filter>
     <Filter Include="Engine\4. Entities ==========\Troops">
       <UniqueIdentifier>{4dbb521a-8d56-4ca6-9a54-726f796efe55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. Scenes ==========\SceneTest">
+      <UniqueIdentifier>{11114207-2dc8-4d4e-8574-9953eccbdbc7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
