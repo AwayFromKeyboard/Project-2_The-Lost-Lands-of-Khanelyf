@@ -13,9 +13,9 @@
 #include "Log.h"
 #include "j1Collisions.h"
 
-Barbarian::Barbarian(entity_state state)
+Barbarian::Barbarian(entity_type _type)
 {
-	barbarian_state = state;
+	type = _type;
 }
 
 Barbarian::~Barbarian()
@@ -31,17 +31,17 @@ bool Barbarian::LoadEntity()
 	App->LoadXML("Units.xml", doc);
 	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
 	{
-		if (TextCmp(unit.attribute("type").as_string(), "Barbarian_enemy") && barbarian_state == enemy)
+		if (TextCmp(unit.attribute("type").as_string(), "Barbarian_enemy") && type == entity_type::enemy)
 		{
 			node = unit;
 			break;
 		}
-		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_ally") && barbarian_state == ally)
+		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_ally") && type == entity_type::ally)
 		{
 			node = unit;
 			break;
 		}
-		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_npc") && barbarian_state == npc)
+		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_npc") && type == entity_type::npc)
 		{
 			node = unit;
 			break;

@@ -39,7 +39,7 @@ bool Unit::Start()
 bool Unit::PreUpdate()
 {
 	bool ret = true;
-	
+
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
@@ -197,6 +197,16 @@ void Unit::OnColl(Collider* col1, Collider* col2)
 GameObject * Unit::GetGameObject()
 {
 	return game_object;
+}
+
+Collider * Unit::GetCollider()
+{
+	return collision;
+}
+
+entity_type Unit::GetType()
+{
+	return type;
 }
 
 void Unit::SetPath(vector<iPoint> _path)

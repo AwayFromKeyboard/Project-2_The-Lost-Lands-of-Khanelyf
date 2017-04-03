@@ -140,7 +140,6 @@
     <ClInclude Include="j1Render.h" />
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
-    <ClInclude Include="p2PQueue.h" />
     <ClInclude Include="Parallax.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />

@@ -102,7 +102,7 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 		(*it)->OnColl(col1, col2);
 }
 
-Entity* j1Entity::CreateEntity(entity_name name, entity_state state)
+Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 {
 	Entity* ret = nullptr;
 
@@ -112,7 +112,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_state state)
 		ret = new Hero();
 		break;
 	case barbarian:
-		ret = new Barbarian(state);
+		ret = new Barbarian(type);
 		
 		break;
 	default:

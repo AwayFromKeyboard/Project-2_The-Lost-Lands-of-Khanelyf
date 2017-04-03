@@ -12,15 +12,17 @@ enum entity_name
 {
 	hero,
 	barbarian,
+	swordsman,
 	test
 };
 
-enum entity_state
+enum entity_type
 {
 	player,
 	ally,
 	npc,
-	enemy
+	enemy,
+	null
 };
 
 class Entity;
@@ -63,7 +65,7 @@ public:
 
 	void OnCollision(Collider* col1, Collider* col2);
 
-	Entity* CreateEntity(entity_name name, entity_state state);
+	Entity* CreateEntity(entity_name name, entity_type type);
 	void DeleteEntity(Entity* entity);
 
 	void SelectInQuad(const SDL_Rect& select_rect);

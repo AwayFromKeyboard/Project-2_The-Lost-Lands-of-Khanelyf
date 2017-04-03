@@ -4,12 +4,13 @@
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
-enum entity_state;
+enum entity_type;
 class GameObject;
+
 class Swordsman : public Unit
 {
 public:
-	Swordsman(entity_state state);
+	Swordsman(entity_type _type);
 	~Swordsman();
 
 	// Load animations
@@ -23,9 +24,6 @@ public:
 
 public:
 	iPoint mouse_position;
-
-public:
-	entity_state swordsman_state;
 };
 
 #endif

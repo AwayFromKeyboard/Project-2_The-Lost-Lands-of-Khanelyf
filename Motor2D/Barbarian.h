@@ -4,12 +4,13 @@
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
-enum entity_state;
+enum entity_type;
 class GameObject;
+
 class Barbarian : public Unit
 {
 public:
-	Barbarian(entity_state state);
+	Barbarian(entity_type _type);
 	~Barbarian();
 
 	// Load animations
@@ -23,9 +24,6 @@ public:
 
 public:
 	iPoint mouse_position;
-
-public:
-	entity_state barbarian_state;
 };
 
 #endif

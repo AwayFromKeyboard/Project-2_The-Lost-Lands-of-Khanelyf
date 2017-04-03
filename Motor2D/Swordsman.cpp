@@ -13,9 +13,9 @@
 #include "Log.h"
 #include "j1Collisions.h"
 
-Swordsman::Swordsman(entity_state state)
+Swordsman::Swordsman(entity_type _type)
 {
-	swordsman_state = state;
+	type = _type;
 }
 
 Swordsman::~Swordsman()
@@ -31,17 +31,17 @@ bool Swordsman::LoadEntity()
 	App->LoadXML("Units.xml", doc);
 	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
 	{
-		if (TextCmp(unit.attribute("type").as_string(), "Swordsman_enemy") && swordsman_state == enemy)
+		if (TextCmp(unit.attribute("type").as_string(), "Swordsman_enemy") && type == entity_type::enemy)
 		{
 			node = unit;
 			break;
 		}
-		else if (TextCmp(unit.attribute("type").as_string(), "Swordsman_ally") && swordsman_state == ally)
+		else if (TextCmp(unit.attribute("type").as_string(), "Swordsman_ally") && type == entity_type::ally)
 		{
 			node = unit;
 			break;
 		}
-		else if (TextCmp(unit.attribute("type").as_string(), "Swordsman_npc") && swordsman_state == npc)
+		else if (TextCmp(unit.attribute("type").as_string(), "Swordsman_npc") && type == entity_type::npc)
 		{
 			node = unit;
 			break;

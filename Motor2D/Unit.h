@@ -35,6 +35,8 @@ enum unit_direction {
 
 class GameObject;
 enum entity_name;
+enum entity_type;
+
 class Building;
 
 class Unit : public Entity
@@ -59,6 +61,8 @@ public:
 
 	void OnColl(Collider* col1, Collider* col2);
 	GameObject* GetGameObject();
+	Collider* GetCollider();
+	entity_type GetType();
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
@@ -86,11 +90,10 @@ public:
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
-	entity_name type;
+	entity_name name;
 	bool flip = false;
 	bool to_delete = false;
   
-
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
@@ -112,6 +115,7 @@ public:
 	iPoint position = NULLPOINT;
 
 	Collider* collision = nullptr;
+	entity_type type = entity_type::null;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
