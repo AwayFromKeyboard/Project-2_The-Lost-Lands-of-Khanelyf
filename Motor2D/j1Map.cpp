@@ -52,7 +52,7 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = *item;
 
-		if(layer->properties.Get("Nodraw") != 0 || layer->name == "entities")
+		if(!App->debug_mode && (layer->properties.Get("Nodraw") != 0 || layer->name == "entities"))
 			continue;
 
 		int x_ini, x_end;
