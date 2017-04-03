@@ -7,6 +7,11 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1Window.h"
+#include "Entity.h"
+#include "j1Entity.h"
+#include "Hero.h"
+#include "j1App.h"
+#include "GameObject.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -47,7 +52,7 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = *item;
 
-		if(!App->debug_mode && layer->properties.Get("Nodraw") != 0)
+		if(!App->debug_mode && (layer->properties.Get("Nodraw") != 0 || layer->name == "entities"))
 			continue;
 
 		int x_ini, x_end;
@@ -109,6 +114,29 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
+
+	if (data.type == maptype_orthogonal)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == maptype_isometric)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+fPoint j1Map::FMapToWorld(int x, int y) const
+{
+	fPoint ret;
 
 	if (data.type == maptype_orthogonal)
 	{
@@ -626,4 +654,48 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	}
 
 	return ret;
+}
+
+void j1Map::GetEntitiesSpawn() const
+{
+	Hero* hero;
+
+	for (std::list<MapLayer*>::const_iterator item = data.layers.begin(); item != data.layers.end(); item++)
+	{
+		MapLayer* layer = *item;
+
+		if (layer->name != "entities")
+			continue;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int id = layer->Get(x, y);
+				if (id != 0)
+				{
+					TileSet* tileset = (id > 0) ? GetTilesetFromTileId(id) : NULL;
+					if (tileset != NULL)
+					{
+						int relative_id = id - tileset->firstgid;
+						switch (id)
+						{
+						case 27: // Hero 
+							hero = (Hero*)App->entity->CreateEntity(player);
+							hero->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							break;
+						case 28: // Enemies (probably swordsmans)
+							hero = (Hero*)App->entity->CreateEntity(player);
+							hero->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						break;
+						case 29: // NPC 
+							hero = (Hero*)App->entity->CreateEntity(player);
+							hero->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+						break;
+						}
+					}
+				}		
+			}
+		}
+	}
 }
