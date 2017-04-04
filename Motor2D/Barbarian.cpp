@@ -61,6 +61,7 @@ bool Barbarian::LoadEntity()
 		game_object->SetFixedRotation(true);
 
 		cost = node.child("cost").attribute("value").as_int();
+		human_cost = node.child("human_cost").attribute("value").as_int();
 		speed = node.child("speed").attribute("value").as_float();
 		damage = node.child("damage").attribute("value").as_int();
 		armor = node.child("armor").attribute("value").as_int();

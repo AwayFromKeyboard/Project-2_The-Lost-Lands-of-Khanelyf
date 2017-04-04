@@ -107,6 +107,7 @@ public:
 public:
 	int life = 0;
 	int cost = 0;
+	int human_cost = 0;
 	float speed = 0;
 	int damage = 0;
 	int armor = 0;

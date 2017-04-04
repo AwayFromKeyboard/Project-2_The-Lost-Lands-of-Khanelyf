@@ -40,8 +40,6 @@ private:
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
 
-	
-
 	Hero* troop = nullptr;
 	Barbarian* troop2 = nullptr;
 
@@ -52,6 +50,10 @@ private:
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
+
+	int human_resources_max = 15;
+	int current_human_resources = 0;
+	UI_Text* human_resources_txt = nullptr;
 
 public:
 	//FXs

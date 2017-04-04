@@ -71,6 +71,8 @@ bool SceneTest::Start()
 	gold = 1000;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
 
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ 450, 25 }, App->font->default_15);
+
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
 	SDL_ShowCursor(0);
