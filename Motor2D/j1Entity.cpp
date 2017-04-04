@@ -62,9 +62,10 @@ bool j1Entity::PostUpdate()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		ret = (*it)->PostUpdate();
-
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++) {
+		if ((*it) != nullptr)
+			ret = (*it)->PostUpdate();
+	}
 	App->collisions->DebugDraw();
 
 	return ret;

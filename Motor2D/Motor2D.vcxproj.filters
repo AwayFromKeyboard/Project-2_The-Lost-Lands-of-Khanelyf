@@ -103,6 +103,9 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Barracks.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -226,6 +229,9 @@
     <ClInclude Include="j1Entity.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Barracks.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -239,6 +245,9 @@
     </Xml>
     <Xml Include="..\Game\config.xml">
       <Filter>Engine\5. Tools</Filter>
+    </Xml>
+    <Xml Include="Buildings.xml">
+      <Filter>Engine\4. Entities</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +280,9 @@
     </Filter>
     <Filter Include="Engine\5. Tools\PuguiXML">
       <UniqueIdentifier>{9e68fe9b-5e8e-42f7-b88d-21041aa7c3e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. Entities\Buildings">
+      <UniqueIdentifier>{d3289f14-1fe0-48ff-9975-3ab8a5cefd08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -40,7 +40,7 @@ private:
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
 
-	
+	UI_Button* create_unit_button = nullptr;
 
 	Hero* troop = nullptr;
 	Barbarian* troop2 = nullptr;

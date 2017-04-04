@@ -63,7 +63,12 @@ bool SceneTest::Start()
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
 	ui_r = { 1, 84, 800, 600 };
 	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
-	
+	create_unit_button = (UI_Button*)general_ui_window->CreateButton(iPoint(400, 300), 50, 50);
+	create_unit_button->AddImage("standard", { 0, 0, 50, 50 });
+	create_unit_button->SetImage("standard");
+	create_unit_button->AddImage("clicked", { 0, 0, 100, 50 });
+	create_unit_button->enabled = false;
+
 	InitCameraMovement();
 
 	App->map->GetEntitiesSpawn();
@@ -86,6 +91,13 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == key_down) {
+		create_unit_button->enabled = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == key_up) {
+		create_unit_button->enabled = false;
+	}
+
 	return true;
 }
 
@@ -104,6 +116,13 @@ bool SceneTest::Update(float dt)
 
 bool SceneTest::PostUpdate()
 {
+	if (create_unit_button->MouseClickEnterLeft()) {
+		create_unit_button->SetImage("clicked");
+	}
+	if (create_unit_button->MouseClickOutLeft()) {
+		create_unit_button->SetImage("standard");
+	}
+
 	return true;
 }
 
