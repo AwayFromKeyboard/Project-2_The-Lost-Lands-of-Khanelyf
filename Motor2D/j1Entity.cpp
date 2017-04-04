@@ -113,7 +113,9 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 		break;
 	case barbarian:
 		ret = new Barbarian(type);
-		
+		break;
+	case swordsman:
+		ret = new Swordsman(type);
 		break;
 	default:
 		break;
