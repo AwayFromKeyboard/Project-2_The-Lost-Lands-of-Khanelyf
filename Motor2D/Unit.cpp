@@ -12,6 +12,9 @@
 #include "Animation.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
+#include "SceneTest.h"
+#include "j1Audio.h"
+#include "Functions.h"
 
 Unit::Unit()
 {
@@ -542,16 +545,24 @@ void Unit::UnitAttack()
 {
 	LookAtAttack();
 
+	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+		shout_fx = false;
+	}
+
 	if (current_animation->Finished())
 	{
 		attacked_unit->life -= damage;
 		current_animation->Reset();
 		if (attacked_unit->life <= 0)
 		{
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
 			state = unit_idle;
 			attacked_unit->state = unit_death;
 			attacked_unit = nullptr;
 		}
+		shout_fx = true;
 	}
 }
 

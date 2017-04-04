@@ -37,6 +37,21 @@ bool SceneTest::Start()
 
 		RELEASE_ARRAY(data);
 	}
+
+	//LOAD FXs
+
+	death_id = App->audio->LoadFx("audio/fx/Death.wav");
+	death2_id = App->audio->LoadFx("audio/fx/Death2.wav");
+	get_hit_id = App->audio->LoadFx("audio/fx/Get_hit.wav");
+	get_hit2_id = App->audio->LoadFx("audio/fx/Get_hit2.wav");
+	get_hit3_id = App->audio->LoadFx("audio/fx/Get_hit3.wav");
+	get_hit4_id = App->audio->LoadFx("audio/fx/Get_hit4.wav");
+	swords_clash_id = App->audio->LoadFx("audio/fx/Sword.wav");
+	swords_clash2_id = App->audio->LoadFx("audio/fx/Sword2.wav");
+	swords_clash3_id = App->audio->LoadFx("audio/fx/Sword3.wav");
+	swords_clash4_id = App->audio->LoadFx("audio/fx/Sword4.wav");
+	swords_clash5_id = App->audio->LoadFx("audio/fx/Sword5.wav");
+
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
 
 	App->collisions->UpdateQuadtree();
@@ -55,6 +70,8 @@ bool SceneTest::Start()
 
 	gold = 1000;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
+
+	App->audio->PlayMusic("audio/music/main_game.ogg");
 
 	SDL_ShowCursor(0);
 	return true;
