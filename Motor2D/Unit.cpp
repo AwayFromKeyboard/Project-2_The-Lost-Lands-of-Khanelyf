@@ -7,6 +7,7 @@
 #include "j1Map.h"
 #include "Hero.h"
 #include "Barbarian.h"
+#include "Swordsman.h"
 #include "Entity.h"
 #include "Animation.h"
 #include "j1Collisions.h"
@@ -62,7 +63,6 @@ bool Unit::Update(float dt)
 	
 	switch (state) {
 	case unit_state::unit_idle:
-		offset = i_offset;
 		CheckDirection();
 		break;
 
@@ -95,14 +95,12 @@ bool Unit::Update(float dt)
 			if (IsInRange(attacked_unit))
 			{
 				att_state = attack_unit;
-				offset = a_offset;
 			}
 			else if (!IsInRange(attacked_unit))
 			{
 				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
-				offset = i_offset;
 				attacked_unit = nullptr;
 				break;
 			}
@@ -133,7 +131,6 @@ bool Unit::Update(float dt)
 	case unit_state::unit_decompose:
 		if (death_timer.ReadSec() > 2)
 		{
-			offset = de_offset;
 			CheckDecomposeDirection();
 			if (current_animation->GetFrameIndex() == 4) {
 				current_animation->SetSpeed(0);
@@ -150,11 +147,52 @@ bool Unit::Draw(float dt)
 {
 	bool ret = true;
 
-	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+
+	switch (state)
+	{
+	case unit_idle:
+		offset = i_offset;
+		if(flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_move:
+		offset = m_offset;
+		if(flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_move_to_enemy:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_attack:
+		offset = a_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_a_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_death:
+		offset = d_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_d_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_decompose:
+		offset = de_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_de_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
 	}
-	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 
 	return ret;
 }
@@ -511,7 +549,6 @@ void Unit::UnitAttack()
 		{
 			state = unit_idle;
 			attacked_unit->state = unit_death;
-			attacked_unit->offset = attacked_unit->d_offset;
 			attacked_unit = nullptr;
 		}
 	}

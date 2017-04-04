@@ -12,6 +12,7 @@ enum entity_name
 {
 	hero,
 	barbarian,
+	swordsman,
 	test
 };
 

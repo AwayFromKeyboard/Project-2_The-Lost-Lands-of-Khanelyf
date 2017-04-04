@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "Hero.h"
 #include "Barbarian.h"
+#include "Swordsman.h"
 #include "j1App.h"
 #include "GameObject.h"
 #include <sstream> 
@@ -686,6 +687,7 @@ void j1Map::GetEntitiesSpawn() const
 							player_unit->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
+						
 						case 28: // Enemies (probably swordsmans)
 						{
 							Barbarian* barb_enemy = (Barbarian*)App->entity->CreateEntity(barbarian, enemy);

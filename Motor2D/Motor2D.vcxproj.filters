@@ -91,14 +91,17 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Engine\5. Tools\PuguiXML</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Engine\1. Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1App.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="j1Main.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Swordsman.cpp">
+      <Filter>Engine\4. Entities\Troops</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Engine\1. Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,14 +214,17 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Engine\5. Tools\PuguiXML</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Engine\1. Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1App.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="j1Module.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Swordsman.h">
+      <Filter>Engine\4. Entities\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Engine\1. Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

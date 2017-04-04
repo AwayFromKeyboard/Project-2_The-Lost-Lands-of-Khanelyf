@@ -107,6 +107,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="Swordsman.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="Swordsman.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +158,9 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\test.xml" />
-    <Xml Include="..\Game\Units.xml" />
+    <Xml Include="..\Game\Units.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />

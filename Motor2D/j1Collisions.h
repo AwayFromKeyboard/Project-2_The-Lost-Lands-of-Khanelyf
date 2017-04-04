@@ -77,7 +77,6 @@ private:
 	QuadTree* quadTree;
 	std::vector<QuadTree*> nodeList;
 	std::list<Collider*> potentialCollisionList;
-
 public:
 	bool debug = false;
 };
