@@ -9,9 +9,6 @@
 #include "j1Window.h"
 #include "Entity.h"
 #include "j1Entity.h"
-#include "Hero.h"
-#include "Barbarian.h"
-#include "Swordsman.h"
 #include "j1App.h"
 #include "GameObject.h"
 #include <sstream> 
@@ -683,22 +680,22 @@ void j1Map::GetEntitiesSpawn() const
 						{
 						case 27: // Hero
 						{
-							Hero* player_unit = (Hero*)App->entity->CreateEntity(hero, player);
-							player_unit->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							Entity* player_unit = App->entity->CreateEntity(hero, player);
+							player_unit->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
 						
 						case 28: // Enemies (probably swordsmans)
 						{
-							Barbarian* barb_enemy = (Barbarian*)App->entity->CreateEntity(barbarian, enemy);
-							barb_enemy->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy);
+							barb_enemy->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
 						
 						case 29: // NPC
 						{
-							Barbarian* barb_npc = (Barbarian*)App->entity->CreateEntity(barbarian, npc);
-							barb_npc->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc);
+							barb_npc->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
 						

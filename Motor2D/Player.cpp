@@ -136,8 +136,10 @@ void Player::MoveToTile(iPoint tile) {
 }
 
 void Player::SetAttackingEnemy(Unit* enemy) {
-	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
-		(*it)->SetAttackingUnit(enemy);
-		(*it)->state = unit_state::unit_move_to_enemy;
+	if (enemy->life > 0) {
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+			(*it)->SetAttackingUnit(enemy);
+			(*it)->state = unit_state::unit_move_to_enemy;
+		}
 	}
 }
