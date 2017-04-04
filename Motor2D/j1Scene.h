@@ -7,7 +7,6 @@
 #include <queue>
 
 struct SDL_Texture;
-class MainScene;
 class SceneTest;
 
 // LayerBlit struct
@@ -75,6 +74,7 @@ public:
 
 	// Change scene
 	void ChangeScene(Scene* new_scene);
+	Scene* GetCurrentScene();
 
 	// Blit choosing the layer
 	void LayerBlit(int layer, SDL_Texture* texture, iPoint pos, const SDL_Rect section = NULLRECT, float scale = -1.0f, SDL_RendererFlip _flip = SDL_FLIP_NONE,  double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
@@ -87,7 +87,6 @@ private:
 
 public:
 	// Scenes
-	MainScene*           main_scene = nullptr;
 	SceneTest*		     scene_test = nullptr;
 private:
 	// Layer Blit list

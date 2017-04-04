@@ -8,10 +8,15 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "SceneTest.h"
+#include "j1Scene.h"
 #include <sstream>
 #include "j1Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
+#include "Swordsman.h"
+#include "Unit.h"
 #include "GameObject.h"
+#include "j1Collisions.h"
 
 SceneTest::SceneTest()
 {
@@ -23,7 +28,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("iso_walk.tmx") == true)
+	if (App->map->Load("map_vertical_slice.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -33,6 +38,8 @@ bool SceneTest::Start()
 		RELEASE_ARRAY(data);
 	}
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
+
+	App->collisions->UpdateQuadtree();
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 1, 37, 40 };
@@ -44,13 +51,7 @@ bool SceneTest::Start()
 	
 	InitCameraMovement();
 
-	troop = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos(App->map->MapToWorld(12, 0).x, App->map->MapToWorld(12, 0).y);
-	troop->game_object->SetPos(pos);
-
-	troop2 = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos2(App->map->MapToWorld(13, 1).x, App->map->MapToWorld(13, 1).y);
-	troop2->game_object->SetPos(pos2);
+	App->map->GetEntitiesSpawn();
 
 	gold = 1000;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
@@ -66,22 +67,8 @@ bool SceneTest::PreUpdate()
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 
-CheckUnitCreation(p);
+	CheckUnitCreation(p);
   
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-	{
-		//troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
-		if (App->map->WorldToMapPoint(troop->GetGameObject()->GetPos()) == p && troop->life > 0)
-		{
-			troop2->state = unit_attack;
-			troop2->SetAttackingUnit(troop);
-		}
-
-	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
-		troop->SetPath(App->pathfinding->CreatePath(App->map->WorldToMapPoint(troop->game_object->GetPos()), p));
-	}
-
 	return true;
 }
 
@@ -95,22 +82,6 @@ bool SceneTest::Update(float dt)
 	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
-	
-
-	if (troop->path.size() > 0)
-	{
-		troop->state = unit_move;
-	}
-
-
-	for (uint i = 0; i < troop->path.size(); i++)
-	{
-		iPoint pos = App->map->MapToWorld(troop->path.at(i).x, troop->path.at(i).y);
-		App->render->Blit(debug_tex, pos.x, pos.y);
-	}
-	
-
-	
 	return true;
 }
 
@@ -141,7 +112,7 @@ bool SceneTest::Save(pugi::xml_node &) const
 	return true;
 }
 
-void SceneTest::OnColl(Collider* c1, Collider* c2)
+void SceneTest::OnColl(Collider* col1, Collider* col2)
 {
 }
 
@@ -155,7 +126,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
 	{
 		gold -= TROOP_PRICE;
-		troop = (Hero*)App->entity->CreateEntity(player);
+		troop = (Hero*)App->entity->CreateEntity(hero, player);
 		fPoint pos(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y);
 		troop->game_object->SetPos(pos);
 	}

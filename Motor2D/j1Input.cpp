@@ -184,6 +184,7 @@ void j1Input::SetMouseWorld(int& x, int& y)
 	mouse_y = y;
 }
 
+
 void j1Input::GetMousePosition(int& x, int& y)
 {
 	x = mouse_x;

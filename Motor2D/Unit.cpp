@@ -1,10 +1,13 @@
 #include "Log.h"
 #include "Unit.h"
 #include "j1Entity.h"
+#include "j1Input.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "j1Map.h"
 #include "Hero.h"
+#include "Barbarian.h"
+#include "Swordsman.h"
 #include "Entity.h"
 #include "Animation.h"
 #include "j1Collisions.h"
@@ -36,21 +39,36 @@ bool Unit::Start()
 bool Unit::PreUpdate()
 {
 	bool ret = true;
-	
+
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && GetSelected()) {
+		path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), p);
+	}
+
+	if (path.size() > 0)
+	{
+		state = unit_move;
+	}
+	else
+	{
+		state = unit_idle;
+	}
+
 	return ret;
 }
 
 bool Unit::Update(float dt)
 {
-
+	position = { game_object->GetPos().x, game_object->GetPos().y };
+	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+	
 	switch (state) {
 	case unit_idle:
 
-		idle_collision->print_collider = true;
-		walk_collision->print_collider = false;
-		attack_collision->print_collider = false;
-
-		idle_collision->SetPos(position.x, position.y);
 		offset = i_offset;
 		CheckDirection();
 		break;
@@ -58,11 +76,7 @@ bool Unit::Update(float dt)
 	case unit_move:
 		
 		FollowPath(dt);
-		idle_collision->print_collider = false;
-		walk_collision->print_collider = true;
-		attack_collision->print_collider = false;
 		
-		walk_collision->SetPos(position.x, position.y);
 		break;
 
 	case unit_attack:
@@ -102,6 +116,8 @@ bool Unit::Update(float dt)
 			death_timer.Start();
 			current_animation->SetSpeed(0);
 			state = unit_decompose;
+
+			App->collisions->EraseCollider(collision);
 		}
 		break;
 	case unit_decompose:
@@ -137,6 +153,10 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
+
+	if (GetSelected())
+		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
+
 	if (to_delete)
 	{
 		App->entity->DeleteEntity(this);
@@ -148,9 +168,12 @@ bool Unit::PostUpdate()
 
 bool Unit::CleanUp()
 {
+	bool ret = true;
+
+	App->entity->unit_game_objects_list.remove(game_object);
 	RELEASE(game_object);
 
-	return true;
+	return ret;
 }
 
 bool Unit::Load(pugi::xml_node &)
@@ -165,11 +188,25 @@ bool Unit::Save(pugi::xml_node &) const
 
 void Unit::OnColl(Collider* col1, Collider* col2)
 {
+	if (col1 != nullptr && (col2->type == COLLIDER_UNIT))
+	{
+		
+	}
 }
 
 GameObject * Unit::GetGameObject()
 {
 	return game_object;
+}
+
+Collider * Unit::GetCollider()
+{
+	return collision;
+}
+
+entity_type Unit::GetType()
+{
+	return type;
 }
 
 void Unit::SetPath(vector<iPoint> _path)

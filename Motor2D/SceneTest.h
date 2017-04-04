@@ -9,6 +9,7 @@ class GameObject;
 class b2Fixture;
 class Parallax;
 class Hero;
+class Barbarian;
 
 #define TROOP_PRICE 20
 #define TROOP_OFFSET 1
@@ -42,7 +43,7 @@ private:
 	
 
 	Hero* troop = nullptr;
-	Hero* troop2 = nullptr;
+	Barbarian* troop2 = nullptr;
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;

@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
@@ -94,7 +95,6 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
-    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="j1Physics.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
@@ -102,13 +102,16 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="Swordsman.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="j1Collisions.h" />
@@ -125,7 +128,6 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
-    <ClInclude Include="MainScene.h" />
     <ClInclude Include="j1Physics.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
@@ -138,14 +140,15 @@
     <ClInclude Include="j1Render.h" />
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
-    <ClInclude Include="p2PQueue.h" />
     <ClInclude Include="Parallax.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="Swordsman.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
