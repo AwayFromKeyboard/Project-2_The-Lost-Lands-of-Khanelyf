@@ -20,6 +20,7 @@
 #include "j1Physics.h"
 #include "j1Entity.h"
 #include "j1Collisions.h"
+#include "Player.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -41,7 +42,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	physics = new j1Physics();
 	collisions = new j1Collisions();
 	entity = new j1Entity();
-
+	player = new Player();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -57,7 +58,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(console);
 	AddModule(collisions);
 	AddModule(entity);
-	
+	AddModule(player);
 
 	// Scene
 	AddModule(scene);
@@ -158,9 +159,6 @@ bool j1App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
-
-	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
-		debug_mode = !debug_mode;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 		ret = false;
@@ -468,10 +466,6 @@ void j1App::FrameRateCalculations()
 	{
 		j1PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
-	}
-
-	if (input->GetKey(SDL_SCANCODE_F10) == key_down) {
-		ShellExecute(NULL, "open", "https://github.com/viriato22/Project_2/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 	}
 
 	if (debug_mode && !debug_window->enabled)

@@ -13,8 +13,9 @@
 #include "Log.h"
 #include "j1Collisions.h"
 
-Hero::Hero()
+Hero::Hero(entity_type _type)
 {
+	type = _type;
 }
 
 Hero::~Hero()

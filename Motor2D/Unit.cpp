@@ -40,23 +40,18 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && GetSelected()) {
-		path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), p);
-	}
-
-	if (path.size() > 0)
+	if (attacked_unit == nullptr && life > 0 && state != unit_state::unit_move_to_enemy) 
 	{
-		state = unit_move;
+		if (path.size() > 0)
+		{
+			state = unit_move;
+		}
+		else
+		{
+			state = unit_idle;
+		}
 	}
-	else
-	{
-		state = unit_idle;
-	}
+
 
 	return ret;
 }
@@ -67,18 +62,34 @@ bool Unit::Update(float dt)
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 	
 	switch (state) {
-	case unit_idle:
-
+	case unit_state::unit_idle:
 		CheckDirection();
 		break;
 
-	case unit_move:
-		
+	case unit_state::unit_move:
 		FollowPath(dt);
-		
 		break;
 
-	case unit_attack:
+	case unit_state::unit_move_to_enemy:
+	{
+		if (IsInRange(attacked_unit)) {
+			App->pathfinding->DeletePath(path_id);
+			path.clear();
+			state = unit_state::unit_attack;
+			has_moved = false;
+		}
+		else if (!IsInRange(attacked_unit) && !has_moved) {
+			has_moved = true;
+			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
+		}
+		if (!IsInRange(attacked_unit) && has_moved) {
+			if (path.size() > 0)
+				FollowPath(dt);
+		}
+	}
+		break;
+
+	case unit_state::unit_attack:
 		if (attacked_unit != nullptr)
 		{
 			if (IsInRange(attacked_unit))
@@ -87,7 +98,7 @@ bool Unit::Update(float dt)
 			}
 			else if (!IsInRange(attacked_unit))
 			{
-				state = unit_idle;
+				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
 				attacked_unit = nullptr;
@@ -106,18 +117,18 @@ bool Unit::Update(float dt)
 
 		break;
 
-	case unit_death:
+	case unit_state::unit_death:
 		CheckDeathDirection();
 		if (current_animation->GetFrameIndex() == 14)
 		{
 			death_timer.Start();
 			current_animation->SetSpeed(0);
-			state = unit_decompose;
+			state = unit_state::unit_decompose;
 
 			App->collisions->EraseCollider(collision);
 		}
 		break;
-	case unit_decompose:
+	case unit_state::unit_decompose:
 		if (death_timer.ReadSec() > 2)
 		{
 			CheckDecomposeDirection();
@@ -149,6 +160,13 @@ bool Unit::Draw(float dt)
 	case unit_move:
 		offset = m_offset;
 		if(flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_move_to_enemy:
+		offset = m_offset;
+		if (flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
@@ -531,6 +549,7 @@ void Unit::UnitAttack()
 		{
 			state = unit_idle;
 			attacked_unit->state = unit_death;
+			attacked_unit = nullptr;
 		}
 	}
 }

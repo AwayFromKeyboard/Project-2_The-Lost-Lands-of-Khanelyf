@@ -52,6 +52,7 @@ public:
 
 	bool Jump(int current_x, int current_y, int dx, int dy, iPoint start, iPoint end, PathNode& new_node);
 
+	void DeletePath(uint path_id);
 private:
 	iPoint FindNearestWalkable(const iPoint& origin);
 	int CalculatePath(Path* path, int max_iterations);

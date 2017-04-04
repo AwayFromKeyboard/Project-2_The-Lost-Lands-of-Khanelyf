@@ -100,6 +100,9 @@
     <ClCompile Include="Swordsman.cpp">
       <Filter>Engine\4. Entities\Troops</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -219,6 +222,9 @@
     </ClInclude>
     <ClInclude Include="Swordsman.h">
       <Filter>Engine\4. Entities\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Engine\1. Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

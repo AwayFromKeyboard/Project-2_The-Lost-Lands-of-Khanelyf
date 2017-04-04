@@ -44,6 +44,10 @@ public:
 		return nullptr;
 	}
 
+	virtual Collider* GetCollider() {
+		return nullptr;
+	}
+
 	virtual entity_type GetType() {
 		return entity_type::null;
 	}

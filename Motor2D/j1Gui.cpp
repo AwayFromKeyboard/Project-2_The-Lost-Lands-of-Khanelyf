@@ -64,13 +64,6 @@ bool j1Gui::Start()
 // ---------------------------------------------------------------------
 bool j1Gui::Update(float dt)
 {
-	// Debug
-	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
-		debug = !debug;
-	else if (!App->debug_mode)
-		debug = false;
-
-
 	// Start -------------------------------------------------
 
 	if (start)
@@ -484,7 +477,6 @@ void j1Gui::CursorSelection()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->entity->UnselectEverything();
 		selection_rect.x = x;
 		selection_rect.y = y;
 		selection_rect.w = selection_rect.x;

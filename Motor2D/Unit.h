@@ -9,8 +9,8 @@ struct Collider;
 enum unit_state {
 	unit_idle,
 	unit_move,
+	unit_move_to_enemy,
 	unit_attack,
-	unit_attacking,
 	unit_death,
 	unit_decompose,
 	unit_null
@@ -103,6 +103,7 @@ public:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
 	attack_state att_state = attack_state::attack_null;
+	bool has_moved = false;
 public:
 	int life = 0;
 	int cost = 0;

@@ -314,6 +314,16 @@ bool j1PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint st
 	return Jump(next.x, next.y, dx, dy, start, end, new_node);
 }
 
+void j1PathFinding::DeletePath(uint path_id)
+{
+	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();)
+	{
+		if (it->first == path_id) {
+			it->second->completed = true;
+		}
+	}
+}
+
 iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 {
 	iPoint ret(origin);
