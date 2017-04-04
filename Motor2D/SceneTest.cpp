@@ -126,8 +126,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
 	{
 		gold -= TROOP_PRICE;
-		troop = (Hero*)App->entity->CreateEntity(hero, player);
-		fPoint pos(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y);
-		troop->game_object->SetPos(pos);
+		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
+		barb->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 	}
 }
