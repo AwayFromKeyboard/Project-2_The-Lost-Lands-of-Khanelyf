@@ -235,7 +235,7 @@
           <rect x="288" y="449"/>
         </north>
       </move>
-      <attack speed="10" w="56" h="73" offset_x="" offset_y="" offset_flip="">
+      <attack speed="10" w="56" h="73" offset_x="36" offset_y="35" offset_flip="-17">
         <south>
           <rect x="0" y="500"/>
           <rect x="57" y="500"/>
@@ -583,7 +583,7 @@
           <rect x = "342" y = "580"/>
         </north>
       </walk>
-      <attack speed="15" w="86" h="81" offset_x="" offset_y="" offset_flip="">
+      <attack speed="15" w="86" h="81" offset_x="15" offset_y="34" offset_flip="">
         <south>
           <rect x = "0" y = "645"/>
           <rect x = "87" y = "645"/>
@@ -906,7 +906,7 @@
           <rect x = "342" y = "580"/>
         </north>
       </walk>
-      <attack speed="15" w="86" h="81" offset_x="" offset_y="" offset_flip="">
+      <attack speed="15" w="86" h="81" offset_x="15" offset_y="34" offset_flip="">
         <south>
           <rect x = "0" y = "645"/>
           <rect x = "87" y = "645"/>
@@ -1229,7 +1229,7 @@
           <rect x = "342" y = "580"/>
         </north>
       </walk>
-      <attack speed="15" w="86" h="81" offset_x="" offset_y="" offset_flip="">
+      <attack speed="15" w="86" h="81" offset_x="15" offset_y="34" offset_flip="">
         <south>
           <rect x = "0" y = "645"/>
           <rect x = "87" y = "645"/>
@@ -1553,7 +1553,7 @@
           <rect x="316" y="459"/>
         </north>
       </move>
-      <attack speed="10" w="65" h="55" offset_x="" offset_y="" offset_flip="">
+      <attack speed="10" w="65" h="55" offset_x="40" offset_y="30" offset_flip="-17">
         <south>
           <rect x="1" y="511"/>
           <rect x="69" y="511"/>
@@ -1902,7 +1902,7 @@
           <rect x="316" y="459"/>
         </north>
       </move>
-      <attack speed="10" w="65" h="55" offset_x="" offset_y="" offset_flip="">
+      <attack speed="10" w="65" h="55" offset_x="40" offset_y="30" offset_flip="-17">
         <south>
           <rect x="1" y="511"/>
           <rect x="69" y="511"/>
@@ -2251,7 +2251,7 @@
           <rect x="316" y="459"/>
         </north>
       </move>
-      <attack speed="10" w="65" h="55" offset_x="" offset_y="" offset_flip="">
+      <attack speed="10" w="65" h="55" offset_x="40" offset_y="30" offset_flip="-17">
         <south>
           <rect x="1" y="511"/>
           <rect x="69" y="511"/>
