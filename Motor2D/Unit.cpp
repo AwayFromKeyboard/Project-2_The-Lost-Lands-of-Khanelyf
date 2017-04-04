@@ -544,6 +544,10 @@ void Unit::UnitAttack()
 {
 	LookAtAttack();
 
+	if (current_animation->GetFrameIndex() == 5) {
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+	}
+
 	if (current_animation->Finished())
 	{
 		attacked_unit->life -= damage;
@@ -554,10 +558,6 @@ void Unit::UnitAttack()
 			state = unit_idle;
 			attacked_unit->state = unit_death;
 			attacked_unit = nullptr;
-		}
-		else
-		{
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
 		}
 	}
 }
