@@ -73,7 +73,7 @@ private:
 	bool debug = false;
 
 	int quadTreeChecks;
-	QuadTree* quadTree;
+	QuadTree* quadTree = nullptr;
 	std::vector<QuadTree*> nodeList;
 	std::list<Collider*> potentialCollisionList;
 };

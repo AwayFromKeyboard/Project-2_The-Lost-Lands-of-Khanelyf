@@ -8,10 +8,6 @@
 class GameObject;
 class b2Fixture;
 class Parallax;
-class Hero;
-
-#define TROOP_PRICE 20
-#define TROOP_OFFSET 1
 
 class MainMenu : public Scene
 {
@@ -30,8 +26,6 @@ public:
 
 	void OnColl(Collider* c1, Collider* c2);
 
-	void CheckUnitCreation(iPoint p);
-
 private:
 	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
@@ -39,8 +33,13 @@ private:
 	UI_Window* main_menu_window = nullptr;
 	UI_Image* main_menu_image = nullptr;
 
+	UI_Button* start_button = nullptr;
+	UI_Image* start_button_image = nullptr;
+	UI_Image* start_button_text = nullptr;
+
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;
+	SDL_Rect start_r;
 
 private:
 	SDL_Texture* debug_tex = nullptr;

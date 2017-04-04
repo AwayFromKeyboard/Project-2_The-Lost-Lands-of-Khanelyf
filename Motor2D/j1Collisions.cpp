@@ -21,7 +21,6 @@ j1Collisions::~j1Collisions()
 
 bool j1Collisions::Start() 
 {
-	quadTree = nullptr;
 	return true;
 }
 
@@ -162,7 +161,7 @@ bool j1Collisions::CleanUp()
 
 void j1Collisions::UpdateQuadtree() {
 	if (quadTree != nullptr) {
-		delete[] quadTree;
+		RELEASE(quadTree);
 	}
 	quadTree = new QuadTree({ -App->map->data.height * App->map->data.tile_height + App->map->data.tile_height, 17,
 		App->map->data.width * App->map->data.tile_width, App->map->data.height * App->map->data.tile_height });

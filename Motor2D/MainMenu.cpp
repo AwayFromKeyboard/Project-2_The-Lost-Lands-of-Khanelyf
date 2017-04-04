@@ -1,17 +1,17 @@
-#include "Defs.h"
-#include "Log.h"
-#include "j1App.h"
-#include "j1Input.h"
-#include "j1Textures.h"
-#include "j1Audio.h"
-#include "j1Render.h"
-#include "j1Window.h"
-#include "j1Map.h"
 #include "MainMenu.h"
 #include "j1Scene.h"
-#include <sstream>
-#include "j1Entity.h"
+#include "Log.h"
+#include "j1Input.h"
+#include "Functions.h"
+#include "j1Physics.h"
 #include "GameObject.h"
+#include "j1App.h"
+#include "j1Gui.h"
+#include "Parallax.h"
+#include "j1Entity.h"
+#include "CollisionFilters.h"
+#include "j1Map.h"
+#include "j1Window.h"
 #include "j1Collisions.h"
 
 MainMenu::MainMenu()
@@ -24,13 +24,21 @@ MainMenu::~MainMenu()
 
 bool MainMenu::Start()
 {
+	App->collisions->UpdateQuadtree();
+
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
-	cursor_r = { 1, 1, 37, 40 };
+	cursor_r = { 1, 7, 37, 40 };
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
-	ui_r = { 0, 1166, 1920, 1080 };
+	ui_r = { 0, 1139, 1680, 1050 };
 	main_menu_image = (UI_Image*)main_menu_window->CreateImage(iPoint(0, 0), ui_r);
+
+	start_button = (UI_Button*)main_menu_window->CreateButton(iPoint(1089, 189), 283, 129, 0);
+	start_button->AddImage("standard", { 0, 2190, 283, 129 });
+	//start_button->AddImage("hover", { 331, 2190, 283, 129 });
+	//start_button->AddImage("clicked", { 662, 2190, 283, 129 });
+	start_button->SetImage("standard");
 
 	SDL_ShowCursor(0);
 	return true;
@@ -50,10 +58,6 @@ bool MainMenu::Update(float dt)
 {
 	iPoint mouse;
 	App->input->GetMouseWorld(mouse.x, mouse.y);
-
-	UpdateCameraMovement();
-
-	App->map->Draw();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
@@ -61,17 +65,19 @@ bool MainMenu::Update(float dt)
 
 bool MainMenu::PostUpdate()
 {
+	if (start_button->MouseClickEnterLeft() == true)
+		App->scene->ChangeScene((Scene*)App->scene->scene_test);
+
 	return true;
 }
 
 bool MainMenu::CleanUp()
 {
-	/*if (App->scene->GetCurrentScene() != App->scene->scene_test)
-	{
-	App->gui->DeleteElement(cursor);
-	App->gui->DeleteElement(general_ui_window);
-	App->gui->DeleteElement(gold_txt);
-	}*/
+	//if (App->scene->GetCurrentScene() != App->scene->main_menu)
+	//{
+		App->gui->DeleteElement(main_menu_window);
+		App->gui->DeleteElement(start_button);
+	//}
 
 	return true;
 }
