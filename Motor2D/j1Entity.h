@@ -13,7 +13,7 @@ enum entity_name
 	hero,
 	barbarian,
 	swordsman,
-	barrack,
+	barracks,
 	test
 };
 

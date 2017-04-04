@@ -17,6 +17,8 @@
 #include "Unit.h"
 #include "GameObject.h"
 #include "j1Collisions.h"
+#include "Barracks.h"
+#include "Building.h"
 
 SceneTest::SceneTest()
 {
@@ -172,6 +174,12 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		sword->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 		gold -= sword->cost;
 		current_human_resources += sword->human_cost;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 1)
+	{
+		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, ally);
+		barrack->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
+		gold -= barrack->cost;
 	}
 }
 

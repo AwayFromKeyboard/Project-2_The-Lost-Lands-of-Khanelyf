@@ -163,7 +163,9 @@
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="Buildings.xml" />
+    <Xml Include="Buildings.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />

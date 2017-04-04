@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "j1Input.h"
 #include "j1Collisions.h"
+#include "Barracks.h"
 
 j1Entity::j1Entity()
 {
@@ -118,6 +119,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 	case swordsman:
 		ret = new Swordsman(type);
 		break;
+	case barracks:
+		ret = new Barracks(type);
 	default:
 		break;
 	}
