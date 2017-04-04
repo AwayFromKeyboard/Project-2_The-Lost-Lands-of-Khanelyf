@@ -124,6 +124,13 @@ public:
 	iPoint d_offset = NULLPOINT;
 	iPoint de_offset = NULLPOINT;
 
+	//flip
+	int flip_i_offset = 0;
+	int flip_m_offset = 0;
+	int flip_a_offset = 0;
+	int flip_d_offset = 0;
+	int flip_de_offset = 0;
+
 	Animation* current_animation;
 	// Idle
 	Animation i_south;

@@ -111,7 +111,7 @@
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
       <!--10 23-->
-      <idle speed="10" w="29" h="48" offset_x="10" offset_y="23">
+      <idle speed="10" w="29" h="48" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="0" y="0"/>
           <rect x="30" y="0"/>
@@ -173,7 +173,7 @@
           <rect x="270" y="196"/>
         </north>
       </idle>
-      <move speed="10" w="31" h="50" offset_x="" offset_y="">
+      <move speed="10" w="31" h="50" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="0" y="245"/>
           <rect x="32" y="245"/>
@@ -235,7 +235,7 @@
           <rect x="288" y="449"/>
         </north>
       </move>
-      <attack speed="10" w="56" h="73" offset_x="" offset_y="">
+      <attack speed="10" w="56" h="73" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x="0" y="500"/>
           <rect x="57" y="500"/>
@@ -322,7 +322,7 @@
           <rect x="798" y="796"/>
         </north>
       </attack>
-      <death speed="10" w="94" h="82" offset_x="30" offset_y="30">
+      <death speed="10" w="94" h="82" offset_x="30" offset_y="30" offset_flip="">
         <south>
           <rect x="0" y="870"/>
           <rect x="95" y="870"/>
@@ -409,7 +409,7 @@
           <rect x="1330" y="1202"/>
         </north>
       </death>
-      <decompose speed="3" w="86" h="67" offset_x="23" offset_y="15">
+      <decompose speed="3" w="86" h="67" offset_x="23" offset_y="15" offset_flip="">
         <south>
           <rect x="0" y="1285"/>
           <rect x="87" y="1285"/>
@@ -459,7 +459,7 @@
     <life value="50"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
-      <idle speed="15" w="51" h="62" offset_x="0" offset_y="0">
+      <idle speed="15" w="51" h="62" offset_x="0" offset_y="0" offset_flip="">
         <south>
           <rect x = "0" y = "0"/>
           <rect x = "52" y = "0"/>
@@ -521,7 +521,7 @@
           <rect x = "468" y = "266"/>
         </north>
       </idle>
-      <walk speed="15" w="37" h="64" offset_x="" offset_y="">
+      <walk speed="15" w="37" h="64" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x = "0" y = "320"/>
           <rect x = "38" y = "320"/>
@@ -583,7 +583,7 @@
           <rect x = "342" y = "580"/>
         </north>
       </walk>
-      <attack speed="15" w="86" h="81" offset_x="" offset_y="">
+      <attack speed="15" w="86" h="81" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "645"/>
           <rect x = "87" y = "645"/>
@@ -645,7 +645,7 @@
           <rect x = "783" y = "973"/>
         </north>
       </attack>
-      <death speed="15" w="110" h="73" offset_x="" offset_y="">
+      <death speed="15" w="110" h="73" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "1055"/>
           <rect x = "111" y = "1055"/>
@@ -707,7 +707,7 @@
           <rect x = "999" y = "1351"/>
         </north>
       </death>
-      <decompose speed="" w="108" h="42" offset_x="" offset_y="">
+      <decompose speed="" w="108" h="42" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "1425"/>
           <rect x = "109" y = "1425"/>
@@ -782,7 +782,7 @@
     <life value="50"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
-      <idle speed="15" w="51" h="62" offset_x="0" offset_y="0">
+      <idle speed="15" w="51" h="62" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "0"/>
           <rect x = "52" y = "0"/>
@@ -844,7 +844,7 @@
           <rect x = "468" y = "266"/>
         </north>
       </idle>
-      <walk speed="15" w="37" h="64" offset_x="" offset_y="">
+      <walk speed="15" w="37" h="64" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "320"/>
           <rect x = "38" y = "320"/>
@@ -906,7 +906,7 @@
           <rect x = "342" y = "580"/>
         </north>
       </walk>
-      <attack speed="15" w="86" h="81" offset_x="" offset_y="">
+      <attack speed="15" w="86" h="81" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "645"/>
           <rect x = "87" y = "645"/>
@@ -968,7 +968,7 @@
           <rect x = "783" y = "973"/>
         </north>
       </attack>
-      <death speed="15" w="110" h="73" offset_x="" offset_y="">
+      <death speed="15" w="110" h="73" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "1055"/>
           <rect x = "111" y = "1055"/>
@@ -1030,7 +1030,7 @@
           <rect x = "999" y = "1351"/>
         </north>
       </death>
-      <decompose speed="" w="108" h="42" offset_x="" offset_y="">
+      <decompose speed="" w="108" h="42" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "1425"/>
           <rect x = "109" y = "1425"/>
@@ -1105,7 +1105,7 @@
     <life value="50"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
-      <idle speed="15" w="51" h="62" offset_x="0" offset_y="0">
+      <idle speed="15" w="51" h="62" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "0"/>
           <rect x = "52" y = "0"/>
@@ -1167,7 +1167,7 @@
           <rect x = "468" y = "266"/>
         </north>
       </idle>
-      <walk speed="15" w="37" h="64" offset_x="" offset_y="">
+      <walk speed="15" w="37" h="64" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "320"/>
           <rect x = "38" y = "320"/>
@@ -1229,7 +1229,7 @@
           <rect x = "342" y = "580"/>
         </north>
       </walk>
-      <attack speed="15" w="86" h="81" offset_x="" offset_y="">
+      <attack speed="15" w="86" h="81" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "645"/>
           <rect x = "87" y = "645"/>
@@ -1291,7 +1291,7 @@
           <rect x = "783" y = "973"/>
         </north>
       </attack>
-      <death speed="15" w="110" h="73" offset_x="" offset_y="">
+      <death speed="15" w="110" h="73" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "1055"/>
           <rect x = "111" y = "1055"/>
@@ -1353,7 +1353,7 @@
           <rect x = "999" y = "1351"/>
         </north>
       </death>
-      <decompose speed="" w="108" h="42" offset_x="" offset_y="">
+      <decompose speed="" w="108" h="42" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x = "0" y = "1425"/>
           <rect x = "109" y = "1425"/>
@@ -1429,7 +1429,7 @@
     <collision_box w="23" h="44" offset_x="-5" offset_y="-21"/>
     <animations>
       <!--10 23-->
-      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
+      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="1" y="1"/>
           <rect x="33" y="1"/>
@@ -1491,7 +1491,7 @@
           <rect x="289" y="201"/>
         </north>
       </idle>
-      <move speed="10" w="32" h="49" offset_x="" offset_y="">
+      <move speed="10" w="32" h="49" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="1" y="251"/>
           <rect x="36" y="251"/>
@@ -1553,7 +1553,7 @@
           <rect x="316" y="459"/>
         </north>
       </move>
-      <attack speed="10" w="65" h="55" offset_x="" offset_y="">
+      <attack speed="10" w="65" h="55" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x="1" y="511"/>
           <rect x="69" y="511"/>
@@ -1640,7 +1640,7 @@
           <rect x="953" y="743"/>
         </north>
       </attack>
-      <death speed="10" w="82" h="72" offset_x="30" offset_y="30">
+      <death speed="10" w="82" h="72" offset_x="30" offset_y="30" offset_flip="">
         <south>
           <rect x="1" y="801"/>
           <rect x="86" y="801"/>
@@ -1727,7 +1727,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
-      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15">
+      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15" offset_flip="">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
@@ -1778,7 +1778,7 @@
     <collision_box w="23" h="44" offset_x="-5" offset_y="-20"/>
     <animations>
       <!--10 23-->
-      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
+      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="1" y="1"/>
           <rect x="33" y="1"/>
@@ -1840,7 +1840,7 @@
           <rect x="289" y="201"/>
         </north>
       </idle>
-      <move speed="10" w="32" h="49" offset_x="" offset_y="">
+      <move speed="10" w="32" h="49" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="1" y="251"/>
           <rect x="36" y="251"/>
@@ -1902,7 +1902,7 @@
           <rect x="316" y="459"/>
         </north>
       </move>
-      <attack speed="10" w="65" h="55" offset_x="" offset_y="">
+      <attack speed="10" w="65" h="55" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x="1" y="511"/>
           <rect x="69" y="511"/>
@@ -1989,7 +1989,7 @@
           <rect x="953" y="743"/>
         </north>
       </attack>
-      <death speed="10" w="82" h="72" offset_x="30" offset_y="30">
+      <death speed="10" w="82" h="72" offset_x="30" offset_y="30" offset_flip="">
         <south>
           <rect x="1" y="801"/>
           <rect x="86" y="801"/>
@@ -2076,7 +2076,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
-      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15">
+      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15" offset_flip="">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
@@ -2127,7 +2127,7 @@
     <collision_box w="23" h="44" offset_x="-5" offset_y="-21"/>
     <animations>
       <!--10 23-->
-      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23">
+      <idle speed="10" w="29" h="47" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="1" y="1"/>
           <rect x="33" y="1"/>
@@ -2189,7 +2189,7 @@
           <rect x="289" y="201"/>
         </north>
       </idle>
-      <move speed="10" w="32" h="49" offset_x="" offset_y="">
+      <move speed="10" w="32" h="49" offset_x="10" offset_y="23" offset_flip="">
         <south>
           <rect x="1" y="251"/>
           <rect x="36" y="251"/>
@@ -2251,7 +2251,7 @@
           <rect x="316" y="459"/>
         </north>
       </move>
-      <attack speed="10" w="65" h="55" offset_x="" offset_y="">
+      <attack speed="10" w="65" h="55" offset_x="" offset_y="" offset_flip="">
         <south>
           <rect x="1" y="511"/>
           <rect x="69" y="511"/>
@@ -2338,7 +2338,7 @@
           <rect x="953" y="743"/>
         </north>
       </attack>
-      <death speed="10" w="82" h="72" offset_x="30" offset_y="30">
+      <death speed="10" w="82" h="72" offset_x="30" offset_y="30" offset_flip="">
         <south>
           <rect x="1" y="801"/>
           <rect x="86" y="801"/>
@@ -2425,7 +2425,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
-      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15">
+      <decompose speed="3" w="82" h="65" offset_x="23" offset_y="15" offset_flip="">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
