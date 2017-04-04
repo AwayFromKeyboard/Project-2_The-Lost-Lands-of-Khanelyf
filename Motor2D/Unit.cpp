@@ -74,6 +74,8 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_move_to_enemy:
 	{
+		if (attacked_unit == nullptr)
+			state = unit_idle;
 		if (IsInRange(attacked_unit)) {
 			App->pathfinding->DeletePath(path_id);
 			path.clear();
@@ -92,14 +94,11 @@ bool Unit::Update(float dt)
 		break;
 
 	case unit_state::unit_attack:
-		if (attacked_unit != nullptr)
-		{
-			if (IsInRange(attacked_unit))
-			{
+		if (attacked_unit != nullptr) {
+			if (IsInRange(attacked_unit)) {
 				att_state = attack_unit;
 			}
-			else if (!IsInRange(attacked_unit))
-			{
+			else if (!IsInRange(attacked_unit)) {
 				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
@@ -107,6 +106,8 @@ bool Unit::Update(float dt)
 				break;
 			}
 		}
+		else
+			state = unit_idle;
 		
 		switch (att_state) {
 		case attack_unit:
@@ -120,6 +121,7 @@ bool Unit::Update(float dt)
 		break;
 
 	case unit_state::unit_death:
+		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
@@ -132,6 +134,7 @@ bool Unit::Update(float dt)
 		}
 		break;
 	case unit_state::unit_decompose:
+		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 		if (death_timer.ReadSec() > 2)
 		{
 			CheckDecomposeDirection();
@@ -159,6 +162,7 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		CheckSurroundings();
 		break;
 	case unit_move:
 		offset = m_offset;
@@ -166,6 +170,7 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		CheckSurroundings();
 		break;
 	case unit_move_to_enemy:
 		offset = m_offset;
@@ -451,6 +456,62 @@ void Unit::LookAtMovement()
 			current_animation = &m_north_west;
 			destination = north_east;
 			flip = true;
+		}
+	}
+}
+
+bool Unit::CheckSurroundings() {
+	std::list<iPoint> frontier;
+	std::list<iPoint> visited;
+	
+	
+	visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+	frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+
+	for (int i = 0; i < radius_of_action; ++i) {
+		for (int j = frontier.size(); j >= 0; j--) {
+			iPoint neighbors[4];
+			neighbors[0] = frontier.front() + iPoint(1, 0);
+			neighbors[1] = frontier.front() + iPoint(-1, 0);
+			neighbors[2] = frontier.front() + iPoint(0, 1);
+			neighbors[3] = frontier.front() + iPoint(0, -1);
+			frontier.pop_front();
+
+			for (int k = 0; k < 4; k++) {
+				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+				if (found != nullptr && found->life > 0) {
+					switch (type) {
+					case player:
+					case ally:
+						if (found->type == enemy) {
+							attacked_unit = found;
+							state = unit_move_to_enemy;
+						}
+						break;
+					case enemy:
+						if (found->type == player || found->type == ally) {
+							attacked_unit = found;
+							state = unit_move_to_enemy;
+						}
+					}
+					return true;
+				}
+				else {
+					if (App->pathfinding->IsWalkable(neighbors[k])) {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							visited.push_back(neighbors[k]);
+						}
+					}
+				}
+			}
 		}
 	}
 }

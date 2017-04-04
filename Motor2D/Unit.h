@@ -73,6 +73,7 @@ public:
 	void LookAtMovement();
 
 	// Attack
+	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
 	void LookAtAttack();
 	void UnitAttack();
@@ -117,7 +118,6 @@ public:
 	iPoint position_map = NULLPOINT;
 
 	Collider* collision = nullptr;
-	entity_type type = entity_type::null;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
