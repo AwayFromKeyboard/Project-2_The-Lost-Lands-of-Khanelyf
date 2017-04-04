@@ -544,8 +544,9 @@ void Unit::UnitAttack()
 {
 	LookAtAttack();
 
-	if (current_animation->GetFrameIndex() == 5) {
+	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
 		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+		shout_fx = false;
 	}
 
 	if (current_animation->Finished())
@@ -559,6 +560,7 @@ void Unit::UnitAttack()
 			attacked_unit->state = unit_death;
 			attacked_unit = nullptr;
 		}
+		shout_fx = true;
 	}
 }
 
