@@ -1727,6 +1727,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
+      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="12" offset_flip="40">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
@@ -2075,6 +2076,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
+      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="12" offset_flip="40">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
@@ -2423,6 +2425,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
+      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="12" offset_flip="40">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
