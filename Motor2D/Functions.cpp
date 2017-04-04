@@ -4,6 +4,7 @@
 #include <cmath>
 #include "Defs.h"
 #include "Log.h"
+#include <random>
 
 // Returns the angle between two points in degrees
 float AngleFromTwoPoints(float x1, float y1, float x2, float y2)
@@ -80,4 +81,12 @@ void LoadAnimationFromXML(list<SDL_Rect>& rects, const char * file, const char* 
 		rect.h = curr.attribute("h").as_int();
 		rects.push_back(rect);
 	}
+}
+
+int RandomGenerate(int x, int y)
+{
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> random(x, y);
+	return random(gen);
 }

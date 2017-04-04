@@ -37,6 +37,16 @@ bool SceneTest::Start()
 
 		RELEASE_ARRAY(data);
 	}
+
+	//LOAD FXs
+
+	death_id = App->audio->LoadFx("audio/fx/Death.wav");
+	death2_id = App->audio->LoadFx("audio/fx/Death2.wav");
+	get_hit_id = App->audio->LoadFx("audio/fx/Get_hit.wav");
+	get_hit2_id = App->audio->LoadFx("audio/fx/Get_hit2.wav");
+	get_hit3_id = App->audio->LoadFx("audio/fx/Get_hit3.wav");
+	get_hit4_id = App->audio->LoadFx("audio/fx/Get_hit4.wav");
+
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
 
 	App->collisions->UpdateQuadtree();

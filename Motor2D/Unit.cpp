@@ -12,6 +12,9 @@
 #include "Animation.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
+#include "SceneTest.h"
+#include "j1Audio.h"
+#include "Functions.h"
 
 Unit::Unit()
 {
@@ -547,9 +550,14 @@ void Unit::UnitAttack()
 		current_animation->Reset();
 		if (attacked_unit->life <= 0)
 		{
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
 			state = unit_idle;
 			attacked_unit->state = unit_death;
 			attacked_unit = nullptr;
+		}
+		else
+		{
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
 		}
 	}
 }

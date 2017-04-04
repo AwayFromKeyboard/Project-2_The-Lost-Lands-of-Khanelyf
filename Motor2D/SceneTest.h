@@ -52,6 +52,15 @@ private:
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
+
+public:
+	//FXs
+	unsigned int death_id;
+	unsigned int death2_id;
+	unsigned int get_hit_id;
+	unsigned int get_hit2_id;
+	unsigned int get_hit3_id;
+	unsigned int get_hit4_id;
 };
 
 #endif // _SceneTest_H_
