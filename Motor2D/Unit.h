@@ -165,6 +165,11 @@ public:
 	Animation de_north;
 
 public:
+	uint radius_of_action = 0;
+public:
+	bool IsInsideCircle(int x, int y);
+
+public:
 	bool is_selected = false;
 };
 

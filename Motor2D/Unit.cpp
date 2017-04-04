@@ -675,3 +675,9 @@ void Unit::CheckDecomposeDirection()
 	}
 }
 
+bool Unit::IsInsideCircle(int x, int y)
+{
+	iPoint center = game_object->GetPos();
+	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
+}
+
