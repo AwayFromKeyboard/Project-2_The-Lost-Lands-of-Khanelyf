@@ -46,6 +46,11 @@ bool SceneTest::Start()
 	get_hit2_id = App->audio->LoadFx("audio/fx/Get_hit2.wav");
 	get_hit3_id = App->audio->LoadFx("audio/fx/Get_hit3.wav");
 	get_hit4_id = App->audio->LoadFx("audio/fx/Get_hit4.wav");
+	swords_clash_id = App->audio->LoadFx("audio/fx/Sword.wav");
+	swords_clash2_id = App->audio->LoadFx("audio/fx/Sword2.wav");
+	swords_clash3_id = App->audio->LoadFx("audio/fx/Sword3.wav");
+	swords_clash4_id = App->audio->LoadFx("audio/fx/Sword4.wav");
+	swords_clash5_id = App->audio->LoadFx("audio/fx/Sword5.wav");
 
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
 

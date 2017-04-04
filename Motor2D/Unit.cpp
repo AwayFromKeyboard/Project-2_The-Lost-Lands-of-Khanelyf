@@ -546,6 +546,7 @@ void Unit::UnitAttack()
 
 	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
 		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
 		shout_fx = false;
 	}
 

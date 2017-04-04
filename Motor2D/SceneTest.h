@@ -61,6 +61,11 @@ public:
 	unsigned int get_hit2_id;
 	unsigned int get_hit3_id;
 	unsigned int get_hit4_id;
+	unsigned int swords_clash_id;
+	unsigned int swords_clash2_id;
+	unsigned int swords_clash3_id;
+	unsigned int swords_clash4_id;
+	unsigned int swords_clash5_id;
 };
 
 #endif // _SceneTest_H_
