@@ -114,6 +114,7 @@ public:
 	int range = 0;
 
 	iPoint position = NULLPOINT;
+	iPoint position_map = NULLPOINT;
 
 	Collider* collision = nullptr;
 	entity_type type = entity_type::null;

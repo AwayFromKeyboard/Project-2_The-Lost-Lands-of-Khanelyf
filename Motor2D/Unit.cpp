@@ -52,13 +52,15 @@ bool Unit::PreUpdate()
 		}
 	}
 
+	position = { game_object->GetPos().x, game_object->GetPos().y };
+	position_map = App->map->WorldToMapPoint(position);
+	App->map->entity_matrix[position_map.x][position_map.y] = this;
 
 	return ret;
 }
 
 bool Unit::Update(float dt)
 {
-	position = { game_object->GetPos().x, game_object->GetPos().y };
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 	
 	switch (state) {
@@ -202,6 +204,7 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
+	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
 		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
@@ -345,7 +348,6 @@ void Unit::SetDirection()
 		return;
 	}
 
-	iPoint position = game_object->GetPos();
 	switch (destination) {
 	case south:
 		break;
@@ -366,9 +368,7 @@ void Unit::SetDirection()
 		break;
 	}
 
-	iPoint position_m = App->map->WorldToMapPoint(position);
-
-	if (position_m == path.front()) {
+	if (position_map == path.front()) {
 			path.erase(path.begin());
 			SetDirection();
 			return;
@@ -376,7 +376,7 @@ void Unit::SetDirection()
 
 	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
 
-	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
+	direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 
 	LookAtMovement();
 
