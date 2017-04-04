@@ -68,8 +68,13 @@ bool Hero::LoadEntity()
 		d_offset.create(node.child("death").attribute("offset_x").as_int(), node.child("death").attribute("offset_y").as_int());
 		de_offset.create(node.child("decompose").attribute("offset_x").as_int(), node.child("decompose").attribute("offset_y").as_int());
 
+		flip_i_offset = node.child("idle").attribute("offset_flip").as_int();
+		flip_m_offset = node.child("move").attribute("offset_flip").as_int();
+		flip_a_offset = node.child("attack").attribute("offset_flip").as_int();
+		flip_d_offset = node.child("death").attribute("offset_flip").as_int();
+		flip_de_offset = node.child("decompose").attribute("offset_flip").as_int();
+
 		current_animation = &i_south;
-		offset = i_offset;
 		direction = { 0, 1 };
 		App->entity->unit_game_objects_list.push_back(game_object);
 
