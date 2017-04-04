@@ -155,3 +155,8 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		current_human_resources += sword->human_cost;
 	}
 }
+
+void SceneTest::IncreaseGold(int gold)
+{
+	this->gold += gold;
+}

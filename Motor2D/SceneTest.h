@@ -32,6 +32,7 @@ public:
 	void OnColl(Collider* c1, Collider* c2);
 
 	void CheckUnitCreation(iPoint p);
+	void IncreaseGold(int gold);
 
 private:
 	UI_Window* cursor_window = nullptr;

@@ -129,7 +129,9 @@ bool Unit::Update(float dt)
 		{
 			death_timer.Start();
 			current_animation->SetSpeed(0);
-			state = unit_state::unit_decompose;
+			state = unit_state::unit_decompose; 
+			if (type == entity_type::enemy)
+				App->scene->scene_test->IncreaseGold(gold_drop);
 		}
 		break;
 	case unit_state::unit_decompose:

@@ -451,8 +451,7 @@
   </unit>
   <unit type="Swordsman_enemy">
     <texture value="textures/Swordsman_enemy.png"/>
-    <cost value="0"/>
-    <human_cost value="0"/>
+    <gold_drop value="2"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
@@ -1423,8 +1422,7 @@
   </unit>
   <unit type="Barbarian_enemy">
     <texture value="textures/Barbarian_enemy.png"/>
-    <cost value="0"/>
-    <human_cost value="0"/>
+    <gold_drop value="1"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>
