@@ -330,7 +330,6 @@ iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 
 	// dx -> direction x  | dy -> direction y  
 	// search_in_radius -> finds the nearest walkable tile in a radius (max radius in FIND_RADIUS) 
-
 	int search_in_radius = 1;
 	while (search_in_radius != FIND_RADIUS)
 	{
@@ -350,6 +349,69 @@ iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 
 
 	return ret.create(-1, -1);
+}
+iPoint j1PathFinding::FindNearestWalkableToOrigin(const iPoint& origin, const iPoint& destination){
+	iPoint ret(destination);
+
+	for (;;) {
+		std::list<iPoint> walkable;
+		std::list<iPoint> tiles;
+
+		iPoint tile;
+
+		tile = ret + iPoint(1, 0);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(0, 1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(-1, 0);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(0, -1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(1, 1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(-1, -1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		if (!walkable.empty())
+		{
+			std::list<iPoint>::iterator it = walkable.begin();
+			ret = *it;
+			it++;
+			for (; it != walkable.end(); ++it)
+			{
+				if ((*it).DistanceManhattan(origin) < ret.DistanceManhattan(origin))
+					ret = *it;
+			}
+
+			return ret;
+		}
+		else {
+			std::list<iPoint>::iterator it = tiles.begin();
+
+			for (; it != tiles.end(); ++it)
+			{
+				if ((*it).DistanceManhattan(origin) < ret.DistanceManhattan(origin))
+					ret = *it;
+			}
+		}
+	}
 }
 
 	 //----------------||----------------||----------------\\
@@ -460,6 +522,12 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		path->destination = destination;
 
 		ret = current_id; //Id of the path created
+	}
+	else {
+		iPoint new_dest = FindNearestWalkableToOrigin(origin, destination);
+		if (new_dest != iPoint(-1, -1)) {
+			CreatePath(origin, new_dest);
+		}
 	}
 
 	return current_id;
