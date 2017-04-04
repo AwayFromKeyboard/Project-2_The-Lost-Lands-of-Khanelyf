@@ -92,6 +92,7 @@ bool Barbarian::LoadEntity()
 		state = unit_state::unit_idle;
 	}
 	else LOG("\nERROR, no node found\n");
+	radius_of_action = 3;
 
 	return ret;
 }
