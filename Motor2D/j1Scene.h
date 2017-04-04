@@ -7,7 +7,7 @@
 #include <queue>
 
 struct SDL_Texture;
-class MainScene;
+class MainMenu;
 class SceneTest;
 
 // LayerBlit struct
@@ -88,8 +88,8 @@ private:
 
 public:
 	// Scenes
-	MainScene*           main_scene = nullptr;
-	SceneTest*		     scene_test = nullptr;
+	MainMenu*           main_menu = nullptr;
+	SceneTest*		    scene_test = nullptr;
 private:
 	// Layer Blit list
 	std::priority_queue<layer_blit, std::vector<layer_blit>, compare_layer> layer_list;

@@ -14,7 +14,7 @@
 		<atlas file="gui/ui.png" />
 	</gui>
 	<window>
-		<resolution width="1920" height="1080" scale="1" />
+		<resolution width="1680" height="1050" scale="1" />
 		<fullscreen value="true" />
 		<borderless value="false" />
 		<resizable value="false" />

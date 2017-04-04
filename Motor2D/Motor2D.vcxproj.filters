@@ -52,9 +52,6 @@
     <ClCompile Include="j1Collisions.cpp">
       <Filter>Engine\1. Modules =========</Filter>
     </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
-    </ClCompile>
     <ClCompile Include="j1Physics.cpp">
       <Filter>Engine\1. Modules =========</Filter>
     </ClCompile>
@@ -96,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>Engine\2. Components ======</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +156,6 @@
     <ClInclude Include="j1Scene.h">
       <Filter>Engine\3. Scenes ==========</Filter>
     </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine\3. Scenes ==========</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="QuadTree.h">
       <Filter>Engine\2. Components ======</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Engine\3. Scenes ==========\MainScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
