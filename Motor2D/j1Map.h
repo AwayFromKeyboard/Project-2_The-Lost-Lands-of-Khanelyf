@@ -6,6 +6,7 @@
 #include "j1Module.h"
 #include <string>
 #include <list>
+#include <vector>
 
 #define XOFFSET 20
 #define YOFFSET 20
@@ -146,6 +147,7 @@ public:
 
 	MapData data;
 	SDL_Rect fit_square;
+	vector<vector<void*> > entity_matrix;
 
 private:
 
