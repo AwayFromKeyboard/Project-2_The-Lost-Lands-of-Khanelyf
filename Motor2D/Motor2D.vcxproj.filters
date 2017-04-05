@@ -103,6 +103,9 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
+    <ClCompile Include="QuestManager.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -224,6 +227,9 @@
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Entity.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestManager.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
   </ItemGroup>

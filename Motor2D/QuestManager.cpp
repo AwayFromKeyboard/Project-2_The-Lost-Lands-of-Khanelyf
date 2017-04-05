@@ -20,17 +20,18 @@ bool QuestManager::Awake(pugi::xml_node&) {
 bool QuestManager::Start() {
 
 
-	Quest* quest = new Quest("first quest", "kill enemies in town", kill, 5, 20, titles::leader, 3);
+	Quest* quest = new Quest("first quest", "kill enemies in town", kill,0, 5, 20, titles::leader, 3);
 	quest_list.push_back(quest);
 	return true;
 }
 
 bool QuestManager::Update(float dt) {
 
-	/*Quest* current = GetCurrentQuest();
-	if (current->type==kill)
-	for (list<Entity*>::iterator it = requested_list.begin(); it != requested_list.end(); it++)*/
+	Quest* current = GetCurrentQuest();
+/*	if (current->type==kill)
+		//for (list<Entity*>::iterator it = current->requested_list.begin(); it != current->requested_list.end(); it++)
 
+		*/
 	return true;
 }
 
@@ -66,12 +67,13 @@ Quest * QuestManager::GetCurrentQuest() {
 Quest* new_quest = new Quest;
 }*/
 
-Quest::Quest(string name, string description, quest_type type, uint requested, uint gold, titles new_title, uint level_points, bool active)
+Quest::Quest(string name, string description, quest_type type,uint quest_number, uint requested, uint gold, titles new_title, uint level_points, bool active)
 {
 
 	quest_name = name;
 	this->description = description;
 	this->type = type;
+	this->quest_number = quest_number;
 	this->requested = requested;
 	reward.gold = gold;
 	reward.newtitle = new_title;

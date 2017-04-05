@@ -36,6 +36,8 @@ public:
 
 	quest_type type = quest_type::quest_null;
 
+	uint quest_number = 0;
+
 	bool active = false;
 
 	bool completed = false;
@@ -48,7 +50,7 @@ public:
 
 	Rewards reward;
 
-	Quest(string name, string description, quest_type type, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
+	Quest(string name, string description, quest_type type,uint quest_number, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
 
 	~Quest();
 };
