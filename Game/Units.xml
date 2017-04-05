@@ -102,6 +102,7 @@
   <unit type="Hero">
     <texture value="textures/Hero.png"/>
     <cost value="0"/>
+    <human_cost value="0"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="10"/>
@@ -451,7 +452,7 @@
   </unit>
   <unit type="Swordsman_enemy">
     <texture value="textures/Swordsman_enemy.png"/>
-    <cost value="10"/>
+    <gold_drop value="2"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
@@ -776,6 +777,7 @@
   <unit type="Swordsman_ally">
     <texture value="textures/Swordsman_ally.png"/>
     <cost value="10"/>
+    <human_cost value="2"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
@@ -1099,7 +1101,8 @@
   </unit>
   <unit type="Swordsman_npc">
     <texture value="textures/Swordsman_npc.png"/>
-    <cost value="10"/>
+    <cost value="0"/>
+    <human_cost value="0"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
@@ -1422,7 +1425,7 @@
   </unit>
   <unit type="Barbarian_enemy">
     <texture value="textures/Barbarian_enemy.png"/>
-    <cost value="5"/>
+    <gold_drop value="1"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>
@@ -1773,6 +1776,7 @@
   <unit type="Barbarian_ally">
     <texture value="textures/Barbarian_ally.png"/>
     <cost value="5"/>
+    <human_cost value="1"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>
@@ -2122,7 +2126,8 @@
   </unit>
   <unit type="Barbarian_npc">
     <texture value="textures/Barbarian_npc.png"/>
-    <cost value="5"/>
+    <cost value="0"/>
+    <human_cost value="0"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>

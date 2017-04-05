@@ -137,8 +137,11 @@ bool Unit::Update(float dt)
 			App->collisions->EraseCollider(collision);
 		if (!current_animation->Finished())
 			death_timer.Start();
-		else if (death_timer.ReadSec() > 2)
+		else if (death_timer.ReadSec() > 2) {
+			if (type == entity_type::enemy)
+				App->scene->scene_test->IncreaseGold(gold_drop);
 			state = unit_state::unit_decompose;
+		}
 		break;
 
 	case unit_state::unit_decompose:
