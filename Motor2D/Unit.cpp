@@ -135,23 +135,18 @@ bool Unit::Update(float dt)
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
-
-		if (current_animation->GetFrameIndex() == 14)
-		{
+		if (!current_animation->Finished())
 			death_timer.Start();
-			current_animation->SetSpeed(0);
+		else if (death_timer.ReadSec() > 2)
 			state = unit_state::unit_decompose;
-		}
 		break;
+
 	case unit_state::unit_decompose:
+		CheckDecomposeDirection();
 		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
-		if (death_timer.ReadSec() > 2)
-		{
-			CheckDecomposeDirection();
 			if (current_animation->GetFrameIndex() == 4) {
 				current_animation->SetSpeed(0);
 				to_delete = true;
-			}
 		}
 		break;
 	}
