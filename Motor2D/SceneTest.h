@@ -32,7 +32,6 @@ public:
 	void OnColl(Collider* c1, Collider* c2);
 
 	void CheckUnitCreation(iPoint p);
-
 	void IncreaseGold(int gold);
 
 private:
@@ -44,11 +43,16 @@ private:
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;
+	SDL_Rect buy_unit;
 
-private:
+public:
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
+
+	int human_resources_max = 15;
+	int current_human_resources = 0;
+	UI_Text* human_resources_txt = nullptr;
 
 public:
 	//FXs

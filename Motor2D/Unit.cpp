@@ -141,10 +141,12 @@ bool Unit::Update(float dt)
 		else if (death_timer.ReadSec() > 2)
 		{
 			state = unit_state::unit_decompose;
-			if (type == entity_type::enemy && App->questmanager->GetCurrentQuest()->type == quest_type::kill)
-				App->questmanager->GetCurrentQuest()->progress++;
+			if (type == entity_type::enemy) {
+				App->scene->scene_test->IncreaseGold(gold_drop);
+				if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
+					App->questmanager->GetCurrentQuest()->progress++;
+			}
 		}
-			
 		break;
 
 	case unit_state::unit_decompose:
