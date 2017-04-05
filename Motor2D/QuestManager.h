@@ -9,50 +9,44 @@
 #include "SDL/include/SDL.h"
 
 enum titles {
-
-	beggar, leader, titles_null
+	beggar, leader, mayor, titles_null
 
 };
 
 enum quest_type {
+	kill, capture, hire, create, type_null
+};
 
-	kill, capture, hire, quest_null
+enum quest_id {
+	quest_beggar,
+	quest_leader,
+	quest_mayor,
+	quest_null
 };
 
 struct Rewards {
-
 	uint gold = 0;
 	titles newtitle = titles::titles_null;
 	uint level_point = 0;
 };
 
-struct Quest {
+class Quest {
+public:
+	Quest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
+	~Quest();
 
 public:
-
-	string quest_name;
-
+	string name;
 	string description;
-
-	quest_type type = quest_type::quest_null;
-
-	uint quest_number = 0;
-
-	bool active = false;
-
-	bool completed = false;
-
-	std::list<Entity*> requested_list;
-
-	uint progress = 0;
-
-	uint requested = 0;
-
+	quest_type type = quest_type::type_null;
+	quest_id id = quest_id::quest_null;
 	Rewards reward;
 
-	Quest(string name, string description, quest_type type,uint quest_number, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
+	bool active = false;
+	bool completed = false;
 
-	~Quest();
+	uint progress = 0;
+	uint requested = 0;
 };
 
 class QuestManager : public j1Module
@@ -74,15 +68,11 @@ public:
 
 	bool CleanUp();
 
-	//Quest* CreateQuest(list<SDL_Rect*> image, iPoint pos); 
-
+	Quest* CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
 	Quest* GetCurrentQuest();
 
 private:
-
 	list<Quest*> quest_list;
-	Quest* quest = nullptr;
-
 };
 
 #endif
