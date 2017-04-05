@@ -29,12 +29,12 @@ bool Player::Start()
 
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
 
-	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(313, 242), 60, 60);
+	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 566, 1, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 505, 1, 60, 60 });
 
-	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(412, 242), 60, 60);
+	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
 	create_unit_button2->AddImage("standard", { 566, 1, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 505, 1, 60, 60 });
