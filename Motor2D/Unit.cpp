@@ -1,14 +1,20 @@
 #include "Log.h"
 #include "Unit.h"
 #include "j1Entity.h"
+#include "j1Input.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "j1Map.h"
 #include "Hero.h"
+#include "Barbarian.h"
+#include "Swordsman.h"
 #include "Entity.h"
 #include "Animation.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
+#include "SceneTest.h"
+#include "j1Audio.h"
+#include "Functions.h"
 
 Unit::Unit()
 {
@@ -29,56 +35,93 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
-
+	AI_timer.Start();
 	return ret;
 }
 
 bool Unit::PreUpdate()
 {
 	bool ret = true;
-	
+
+	if (attacked_unit == nullptr && life > 0 && state != unit_state::unit_move_to_enemy) 
+	{
+		if (path.size() > 0)
+		{
+			state = unit_move;
+		}
+		else
+		{
+			state = unit_idle;
+		}
+	}
+
+	position = { game_object->GetPos().x, game_object->GetPos().y };
+	position_map = App->map->WorldToMapPoint(position);
+	if (life > 0) {
+		App->map->entity_matrix[position_map.x][position_map.y] = this;
+	}
+	else if (selected) {
+		App->entity->selected.remove(this);
+		selected = false;
+	}
+
 	return ret;
 }
 
 bool Unit::Update(float dt)
 {
-	position = { game_object->GetPos().x - 7, game_object->GetPos().y - 24 };
+	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+	
 	switch (state) {
-	case unit_idle:
-
-		idle_collision->print_collider = true;
-		walk_collision->print_collider = false;
-		attack_collision->print_collider = false;
-
-		idle_collision->SetPos(position.x, position.y);
-		offset = i_offset;
+	case unit_state::unit_idle:
 		CheckDirection();
+		CheckSurroundings();
 		break;
 
-	case unit_move:
-		
+	case unit_state::unit_move:
 		FollowPath(dt);
-		idle_collision->print_collider = false;
-		walk_collision->print_collider = true;
-		attack_collision->print_collider = false;
-		
-		walk_collision->SetPos(position.x, position.y);
+		//CheckSurroundings();
 		break;
 
-	case unit_attack:
-		if (attacked_unit != nullptr)
-		{
-			if (IsInRange(attacked_unit))
-			{
-				att_state = attack_unit;
-				offset = a_offset;
+	case unit_state::unit_move_to_enemy:
+	{
+		if (attacked_unit == nullptr || attacked_unit->life <= 0)
+			state = unit_idle;
+		else {
+			if (IsInRange(attacked_unit)) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				state = unit_state::unit_attack;
+				has_moved = false;
 			}
-			else if (!IsInRange(attacked_unit))
-			{
-				state = unit_idle;
+			else if (!has_moved) {
+				has_moved = true;
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
+			}
+			else{
+				if (path.size() > 0)
+					FollowPath(dt);
+			}
+		}
+	}
+		break;
+
+	case unit_state::unit_attack:
+		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
+			attacked_unit == nullptr;
+			state = unit_idle;
+		}
+		else
+		{
+			if (IsInRange(attacked_unit)) {
+				att_state = attack_unit;
+			}
+			else {
+				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
-				offset = i_offset;
 				attacked_unit = nullptr;
 				break;
 			}
@@ -95,28 +138,20 @@ bool Unit::Update(float dt)
 
 		break;
 
-	case unit_death:
+	case unit_state::unit_death:
 		CheckDeathDirection();
-		if (current_animation->GetFrameIndex() == 14)
-		{
+		if(collision != nullptr)
+			App->collisions->EraseCollider(collision);
+		if (!current_animation->Finished())
 			death_timer.Start();
-			current_animation->SetSpeed(0);
-			state = unit_decompose;
-
-			App->collisions->EraseCollider(idle_collision);
-			App->collisions->EraseCollider(walk_collision);
-			App->collisions->EraseCollider(attack_collision);
-		}
+		else if (death_timer.ReadSec() > 2)
+			state = unit_state::unit_decompose;
 		break;
-	case unit_decompose:
-		if (death_timer.ReadSec() > 2)
-		{
-			offset = de_offset;
-			CheckDecomposeDirection();
-			if (current_animation->GetFrameIndex() == 4) {
-				current_animation->SetSpeed(0);
+
+	case unit_state::unit_decompose:
+		CheckDecomposeDirection();
+			if (current_animation->Finished()) {
 				to_delete = true;
-			}
 		}
 		break;
 	}
@@ -128,11 +163,52 @@ bool Unit::Draw(float dt)
 {
 	bool ret = true;
 
-	if (flip) {
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+
+	switch (state)
+	{
+	case unit_idle:
+		offset = i_offset;
+		if(flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_move:
+		offset = m_offset;
+		if(flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_move_to_enemy:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_attack:
+		offset = a_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_a_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_death:
+		offset = d_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_d_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case unit_decompose:
+		offset = de_offset;
+		if (flip)
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_de_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
 	}
-	else
-		App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 
 	return ret;
 }
@@ -141,10 +217,15 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
-	if (to_delete)
-	{
-		App->entity->DeleteEntity(this);
-	}
+	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
+
+	if (GetSelected())
+		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
+
+	//if (to_delete)
+	//{
+	//	App->entity->DeleteEntity(this);
+	//}
 
 
 	return ret;
@@ -152,9 +233,12 @@ bool Unit::PostUpdate()
 
 bool Unit::CleanUp()
 {
+	bool ret = true;
+
+	App->entity->unit_game_objects_list.remove(game_object);
 	RELEASE(game_object);
 
-	return true;
+	return ret;
 }
 
 bool Unit::Load(pugi::xml_node &)
@@ -169,11 +253,30 @@ bool Unit::Save(pugi::xml_node &) const
 
 void Unit::OnColl(Collider* col1, Collider* col2)
 {
+	if (col1 != nullptr && (col2->type == COLLIDER_UNIT))
+	{
+		
+	}
 }
 
 GameObject * Unit::GetGameObject()
 {
 	return game_object;
+}
+
+Collider * Unit::GetCollider()
+{
+	return collision;
+}
+
+entity_type Unit::GetType()
+{
+	return type;
+}
+
+void Unit::SetSelected(bool _selected) {
+	if (life > 0)
+		selected = _selected;
 }
 
 void Unit::SetPath(vector<iPoint> _path)
@@ -263,7 +366,6 @@ void Unit::SetDirection()
 		return;
 	}
 
-	iPoint position = game_object->GetPos();
 	switch (destination) {
 	case south:
 		break;
@@ -284,9 +386,7 @@ void Unit::SetDirection()
 		break;
 	}
 
-	iPoint position_m = App->map->WorldToMapPoint(position);
-
-	if (position_m == path.front()) {
+	if (position_map == path.front()) {
 			path.erase(path.begin());
 			SetDirection();
 			return;
@@ -294,7 +394,7 @@ void Unit::SetDirection()
 
 	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
 
-	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
+	direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 
 	LookAtMovement();
 
@@ -369,6 +469,66 @@ void Unit::LookAtMovement()
 			current_animation = &m_north_west;
 			destination = north_east;
 			flip = true;
+		}
+	}
+}
+
+bool Unit::CheckSurroundings() {
+	if (AI_timer.ReadSec() >= 0.5) {
+		AI_timer.Start();
+		std::list<iPoint> frontier;
+		std::list<iPoint> visited;
+
+
+		visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+		frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+
+		for (int i = 0; i < radius_of_action; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[4];
+				neighbors[0] = frontier.front() + iPoint(1, 0);
+				neighbors[1] = frontier.front() + iPoint(-1, 0);
+				neighbors[2] = frontier.front() + iPoint(0, 1);
+				neighbors[3] = frontier.front() + iPoint(0, -1);
+				frontier.pop_front();
+
+				for (int k = 0; k < 4; k++) {
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0) {
+						switch (type) {
+						case player:
+						case ally:
+							if (found->type == enemy) {
+								attacked_unit = found;
+								state = unit_move_to_enemy;
+								return true;
+							}
+							break;
+						case enemy:
+							if (found->type == player || found->type == ally) {
+								attacked_unit = found;
+								state = unit_move_to_enemy;
+								return true;
+							}
+						}
+					}
+					else {
+						if (App->pathfinding->IsWalkable(neighbors[k])) {
+							bool is_visited = false;
+							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+								if (neighbors[k] == *it) {
+									is_visited = true;
+									break;
+								}
+							}
+							if (!is_visited) {
+								frontier.push_back(neighbors[k]);
+								visited.push_back(neighbors[k]);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -460,16 +620,24 @@ void Unit::UnitAttack()
 {
 	LookAtAttack();
 
+	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+		shout_fx = false;
+	}
+
 	if (current_animation->Finished())
 	{
 		attacked_unit->life -= damage;
 		current_animation->Reset();
 		if (attacked_unit->life <= 0)
 		{
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
 			state = unit_idle;
 			attacked_unit->state = unit_death;
-			attacked_unit->offset = attacked_unit->d_offset;
+			attacked_unit = nullptr;
 		}
+		shout_fx = true;
 	}
 }
 
@@ -592,5 +760,11 @@ void Unit::CheckDecomposeDirection()
 			flip = false;
 		}
 	}
+}
+
+bool Unit::IsInsideCircle(int x, int y)
+{
+	iPoint center = game_object->GetPos();
+	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
 }
 

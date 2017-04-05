@@ -6,6 +6,7 @@
 #include "PugiXml\src\pugixml.hpp"
 #include "j1Physics.h"
 #include "Animation.h"
+#include "j1Entity.h"
 #include <list>
 
 class b2Fixture;
@@ -43,7 +44,25 @@ public:
 		return nullptr;
 	}
 
+	virtual Collider* GetCollider() {
+		return nullptr;
+	}
+
+	virtual entity_type GetType() {
+		return type;
+	}
+
+	virtual void SetSelected(bool _selected) {
+		selected = _selected;
+	}
+	bool GetSelected() {
+		return selected;
+	}
 public:
+	entity_type type = entity_type::null;
+	bool to_delete = false;
+protected:
+	bool selected = false;
 };
 
 #endif

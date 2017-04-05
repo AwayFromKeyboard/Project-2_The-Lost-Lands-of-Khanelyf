@@ -6,6 +6,7 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Gui.h"
+#include "j1Entity.h"
 #include "Functions.h"
 
 #include <iostream> 
@@ -63,13 +64,6 @@ bool j1Gui::Start()
 // ---------------------------------------------------------------------
 bool j1Gui::Update(float dt)
 {
-	// Debug
-	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
-		debug = !debug;
-	else if (!App->debug_mode)
-		debug = false;
-
-
 	// Start -------------------------------------------------
 
 	if (start)
@@ -160,6 +154,7 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {
 	CursorSelection();
+
 	return true;
 }
 
@@ -223,33 +218,38 @@ void j1Gui::GetChilds(UI_Element * element, list<UI_Element*>& visited)
 {
 	list<UI_Element*> frontier;
 
+
 	visited.push_back(element);
 
-	// Add the current childs
-	for (list<UI_Element*>::iterator it = element->childs.begin(); it != element->childs.end(); it++)
-		frontier.push_back(*it);
-
+	if (!element->childs.empty())
+	{
+		// Add the current childs
+		for (list<UI_Element*>::iterator it = element->childs.begin(); it != element->childs.end(); it++)
+			frontier.push_back(*it);
+	}
 
 	// Navigate through all the childs and add them
 
 	int end = 0;
-	while (!frontier.empty())
-	{
-		for (list<UI_Element*>::iterator fr = frontier.begin(); fr != frontier.end(); fr++)
+	if (!frontier.empty()) {
+		list<UI_Element*>::iterator fr = frontier.begin();
+		while (!frontier.empty())
 		{
 			list<UI_Element*>::iterator find = std::find(visited.begin(), visited.end(), *fr);
 			if (find == visited.end() && *fr != element)
 			{
 				visited.push_back(*fr);
-				for (list<UI_Element*>::iterator ch = (*fr)->childs.begin(); ch != (*fr)->childs.end(); ch++)
+				if (!(*fr)->childs.empty())
 				{
-					frontier.push_back(*ch);
+					for (list<UI_Element*>::iterator ch = (*fr)->childs.begin(); ch != (*fr)->childs.end(); ch++)
+					{
+						frontier.push_back(*ch);
+					}
 				}
 			}
-			frontier.erase(fr);
+			fr = frontier.erase(fr);
 		}
 	}
-
 	// ---------------------------------------
 }
 
@@ -446,7 +446,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 		if ((*ch)->parent_element != nullptr && (*ch)->parent_element->childs.size() > 0)
 			(*ch)->parent_element->childs.remove(*ch);
 
-		if ((*ch)->type == ui_window && windows.size() > 0)
+		if ((*ch)->type == ui_window && windows.size() > 0) //crash after quit
 			windows.remove((UI_Window*)*ch);
 
 			// Delete from pQ
@@ -472,18 +472,25 @@ void j1Gui::DeleteElement(UI_Element* element)
 
 void j1Gui::CursorSelection()
 {
+	int x, y;
+	App->input->GetMouseWorld(x, y);
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->input->GetMouseWorld(selection_rect.x, selection_rect.y);
+		selection_rect.x = x;
+		selection_rect.y = y;
+		selection_rect.w = selection_rect.x;
+		selection_rect.h = selection_rect.y;
 	}
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
+	{	
+		selection_rect.w = x;
+		selection_rect.h = y;
+		App->render->DrawQuad({ selection_rect.x, selection_rect.y, selection_rect.w - selection_rect.x, selection_rect.h - selection_rect.y }, 255, 255, 255, 255, false);
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up)
 	{
-		iPoint position;
-		App->input->GetMouseWorld(position.x, position.y);
-		selection_rect.w = position.x - selection_rect.x;
-		selection_rect.h = position.y - selection_rect.y;
-		App->render->DrawQuad(selection_rect, 255, 255, 255, 255, false);
+		App->entity->SelectInQuad(selection_rect);
 	}
 }
 

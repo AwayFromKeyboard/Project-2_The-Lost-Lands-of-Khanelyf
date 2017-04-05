@@ -6,6 +6,7 @@
 #include "j1Module.h"
 #include <string>
 #include <list>
+#include <vector>
 
 #define XOFFSET 20
 #define YOFFSET 20
@@ -25,9 +26,7 @@ struct Properties
 		item = list.front();
 
 		for (std::list<Property*>::iterator prop = list.begin(); prop != list.end(); ++prop)
-		{
 			RELEASE(*prop);
-		}
 
 		list.clear();
 	}
@@ -123,10 +122,13 @@ public:
 	bool Load(const char* path);
 
 	iPoint MapToWorld(int x, int y) const;
+	fPoint FMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMapPoint(iPoint position) const;
 	iPoint MapToWorldPoint(iPoint position) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+	void GetEntitiesSpawn() const;
 
 private:
 
@@ -145,6 +147,7 @@ public:
 
 	MapData data;
 	SDL_Rect fit_square;
+	vector<vector<void*> > entity_matrix;
 
 private:
 

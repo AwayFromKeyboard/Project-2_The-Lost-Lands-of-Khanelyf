@@ -2,6 +2,8 @@
 #include "Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "Unit.h"
+#include "j1Entity.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), width(0), height(0)
 {
@@ -19,12 +21,8 @@ bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 
-	for (std::list<Path*>::iterator it = paths.begin(); it != paths.end();) {
-		RELEASE(*it);
-		std::list<Path*>::iterator tmp = it;
-		++it;
-		paths.erase(tmp);
-	}
+	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();++it)
+		RELEASE(it->second);
 	paths.clear();
 
 	RELEASE_ARRAY(map);
@@ -33,19 +31,31 @@ bool j1PathFinding::CleanUp()
 
 bool j1PathFinding::PreUpdate()
 {
-	for (std::list<Path*>::iterator it = paths.begin(); it != paths.end();) 
-	{
-		if ((*it)->completed == false)
-			CalculatePath(*it);
-		else
-		{
-			RELEASE(*it);
-			std::list<Path*>::iterator tmp = it;
-			++it;
-			paths.erase(tmp);
+	int iterations = 0;
+	bool can_calculate = true;
 
+	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();) 
+	{
+		if (!it->second->completed) {
+			if (can_calculate) {
+				iterations = CalculatePath(it->second, 8 - iterations);
+
+				if (iterations >= 8)
+					can_calculate = false;
+			}
+			++it;
 		}
-		++it;
+		else{
+			for (std::list<Entity*>::iterator it2 = App->entity->entity_list.begin(); it2 != App->entity->entity_list.end(); it2++) {
+				if ((*it2)->GetType() != null) {
+					if (it->first == ((Unit*)*it2)->path_id && it->second->completed) {
+						((Unit*)*it2)->SetPath(it->second->finished_path);
+					}
+				}
+			}
+			RELEASE(it->second);
+			it = paths.erase(it);
+		}
 	}
 
 	return true;
@@ -305,13 +315,22 @@ bool j1PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint st
 	return Jump(next.x, next.y, dx, dy, start, end, new_node);
 }
 
+void j1PathFinding::DeletePath(uint path_id)
+{
+	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();++it)
+	{
+		if (it->first == path_id) {
+			it->second->completed = true;
+		}
+	}
+}
+
 iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 {
 	iPoint ret(origin);
 
 	// dx -> direction x  | dy -> direction y  
 	// search_in_radius -> finds the nearest walkable tile in a radius (max radius in FIND_RADIUS) 
-
 	int search_in_radius = 1;
 	while (search_in_radius != FIND_RADIUS)
 	{
@@ -332,13 +351,80 @@ iPoint j1PathFinding::FindNearestWalkable(const iPoint & origin)
 
 	return ret.create(-1, -1);
 }
+iPoint j1PathFinding::FindNearestWalkableToOrigin(const iPoint& origin, const iPoint& destination){
+	iPoint ret(destination);
+
+	for (;;) {
+		std::list<iPoint> walkable;
+		std::list<iPoint> tiles;
+
+		iPoint tile;
+
+		tile = ret + iPoint(1, 0);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(0, 1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(-1, 0);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(0, -1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(1, 1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		tile = ret + iPoint(-1, -1);
+		tiles.push_back(tile);
+		if (IsWalkable(tile))
+			walkable.push_back(tile);
+
+		if (!walkable.empty())
+		{
+			std::list<iPoint>::iterator it = walkable.begin();
+			ret = *it;
+			it++;
+			for (; it != walkable.end(); ++it)
+			{
+				if ((*it).DistanceManhattan(origin) < ret.DistanceManhattan(origin))
+					ret = *it;
+			}
+
+			return ret;
+		}
+		else {
+			std::list<iPoint>::iterator it = tiles.begin();
+
+			for (; it != tiles.end(); ++it)
+			{
+				if ((*it).DistanceManhattan(origin) < ret.DistanceManhattan(origin))
+					ret = *it;
+			}
+		}
+	}
+}
 
 	 //----------------||----------------||----------------\\
 	//----------------||A* + JPS algorithm||----------------\\
    //----------------||____________________||----------------\\
 
-void j1PathFinding::CalculatePath(Path * path)
+int j1PathFinding::CalculatePath(Path * path, int max_iterations)
 {
+	int it_time = 0;
+
+	timer.Start();
+
 	while (path->open.node_list.size() > 0)
 	{
 		list<PathNode>::iterator lowest_score_node = path->open.GetNodeLowestScore(); // Get the lowest score node from the open list
@@ -392,38 +478,66 @@ void j1PathFinding::CalculatePath(Path * path)
 			}
 			++it;
 		}
+
+		it_time += timer.Read();
+
+		if (it_time >= max_iterations)
+			break;
 	}
+
+	return it_time;
 }
 
-vector<iPoint> j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	iPoint current_origin = origin;
-	vector<iPoint> ret(0);
+	int ret = -1;
 
-	if (!IsWalkable(destination))
-		return ret;
-	if (!IsWalkable(origin)) {
-		current_origin = FindNearestWalkable(origin);
-		if (current_origin.x == -1 && current_origin.y == -1) {
-			return ret;
+	iPoint current_origin = origin;
+
+	if (IsWalkable(destination))
+	{
+		if (!IsWalkable(origin))
+		{
+			current_origin = FindNearestWalkable(origin);
+
+			if (IsWalkable(current_origin))
+			{
+				LOG("Found new origin walkable");
+			}
+
+			if (current_origin.x == -1 && current_origin.y == -1)
+			{
+				LOG("Path no created: Origin no walkable && no near walkable tiles available");
+				return ret;
+			}
+
+		}
+		Path* path = new Path();
+
+		paths.insert(pair<uint, Path*>(++current_id, path));
+
+		// Start pushing the origin in the open list
+		path->open.node_list.push_back(PathNode(0, 0, current_origin, nullptr));
+
+		path->origin = current_origin;
+		path->destination = destination;
+
+		ret = current_id; //Id of the path created
+	}
+	else {
+		iPoint new_dest = FindNearestWalkableToOrigin(origin, destination);
+		if (new_dest != iPoint(-1, -1)) {
+			CreatePath(origin, new_dest);
 		}
 	}
-	Path* path = new Path();
-	path->open.node_list.push_back(PathNode(0, 0, current_origin, NULL));
-	path->origin = current_origin;
-	path->destination = destination;
 
-	paths.push_back(path); // push the path to a list where there will be all the paths that need to be calculated
-	CalculatePath(path);
-	ret = path->finished_path;
-	ret.erase(ret.begin());
-	return ret;
+	return current_id;
 }
 
-vector<iPoint> j1PathFinding::GetPath() const
+vector<iPoint> j1PathFinding::GetPath(uint id) const
 {
 	vector<iPoint> ret;
-	std::list<Path*>::const_iterator it = paths.begin();
+	std::map<uint, Path*>::const_iterator it = paths.find(id);
 
 	if (it == paths.end())
 	{
@@ -431,13 +545,13 @@ vector<iPoint> j1PathFinding::GetPath() const
 	}
 	else
 	{
-		ret = (*it)->finished_path;
+		ret = it->second->finished_path;
 	}
 
 	return ret;
 }
 
-std::list<Path*> j1PathFinding::GetPaths() const
+std::map<uint, Path*> j1PathFinding::GetPaths() const
 {
 	return paths;
 }

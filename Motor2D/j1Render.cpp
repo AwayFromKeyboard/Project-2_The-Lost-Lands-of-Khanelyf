@@ -48,6 +48,9 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = 0;
 	}
 
+	camera_offset.x = config.child("camera_offset").attribute("x").as_int();
+	camera_offset.y = config.child("camera_offset").attribute("y").as_int();
+
 	return ret;
 }
 
@@ -57,6 +60,9 @@ bool j1Render::Start()
 	LOG("Start module render");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
+	camera.x += camera_offset.x;
+	camera.y -= camera_offset.y;
 
 	return true;
 }

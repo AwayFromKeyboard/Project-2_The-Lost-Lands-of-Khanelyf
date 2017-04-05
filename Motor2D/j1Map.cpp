@@ -7,6 +7,10 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1Window.h"
+#include "Entity.h"
+#include "j1Entity.h"
+#include "j1App.h"
+#include "GameObject.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -47,8 +51,8 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = *item;
 
-		/*if(layer->properties.Get("Nodraw") != 0)
-		continue;*/
+		if(!App->debug_mode && (layer->properties.Get("Nodraw") != 0 || layer->name == "entities"))
+			continue;
 
 		int x_ini, x_end;
 		TilesToDraw_x(x_ini, x_end, *item);
@@ -67,8 +71,8 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
-
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					//magic numbers +30 to fix
+					App->render->Blit(tileset->texture, pos.x+32, pos.y+30, &r);
 				}
 			}
 			count++;
@@ -109,6 +113,29 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
+
+	if (data.type == maptype_orthogonal)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == maptype_isometric)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+fPoint j1Map::FMapToWorld(int x, int y) const
+{
+	fPoint ret;
 
 	if (data.type == maptype_orthogonal)
 	{
@@ -221,25 +248,13 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	std::list<TileSet*>::iterator item;
-	item = data.tilesets.begin();
-
-	while (item != data.tilesets.end())
-	{
-		RELEASE(*item);
-		item++;
-	}
+	for (std::list<TileSet*>::iterator it = data.tilesets.begin(); it != data.tilesets.end(); ++it) 
+		RELEASE(*it);
 	data.tilesets.clear();
 
 	// Remove all layers
-	std::list<MapLayer*>::iterator item2;
-	item2 = data.layers.begin();
-
-	while (item2 != data.layers.end())
-	{
-		RELEASE(*item2);
-		item2++;
-	}
+	for (std::list<MapLayer*>::iterator it = data.layers.begin(); it != data.layers.end(); ++it)
+		RELEASE(*it);
 	data.layers.clear();
 
 	// Clean up the pugui tree
@@ -334,6 +349,14 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	map_loaded = ret;
+
+	// Load the matrix -----------------
+	vector<void*> tmp_vec;
+	for (int j = 0; j < data.height; ++j) 
+		tmp_vec.push_back(nullptr);
+
+	for (int i = 0; i < data.width; ++i)
+		entity_matrix.push_back(tmp_vec);
 
 	return ret;
 }
@@ -638,4 +661,56 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	}
 
 	return ret;
+}
+
+void j1Map::GetEntitiesSpawn() const
+{
+
+	for (std::list<MapLayer*>::const_iterator item = data.layers.begin(); item != data.layers.end(); item++)
+	{
+		MapLayer* layer = *item;
+
+		if (layer->name != "entities")
+			continue;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int id = layer->Get(x, y);
+				if (id != 0)
+				{
+					TileSet* tileset = (id > 0) ? GetTilesetFromTileId(id) : NULL;
+					if (tileset != NULL)
+					{
+						int relative_id = id - tileset->firstgid;
+						switch (id)
+						{
+						case 27: // Hero
+						{
+							Entity* player_unit = App->entity->CreateEntity(hero, player);
+							player_unit->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
+						}
+						break;
+						
+						case 28: // Enemies (probably swordsmans)
+						{
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy);
+							barb_enemy->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
+						}
+						break;
+						
+						case 29: // NPC
+						{
+							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc);
+							barb_npc->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
+						}
+						break;
+						
+						}
+					}
+				}		
+			}
+		}
+	}
 }

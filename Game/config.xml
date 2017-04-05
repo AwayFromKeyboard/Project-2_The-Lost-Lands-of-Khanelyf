@@ -6,6 +6,7 @@
 	</app>
 	<renderer>
 		<vsync value="true" />
+    <camera_offset x="2200" y="1850"/>
 	</renderer>
 	<fonts>
 		<default_font file="fonts/open_sans/OpenSans-Regular.ttf" size="24" />
@@ -14,7 +15,7 @@
 		<atlas file="gui/ui.png" />
 	</gui>
 	<window>
-		<resolution width="800" height="600" scale="1" />
+		<resolution width="1680" height="1050" scale="1" />
 		<fullscreen value="false" />
 		<borderless value="false" />
 		<resizable value="false" />
@@ -26,6 +27,6 @@
 	</file_system>
 	<map>
 		<folder>maps/</folder>
-		<draw_margin value="1" />
+		<draw_margin value="2" />
 	</map>
 </config>

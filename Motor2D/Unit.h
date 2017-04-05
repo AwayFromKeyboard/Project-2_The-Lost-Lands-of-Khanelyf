@@ -9,8 +9,8 @@ struct Collider;
 enum unit_state {
 	unit_idle,
 	unit_move,
+	unit_move_to_enemy,
 	unit_attack,
-	unit_attacking,
 	unit_death,
 	unit_decompose,
 	unit_null
@@ -35,6 +35,8 @@ enum unit_direction {
 
 class GameObject;
 enum entity_name;
+enum entity_type;
+
 class Building;
 
 class Unit : public Entity
@@ -59,6 +61,9 @@ public:
 
 	void OnColl(Collider* col1, Collider* col2);
 	GameObject* GetGameObject();
+	Collider* GetCollider();
+	entity_type GetType();
+	void SetSelected(bool _selected);
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
@@ -69,6 +74,7 @@ public:
 	void LookAtMovement();
 
 	// Attack
+	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
 	void LookAtAttack();
 	void UnitAttack();
@@ -78,7 +84,6 @@ public:
   
 	// Death
 	void CheckDeathDirection();
-	j1Timer death_timer;
 
 	//Decompose
 	void CheckDecomposeDirection();
@@ -86,20 +91,19 @@ public:
 public:
 	GameObject* game_object = nullptr;
 	unit_state state = unit_state::unit_null;
-	attack_state att_state = attack_state::attack_null;	entity_name type;
+	entity_name name;
 	bool flip = false;
-	bool to_delete = false; //WTF Simon
   
-
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
 	bool has_destination = false;
-
-private:
+	uint path_id;
+public:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
-  
+	attack_state att_state = attack_state::attack_null;
+	bool has_moved = false;
 public:
 	int life = 0;
 	int cost = 0;
@@ -110,10 +114,9 @@ public:
 	int range = 0;
 
 	iPoint position = NULLPOINT;
+	iPoint position_map = NULLPOINT;
 
-	Collider* idle_collision = nullptr;
-	Collider* walk_collision = nullptr;
-	Collider* attack_collision = nullptr;
+	Collider* collision = nullptr;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
@@ -121,6 +124,13 @@ public:
 	iPoint a_offset = NULLPOINT;
 	iPoint d_offset = NULLPOINT;
 	iPoint de_offset = NULLPOINT;
+
+	//flip
+	int flip_i_offset = 0;
+	int flip_m_offset = 0;
+	int flip_a_offset = 0;
+	int flip_d_offset = 0;
+	int flip_de_offset = 0;
 
 	Animation* current_animation;
 	// Idle
@@ -155,7 +165,16 @@ public:
 	Animation de_north;
 
 public:
-	bool is_selected = false;
+	uint radius_of_action = 0;
+
+private:
+		j1Timer death_timer;
+		j1Timer AI_timer;
+public:
+	bool IsInsideCircle(int x, int y);
+
+public:
+	bool shout_fx = true;
 };
 
 #endif
