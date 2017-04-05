@@ -57,7 +57,13 @@ bool Unit::PreUpdate()
 
 	position = { game_object->GetPos().x, game_object->GetPos().y };
 	position_map = App->map->WorldToMapPoint(position);
-	App->map->entity_matrix[position_map.x][position_map.y] = this;
+	if (life > 0) {
+		App->map->entity_matrix[position_map.x][position_map.y] = this;
+	}
+	else if (selected) {
+		App->entity->selected.remove(this);
+		selected = false;
+	}
 
 	return ret;
 }
@@ -131,7 +137,6 @@ bool Unit::Update(float dt)
 		break;
 
 	case unit_state::unit_death:
-		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
@@ -143,7 +148,6 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_decompose:
 		CheckDecomposeDirection();
-		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 			if (current_animation->GetFrameIndex() == 4) {
 				current_animation->SetSpeed(0);
 				to_delete = true;
@@ -269,6 +273,11 @@ Collider * Unit::GetCollider()
 entity_type Unit::GetType()
 {
 	return type;
+}
+
+void Unit::SetSelected(bool _selected) {
+	if (life > 0)
+		selected = _selected;
 }
 
 void Unit::SetPath(vector<iPoint> _path)
