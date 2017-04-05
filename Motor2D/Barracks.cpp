@@ -14,6 +14,7 @@
 #include "CollisionFilters.h"
 #include "Functions.h"
 #include "Log.h"
+#include "j1Gui.h"
 
 Barracks::Barracks(entity_type _type)
 {

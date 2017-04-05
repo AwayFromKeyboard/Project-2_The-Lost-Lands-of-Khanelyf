@@ -8,6 +8,8 @@
 #include "j1Input.h"
 #include "j1Collisions.h"
 #include "Barracks.h"
+#include "j1Gui.h"
+#include "Player.h"
 
 j1Entity::j1Entity()
 {
@@ -172,10 +174,14 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			if ((*it)->GetSelected())
 				if ((*it)->GetType() == building) {
 					App->entity->UnselectEverything();
+					App->player->barracks_ui_window->SetEnabledAndChilds(true);
 					(*it)->SetSelected(true);
 				}
-				else
+				else {
+					if (App->player->barracks_ui_window->enabled)
+						App->player->barracks_ui_window->SetEnabledAndChilds(false);
 					selected.push_back((Unit*)*it);
+				}
 		}
 	}
 }
@@ -193,6 +199,9 @@ void j1Entity::UnselectEverything()
 		else
 			it++;
 	}
+	if (App->player->barracks_ui_window->enabled)
+		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+
 	selected.clear();
 }
 

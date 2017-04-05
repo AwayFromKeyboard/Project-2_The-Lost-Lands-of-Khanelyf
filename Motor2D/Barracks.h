@@ -16,9 +16,8 @@ public:
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
-public:
-	bool create_barbarian = false;
-	bool create_swordsman = false;
+private:
+	
 };
 
 #endif

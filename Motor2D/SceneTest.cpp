@@ -66,22 +66,6 @@ bool SceneTest::Start()
 	ui_r = { 1, 84, 800, 600 };
 	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
 
-	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
-
-	create_unit_image = (UI_Image*)barracks_ui_window->CreateImage(iPoint(280, 200), { 0, 689, 225, 144 });
-
-	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(313, 242), 60, 60);
-	create_unit_button->AddImage("standard", { 566, 1, 60, 60 });
-	create_unit_button->SetImage("standard");
-	create_unit_button->AddImage("clicked", { 505, 1, 60, 60 });
-	
-	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(412, 242), 60, 60);
-	create_unit_button2->AddImage("standard", { 566, 1, 60, 60 });
-	create_unit_button2->SetImage("standard");
-	create_unit_button2->AddImage("clicked", { 505, 1, 60, 60 });
-
-	//barracks_ui_window->enabled = false;
-
 	InitCameraMovement();
 
 	App->map->GetEntitiesSpawn();
@@ -106,12 +90,6 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
-	//if () { // A barrack is selected
-	//	barracks_ui_window->enabled = true;
-	//}
-	//else if () { // There is not any barrack selected
-	//	barracks_ui_window->enabled = false;
-	//}
 
 	return true;
 }
@@ -131,29 +109,6 @@ bool SceneTest::Update(float dt)
 
 bool SceneTest::PostUpdate()
 {
-	if (create_unit_button->MouseClickEnterLeft()) { // && barracks->create_barbarian == true
-		create_unit_button->SetImage("clicked");
-	
-		//Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
-		//barb->game_object->SetPos(); // Barracks position
-		//gold -= barb->cost;
-		//current_human_resources += barb->human_cost;
-	}
-	if (create_unit_button->MouseClickOutLeft()) {
-		create_unit_button->SetImage("standard");
-	}
-	
-	if (create_unit_button2->MouseClickEnterLeft()) { // && barracks->create_swordsman == true
-		create_unit_button2->SetImage("clicked");
-	
-		//Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
-		//sword->game_object->SetPos(); // Barracks position
-		//gold -= sword->cost;
-		//current_human_resources += sword->human_cost;
-	}
-	if (create_unit_button2->MouseClickOutLeft()) {
-		create_unit_button2->SetImage("standard");
-	}
 
 	return true;
 }
