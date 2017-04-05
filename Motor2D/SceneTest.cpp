@@ -17,6 +17,7 @@
 #include "Unit.h"
 #include "GameObject.h"
 #include "j1Collisions.h"
+#include "j1App.h"
 
 SceneTest::SceneTest()
 {
@@ -140,7 +141,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	std::string txt = oss.str();
 	gold_txt->SetText(txt);
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
+	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE && App->debug_mode)
 	{
 		gold -= TROOP_PRICE;
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);

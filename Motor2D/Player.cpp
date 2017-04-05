@@ -33,16 +33,16 @@ bool Player::Start()
 	
 	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
 	life_button = (UI_Button*)levelup_window->CreateButton({ 148, 491 }, 10, 10);
-	life_button->AddImage("standard", { 500, 1, 10, 10 });
+	life_button->AddImage("standard", { 792, 73, 10, 10 });
 	life_button->SetImage("standard");
 	damage_button = (UI_Button*)levelup_window->CreateButton({ 148, 506 }, 10, 10);
-	damage_button->AddImage("standard", { 500, 1, 10, 10 });
+	damage_button->AddImage("standard", { 792, 73, 10, 10 });
 	damage_button->SetImage("standard");
 	armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 521 }, 10, 10);
-	armor_button->AddImage("standard", { 500, 1, 10, 10 });
+	armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	armor_button->SetImage("standard");
 	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 536 }, 10, 10);
-	pierce_armor_button->AddImage("standard", { 500, 1, 10, 10 });
+	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
 	levelup_window->SetEnabledAndChilds(false);
 
@@ -52,12 +52,12 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
-
-	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down)
-		hero->levelup_points += 5;
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
+
+	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
+		hero->levelup_points += 5;
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
 		App->gui->debug = !App->gui->debug;
