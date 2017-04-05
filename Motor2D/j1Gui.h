@@ -241,7 +241,6 @@ public:
 
 	bool update();
 	
-	//bool cleanup(); QA --> Needs implementation
 
 	bool MouseEnter();
 	bool MouseOut();

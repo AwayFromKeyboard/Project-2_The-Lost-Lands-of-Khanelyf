@@ -951,11 +951,6 @@ UI_Button::~UI_Button()
 {
 }
 
-//bool UI_Button::cleanup() { QA --> needs implementation
-//	rect_list.clear();
-//	return true;
-//}
-
 void UI_Button::Set(iPoint _pos, int w, int h)
 {
 	rect.x = _pos.x;

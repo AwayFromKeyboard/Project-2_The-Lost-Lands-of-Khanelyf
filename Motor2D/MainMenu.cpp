@@ -74,20 +74,15 @@ bool MainMenu::PostUpdate()
 bool MainMenu::CleanUp()
 {
 	//QA --> Good way to do it
-	/*if (App->scene->GetCurrentScene() != App->scene->main_menu)
-	{
-		App->gui->DeleteElement(main_menu_window);
-		App->gui->DeleteElement(start_button);
-	}*/
-
+	App->gui->DeleteElement(cursor_window);
+	App->gui->DeleteElement(start_button);
+	App->gui->DeleteElement(main_menu_window);
 
 	//QA --> Bad way to do it
-	cursor->enabled = false;
-	cursor_window->enabled = false;
-	main_menu_image->enabled = false;
-	main_menu_window->enabled = false;
-	start_button->enabled = false;
-
+	//App->gui->DeleteElement(main_menu_window);
+	//App->gui->DeleteElement(cursor_window);
+	//start_button->enabled = false;
+	
 	return true;
 }
 
