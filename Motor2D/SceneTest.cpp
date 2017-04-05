@@ -69,19 +69,18 @@ bool SceneTest::Start()
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
 
 	create_unit_image = (UI_Image*)barracks_ui_window->CreateImage(iPoint(280, 200), { 0, 689, 225, 144 });
-	//create_unit_image->enabled = false;
 
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(313, 242), 60, 60);
 	create_unit_button->AddImage("standard", { 566, 1, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 505, 1, 60, 60 });
-	//create_unit_button->enabled = false;
 	
 	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(412, 242), 60, 60);
 	create_unit_button2->AddImage("standard", { 566, 1, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 505, 1, 60, 60 });
-	//create_unit_button2->enabled = false;
+
+	//barracks_ui_window->enabled = false;
 
 	InitCameraMovement();
 
@@ -108,14 +107,10 @@ bool SceneTest::PreUpdate()
 	CheckUnitCreation(p);
   
 	//if () { // A barrack is selected
-	//	create_unit_button->enabled = true;
-	//	create_unit_button2->enabled = true;
-	//	create_unit_image->enabled = true;
+	//	barracks_ui_window->enabled = true;
 	//}
 	//else if () { // There is not any barrack selected
-	//	create_unit_button->enabled = false;
-	//	create_unit_button2->enabled = false;
-	//	create_unit_image->enabled = false
+	//	barracks_ui_window->enabled = false;
 	//}
 
 	return true;

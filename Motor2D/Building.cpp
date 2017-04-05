@@ -107,3 +107,8 @@ entity_type Building::GetType()
 {
 	return type;
 }
+
+entity_name Building::GetName()
+{
+	return name;
+}

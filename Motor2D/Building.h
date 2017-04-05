@@ -30,6 +30,7 @@ public:
 	GameObject* GetGameObject();
 	Collider* GetCollider();
 	entity_type GetType();
+	entity_name GetName();
 
 public:
 

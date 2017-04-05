@@ -65,6 +65,7 @@ bool Player::Update(float dt)
 			if ((*it)->GetSelected()) {
 				if ((*it)->GetType() == building) {
 					App->entity->UnselectEverything();
+					(*it)->SetSelected(true);
 					break;
 				}
 				else
