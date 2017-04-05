@@ -30,14 +30,24 @@ bool Player::Start()
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
 
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
-	create_unit_button->AddImage("standard", { 566, 1, 60, 60 });
+	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
-	create_unit_button->AddImage("clicked", { 505, 1, 60, 60 });
+	create_unit_button->AddImage("clicked", { 645, 0, 60, 60 });
 
 	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
-	create_unit_button2->AddImage("standard", { 566, 1, 60, 60 });
+	create_unit_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button2->SetImage("standard");
-	create_unit_button2->AddImage("clicked", { 505, 1, 60, 60 });
+	create_unit_button2->AddImage("clicked", { 645, 0, 60, 60 });
+
+	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(297, 510), 37, 36);
+	barbarian_img->AddImage("standard", { 765, 0, 37, 36 });
+	barbarian_img->SetImage("standard");
+	barbarian_img->click_through = true;
+
+	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(395, 510), 37, 36);
+	swordsman_img->AddImage("standard", { 765, 36, 37, 36 });
+	swordsman_img->SetImage("standard");
+	swordsman_img->click_through = true;
 
 	barracks_ui_window->SetEnabledAndChilds(false);
 
@@ -68,10 +78,12 @@ bool Player::PreUpdate()
 	if (create_unit_button->MouseClickEnterLeft()) { // && barracks->create_barbarian == true
 		create_unit_button->SetImage("clicked");
 
-		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
-		barb->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
-		App->scene->scene_test->gold -= barb->cost;
-		App->scene->scene_test->current_human_resources += barb->human_cost;
+		if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
+			barb->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
+			App->scene->scene_test->gold -= barb->cost;
+			App->scene->scene_test->current_human_resources += barb->human_cost;
+		}
 	}
 	if (create_unit_button->MouseClickOutLeft()) {
 		create_unit_button->SetImage("standard");
@@ -80,10 +92,12 @@ bool Player::PreUpdate()
 	if (create_unit_button2->MouseClickEnterLeft()) { // && barracks->create_swordsman == true
 		create_unit_button2->SetImage("clicked");
 
-		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
-		sword->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
-		App->scene->scene_test->gold -= sword->cost;
-		App->scene->scene_test->current_human_resources += sword->human_cost;
+		if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
+			sword->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
+			App->scene->scene_test->gold -= sword->cost;
+			App->scene->scene_test->current_human_resources += sword->human_cost;
+		}
 	}
 	if (create_unit_button2->MouseClickOutLeft()) {
 		create_unit_button2->SetImage("standard");

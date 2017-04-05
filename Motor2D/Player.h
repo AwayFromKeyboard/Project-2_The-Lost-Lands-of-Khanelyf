@@ -30,6 +30,8 @@ public:
 	iPoint barracks_position;
 
 private:
+	UI_Button* barbarian_img = nullptr;
+	UI_Button* swordsman_img = nullptr;
 	UI_Button* create_unit_button = nullptr;
 	UI_Button* create_unit_button2 = nullptr;
 
