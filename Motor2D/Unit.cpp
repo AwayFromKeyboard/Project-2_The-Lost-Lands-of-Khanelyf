@@ -35,7 +35,7 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
-
+	AI_timer.Start();
 	return ret;
 }
 
@@ -55,13 +55,15 @@ bool Unit::PreUpdate()
 		}
 	}
 
+	position = { game_object->GetPos().x, game_object->GetPos().y };
+	position_map = App->map->WorldToMapPoint(position);
+	App->map->entity_matrix[position_map.x][position_map.y] = this;
 
 	return ret;
 }
 
 bool Unit::Update(float dt)
 {
-	position = { game_object->GetPos().x, game_object->GetPos().y };
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 	
 	switch (state) {
@@ -75,32 +77,40 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_move_to_enemy:
 	{
-		if (IsInRange(attacked_unit)) {
-			App->pathfinding->DeletePath(path_id);
-			path.clear();
-			state = unit_state::unit_attack;
-			has_moved = false;
-		}
-		else if (!IsInRange(attacked_unit) && !has_moved) {
-			has_moved = true;
-			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
-		}
-		if (!IsInRange(attacked_unit) && has_moved) {
-			if (path.size() > 0)
-				FollowPath(dt);
+		if (attacked_unit == nullptr || attacked_unit->life <= 0)
+			state = unit_idle;
+		else {
+			if (IsInRange(attacked_unit)) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				state = unit_state::unit_attack;
+				has_moved = false;
+			}
+			else if (!has_moved) {
+				has_moved = true;
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
+			}
+			else{
+				if (path.size() > 0)
+					FollowPath(dt);
+			}
 		}
 	}
 		break;
 
 	case unit_state::unit_attack:
-		if (attacked_unit != nullptr)
+		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
+			attacked_unit == nullptr;
+			state = unit_idle;
+		}
+		else
 		{
-			if (IsInRange(attacked_unit))
-			{
+			if (IsInRange(attacked_unit)) {
 				att_state = attack_unit;
 			}
-			else if (!IsInRange(attacked_unit))
-			{
+			else {
 				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
@@ -121,6 +131,7 @@ bool Unit::Update(float dt)
 		break;
 
 	case unit_state::unit_death:
+		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
@@ -133,6 +144,7 @@ bool Unit::Update(float dt)
 		}
 		break;
 	case unit_state::unit_decompose:
+		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 		if (death_timer.ReadSec() > 2)
 		{
 			CheckDecomposeDirection();
@@ -160,6 +172,7 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		CheckSurroundings();
 		break;
 	case unit_move:
 		offset = m_offset;
@@ -167,6 +180,7 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+		CheckSurroundings();
 		break;
 	case unit_move_to_enemy:
 		offset = m_offset;
@@ -205,6 +219,7 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
+	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
 		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
@@ -348,7 +363,6 @@ void Unit::SetDirection()
 		return;
 	}
 
-	iPoint position = game_object->GetPos();
 	switch (destination) {
 	case south:
 		break;
@@ -369,9 +383,7 @@ void Unit::SetDirection()
 		break;
 	}
 
-	iPoint position_m = App->map->WorldToMapPoint(position);
-
-	if (position_m == path.front()) {
+	if (position_map == path.front()) {
 			path.erase(path.begin());
 			SetDirection();
 			return;
@@ -379,7 +391,7 @@ void Unit::SetDirection()
 
 	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
 
-	direction = fPoint(path.front().x - position_m.x, path.front().y - position_m.y);
+	direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 
 	LookAtMovement();
 
@@ -454,6 +466,66 @@ void Unit::LookAtMovement()
 			current_animation = &m_north_west;
 			destination = north_east;
 			flip = true;
+		}
+	}
+}
+
+bool Unit::CheckSurroundings() {
+	if (AI_timer.ReadSec() >= 0.5) {
+		AI_timer.Start();
+		std::list<iPoint> frontier;
+		std::list<iPoint> visited;
+
+
+		visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+		frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+
+		for (int i = 0; i < radius_of_action; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[4];
+				neighbors[0] = frontier.front() + iPoint(1, 0);
+				neighbors[1] = frontier.front() + iPoint(-1, 0);
+				neighbors[2] = frontier.front() + iPoint(0, 1);
+				neighbors[3] = frontier.front() + iPoint(0, -1);
+				frontier.pop_front();
+
+				for (int k = 0; k < 4; k++) {
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0) {
+						switch (type) {
+						case player:
+						case ally:
+							if (found->type == enemy) {
+								attacked_unit = found;
+								state = unit_move_to_enemy;
+								return true;
+							}
+							break;
+						case enemy:
+							if (found->type == player || found->type == ally) {
+								attacked_unit = found;
+								state = unit_move_to_enemy;
+								return true;
+							}
+						}
+					}
+					else {
+						if (App->pathfinding->IsWalkable(neighbors[k])) {
+							bool is_visited = false;
+							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+								if (neighbors[k] == *it) {
+									is_visited = true;
+									break;
+								}
+							}
+							if (!is_visited) {
+								frontier.push_back(neighbors[k]);
+								visited.push_back(neighbors[k]);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -685,5 +757,11 @@ void Unit::CheckDecomposeDirection()
 			flip = false;
 		}
 	}
+}
+
+bool Unit::IsInsideCircle(int x, int y)
+{
+	iPoint center = game_object->GetPos();
+	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
 }
 

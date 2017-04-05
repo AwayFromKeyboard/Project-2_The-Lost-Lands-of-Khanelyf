@@ -73,6 +73,7 @@ public:
 	void LookAtMovement();
 
 	// Attack
+	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
 	void LookAtAttack();
 	void UnitAttack();
@@ -82,7 +83,6 @@ public:
   
 	// Death
 	void CheckDeathDirection();
-	j1Timer death_timer;
 
 	//Decompose
 	void CheckDecomposeDirection();
@@ -114,9 +114,9 @@ public:
 	int range = 0;
 
 	iPoint position = NULLPOINT;
+	iPoint position_map = NULLPOINT;
 
 	Collider* collision = nullptr;
-	entity_type type = entity_type::null;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
@@ -163,6 +163,15 @@ public:
 	Animation de_west;
 	Animation de_north_west;
 	Animation de_north;
+
+public:
+	uint radius_of_action = 0;
+
+private:
+		j1Timer death_timer;
+		j1Timer AI_timer;
+public:
+	bool IsInsideCircle(int x, int y);
 
 public:
 	bool is_selected = false;

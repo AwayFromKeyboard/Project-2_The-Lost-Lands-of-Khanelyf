@@ -67,6 +67,7 @@ bool Swordsman::LoadEntity()
 		pierce_armor = node.child("pierce_armor").attribute("value").as_int();
 		range = node.child("range").attribute("value").as_int();
 		life = node.child("life").attribute("value").as_int();
+		radius_of_action = node.child("radius_of_action").attribute("value").as_int(0);
 
 		std::string texture = node.child("texture").attribute("value").as_string();
 		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
@@ -92,13 +93,6 @@ bool Swordsman::LoadEntity()
 		state = unit_state::unit_idle;
 	}
 	else LOG("\nERROR, no node found\n");
-
-	return ret;
-}
-
-bool Swordsman::Start()
-{
-	bool ret = true;
 
 	return ret;
 }
