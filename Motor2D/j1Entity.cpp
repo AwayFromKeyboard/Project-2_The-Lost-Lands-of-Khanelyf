@@ -150,7 +150,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 	{
 		iPoint unit = (*it)->GetGameObject()->GetPos();
 		
-		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
 			{

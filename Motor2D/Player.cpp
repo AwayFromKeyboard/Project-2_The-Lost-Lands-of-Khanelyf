@@ -67,7 +67,7 @@ bool Player::Update(float dt)
 		}
 
 	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && !entity_type::building) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		iPoint mouse_pathfinding;
@@ -96,6 +96,9 @@ bool Player::Update(float dt)
 					break;
 				case entity_type::player:
 					MoveToTile(p);
+					mouse_over_entity = true;
+					break;
+				case entity_type::building:
 					mouse_over_entity = true;
 					break;
 				default:

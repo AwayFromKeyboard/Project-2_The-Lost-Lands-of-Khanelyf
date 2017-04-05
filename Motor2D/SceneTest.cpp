@@ -209,7 +209,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 1)
 	{
-		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, ally);
+		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building);
 		barrack->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 		gold -= barrack->cost;
 	}
