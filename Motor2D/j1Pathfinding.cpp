@@ -317,7 +317,7 @@ bool j1PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint st
 
 void j1PathFinding::DeletePath(uint path_id)
 {
-	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();)
+	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();++it)
 	{
 		if (it->first == path_id) {
 			it->second->completed = true;
