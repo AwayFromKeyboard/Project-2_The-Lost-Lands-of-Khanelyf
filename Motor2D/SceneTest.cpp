@@ -159,14 +159,14 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	std::string txt2 = oss2.str();
 	human_resources_txt->SetText(txt2);
 
-	if (App->input->GetKey(SDL_SCANCODE_7) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
+	if (App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
 		barb->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 		gold -= barb->cost;
 		current_human_resources += barb->human_cost;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
+	else if (App->input->GetKey(SDL_SCANCODE_S) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
 		sword->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
