@@ -135,7 +135,7 @@ bool SceneTest::Update(float dt)
 
 bool SceneTest::PostUpdate()
 {
-	//if (create_unit_button->MouseClickEnterLeft()) {
+	//if (create_unit_button->MouseClickEnterLeft()) { // && barracks->create_barbarian == true
 	//	create_unit_button->SetImage("clicked");
 	//
 	//	Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
@@ -147,7 +147,7 @@ bool SceneTest::PostUpdate()
 	//	create_unit_button->SetImage("standard");
 	//}
 	//
-	//if (create_unit_button2->MouseClickEnterLeft()) {
+	//if (create_unit_button2->MouseClickEnterLeft()) { // && barracks->create_swordsman == true
 	//	create_unit_button2->SetImage("clicked");
 	//
 	//	Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
