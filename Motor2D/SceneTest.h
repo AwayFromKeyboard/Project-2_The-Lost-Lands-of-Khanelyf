@@ -41,6 +41,8 @@ private:
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
 
+	UI_Window* barracks_ui_window = nullptr;
+
 	UI_Image* create_unit_image = nullptr;
 	UI_Button* create_unit_button = nullptr;
 	UI_Button* create_unit_button2 = nullptr;

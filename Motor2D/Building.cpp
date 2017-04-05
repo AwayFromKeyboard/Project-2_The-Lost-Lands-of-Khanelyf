@@ -50,7 +50,7 @@ bool Building::Draw(float dt)
 {
 	bool ret = true;
 
-	App->scene->LayerBlit(100, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
+	App->scene->LayerBlit(6, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
 
 	return ret;
 }
