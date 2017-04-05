@@ -80,7 +80,7 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_move:
 		FollowPath(dt);
-		CheckSurroundings();
+		//CheckSurroundings();
 		break;
 
 	case unit_state::unit_move_to_enemy:
