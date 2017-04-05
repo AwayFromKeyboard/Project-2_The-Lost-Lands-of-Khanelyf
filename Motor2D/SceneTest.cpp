@@ -68,7 +68,7 @@ bool SceneTest::Start()
 
 	App->map->GetEntitiesSpawn();
 
-	gold = 1000;
+	gold = 0;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
@@ -146,4 +146,9 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
 		barb->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 	}
+}
+
+void SceneTest::IncreaseGold(int gold)
+{
+	this->gold += gold;
 }

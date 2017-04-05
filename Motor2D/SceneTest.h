@@ -33,17 +33,14 @@ public:
 
 	void CheckUnitCreation(iPoint p);
 
+	void IncreaseGold(int gold);
+
 private:
 	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
 
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;
-
-	
-
-	Hero* troop = nullptr;
-	Barbarian* troop2 = nullptr;
 
 	SDL_Rect cursor_r;
 	SDL_Rect ui_r;

@@ -21,6 +21,7 @@ enum quest_id {
 	quest_beggar,
 	quest_leader,
 	quest_mayor,
+	quest_mayor2,
 	quest_null
 };
 
@@ -60,9 +61,9 @@ public:
 
 	bool Start();
 
-	bool Update(float dt);
-
 	bool PreUpdate();
+	
+	bool Update(float dt);
 
 	bool PostUpdate();
 
@@ -70,9 +71,11 @@ public:
 
 	Quest* CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
 	Quest* GetCurrentQuest();
+	Quest* ChangeQuest(quest_id new_quest);
 
 private:
 	list<Quest*> quest_list;
+	Quest* current_quest = nullptr;
 };
 
 #endif
