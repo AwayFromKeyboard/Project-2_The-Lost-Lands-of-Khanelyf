@@ -35,6 +35,7 @@ private:
 	UI_Button* damage_button = nullptr;
 	UI_Button* armor_button = nullptr;
 	UI_Button* pierce_armor_button = nullptr;
+	UI_Text* level_points_txt = nullptr;
 
 	Hero* hero = nullptr;
 private:

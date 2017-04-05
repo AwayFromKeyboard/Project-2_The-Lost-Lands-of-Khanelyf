@@ -26,24 +26,25 @@ bool Player::Start()
 	bool ret = true;
 
 	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_txt = (UI_Text*)attributes_window->CreateText({ 165, 485 }, App->font->default_15);
-	damage_txt = (UI_Text*)attributes_window->CreateText({ 165, 500 }, App->font->default_15);
-	armor_txt = (UI_Text*)attributes_window->CreateText({ 165, 515 }, App->font->default_15);
-	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 165, 530 }, App->font->default_15);
+	life_txt = (UI_Text*)attributes_window->CreateText({ 165, 487 }, App->font->default_15);
+	damage_txt = (UI_Text*)attributes_window->CreateText({ 165, 503 }, App->font->default_15);
+	armor_txt = (UI_Text*)attributes_window->CreateText({ 165, 518 }, App->font->default_15);
+	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 165, 533 }, App->font->default_15);
 	
 	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_button = (UI_Button*)levelup_window->CreateButton({ 148, 491 }, 10, 10);
+	life_button = (UI_Button*)levelup_window->CreateButton({ 148, 493 }, 10, 10);
 	life_button->AddImage("standard", { 792, 73, 10, 10 });
 	life_button->SetImage("standard");
-	damage_button = (UI_Button*)levelup_window->CreateButton({ 148, 506 }, 10, 10);
+	damage_button = (UI_Button*)levelup_window->CreateButton({ 148, 509 }, 10, 10);
 	damage_button->AddImage("standard", { 792, 73, 10, 10 });
 	damage_button->SetImage("standard");
-	armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 521 }, 10, 10);
+	armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 524 }, 10, 10);
 	armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	armor_button->SetImage("standard");
-	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 536 }, 10, 10);
+	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 539 }, 10, 10);
 	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
+	level_points_txt = (UI_Text*)levelup_window->CreateText({ 130, 478 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
 	return ret;
@@ -201,6 +202,10 @@ void Player::UpdateAttributes() {
 			levelup_window->SetEnabledAndChilds(false);
 		}
 		else {
+			std::stringstream levelup_points;
+			levelup_points << "points left: " << hero->levelup_points;
+			level_points_txt->SetText(levelup_points.str());
+
 			if (life_button->MouseClickEnterLeft()) {
 				hero->levelup_points -= 1;
 				hero->life += 20;
