@@ -18,11 +18,11 @@ enum entity_name
 
 enum entity_type
 {
+	null = 0,
 	player,
 	ally,
 	npc,
-	enemy,
-	null
+	enemy
 };
 
 class Entity;
