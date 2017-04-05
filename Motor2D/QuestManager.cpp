@@ -36,47 +36,33 @@ bool QuestManager::PreUpdate()
 
 bool QuestManager::Update(float dt) {
 
-	switch (current_quest->id)
-	{
-	case quest_beggar:
-		if (current_quest->progress == current_quest->requested) {
-			current_quest->progress = 0;
-			App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
-			//App->player->hero->
-			current_quest->active = false;
+	if (current_quest->progress == current_quest->requested) {
+		current_quest->progress = 0;
+		// Update Rewards
+		App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
+		// Increase level points
+		// change title
+		current_quest->active = false;
+		switch (current_quest->id)
+		{
+		case quest_beggar:
 			current_quest = ChangeQuest(quest_id::quest_leader);
-		}
-		break;
-	case quest_leader:
-		if (current_quest->progress == current_quest->requested) {
-			current_quest->progress = 0;
-			App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
-			current_quest->active = false;
+			break;
+		case quest_leader:
 			current_quest = ChangeQuest(quest_id::quest_mayor);
-		}
-		break;
-	case quest_mayor:
-		if (current_quest->progress == current_quest->requested) {
-			current_quest->progress = 0;
-			App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
-			//App->player->hero->
-			current_quest->active = false;
+			break;
+		case quest_mayor:
 			current_quest = ChangeQuest(quest_id::quest_mayor2);
-		}
-		break;
-	case quest_mayor2:
-		if (current_quest->progress == current_quest->requested) {
-			current_quest->progress = 0;
-			App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
-			//App->player->hero->
-			current_quest->active = false;
+			break;
+		case quest_mayor2:
 			current_quest = ChangeQuest(quest_id::quest_null);
+			break;
+		case quest_null:
+			break;
+		default:
+			break;
 		}
-		break;
-	case quest_null:
-		break;
-	default:
-		break;
+	
 	}
 
 	return true;
@@ -119,8 +105,10 @@ Quest * QuestManager::GetCurrentQuest() {
 Quest * QuestManager::ChangeQuest(quest_id new_quest)
 {
 	for (list<Quest*>::iterator it = quest_list.begin(); it != quest_list.end(); it++) {
-		if ((*it)->id == new_quest)
+		if ((*it)->id == new_quest) {
+			(*it)->active = active;
 			return *it;
+		}
 	}
 
 	return nullptr;
