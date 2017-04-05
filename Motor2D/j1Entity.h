@@ -86,6 +86,7 @@ public:
 
 	std::list<SelectedList> lists_selected;
 	std::list<Unit*> selected;
+	//std::list<Props*> props;
 };
 
 #endif // __j1ENTITY_H__

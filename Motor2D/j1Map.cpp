@@ -72,7 +72,16 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					//magic numbers +30 to fix
-					App->render->Blit(tileset->texture, pos.x+32, pos.y+30, &r);
+					if(layer->name=="trees")
+						App->render->Blit(tileset->texture, pos.x+20, pos.y-140, &r);
+					else if(layer->name == "special")
+						App->render->Blit(tileset->texture, pos.x +20, pos.y - 195, &r);
+					else if (layer->name == "casas")
+						App->render->Blit(tileset->texture, pos.x + 35, pos.y - 95, &r);
+					else if (layer->name == "tower")
+						App->render->Blit(tileset->texture, pos.x+30, pos.y - 110, &r);
+					else
+						App->render->Blit(tileset->texture, pos.x+32, pos.y + 30, &r);
 				}
 			}
 			count++;
@@ -320,6 +329,7 @@ bool j1Map::Load(const char* file_name)
 			data.layers.push_back(lay);
 	}
 
+	// ret = LoadResources(map_file.child("map"));
 	if (ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -541,6 +551,32 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 		}
 	}
 
+	return ret;
+}
+
+bool j1Map::LoadResources(pugi::xml_node & node)
+{
+	bool ret = true;
+	//data.mapWidth = data.width * data.tile_width;
+	//data.mapHeight = data.height * data.tile_height;
+
+	/*pugi::xml_node resourceNode;
+
+	for (resourceNode = node.child("objectgroup"); resourceNode; resourceNode = resourceNode.next_sibling("objectgroup"))
+	{
+		pugi::xml_node prop;
+
+		for (prop = resourceNode.child("object"); prop; prop = prop.next_sibling("object"))
+		{
+			
+			string name = prop.attribute("name").as_string();
+			Resource* resource = App->entityManager->CreateResource(prop.attribute("x").as_int(), prop.attribute("y").as_int(), (resourceType)type, 0);
+			
+			data.PropResources.push_back(resource);
+			
+		}
+	}
+	*/
 	return ret;
 }
 
