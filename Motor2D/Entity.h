@@ -49,7 +49,7 @@ public:
 	}
 
 	virtual entity_type GetType() {
-		return entity_type::null;
+		return type;
 	}
 
 	void SetSelected(bool _selected) {
@@ -58,6 +58,8 @@ public:
 	bool GetSelected() {
 		return selected;
 	}
+public:
+	entity_type type = entity_type::null;
 private:
 	bool selected = false;
 };
