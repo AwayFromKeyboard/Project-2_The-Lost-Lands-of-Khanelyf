@@ -13,6 +13,7 @@ enum entity_name
 	hero,
 	barbarian,
 	swordsman,
+	barracks,
 	test
 };
 
@@ -22,7 +23,8 @@ enum entity_type
 	player,
 	ally,
 	npc,
-	enemy
+	enemy,
+	building
 };
 
 class Entity;
@@ -84,6 +86,7 @@ public:
 
 	std::list<SelectedList> lists_selected;
 	std::list<Unit*> selected;
+	//std::list<Props*> props;
 };
 
 #endif // __j1ENTITY_H__

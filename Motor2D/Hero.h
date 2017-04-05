@@ -19,6 +19,7 @@ public:
 
 public:
 	iPoint mouse_position;
+	int levelup_points = 0;
 };
 
 #endif

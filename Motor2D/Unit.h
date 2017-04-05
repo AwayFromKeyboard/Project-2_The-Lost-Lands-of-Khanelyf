@@ -106,7 +106,9 @@ public:
 	bool has_moved = false;
 public:
 	int life = 0;
-	int cost = 0;
+	int cost = 0; // only for allies
+	int human_cost = 0; // only for allies
+	int gold_drop = 0; // only for enemies
 	float speed = 0;
 	int damage = 0;
 	int armor = 0;
