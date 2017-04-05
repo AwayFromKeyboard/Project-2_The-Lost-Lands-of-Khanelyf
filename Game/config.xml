@@ -27,6 +27,6 @@
 	</file_system>
 	<map>
 		<folder>maps/</folder>
-		<draw_margin value="1" />
+		<draw_margin value="2" />
 	</map>
 </config>

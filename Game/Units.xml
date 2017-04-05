@@ -102,12 +102,14 @@
   <unit type="Hero">
     <texture value="textures/Hero.png"/>
     <cost value="0"/>
+    <human_cost value="0"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="10"/>
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="100"/>
+    <radius_of_action value="7"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
       <!--10 23-->
@@ -450,199 +452,200 @@
   </unit>
   <unit type="Swordsman_enemy">
     <texture value="textures/Swordsman_enemy.png"/>
-    <cost value="10"/>
+    <gold_drop value="2"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
     <pierce_armor value="5"/>
     <range value="1"/>
     <life value="50"/>
+    <radius_of_action value="5"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
-      <idle speed="15" w="51" h="62" offset_x="0" offset_y="0" offset_flip="">
+      <idle speed="8" w="51" h="62" offset_x="28" offset_y="34" offset_flip="-6">
         <south>
-          <rect x = "0" y = "0"/>
-          <rect x = "52" y = "0"/>
-          <rect x = "104" y = "0"/>
-          <rect x = "156" y = "0"/>
-          <rect x = "208" y = "0"/>
-          <rect x = "260" y = "0"/>
-          <rect x = "312" y = "0"/>
-          <rect x = "364" y = "0"/>
-          <rect x = "416" y = "0"/>
-          <rect x = "468" y = "0"/>
+          <rect x="0" y="0"/>
+          <rect x="52" y="0"/>
+          <rect x="104" y="0"/>
+          <rect x="156" y="0"/>
+          <rect x="208" y="0"/>
+          <rect x="260" y="0"/>
+          <rect x="312" y="0"/>
+          <rect x="364" y="0"/>
+          <rect x="416" y="0"/>
+          <rect x="468" y="0"/>
         </south>
         <south_west>
-          <rect x = "0" y = "64"/>
-          <rect x = "52" y = "64"/>
-          <rect x = "104" y = "64"/>
-          <rect x = "156" y = "64"/>
-          <rect x = "208" y = "64"/>
-          <rect x = "260" y = "64"/>
-          <rect x = "312" y = "64"/>
-          <rect x = "364" y = "64"/>
-          <rect x = "416" y = "64"/>
-          <rect x = "468" y = "64"/>
+          <rect x="0" y="64"/>
+          <rect x="52" y="64"/>
+          <rect x="104" y="64"/>
+          <rect x="156" y="64"/>
+          <rect x="208" y="64"/>
+          <rect x="260" y="64"/>
+          <rect x="312" y="64"/>
+          <rect x="364" y="64"/>
+          <rect x="416" y="64"/>
+          <rect x="468" y="64"/>
         </south_west>
         <west>
-          <rect x = "0" y = "128"/>
-          <rect x = "52" y = "128"/>
-          <rect x = "104" y = "128"/>
-          <rect x = "156" y = "128"/>
-          <rect x = "208" y = "128"/>
-          <rect x = "260" y = "128"/>
-          <rect x = "312" y = "128"/>
-          <rect x = "364" y = "128"/>
-          <rect x = "416" y = "128"/>
-          <rect x = "468" y = "128"/>
+          <rect x="0" y="127"/>
+          <rect x="52" y="127"/>
+          <rect x="104" y="127"/>
+          <rect x="156" y="127"/>
+          <rect x="208" y="127"/>
+          <rect x="260" y="127"/>
+          <rect x="312" y="127"/>
+          <rect x="364" y="127"/>
+          <rect x="416" y="127"/>
+          <rect x="468" y="127"/>
         </west>
         <north_west>
-          <rect x = "0" y = "192"/>
-          <rect x = "52" y = "192"/>
-          <rect x = "104" y = "192"/>
-          <rect x = "156" y = "192"/>
-          <rect x = "208" y = "192"/>
-          <rect x = "260" y = "192"/>
-          <rect x = "312" y = "192"/>
-          <rect x = "364" y = "192"/>
-          <rect x = "416" y = "192"/>
-          <rect x = "468" y = "192"/>
+          <rect x="0" y="190"/>
+          <rect x="52" y="190"/>
+          <rect x="104" y="190"/>
+          <rect x="156" y="190"/>
+          <rect x="208" y="190"/>
+          <rect x="260" y="190"/>
+          <rect x="312" y="190"/>
+          <rect x="364" y="190"/>
+          <rect x="416" y="190"/>
+          <rect x="468" y="190"/>
         </north_west>
         <north>
-          <rect x = "0" y = "266"/>
-          <rect x = "52" y = "266"/>
-          <rect x = "104" y = "266"/>
-          <rect x = "156" y = "266"/>
-          <rect x = "208" y = "266"/>
-          <rect x = "260" y = "266"/>
-          <rect x = "312" y = "266"/>
-          <rect x = "364" y = "266"/>
-          <rect x = "416" y = "266"/>
-          <rect x = "468" y = "266"/>
+          <rect x="0" y="253"/>
+          <rect x="52" y="253"/>
+          <rect x="104" y="253"/>
+          <rect x="156" y="253"/>
+          <rect x="208" y="253"/>
+          <rect x="260" y="253"/>
+          <rect x="312" y="253"/>
+          <rect x="364" y="253"/>
+          <rect x="416" y="253"/>
+          <rect x="468" y="253"/>
         </north>
       </idle>
-      <walk speed="15" w="37" h="64" offset_x="10" offset_y="23" offset_flip="">
+      <move speed="10" w="36" h="63" offset_x="15" offset_y="35" offset_flip="">
         <south>
-          <rect x = "0" y = "320"/>
-          <rect x = "38" y = "320"/>
-          <rect x = "76"  y = "320"/>
-          <rect x = "114" y = "320"/>
-          <rect x = "152" y = "320"/>
-          <rect x = "190" y = "320"/>
-          <rect x = "228" y = "320"/>
-          <rect x = "266" y = "320"/>
-          <rect x = "304" y = "320"/>
-          <rect x = "342" y = "320"/>
+          <rect x="0" y="316"/>
+          <rect x="37" y="316"/>
+          <rect x="74" y="316"/>
+          <rect x="111" y="316"/>
+          <rect x="148" y="316"/>
+          <rect x="185" y="316"/>
+          <rect x="222" y="316"/>
+          <rect x="259" y="316"/>
+          <rect x="296" y="316"/>
+          <rect x="333" y="316"/>
         </south>
         <south_west>
-          <rect x = "0" y = "385"/>
-          <rect x = "38" y = "385"/>
-          <rect x = "76"  y = "385"/>
-          <rect x = "114" y = "385"/>
-          <rect x = "152" y = "385"/>
-          <rect x = "190" y = "385"/>
-          <rect x = "228" y = "385"/>
-          <rect x = "266" y = "385"/>
-          <rect x = "304" y = "385"/>
-          <rect x = "342" y = "385"/>
+          <rect x="0" y="381"/>
+          <rect x="37" y="381"/>
+          <rect x="74" y="381"/>
+          <rect x="111" y="381"/>
+          <rect x="148" y="381"/>
+          <rect x="185" y="381"/>
+          <rect x="222" y="381"/>
+          <rect x="259" y="381"/>
+          <rect x="296" y="381"/>
+          <rect x="333" y="381"/>
         </south_west>
         <west>
-          <rect x = "0" y = "450"/>
-          <rect x = "38" y = "450"/>
-          <rect x = "76"  y = "450"/>
-          <rect x = "114" y = "450"/>
-          <rect x = "152" y = "450"/>
-          <rect x = "190" y = "450"/>
-          <rect x = "228" y = "450"/>
-          <rect x = "266" y = "450"/>
-          <rect x = "304" y = "450"/>
-          <rect x = "342" y = "450"/>
+          <rect x="0" y="445"/>
+          <rect x="37" y="445"/>
+          <rect x="74" y="445"/>
+          <rect x="111" y="445"/>
+          <rect x="148" y="445"/>
+          <rect x="185" y="445"/>
+          <rect x="222" y="445"/>
+          <rect x="259" y="445"/>
+          <rect x="296" y="445"/>
+          <rect x="333" y="445"/>
         </west>
         <north_west>
-          <rect x = "0" y = "515"/>
-          <rect x = "38" y = "515"/>
-          <rect x = "76"  y = "515"/>
-          <rect x = "114" y = "515"/>
-          <rect x = "152" y = "515"/>
-          <rect x = "190" y = "515"/>
-          <rect x = "228" y = "515"/>
-          <rect x = "266" y = "515"/>
-          <rect x = "304" y = "515"/>
-          <rect x = "342" y = "515"/>
+          <rect x="0" y="509"/>
+          <rect x="37" y="509"/>
+          <rect x="74" y="509"/>
+          <rect x="111" y="509"/>
+          <rect x="148" y="509"/>
+          <rect x="185" y="509"/>
+          <rect x="222" y="509"/>
+          <rect x="259" y="509"/>
+          <rect x="296" y="509"/>
+          <rect x="333" y="509"/>
         </north_west>
         <north>
-          <rect x = "0" y = "580"/>
-          <rect x = "38" y = "580"/>
-          <rect x = "76" y = "580"/>
-          <rect x = "114" y = "580"/>
-          <rect x = "152" y = "580"/>
-          <rect x = "190" y = "580"/>
-          <rect x = "228" y = "580"/>
-          <rect x = "266" y = "580"/>
-          <rect x = "304" y = "580"/>
-          <rect x = "342" y = "580"/>
+          <rect x="0" y="573"/>
+          <rect x="37" y="573"/>
+          <rect x="74" y="573"/>
+          <rect x="111" y="573"/>
+          <rect x="148" y="573"/>
+          <rect x="185" y="573"/>
+          <rect x="222" y="573"/>
+          <rect x="259" y="573"/>
+          <rect x="296" y="573"/>
+          <rect x="333" y="573"/>
         </north>
-      </walk>
-      <attack speed="15" w="86" h="81" offset_x="36" offset_y="35" offset_flip="-17">
+      </move>
+      <attack speed="15" w="85" h="80" offset_x="36" offset_y="35" offset_flip="-17">
         <south>
-          <rect x = "0" y = "645"/>
-          <rect x = "87" y = "645"/>
-          <rect x = "174" y = "645"/>
-          <rect x = "261" y = "645"/>
-          <rect x = "348" y = "645"/>
-          <rect x = "435" y = "645"/>
-          <rect x = "522" y = "645"/>
-          <rect x = "609" y = "645"/>
-          <rect x = "696" y = "645"/>
-          <rect x = "783" y = "645"/>
+          <rect x = "0" y = "637"/>
+          <rect x = "86" y = "637"/>
+          <rect x = "172" y = "637"/>
+          <rect x = "258" y = "637"/>
+          <rect x = "344" y = "637"/>
+          <rect x = "430" y = "637"/>
+          <rect x = "516" y = "637"/>
+          <rect x = "602" y = "637"/>
+          <rect x = "688" y = "637"/>
+          <rect x = "774" y = "637"/>
         </south>
         <south_west>
-          <rect x = "0" y = "727"/>
-          <rect x = "87" y = "727"/>
-          <rect x = "174" y = "727"/>
-          <rect x = "261" y = "727"/>
-          <rect x = "348" y = "727"/>
-          <rect x = "435" y = "727"/>
-          <rect x = "522" y = "727"/>
-          <rect x = "609" y = "727"/>
-          <rect x = "696" y = "727"/>
-          <rect x = "783" y = "727"/>
+          <rect x = "0" y = "719"/>
+          <rect x = "86" y = "719"/>
+          <rect x = "172" y = "719"/>
+          <rect x = "258" y = "719"/>
+          <rect x = "344" y = "719"/>
+          <rect x = "430" y = "719"/>
+          <rect x = "516" y = "719"/>
+          <rect x = "602" y = "719"/>
+          <rect x = "688" y = "719"/>
+          <rect x = "774" y = "719"/>
         </south_west>
         <west>
-          <rect x = "0" y = "809"/>
-          <rect x = "87" y = "809"/>
-          <rect x = "174" y = "809"/>
-          <rect x = "261" y = "809"/>
-          <rect x = "348" y = "809"/>
-          <rect x = "435" y = "809"/>
-          <rect x = "522" y = "809"/>
-          <rect x = "609" y = "809"/>
-          <rect x = "696" y = "809"/>
-          <rect x = "783" y = "809"/>
+          <rect x = "0" y = "800"/>
+          <rect x = "86" y = "800"/>
+          <rect x = "172" y = "800"/>
+          <rect x = "258" y = "800"/>
+          <rect x = "344" y = "800"/>
+          <rect x = "430" y = "800"/>
+          <rect x = "516" y = "800"/>
+          <rect x = "602" y = "800"/>
+          <rect x = "688" y = "800"/>
+          <rect x = "774" y = "800"/>
         </west>
         <north_west>
-          <rect x = "0" y = "891"/>
-          <rect x = "87" y = "891"/>
-          <rect x = "174" y = "891"/>
-          <rect x = "261" y = "891"/>
-          <rect x = "348" y = "891"/>
-          <rect x = "435" y = "891"/>
-          <rect x = "522" y = "891"/>
-          <rect x = "609" y = "891"/>
-          <rect x = "696" y = "891"/>
-          <rect x = "783" y = "891"/>
+          <rect x = "0" y = "881"/>
+          <rect x = "86" y = "881"/>
+          <rect x = "172" y = "881"/>
+          <rect x = "258" y = "881"/>
+          <rect x = "344" y = "881"/>
+          <rect x = "430" y = "881"/>
+          <rect x = "516" y = "881"/>
+          <rect x = "602" y = "881"/>
+          <rect x = "688" y = "881"/>
+          <rect x = "774" y = "881"/>
         </north_west>
         <north>
-          <rect x = "0" y = "973"/>
-          <rect x = "87" y = "973"/>
-          <rect x = "174" y = "973"/>
-          <rect x = "261" y = "973"/>
-          <rect x = "348" y = "973"/>
-          <rect x = "435" y = "973"/>
-          <rect x = "522" y = "973"/>
-          <rect x = "609" y = "973"/>
-          <rect x = "696" y = "973"/>
-          <rect x = "783" y = "973"/>
+          <rect x = "0" y = "962"/>
+          <rect x = "86" y = "962"/>
+          <rect x = "172" y = "962"/>
+          <rect x = "258" y = "962"/>
+          <rect x = "344" y = "962"/>
+          <rect x = "430" y = "962"/>
+          <rect x = "516" y = "962"/>
+          <rect x = "602" y = "962"/>
+          <rect x = "688" y = "962"/>
+          <rect x = "774" y = "962"/>
         </north>
       </attack>
       <death speed="15" w="110" h="73" offset_x="28" offset_y="27" offset_flip="35">
@@ -774,198 +777,200 @@
   <unit type="Swordsman_ally">
     <texture value="textures/Swordsman_ally.png"/>
     <cost value="10"/>
+    <human_cost value="2"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
     <pierce_armor value="5"/>
     <range value="1"/>
     <life value="50"/>
+    <radius_of_action value="5"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
-      <idle speed="15" w="51" h="62" offset_x="" offset_y="" offset_flip="">
+      <idle speed="8" w="51" h="62" offset_x="28" offset_y="34" offset_flip="-6">
         <south>
-          <rect x = "0" y = "0"/>
-          <rect x = "52" y = "0"/>
-          <rect x = "104" y = "0"/>
-          <rect x = "156" y = "0"/>
-          <rect x = "208" y = "0"/>
-          <rect x = "260" y = "0"/>
-          <rect x = "312" y = "0"/>
-          <rect x = "364" y = "0"/>
-          <rect x = "416" y = "0"/>
-          <rect x = "468" y = "0"/>
+          <rect x="0" y="0"/>
+          <rect x="52" y="0"/>
+          <rect x="104" y="0"/>
+          <rect x="156" y="0"/>
+          <rect x="208" y="0"/>
+          <rect x="260" y="0"/>
+          <rect x="312" y="0"/>
+          <rect x="364" y="0"/>
+          <rect x="416" y="0"/>
+          <rect x="468" y="0"/>
         </south>
         <south_west>
-          <rect x = "0" y = "64"/>
-          <rect x = "52" y = "64"/>
-          <rect x = "104" y = "64"/>
-          <rect x = "156" y = "64"/>
-          <rect x = "208" y = "64"/>
-          <rect x = "260" y = "64"/>
-          <rect x = "312" y = "64"/>
-          <rect x = "364" y = "64"/>
-          <rect x = "416" y = "64"/>
-          <rect x = "468" y = "64"/>
+          <rect x="0" y="64"/>
+          <rect x="52" y="64"/>
+          <rect x="104" y="64"/>
+          <rect x="156" y="64"/>
+          <rect x="208" y="64"/>
+          <rect x="260" y="64"/>
+          <rect x="312" y="64"/>
+          <rect x="364" y="64"/>
+          <rect x="416" y="64"/>
+          <rect x="468" y="64"/>
         </south_west>
         <west>
-          <rect x = "0" y = "128"/>
-          <rect x = "52" y = "128"/>
-          <rect x = "104" y = "128"/>
-          <rect x = "156" y = "128"/>
-          <rect x = "208" y = "128"/>
-          <rect x = "260" y = "128"/>
-          <rect x = "312" y = "128"/>
-          <rect x = "364" y = "128"/>
-          <rect x = "416" y = "128"/>
-          <rect x = "468" y = "128"/>
+          <rect x="0" y="127"/>
+          <rect x="52" y="127"/>
+          <rect x="104" y="127"/>
+          <rect x="156" y="127"/>
+          <rect x="208" y="127"/>
+          <rect x="260" y="127"/>
+          <rect x="312" y="127"/>
+          <rect x="364" y="127"/>
+          <rect x="416" y="127"/>
+          <rect x="468" y="127"/>
         </west>
         <north_west>
-          <rect x = "0" y = "192"/>
-          <rect x = "52" y = "192"/>
-          <rect x = "104" y = "192"/>
-          <rect x = "156" y = "192"/>
-          <rect x = "208" y = "192"/>
-          <rect x = "260" y = "192"/>
-          <rect x = "312" y = "192"/>
-          <rect x = "364" y = "192"/>
-          <rect x = "416" y = "192"/>
-          <rect x = "468" y = "192"/>
+          <rect x="0" y="190"/>
+          <rect x="52" y="190"/>
+          <rect x="104" y="190"/>
+          <rect x="156" y="190"/>
+          <rect x="208" y="190"/>
+          <rect x="260" y="190"/>
+          <rect x="312" y="190"/>
+          <rect x="364" y="190"/>
+          <rect x="416" y="190"/>
+          <rect x="468" y="190"/>
         </north_west>
         <north>
-          <rect x = "0" y = "266"/>
-          <rect x = "52" y = "266"/>
-          <rect x = "104" y = "266"/>
-          <rect x = "156" y = "266"/>
-          <rect x = "208" y = "266"/>
-          <rect x = "260" y = "266"/>
-          <rect x = "312" y = "266"/>
-          <rect x = "364" y = "266"/>
-          <rect x = "416" y = "266"/>
-          <rect x = "468" y = "266"/>
+          <rect x="0" y="253"/>
+          <rect x="52" y="253"/>
+          <rect x="104" y="253"/>
+          <rect x="156" y="253"/>
+          <rect x="208" y="253"/>
+          <rect x="260" y="253"/>
+          <rect x="312" y="253"/>
+          <rect x="364" y="253"/>
+          <rect x="416" y="253"/>
+          <rect x="468" y="253"/>
         </north>
       </idle>
-      <walk speed="15" w="37" h="64" offset_x="" offset_y="" offset_flip="">
+      <move speed="10" w="36" h="63" offset_x="15" offset_y="35" offset_flip="">
         <south>
-          <rect x = "0" y = "320"/>
-          <rect x = "38" y = "320"/>
-          <rect x = "76"  y = "320"/>
-          <rect x = "114" y = "320"/>
-          <rect x = "152" y = "320"/>
-          <rect x = "190" y = "320"/>
-          <rect x = "228" y = "320"/>
-          <rect x = "266" y = "320"/>
-          <rect x = "304" y = "320"/>
-          <rect x = "342" y = "320"/>
+          <rect x="0" y="316"/>
+          <rect x="37" y="316"/>
+          <rect x="74" y="316"/>
+          <rect x="111" y="316"/>
+          <rect x="148" y="316"/>
+          <rect x="185" y="316"/>
+          <rect x="222" y="316"/>
+          <rect x="259" y="316"/>
+          <rect x="296" y="316"/>
+          <rect x="333" y="316"/>
         </south>
         <south_west>
-          <rect x = "0" y = "385"/>
-          <rect x = "38" y = "385"/>
-          <rect x = "76"  y = "385"/>
-          <rect x = "114" y = "385"/>
-          <rect x = "152" y = "385"/>
-          <rect x = "190" y = "385"/>
-          <rect x = "228" y = "385"/>
-          <rect x = "266" y = "385"/>
-          <rect x = "304" y = "385"/>
-          <rect x = "342" y = "385"/>
+          <rect x="0" y="381"/>
+          <rect x="37" y="381"/>
+          <rect x="74" y="381"/>
+          <rect x="111" y="381"/>
+          <rect x="148" y="381"/>
+          <rect x="185" y="381"/>
+          <rect x="222" y="381"/>
+          <rect x="259" y="381"/>
+          <rect x="296" y="381"/>
+          <rect x="333" y="381"/>
         </south_west>
         <west>
-          <rect x = "0" y = "450"/>
-          <rect x = "38" y = "450"/>
-          <rect x = "76"  y = "450"/>
-          <rect x = "114" y = "450"/>
-          <rect x = "152" y = "450"/>
-          <rect x = "190" y = "450"/>
-          <rect x = "228" y = "450"/>
-          <rect x = "266" y = "450"/>
-          <rect x = "304" y = "450"/>
-          <rect x = "342" y = "450"/>
+          <rect x="0" y="445"/>
+          <rect x="37" y="445"/>
+          <rect x="74" y="445"/>
+          <rect x="111" y="445"/>
+          <rect x="148" y="445"/>
+          <rect x="185" y="445"/>
+          <rect x="222" y="445"/>
+          <rect x="259" y="445"/>
+          <rect x="296" y="445"/>
+          <rect x="333" y="445"/>
         </west>
         <north_west>
-          <rect x = "0" y = "515"/>
-          <rect x = "38" y = "515"/>
-          <rect x = "76"  y = "515"/>
-          <rect x = "114" y = "515"/>
-          <rect x = "152" y = "515"/>
-          <rect x = "190" y = "515"/>
-          <rect x = "228" y = "515"/>
-          <rect x = "266" y = "515"/>
-          <rect x = "304" y = "515"/>
-          <rect x = "342" y = "515"/>
+          <rect x="0" y="509"/>
+          <rect x="37" y="509"/>
+          <rect x="74" y="509"/>
+          <rect x="111" y="509"/>
+          <rect x="148" y="509"/>
+          <rect x="185" y="509"/>
+          <rect x="222" y="509"/>
+          <rect x="259" y="509"/>
+          <rect x="296" y="509"/>
+          <rect x="333" y="509"/>
         </north_west>
         <north>
-          <rect x = "0" y = "580"/>
-          <rect x = "38" y = "580"/>
-          <rect x = "76" y = "580"/>
-          <rect x = "114" y = "580"/>
-          <rect x = "152" y = "580"/>
-          <rect x = "190" y = "580"/>
-          <rect x = "228" y = "580"/>
-          <rect x = "266" y = "580"/>
-          <rect x = "304" y = "580"/>
-          <rect x = "342" y = "580"/>
+          <rect x="0" y="573"/>
+          <rect x="37" y="573"/>
+          <rect x="74" y="573"/>
+          <rect x="111" y="573"/>
+          <rect x="148" y="573"/>
+          <rect x="185" y="573"/>
+          <rect x="222" y="573"/>
+          <rect x="259" y="573"/>
+          <rect x="296" y="573"/>
+          <rect x="333" y="573"/>
         </north>
-      </walk>
-      <attack speed="15" w="86" h="81" offset_x="36" offset_y="35" offset_flip="-17">
+      </move>
+      <attack speed="15" w="85" h="80" offset_x="36" offset_y="35" offset_flip="-17">
         <south>
-          <rect x = "0" y = "645"/>
-          <rect x = "87" y = "645"/>
-          <rect x = "174" y = "645"/>
-          <rect x = "261" y = "645"/>
-          <rect x = "348" y = "645"/>
-          <rect x = "435" y = "645"/>
-          <rect x = "522" y = "645"/>
-          <rect x = "609" y = "645"/>
-          <rect x = "696" y = "645"/>
-          <rect x = "783" y = "645"/>
+          <rect x = "0" y = "637"/>
+          <rect x = "86" y = "637"/>
+          <rect x = "172" y = "637"/>
+          <rect x = "258" y = "637"/>
+          <rect x = "344" y = "637"/>
+          <rect x = "430" y = "637"/>
+          <rect x = "516" y = "637"/>
+          <rect x = "602" y = "637"/>
+          <rect x = "688" y = "637"/>
+          <rect x = "774" y = "637"/>
         </south>
         <south_west>
-          <rect x = "0" y = "727"/>
-          <rect x = "87" y = "727"/>
-          <rect x = "174" y = "727"/>
-          <rect x = "261" y = "727"/>
-          <rect x = "348" y = "727"/>
-          <rect x = "435" y = "727"/>
-          <rect x = "522" y = "727"/>
-          <rect x = "609" y = "727"/>
-          <rect x = "696" y = "727"/>
-          <rect x = "783" y = "727"/>
+          <rect x = "0" y = "719"/>
+          <rect x = "86" y = "719"/>
+          <rect x = "172" y = "719"/>
+          <rect x = "258" y = "719"/>
+          <rect x = "344" y = "719"/>
+          <rect x = "430" y = "719"/>
+          <rect x = "516" y = "719"/>
+          <rect x = "602" y = "719"/>
+          <rect x = "688" y = "719"/>
+          <rect x = "774" y = "719"/>
         </south_west>
         <west>
-          <rect x = "0" y = "809"/>
-          <rect x = "87" y = "809"/>
-          <rect x = "174" y = "809"/>
-          <rect x = "261" y = "809"/>
-          <rect x = "348" y = "809"/>
-          <rect x = "435" y = "809"/>
-          <rect x = "522" y = "809"/>
-          <rect x = "609" y = "809"/>
-          <rect x = "696" y = "809"/>
-          <rect x = "783" y = "809"/>
+          <rect x = "0" y = "800"/>
+          <rect x = "86" y = "800"/>
+          <rect x = "172" y = "800"/>
+          <rect x = "258" y = "800"/>
+          <rect x = "344" y = "800"/>
+          <rect x = "430" y = "800"/>
+          <rect x = "516" y = "800"/>
+          <rect x = "602" y = "800"/>
+          <rect x = "688" y = "800"/>
+          <rect x = "774" y = "800"/>
         </west>
         <north_west>
-          <rect x = "0" y = "891"/>
-          <rect x = "87" y = "891"/>
-          <rect x = "174" y = "891"/>
-          <rect x = "261" y = "891"/>
-          <rect x = "348" y = "891"/>
-          <rect x = "435" y = "891"/>
-          <rect x = "522" y = "891"/>
-          <rect x = "609" y = "891"/>
-          <rect x = "696" y = "891"/>
-          <rect x = "783" y = "891"/>
+          <rect x = "0" y = "881"/>
+          <rect x = "86" y = "881"/>
+          <rect x = "172" y = "881"/>
+          <rect x = "258" y = "881"/>
+          <rect x = "344" y = "881"/>
+          <rect x = "430" y = "881"/>
+          <rect x = "516" y = "881"/>
+          <rect x = "602" y = "881"/>
+          <rect x = "688" y = "881"/>
+          <rect x = "774" y = "881"/>
         </north_west>
         <north>
-          <rect x = "0" y = "973"/>
-          <rect x = "87" y = "973"/>
-          <rect x = "174" y = "973"/>
-          <rect x = "261" y = "973"/>
-          <rect x = "348" y = "973"/>
-          <rect x = "435" y = "973"/>
-          <rect x = "522" y = "973"/>
-          <rect x = "609" y = "973"/>
-          <rect x = "696" y = "973"/>
-          <rect x = "783" y = "973"/>
+          <rect x = "0" y = "962"/>
+          <rect x = "86" y = "962"/>
+          <rect x = "172" y = "962"/>
+          <rect x = "258" y = "962"/>
+          <rect x = "344" y = "962"/>
+          <rect x = "430" y = "962"/>
+          <rect x = "516" y = "962"/>
+          <rect x = "602" y = "962"/>
+          <rect x = "688" y = "962"/>
+          <rect x = "774" y = "962"/>
         </north>
       </attack>
       <death speed="15" w="110" h="73" offset_x="28" offset_y="27" offset_flip="35">
@@ -1096,7 +1101,8 @@
   </unit>
   <unit type="Swordsman_npc">
     <texture value="textures/Swordsman_npc.png"/>
-    <cost value="10"/>
+    <cost value="0"/>
+    <human_cost value="0"/>
     <speed value="2"/>
     <damage value="20"/>
     <armor value="5"/>
@@ -1105,190 +1111,190 @@
     <life value="50"/>
     <collision_box w="22" h="45" offset_x="-8" offset_y="-23"/>
     <animations>
-      <idle speed="15" w="51" h="62" offset_x="" offset_y="" offset_flip="">
+      <idle speed="8" w="51" h="62" offset_x="28" offset_y="34" offset_flip="-6">
         <south>
-          <rect x = "0" y = "0"/>
-          <rect x = "52" y = "0"/>
-          <rect x = "104" y = "0"/>
-          <rect x = "156" y = "0"/>
-          <rect x = "208" y = "0"/>
-          <rect x = "260" y = "0"/>
-          <rect x = "312" y = "0"/>
-          <rect x = "364" y = "0"/>
-          <rect x = "416" y = "0"/>
-          <rect x = "468" y = "0"/>
+          <rect x="0" y="0"/>
+          <rect x="52" y="0"/>
+          <rect x="104" y="0"/>
+          <rect x="156" y="0"/>
+          <rect x="208" y="0"/>
+          <rect x="260" y="0"/>
+          <rect x="312" y="0"/>
+          <rect x="364" y="0"/>
+          <rect x="416" y="0"/>
+          <rect x="468" y="0"/>
         </south>
         <south_west>
-          <rect x = "0" y = "64"/>
-          <rect x = "52" y = "64"/>
-          <rect x = "104" y = "64"/>
-          <rect x = "156" y = "64"/>
-          <rect x = "208" y = "64"/>
-          <rect x = "260" y = "64"/>
-          <rect x = "312" y = "64"/>
-          <rect x = "364" y = "64"/>
-          <rect x = "416" y = "64"/>
-          <rect x = "468" y = "64"/>
+          <rect x="0" y="64"/>
+          <rect x="52" y="64"/>
+          <rect x="104" y="64"/>
+          <rect x="156" y="64"/>
+          <rect x="208" y="64"/>
+          <rect x="260" y="64"/>
+          <rect x="312" y="64"/>
+          <rect x="364" y="64"/>
+          <rect x="416" y="64"/>
+          <rect x="468" y="64"/>
         </south_west>
         <west>
-          <rect x = "0" y = "128"/>
-          <rect x = "52" y = "128"/>
-          <rect x = "104" y = "128"/>
-          <rect x = "156" y = "128"/>
-          <rect x = "208" y = "128"/>
-          <rect x = "260" y = "128"/>
-          <rect x = "312" y = "128"/>
-          <rect x = "364" y = "128"/>
-          <rect x = "416" y = "128"/>
-          <rect x = "468" y = "128"/>
+          <rect x="0" y="127"/>
+          <rect x="52" y="127"/>
+          <rect x="104" y="127"/>
+          <rect x="156" y="127"/>
+          <rect x="208" y="127"/>
+          <rect x="260" y="127"/>
+          <rect x="312" y="127"/>
+          <rect x="364" y="127"/>
+          <rect x="416" y="127"/>
+          <rect x="468" y="127"/>
         </west>
         <north_west>
-          <rect x = "0" y = "192"/>
-          <rect x = "52" y = "192"/>
-          <rect x = "104" y = "192"/>
-          <rect x = "156" y = "192"/>
-          <rect x = "208" y = "192"/>
-          <rect x = "260" y = "192"/>
-          <rect x = "312" y = "192"/>
-          <rect x = "364" y = "192"/>
-          <rect x = "416" y = "192"/>
-          <rect x = "468" y = "192"/>
+          <rect x="0" y="190"/>
+          <rect x="52" y="190"/>
+          <rect x="104" y="190"/>
+          <rect x="156" y="190"/>
+          <rect x="208" y="190"/>
+          <rect x="260" y="190"/>
+          <rect x="312" y="190"/>
+          <rect x="364" y="190"/>
+          <rect x="416" y="190"/>
+          <rect x="468" y="190"/>
         </north_west>
         <north>
-          <rect x = "0" y = "266"/>
-          <rect x = "52" y = "266"/>
-          <rect x = "104" y = "266"/>
-          <rect x = "156" y = "266"/>
-          <rect x = "208" y = "266"/>
-          <rect x = "260" y = "266"/>
-          <rect x = "312" y = "266"/>
-          <rect x = "364" y = "266"/>
-          <rect x = "416" y = "266"/>
-          <rect x = "468" y = "266"/>
+          <rect x="0" y="253"/>
+          <rect x="52" y="253"/>
+          <rect x="104" y="253"/>
+          <rect x="156" y="253"/>
+          <rect x="208" y="253"/>
+          <rect x="260" y="253"/>
+          <rect x="312" y="253"/>
+          <rect x="364" y="253"/>
+          <rect x="416" y="253"/>
+          <rect x="468" y="253"/>
         </north>
       </idle>
-      <walk speed="15" w="37" h="64" offset_x="" offset_y="" offset_flip="">
+      <move speed="10" w="36" h="63" offset_x="15" offset_y="35" offset_flip="">
         <south>
-          <rect x = "0" y = "320"/>
-          <rect x = "38" y = "320"/>
-          <rect x = "76"  y = "320"/>
-          <rect x = "114" y = "320"/>
-          <rect x = "152" y = "320"/>
-          <rect x = "190" y = "320"/>
-          <rect x = "228" y = "320"/>
-          <rect x = "266" y = "320"/>
-          <rect x = "304" y = "320"/>
-          <rect x = "342" y = "320"/>
+          <rect x="0" y="316"/>
+          <rect x="37" y="316"/>
+          <rect x="74" y="316"/>
+          <rect x="111" y="316"/>
+          <rect x="148" y="316"/>
+          <rect x="185" y="316"/>
+          <rect x="222" y="316"/>
+          <rect x="259" y="316"/>
+          <rect x="296" y="316"/>
+          <rect x="333" y="316"/>
         </south>
         <south_west>
-          <rect x = "0" y = "385"/>
-          <rect x = "38" y = "385"/>
-          <rect x = "76"  y = "385"/>
-          <rect x = "114" y = "385"/>
-          <rect x = "152" y = "385"/>
-          <rect x = "190" y = "385"/>
-          <rect x = "228" y = "385"/>
-          <rect x = "266" y = "385"/>
-          <rect x = "304" y = "385"/>
-          <rect x = "342" y = "385"/>
+          <rect x="0" y="381"/>
+          <rect x="37" y="381"/>
+          <rect x="74" y="381"/>
+          <rect x="111" y="381"/>
+          <rect x="148" y="381"/>
+          <rect x="185" y="381"/>
+          <rect x="222" y="381"/>
+          <rect x="259" y="381"/>
+          <rect x="296" y="381"/>
+          <rect x="333" y="381"/>
         </south_west>
         <west>
-          <rect x = "0" y = "450"/>
-          <rect x = "38" y = "450"/>
-          <rect x = "76"  y = "450"/>
-          <rect x = "114" y = "450"/>
-          <rect x = "152" y = "450"/>
-          <rect x = "190" y = "450"/>
-          <rect x = "228" y = "450"/>
-          <rect x = "266" y = "450"/>
-          <rect x = "304" y = "450"/>
-          <rect x = "342" y = "450"/>
+          <rect x="0" y="445"/>
+          <rect x="37" y="445"/>
+          <rect x="74" y="445"/>
+          <rect x="111" y="445"/>
+          <rect x="148" y="445"/>
+          <rect x="185" y="445"/>
+          <rect x="222" y="445"/>
+          <rect x="259" y="445"/>
+          <rect x="296" y="445"/>
+          <rect x="333" y="445"/>
         </west>
         <north_west>
-          <rect x = "0" y = "515"/>
-          <rect x = "38" y = "515"/>
-          <rect x = "76"  y = "515"/>
-          <rect x = "114" y = "515"/>
-          <rect x = "152" y = "515"/>
-          <rect x = "190" y = "515"/>
-          <rect x = "228" y = "515"/>
-          <rect x = "266" y = "515"/>
-          <rect x = "304" y = "515"/>
-          <rect x = "342" y = "515"/>
+          <rect x="0" y="509"/>
+          <rect x="37" y="509"/>
+          <rect x="74" y="509"/>
+          <rect x="111" y="509"/>
+          <rect x="148" y="509"/>
+          <rect x="185" y="509"/>
+          <rect x="222" y="509"/>
+          <rect x="259" y="509"/>
+          <rect x="296" y="509"/>
+          <rect x="333" y="509"/>
         </north_west>
         <north>
-          <rect x = "0" y = "580"/>
-          <rect x = "38" y = "580"/>
-          <rect x = "76" y = "580"/>
-          <rect x = "114" y = "580"/>
-          <rect x = "152" y = "580"/>
-          <rect x = "190" y = "580"/>
-          <rect x = "228" y = "580"/>
-          <rect x = "266" y = "580"/>
-          <rect x = "304" y = "580"/>
-          <rect x = "342" y = "580"/>
+          <rect x="0" y="573"/>
+          <rect x="37" y="573"/>
+          <rect x="74" y="573"/>
+          <rect x="111" y="573"/>
+          <rect x="148" y="573"/>
+          <rect x="185" y="573"/>
+          <rect x="222" y="573"/>
+          <rect x="259" y="573"/>
+          <rect x="296" y="573"/>
+          <rect x="333" y="573"/>
         </north>
-      </walk>
-      <attack speed="15" w="86" h="81" offset_x="36" offset_y="35" offset_flip="-17">
+      </move>
+      <attack speed="15" w="85" h="80" offset_x="36" offset_y="35" offset_flip="-17">
         <south>
-          <rect x = "0" y = "645"/>
-          <rect x = "87" y = "645"/>
-          <rect x = "174" y = "645"/>
-          <rect x = "261" y = "645"/>
-          <rect x = "348" y = "645"/>
-          <rect x = "435" y = "645"/>
-          <rect x = "522" y = "645"/>
-          <rect x = "609" y = "645"/>
-          <rect x = "696" y = "645"/>
-          <rect x = "783" y = "645"/>
+          <rect x = "0" y = "637"/>
+          <rect x = "86" y = "637"/>
+          <rect x = "172" y = "637"/>
+          <rect x = "258" y = "637"/>
+          <rect x = "344" y = "637"/>
+          <rect x = "430" y = "637"/>
+          <rect x = "516" y = "637"/>
+          <rect x = "602" y = "637"/>
+          <rect x = "688" y = "637"/>
+          <rect x = "774" y = "637"/>
         </south>
         <south_west>
-          <rect x = "0" y = "727"/>
-          <rect x = "87" y = "727"/>
-          <rect x = "174" y = "727"/>
-          <rect x = "261" y = "727"/>
-          <rect x = "348" y = "727"/>
-          <rect x = "435" y = "727"/>
-          <rect x = "522" y = "727"/>
-          <rect x = "609" y = "727"/>
-          <rect x = "696" y = "727"/>
-          <rect x = "783" y = "727"/>
+          <rect x = "0" y = "719"/>
+          <rect x = "86" y = "719"/>
+          <rect x = "172" y = "719"/>
+          <rect x = "258" y = "719"/>
+          <rect x = "344" y = "719"/>
+          <rect x = "430" y = "719"/>
+          <rect x = "516" y = "719"/>
+          <rect x = "602" y = "719"/>
+          <rect x = "688" y = "719"/>
+          <rect x = "774" y = "719"/>
         </south_west>
         <west>
-          <rect x = "0" y = "809"/>
-          <rect x = "87" y = "809"/>
-          <rect x = "174" y = "809"/>
-          <rect x = "261" y = "809"/>
-          <rect x = "348" y = "809"/>
-          <rect x = "435" y = "809"/>
-          <rect x = "522" y = "809"/>
-          <rect x = "609" y = "809"/>
-          <rect x = "696" y = "809"/>
-          <rect x = "783" y = "809"/>
+          <rect x = "0" y = "800"/>
+          <rect x = "86" y = "800"/>
+          <rect x = "172" y = "800"/>
+          <rect x = "258" y = "800"/>
+          <rect x = "344" y = "800"/>
+          <rect x = "430" y = "800"/>
+          <rect x = "516" y = "800"/>
+          <rect x = "602" y = "800"/>
+          <rect x = "688" y = "800"/>
+          <rect x = "774" y = "800"/>
         </west>
         <north_west>
-          <rect x = "0" y = "891"/>
-          <rect x = "87" y = "891"/>
-          <rect x = "174" y = "891"/>
-          <rect x = "261" y = "891"/>
-          <rect x = "348" y = "891"/>
-          <rect x = "435" y = "891"/>
-          <rect x = "522" y = "891"/>
-          <rect x = "609" y = "891"/>
-          <rect x = "696" y = "891"/>
-          <rect x = "783" y = "891"/>
+          <rect x = "0" y = "881"/>
+          <rect x = "86" y = "881"/>
+          <rect x = "172" y = "881"/>
+          <rect x = "258" y = "881"/>
+          <rect x = "344" y = "881"/>
+          <rect x = "430" y = "881"/>
+          <rect x = "516" y = "881"/>
+          <rect x = "602" y = "881"/>
+          <rect x = "688" y = "881"/>
+          <rect x = "774" y = "881"/>
         </north_west>
         <north>
-          <rect x = "0" y = "973"/>
-          <rect x = "87" y = "973"/>
-          <rect x = "174" y = "973"/>
-          <rect x = "261" y = "973"/>
-          <rect x = "348" y = "973"/>
-          <rect x = "435" y = "973"/>
-          <rect x = "522" y = "973"/>
-          <rect x = "609" y = "973"/>
-          <rect x = "696" y = "973"/>
-          <rect x = "783" y = "973"/>
+          <rect x = "0" y = "962"/>
+          <rect x = "86" y = "962"/>
+          <rect x = "172" y = "962"/>
+          <rect x = "258" y = "962"/>
+          <rect x = "344" y = "962"/>
+          <rect x = "430" y = "962"/>
+          <rect x = "516" y = "962"/>
+          <rect x = "602" y = "962"/>
+          <rect x = "688" y = "962"/>
+          <rect x = "774" y = "962"/>
         </north>
       </attack>
       <death speed="15" w="110" h="73" offset_x="28" offset_y="27" offset_flip="35">
@@ -1419,13 +1425,14 @@
   </unit>
   <unit type="Barbarian_enemy">
     <texture value="textures/Barbarian_enemy.png"/>
-    <cost value="5"/>
+    <gold_drop value="1"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="30"/>
+    <radius_of_action value="5"/>
     <collision_box w="23" h="44" offset_x="-5" offset_y="-21"/>
     <animations>
       <!--10 23-->
@@ -1727,7 +1734,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
-      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="15" offset_flip="40">
+      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="12" offset_flip="40">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
@@ -1769,12 +1776,14 @@
   <unit type="Barbarian_ally">
     <texture value="textures/Barbarian_ally.png"/>
     <cost value="5"/>
+    <human_cost value="1"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>
     <pierce_armor value="0"/>
     <range value="1"/>
     <life value="30"/>
+    <radius_of_action value="5"/>
     <collision_box w="23" h="44" offset_x="-5" offset_y="-20"/>
     <animations>
       <!--10 23-->
@@ -2076,7 +2085,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
-      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="15" offset_flip="40">
+      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="12" offset_flip="40">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>
@@ -2117,7 +2126,8 @@
   </unit>
   <unit type="Barbarian_npc">
     <texture value="textures/Barbarian_npc.png"/>
-    <cost value="5"/>
+    <cost value="0"/>
+    <human_cost value="0"/>
     <speed value="2"/>
     <damage value="15"/>
     <armor value="0"/>
@@ -2425,7 +2435,7 @@
           <rect x="1191" y="1101"/>
         </north>
       </death>
-      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="15" offset_flip="40">
+      <decompose speed="3" w="82" h="65" offset_x="20" offset_y="12" offset_flip="40">
         <south>
           <rect x="1" y="1176"/>
           <rect x="86" y="1176"/>

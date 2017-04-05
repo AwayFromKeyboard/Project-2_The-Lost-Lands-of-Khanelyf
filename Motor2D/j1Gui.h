@@ -69,6 +69,7 @@ public:
 	void GetParentElements(UI_Element * element, list<UI_Element*>& visited);
 	void ReorderElements();
 	bool Move_Elements();
+	UI_Element * GetMouseHover() const;
 	UI_Element* CheckClickMove(int x, int y);
 	void DeleteElement(UI_Element * element);
 

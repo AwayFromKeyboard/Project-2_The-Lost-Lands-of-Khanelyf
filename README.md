@@ -19,3 +19,18 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 * [Eric Abad](https://github.com/cireks) (Design)
 
 * [Oriol Rodriguez](https://github.com/Eweer) (UI)
+
+## Instructions
+* Use the arrow keys to move the camera
+
+* Use the left mouse button to select your units
+
+* Use the right mouse button to:
+
+  * Attack enemy units
+ 
+  * Move the selected troops
+
+* Press A to create Barbarian units
+
+* Press S to create Swordsman units

@@ -360,6 +360,14 @@ bool j1Map::Load(const char* file_name)
 
 	map_loaded = ret;
 
+	// Load the matrix -----------------
+	vector<void*> tmp_vec;
+	for (int j = 0; j < data.height; ++j) 
+		tmp_vec.push_back(nullptr);
+
+	for (int i = 0; i < data.width; ++i)
+		entity_matrix.push_back(tmp_vec);
+
 	return ret;
 }
 
