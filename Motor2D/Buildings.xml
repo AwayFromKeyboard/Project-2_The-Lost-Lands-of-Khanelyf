@@ -1,0 +1,8 @@
+<buildings>
+  <building type="Barracks">
+    <texture value="textures/Barracks.png"/>
+    <cost value="1"/>
+    <rect w="280" h="254"/>
+    <collision_box w="50" h="50" offset_x="0" offset_y="0"/>
+  </building>
+</buildings>

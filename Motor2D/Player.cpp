@@ -59,15 +59,21 @@ bool Player::Update(float dt)
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 			
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)) {
+			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
 				(*it)->SetSelected(true);
 			}
-			if ((*it)->GetSelected())
-				App->entity->selected.push_back((Unit*)*it);
+			if ((*it)->GetSelected()) {
+				if ((*it)->GetType() == building) {
+					App->entity->UnselectEverything();
+					break;
+				}
+				else
+					App->entity->selected.push_back((Unit*)*it);
+			}
 		}
 
 	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down && !entity_type::building) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		iPoint mouse_pathfinding;

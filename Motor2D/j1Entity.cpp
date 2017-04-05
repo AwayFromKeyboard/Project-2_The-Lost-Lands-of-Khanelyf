@@ -170,7 +170,12 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
-				selected.push_back((Unit*)*it);
+				if ((*it)->GetType() == building) {
+					App->entity->UnselectEverything();
+					(*it)->SetSelected(true);
+				}
+				else
+					selected.push_back((Unit*)*it);
 		}
 	}
 }

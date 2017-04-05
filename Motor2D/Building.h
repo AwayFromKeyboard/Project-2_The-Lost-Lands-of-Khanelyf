@@ -45,6 +45,7 @@ public:
 	iPoint offset = NULLPOINT;
 
 	Collider* collision = nullptr;
+	SDL_Rect tex_rect = NULLRECT;
 	entity_type type = entity_type::null;
 
 public:

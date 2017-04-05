@@ -52,10 +52,11 @@ bool Barracks::LoadEntity()
 		game_object->SetFixedRotation(true);
 
 		cost = node.child("cost").attribute("value").as_int();
+		tex_rect = { 0, 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
 
 		std::string texture = node.child("texture").attribute("value").as_string();
 		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
-		node = node.child("animations");
+		
 
 		App->entity->building_game_objects_list.push_back(game_object);
 	}
