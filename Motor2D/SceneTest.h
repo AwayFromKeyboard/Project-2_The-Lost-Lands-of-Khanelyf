@@ -48,7 +48,7 @@ private:
 	SDL_Rect ui_r;
 	SDL_Rect buy_unit;
 
-private:
+public:
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;

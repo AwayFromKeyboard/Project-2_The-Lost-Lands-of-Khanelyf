@@ -27,6 +27,7 @@ private:
 
 public:
 	UI_Window* barracks_ui_window = nullptr;
+	iPoint barracks_position;
 
 private:
 	UI_Button* create_unit_button = nullptr;

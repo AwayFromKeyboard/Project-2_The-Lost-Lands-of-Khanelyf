@@ -175,6 +175,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 				if ((*it)->GetType() == building) {
 					App->entity->UnselectEverything();
 					App->player->barracks_ui_window->SetEnabledAndChilds(true);
+					App->player->barracks_position = (*it)->GetGameObject()->GetPos();
 					(*it)->SetSelected(true);
 				}
 				else {

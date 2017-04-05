@@ -10,6 +10,10 @@
 #include "GameObject.h"
 #include "Defs.h"
 #include "Log.h"
+#include "Barbarian.h"
+#include "Swordsman.h"
+#include "SceneTest.h"
+#include "j1Scene.h"
 
 Player::Player()
 {
@@ -64,10 +68,10 @@ bool Player::PreUpdate()
 	if (create_unit_button->MouseClickEnterLeft()) { // && barracks->create_barbarian == true
 		create_unit_button->SetImage("clicked");
 
-		//Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
-		//barb->game_object->SetPos(); // Barracks position
-		//gold -= barb->cost;
-		//current_human_resources += barb->human_cost;
+		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
+		barb->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
+		App->scene->scene_test->gold -= barb->cost;
+		App->scene->scene_test->current_human_resources += barb->human_cost;
 	}
 	if (create_unit_button->MouseClickOutLeft()) {
 		create_unit_button->SetImage("standard");
@@ -76,10 +80,10 @@ bool Player::PreUpdate()
 	if (create_unit_button2->MouseClickEnterLeft()) { // && barracks->create_swordsman == true
 		create_unit_button2->SetImage("clicked");
 
-		//Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
-		//sword->game_object->SetPos(); // Barracks position
-		//gold -= sword->cost;
-		//current_human_resources += sword->human_cost;
+		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
+		sword->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
+		App->scene->scene_test->gold -= sword->cost;
+		App->scene->scene_test->current_human_resources += sword->human_cost;
 	}
 	if (create_unit_button2->MouseClickOutLeft()) {
 		create_unit_button2->SetImage("standard");
@@ -108,6 +112,7 @@ bool Player::Update(float dt)
 					App->entity->UnselectEverything();
 					(*it)->SetSelected(true);
 					barracks_ui_window->SetEnabledAndChilds(true);
+					barracks_position = (*it)->GetGameObject()->GetPos();
 					break;
 				}
 				else {
