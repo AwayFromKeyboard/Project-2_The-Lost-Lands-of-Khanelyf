@@ -36,7 +36,7 @@ bool j1PathFinding::PreUpdate()
 
 	for (std::map<uint, Path*>::iterator it = paths.begin(); it != paths.end();) 
 	{
-		if (it->second->completed == false) {
+		if (!it->second->completed) {
 			if (can_calculate) {
 				iterations = CalculatePath(it->second, 8 - iterations);
 
@@ -45,11 +45,12 @@ bool j1PathFinding::PreUpdate()
 			}
 			++it;
 		}
-		else
-		{
-			for (std::list<Unit*>::iterator it2 = App->entity->selected.begin(); it2 != App->entity->selected.end(); it2++) {
-				if (it->first == (*it2)->path_id && it->second->completed) {
-					(*it2)->SetPath(it->second->finished_path);
+		else{
+			for (std::list<Entity*>::iterator it2 = App->entity->entity_list.begin(); it2 != App->entity->entity_list.end(); it2++) {
+				if ((*it2)->GetType() != null) {
+					if (it->first == ((Unit*)*it2)->path_id && it->second->completed) {
+						((Unit*)*it2)->SetPath(it->second->finished_path);
+					}
 				}
 			}
 			RELEASE(it->second);

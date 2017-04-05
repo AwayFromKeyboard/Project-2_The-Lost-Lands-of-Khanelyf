@@ -74,31 +74,40 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_move_to_enemy:
 	{
-		if (attacked_unit == nullptr)
+		if (attacked_unit == nullptr || attacked_unit->life <= 0)
 			state = unit_idle;
-		if (IsInRange(attacked_unit)) {
-			App->pathfinding->DeletePath(path_id);
-			path.clear();
-			state = unit_state::unit_attack;
-			has_moved = false;
-		}
-		else if (!IsInRange(attacked_unit) && !has_moved) {
-			has_moved = true;
-			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
-		}
-		if (!IsInRange(attacked_unit) && has_moved) {
-			if (path.size() > 0)
-				FollowPath(dt);
+		else {
+			if (IsInRange(attacked_unit)) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				state = unit_state::unit_attack;
+				has_moved = false;
+			}
+			else if (!has_moved) {
+				has_moved = true;
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
+			}
+			else{
+				if (path.size() > 0)
+					FollowPath(dt);
+			}
 		}
 	}
 		break;
 
 	case unit_state::unit_attack:
-		if (attacked_unit != nullptr) {
+		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
+			attacked_unit == nullptr;
+			state = unit_idle;
+		}
+		else
+		{
 			if (IsInRange(attacked_unit)) {
 				att_state = attack_unit;
 			}
-			else if (!IsInRange(attacked_unit)) {
+			else {
 				state = unit_state::unit_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
@@ -106,8 +115,6 @@ bool Unit::Update(float dt)
 				break;
 			}
 		}
-		else
-			state = unit_idle;
 		
 		switch (att_state) {
 		case attack_unit:
