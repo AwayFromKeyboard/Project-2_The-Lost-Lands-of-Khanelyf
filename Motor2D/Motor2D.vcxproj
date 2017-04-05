@@ -104,6 +104,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="QuestManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="QuestManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />
