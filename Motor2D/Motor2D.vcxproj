@@ -156,14 +156,12 @@
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="..\Game\Buildings.xml" />
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\test.xml" />
     <Xml Include="..\Game\Units.xml">
-      <SubType>Designer</SubType>
-    </Xml>
-    <Xml Include="Buildings.xml">
       <SubType>Designer</SubType>
     </Xml>
   </ItemGroup>

@@ -246,7 +246,7 @@
     <Xml Include="..\Game\config.xml">
       <Filter>Engine\5. Tools</Filter>
     </Xml>
-    <Xml Include="Buildings.xml">
+    <Xml Include="..\Game\Buildings.xml">
       <Filter>Engine\4. Entities</Filter>
     </Xml>
   </ItemGroup>

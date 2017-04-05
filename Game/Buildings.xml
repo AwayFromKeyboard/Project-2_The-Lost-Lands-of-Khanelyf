@@ -2,6 +2,7 @@
   <building type="Barracks">
     <texture value="textures/Barracks.png"/>
     <cost value="1"/>
-    <collision_box w="50" h="50" offset_x="0" offset_y="0"/>
+    <rect w="280" h="254"/>
+    <collision_box w="265" h="250" offset_x="10" offset_y="0"/>
   </building>
 </buildings>
