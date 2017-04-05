@@ -240,6 +240,8 @@ public:
 	void Set(iPoint _pos, int w, int h);
 
 	bool update();
+	
+	//bool cleanup(); QA --> Needs implementation
 
 	bool MouseEnter();
 	bool MouseOut();
