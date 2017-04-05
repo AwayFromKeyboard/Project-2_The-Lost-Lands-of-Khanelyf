@@ -45,6 +45,19 @@ private:
 public:
 	void SetHero(Hero* hero);
 
+public:
+	UI_Window* barracks_ui_window = nullptr;
+	iPoint barracks_position;
+
+private:
+	UI_Button* barbarian_img = nullptr;
+	UI_Button* swordsman_img = nullptr;
+	UI_Button* create_unit_button = nullptr;
+	UI_Button* create_unit_button2 = nullptr;
+
+	bool create_barbarian = false;
+	bool create_swordsman = false;
+
 };
 
 

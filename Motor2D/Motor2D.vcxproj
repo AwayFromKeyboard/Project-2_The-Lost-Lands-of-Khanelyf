@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Barbarian.cpp" />
+    <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
@@ -113,6 +114,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Barbarian.h" />
+    <ClInclude Include="Barracks.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="j1Collisions.h" />
@@ -154,6 +156,7 @@
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="..\Game\Buildings.xml" />
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
