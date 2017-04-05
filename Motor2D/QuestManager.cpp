@@ -4,6 +4,7 @@
 #include "j1Scene.h"
 #include "SceneTest.h"
 #include "Player.h"
+#include "Hero.h"
 
 QuestManager::QuestManager() {
 
@@ -39,8 +40,7 @@ bool QuestManager::Update(float dt) {
 	if (current_quest->progress == current_quest->requested) {
 		current_quest->progress = 0;
 		App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
-		// Increase level points
-		// change title
+		App->player->GetHero()->levelup_points += current_quest->reward.level_point;
 		current_quest->active = false;
 		switch (current_quest->id)
 		{

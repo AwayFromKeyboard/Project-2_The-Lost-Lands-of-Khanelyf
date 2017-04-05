@@ -301,3 +301,8 @@ void Player::SetHero(Hero * hero)
 {
 	this->hero = hero;
 }
+
+Hero* Player::GetHero()
+{
+	return hero;
+}

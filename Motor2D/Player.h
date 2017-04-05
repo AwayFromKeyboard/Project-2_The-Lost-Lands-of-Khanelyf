@@ -44,7 +44,7 @@ private:
 	void UpdateAttributes();
 public:
 	void SetHero(Hero* hero);
-
+	Hero* GetHero();
 public:
 	UI_Window* barracks_ui_window = nullptr;
 	iPoint barracks_position;
