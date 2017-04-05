@@ -93,7 +93,6 @@ public:
 	unit_state state = unit_state::unit_null;
 	entity_name name;
 	bool flip = false;
-	bool to_delete = false;
   
 public:
 	vector<iPoint> path;

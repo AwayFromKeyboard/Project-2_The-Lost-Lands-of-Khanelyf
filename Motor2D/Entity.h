@@ -60,6 +60,7 @@ public:
 	}
 public:
 	entity_type type = entity_type::null;
+	bool to_delete = false;
 protected:
 	bool selected = false;
 };
