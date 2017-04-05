@@ -73,8 +73,10 @@ bool SceneTest::Start()
 
 	App->map->GetEntitiesSpawn();
 
-	gold = 1000;
-	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
+	gold = 100;
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
+
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ 110, 1 }, App->font->default_15);
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
@@ -128,13 +130,6 @@ bool SceneTest::PostUpdate()
 
 bool SceneTest::CleanUp()
 {
-	/*if (App->scene->GetCurrentScene() != App->scene->scene_test)
-	{
-		App->gui->DeleteElement(cursor);
-		App->gui->DeleteElement(general_ui_window);
-		App->gui->DeleteElement(gold_txt);
-	}*/
-
 	return true;
 }
 
@@ -155,14 +150,32 @@ void SceneTest::OnColl(Collider* col1, Collider* col2)
 void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
-	oss << "Gold: " << gold;
+	oss << gold;
 	std::string txt = oss.str();
 	gold_txt->SetText(txt);
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
+	std::stringstream oss2;
+	oss2 << current_human_resources << "/" << human_resources_max;
+	std::string txt2 = oss2.str();
+	human_resources_txt->SetText(txt2);
+
+	if (App->input->GetKey(SDL_SCANCODE_7) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{
-		gold -= TROOP_PRICE;
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
 		barb->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
+		gold -= barb->cost;
+		current_human_resources += barb->human_cost;
 	}
+	else if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
+	{
+		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
+		sword->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
+		gold -= sword->cost;
+		current_human_resources += sword->human_cost;
+	}
+}
+
+void SceneTest::IncreaseGold(int gold)
+{
+	this->gold += gold;
 }
