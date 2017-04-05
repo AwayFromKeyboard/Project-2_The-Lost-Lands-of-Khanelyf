@@ -83,7 +83,9 @@ bool MainMenu::CleanUp()
 
 	//QA --> Bad way to do it
 	cursor->enabled = false;
+	cursor_window->enabled = false;
 	main_menu_image->enabled = false;
+	main_menu_window->enabled = false;
 	start_button->enabled = false;
 
 	return true;

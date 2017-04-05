@@ -44,7 +44,7 @@ bool SceneTest::Start()
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
-	ui_r = { 0, 84, 1920, 1080 };
+	ui_r = { 0, 88, 1680, 1050 };
 	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
 	
 	InitCameraMovement();
@@ -52,7 +52,7 @@ bool SceneTest::Start()
 	App->map->GetEntitiesSpawn();
 
 	gold = 1000;
-	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 34, 2 }, App->font->default_15);
 
 	SDL_ShowCursor(0);
 	return true;
@@ -117,7 +117,7 @@ void SceneTest::OnColl(Collider* col1, Collider* col2)
 void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
-	oss << "Gold: " << gold;
+	oss << gold;
 	std::string txt = oss.str();
 	gold_txt->SetText(txt);
 
