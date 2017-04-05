@@ -21,7 +21,7 @@ bool QuestManager::Awake(pugi::xml_node&) {
 }
 
 bool QuestManager::Start() {
-	current_quest = CreateQuest("Protect the village!", "kill 5 enemies in the village", quest_type::kill, quest_id::quest_beggar, 2, 100, titles::leader, 3, true);
+	current_quest = CreateQuest("Protect the village!", "kill 5 enemies in the village", quest_type::kill, quest_id::quest_beggar, 5, 100, titles::leader, 3, true);
 	CreateQuest("Create a barrack!", "Create a barrack to hire some units, we need more protection", quest_type::create, quest_id::quest_leader, 1, 20, titles::leader, 2, false);
 	CreateQuest("Kill the enemies at the east!", "Go to the east and kill 4 enemies at the fortress", quest_type::kill, quest_id::quest_mayor, 4, 500, titles::mayor, 5, false);
 	CreateQuest("Kill the enemies at the north!", "Go to the north and kill 5 enemies at the fortress", quest_type::kill, quest_id::quest_mayor2, 5, 500, titles::mayor, 5, false);
@@ -38,7 +38,6 @@ bool QuestManager::Update(float dt) {
 
 	if (current_quest->progress == current_quest->requested) {
 		current_quest->progress = 0;
-		// Update Rewards
 		App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
 		// Increase level points
 		// change title
