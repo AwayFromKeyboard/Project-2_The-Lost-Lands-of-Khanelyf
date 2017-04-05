@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1App.h"
 #include "GameObject.h"
+#include "Player.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -701,7 +702,6 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 void j1Map::GetEntitiesSpawn() const
 {
-
 	for (std::list<MapLayer*>::const_iterator item = data.layers.begin(); item != data.layers.end(); item++)
 	{
 		MapLayer* layer = *item;
@@ -725,6 +725,7 @@ void j1Map::GetEntitiesSpawn() const
 						case 27: // Hero
 						{
 							Entity* player_unit = App->entity->CreateEntity(hero, player);
+							App->player->SetHero((Hero*)player_unit);
 							player_unit->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
