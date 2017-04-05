@@ -263,51 +263,69 @@ void Animator::LoadAnimationsFromUnitsXML(pugi::xml_node & node, Unit* unit)
 	{
 		unit->d_south.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("death").attribute("w").as_int(), node.child("death").attribute("h").as_int() });
 		unit->d_south.SetSpeed(node.child("death").attribute("speed").as_float());
+		unit->d_south.SetLoop(false);
 	}
 	for (pugi::xml_node rect = node.child("death").child("south_west").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->d_south_west.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("death").attribute("w").as_int(), node.child("death").attribute("h").as_int() });
 		unit->d_south_west.SetSpeed(node.child("death").attribute("speed").as_float());
+		unit->d_south_west.SetLoop(false);
 	}
 	for (pugi::xml_node rect = node.child("death").child("west").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->d_west.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("death").attribute("w").as_int(), node.child("death").attribute("h").as_int() });
 		unit->d_west.SetSpeed(node.child("death").attribute("speed").as_float());
+		unit->d_west.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("death").child("north_west").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->d_north_west.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("death").attribute("w").as_int(), node.child("death").attribute("h").as_int() });
 		unit->d_north_west.SetSpeed(node.child("death").attribute("speed").as_float());
+		unit->d_north_west.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("death").child("north").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->d_north.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("death").attribute("w").as_int(), node.child("death").attribute("h").as_int() });
 		unit->d_north.SetSpeed(node.child("death").attribute("speed").as_float());
+		unit->d_north.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("decompose").child("south").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->de_south.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("decompose").attribute("w").as_int(), node.child("decompose").attribute("h").as_int() });
 		unit->de_south.SetSpeed(node.child("decompose").attribute("speed").as_float());
+		unit->de_south.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("decompose").child("south_west").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->de_south_west.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("decompose").attribute("w").as_int(), node.child("decompose").attribute("h").as_int() });
 		unit->de_south_west.SetSpeed(node.child("decompose").attribute("speed").as_float());
+		unit->de_south_west.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("decompose").child("west").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->de_west.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("decompose").attribute("w").as_int(), node.child("decompose").attribute("h").as_int() });
 		unit->de_west.SetSpeed(node.child("decompose").attribute("speed").as_float());
+		unit->de_west.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("decompose").child("north_west").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->de_north_west.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("decompose").attribute("w").as_int(), node.child("decompose").attribute("h").as_int() });
 		unit->de_north_west.SetSpeed(node.child("decompose").attribute("speed").as_float());
+		unit->de_north_west.SetLoop(false);
+
 	}
 	for (pugi::xml_node rect = node.child("decompose").child("north").child("rect"); rect; rect = rect.next_sibling("rect"))
 	{
 		unit->de_north.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("decompose").attribute("w").as_int(), node.child("decompose").attribute("h").as_int() });
 		unit->de_north.SetSpeed(node.child("decompose").attribute("speed").as_float());
+		unit->de_north.SetLoop(false);
+
 	}
 }
 
