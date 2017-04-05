@@ -96,6 +96,7 @@ struct MapData
 	map_types			type;
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>layers;
+	
 };
 
 // ----------------------------------------------------
@@ -136,6 +137,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool j1Map::LoadResources(pugi::xml_node & node);
 
 	void TilesToDraw_x(int& x_ini, int& x_end, MapLayer* layer) const;
 	void TilesToDraw_y(int count, int x, int x_end, int& y_ini, int& y_end, MapLayer* layer) const;
