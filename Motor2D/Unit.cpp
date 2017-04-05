@@ -150,8 +150,7 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_decompose:
 		CheckDecomposeDirection();
-			if (current_animation->GetFrameIndex() == 4) {
-				current_animation->SetSpeed(0);
+			if (current_animation->Finished()) {
 				to_delete = true;
 		}
 		break;
