@@ -364,6 +364,24 @@ bool j1Gui::Move_Elements()
 	return ret;
 }
 
+UI_Element* j1Gui::GetMouseHover() const
+{
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
+
+	for (int it = 0; it < elements_list.size(); it++)
+	{
+		SDL_Rect rect = elements_list[it].data->rect;
+		if (mouse.PointInRect(rect.x, rect.y, rect.w, rect.h) == true && elements_list[it].data->enabled == true && elements_list[it].data->type == ui_element::ui_button)
+		{
+			return (elements_list[it].data);
+		}
+	}
+
+	return nullptr;
+}
+
+
 // ---------------------------------------------------------------------
 // Chooses the element that has to be moved.
 // ---------------------------------------------------------------------

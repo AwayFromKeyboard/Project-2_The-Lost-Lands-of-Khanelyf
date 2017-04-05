@@ -13,6 +13,7 @@ enum entity_name
 	hero,
 	barbarian,
 	swordsman,
+	barracks,
 	test
 };
 
@@ -22,7 +23,8 @@ enum entity_type
 	player,
 	ally,
 	npc,
-	enemy
+	enemy,
+	building
 };
 
 class Entity;
