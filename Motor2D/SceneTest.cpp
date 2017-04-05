@@ -65,11 +65,22 @@ bool SceneTest::Start()
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
 	ui_r = { 1, 84, 800, 600 };
 	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
-	create_unit_button = (UI_Button*)general_ui_window->CreateButton(iPoint(400, 300), 50, 50);
-	create_unit_button->AddImage("standard", { 0, 0, 50, 50 });
-	create_unit_button->SetImage("standard");
-	create_unit_button->AddImage("clicked", { 0, 0, 100, 50 });
-	create_unit_button->enabled = false;
+
+	//create_unit_button = (UI_Button*)...->CreateButton(iPoint(0, 0), 0, 0);
+	//create_unit_button->AddImage("standard", { 0, 145, 60, 60 });
+	//create_unit_button->SetImage("standard");
+	//create_unit_button->AddImage("clicked", { 61, 145, 60, 60 });
+	//create_unit_button->enabled = false;
+	//
+	//create_unit_button2 = (UI_Button*)...
+	//create_unit_button2->AddImage("standard", { 0, 145, 60, 60 });
+	//create_unit_button2->SetImage("standard");
+	//create_unit_button2->AddImage("clicked", { 61, 145, 60, 60 });
+	//create_unit_button2->enabled = false;
+	//
+	//create_unit_image = (UI_Image*)...
+	//create_unit_image-> {0, 0, 255, 144};
+	//create_unit_image->enabled = false;
 
 	InitCameraMovement();
 
@@ -95,12 +106,16 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == key_down) {
-		create_unit_button->enabled = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == key_up) {
-		create_unit_button->enabled = false;
-	}
+	//if () { // A barrack is selected
+	//	create_unit_button->enabled = true;
+	//	create_unit_button2->enabled = true;
+	//	create_unit_image->enabled = true;
+	//}
+	//else if () { // There is not any barrack selected
+	//	create_unit_button->enabled = false;
+	//	create_unit_button2->enabled = false;
+	//	create_unit_image->enabled = false
+	//}
 
 	return true;
 }
@@ -120,12 +135,29 @@ bool SceneTest::Update(float dt)
 
 bool SceneTest::PostUpdate()
 {
-	if (create_unit_button->MouseClickEnterLeft()) {
-		create_unit_button->SetImage("clicked");
-	}
-	if (create_unit_button->MouseClickOutLeft()) {
-		create_unit_button->SetImage("standard");
-	}
+	//if (create_unit_button->MouseClickEnterLeft()) {
+	//	create_unit_button->SetImage("clicked");
+	//
+	//	Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
+	//	barb->game_object->SetPos(); // Barracks position
+	//	gold -= barb->cost;
+	//	current_human_resources += barb->human_cost;
+	//}
+	//if (create_unit_button->MouseClickOutLeft()) {
+	//	create_unit_button->SetImage("standard");
+	//}
+	//
+	//if (create_unit_button2->MouseClickEnterLeft()) {
+	//	create_unit_button2->SetImage("clicked");
+	//
+	//	Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
+	//	sword->game_object->SetPos(); // Barracks position
+	//	gold -= sword->cost;
+	//	current_human_resources += sword->human_cost;
+	//}
+	//if (create_unit_button2->MouseClickOutLeft()) {
+	//	create_unit_button2->SetImage("standard");
+	//}
 
 	return true;
 }
