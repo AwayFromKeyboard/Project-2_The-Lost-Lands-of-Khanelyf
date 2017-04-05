@@ -65,10 +65,17 @@ bool j1Entity::PostUpdate()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++) {
-		if ((*it) != nullptr)
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();) {
+		if ((*it)->to_delete == true) {
+			DeleteEntity(*it);
+			it = entity_list.erase(it);
+		}
+		else {
 			ret = (*it)->PostUpdate();
+			++it;
+		}
 	}
+
 	App->collisions->DebugDraw();
 
 	return ret;
@@ -142,7 +149,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 void j1Entity::DeleteEntity(Entity* entity)
 {
 	entity->CleanUp();
-	entity_list.remove(entity);
+	//entity_list.remove(entity);
 	RELEASE(entity);
 }
 

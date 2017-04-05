@@ -30,25 +30,25 @@ bool Player::Start()
 	bool ret = true;
 
 	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_txt = (UI_Text*)attributes_window->CreateText({ 165, 487 }, App->font->default_15);
-	damage_txt = (UI_Text*)attributes_window->CreateText({ 165, 503 }, App->font->default_15);
-	armor_txt = (UI_Text*)attributes_window->CreateText({ 165, 518 }, App->font->default_15);
-	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 165, 533 }, App->font->default_15);
+	life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
+	damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
+	armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 972 }, App->font->default_15);
+	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 988 }, App->font->default_15);
 	
 	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_button = (UI_Button*)levelup_window->CreateButton({ 148, 493 }, 10, 10);
+	life_button = (UI_Button*)levelup_window->CreateButton({ 169, 937 }, 10, 10);
 	life_button->AddImage("standard", { 792, 73, 10, 10 });
 	life_button->SetImage("standard");
-	damage_button = (UI_Button*)levelup_window->CreateButton({ 148, 509 }, 10, 10);
+	damage_button = (UI_Button*)levelup_window->CreateButton({ 169, 953 }, 10, 10);
 	damage_button->AddImage("standard", { 792, 73, 10, 10 });
 	damage_button->SetImage("standard");
-	armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 524 }, 10, 10);
+	armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 969 }, 10, 10);
 	armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	armor_button->SetImage("standard");
-	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 148, 539 }, 10, 10);
+	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 985 }, 10, 10);
 	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
-	level_points_txt = (UI_Text*)levelup_window->CreateText({ 130, 478 }, App->font->default_10);
+	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
