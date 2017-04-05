@@ -32,7 +32,7 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
-
+	AI_timer.Start();
 	return ret;
 }
 
@@ -468,53 +468,57 @@ void Unit::LookAtMovement()
 }
 
 bool Unit::CheckSurroundings() {
-	std::list<iPoint> frontier;
-	std::list<iPoint> visited;
-	
-	
-	visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
-	frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+	if (AI_timer.ReadSec() >= 0.5) {
+		AI_timer.Start();
+		std::list<iPoint> frontier;
+		std::list<iPoint> visited;
 
-	for (int i = 0; i < radius_of_action; ++i) {
-		for (int j = frontier.size(); j >= 0; j--) {
-			iPoint neighbors[4];
-			neighbors[0] = frontier.front() + iPoint(1, 0);
-			neighbors[1] = frontier.front() + iPoint(-1, 0);
-			neighbors[2] = frontier.front() + iPoint(0, 1);
-			neighbors[3] = frontier.front() + iPoint(0, -1);
-			frontier.pop_front();
 
-			for (int k = 0; k < 4; k++) {
-				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0) {
-					switch (type) {
-					case player:
-					case ally:
-						if (found->type == enemy) {
-							attacked_unit = found;
-							state = unit_move_to_enemy;
-						}
-						break;
-					case enemy:
-						if (found->type == player || found->type == ally) {
-							attacked_unit = found;
-							state = unit_move_to_enemy;
-						}
-					}
-					return true;
-				}
-				else {
-					if (App->pathfinding->IsWalkable(neighbors[k])) {
-						bool is_visited = false;
-						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-							if (neighbors[k] == *it) {
-								is_visited = true;
-								break;
+		visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+		frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+
+		for (int i = 0; i < radius_of_action; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[4];
+				neighbors[0] = frontier.front() + iPoint(1, 0);
+				neighbors[1] = frontier.front() + iPoint(-1, 0);
+				neighbors[2] = frontier.front() + iPoint(0, 1);
+				neighbors[3] = frontier.front() + iPoint(0, -1);
+				frontier.pop_front();
+
+				for (int k = 0; k < 4; k++) {
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0) {
+						switch (type) {
+						case player:
+						case ally:
+							if (found->type == enemy) {
+								attacked_unit = found;
+								state = unit_move_to_enemy;
+								return true;
+							}
+							break;
+						case enemy:
+							if (found->type == player || found->type == ally) {
+								attacked_unit = found;
+								state = unit_move_to_enemy;
+								return true;
 							}
 						}
-						if (!is_visited) {
-							frontier.push_back(neighbors[k]);
-							visited.push_back(neighbors[k]);
+					}
+					else {
+						if (App->pathfinding->IsWalkable(neighbors[k])) {
+							bool is_visited = false;
+							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+								if (neighbors[k] == *it) {
+									is_visited = true;
+									break;
+								}
+							}
+							if (!is_visited) {
+								frontier.push_back(neighbors[k]);
+								visited.push_back(neighbors[k]);
+							}
 						}
 					}
 				}
