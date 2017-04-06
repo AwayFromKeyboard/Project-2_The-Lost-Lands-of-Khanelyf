@@ -16,7 +16,6 @@
 #include "Swordsman.h"
 #include "SceneTest.h"
 #include "j1Scene.h"
-#include "Barracks.h"
 
 Player::Player()
 {
