@@ -16,6 +16,7 @@
 #include "Swordsman.h"
 #include "SceneTest.h"
 #include "j1Scene.h"
+#include "Barracks.h"
 
 Player::Player()
 {
@@ -102,7 +103,7 @@ bool Player::PreUpdate()
 		ShellExecute(NULL, "open", "https://github.com/AwayFromKeyboard/Project-2_The-Lost-Lands-of-Khanelyf/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 
 
-	if (create_unit_button->MouseClickEnterLeft()) { // && barracks->create_barbarian == true
+	if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 		create_unit_button->SetImage("clicked");
 
 		if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
@@ -116,7 +117,7 @@ bool Player::PreUpdate()
 		create_unit_button->SetImage("standard");
 	}
 
-	if (create_unit_button2->MouseClickEnterLeft()) { // && barracks->create_swordsman == true
+	if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
 		create_unit_button2->SetImage("clicked");
 
 		if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {

@@ -160,7 +160,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		gold -= sword->cost;
 		current_human_resources += sword->human_cost;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 100)
+	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 100 && create_barrack == true)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building);
 		barrack->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
@@ -168,6 +168,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
+		create_barrack = false;
 	}
 }
 

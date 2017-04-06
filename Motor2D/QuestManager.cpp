@@ -46,15 +46,18 @@ bool QuestManager::Update(float dt) {
 		{
 		case quest_beggar:
 			current_quest = ChangeQuest(quest_id::quest_leader);
+			App->scene->scene_test->create_barrack = true;
 			break;
 		case quest_leader:
 			current_quest = ChangeQuest(quest_id::quest_mayor);
 			break;
 		case quest_mayor:
 			current_quest = ChangeQuest(quest_id::quest_mayor2);
+			App->player->create_swordsman = true;
 			break;
 		case quest_mayor2:
 			current_quest = ChangeQuest(quest_id::quest_null);
+			App->player->create_swordsman = true;
 			break;
 		case quest_null:
 			break;
