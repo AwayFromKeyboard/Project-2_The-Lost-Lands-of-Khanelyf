@@ -58,7 +58,13 @@ bool Unit::PreUpdate()
 
 	position = { game_object->GetPos().x, game_object->GetPos().y };
 	position_map = App->map->WorldToMapPoint(position);
-	App->map->entity_matrix[position_map.x][position_map.y] = this;
+	if (life > 0) {
+		App->map->entity_matrix[position_map.x][position_map.y] = this;
+	}
+	else if (selected) {
+		App->entity->selected.remove(this);
+		selected = false;
+	}
 
 	return ret;
 }
@@ -70,10 +76,12 @@ bool Unit::Update(float dt)
 	switch (state) {
 	case unit_state::unit_idle:
 		CheckDirection();
+		CheckSurroundings();
 		break;
 
 	case unit_state::unit_move:
 		FollowPath(dt);
+		//CheckSurroundings();
 		break;
 
 	case unit_state::unit_move_to_enemy:
@@ -132,7 +140,6 @@ bool Unit::Update(float dt)
 		break;
 
 	case unit_state::unit_death:
-		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
@@ -151,9 +158,7 @@ bool Unit::Update(float dt)
 
 	case unit_state::unit_decompose:
 		CheckDecomposeDirection();
-		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
-			if (current_animation->GetFrameIndex() == 4) {
-				current_animation->SetSpeed(0);
+			if (current_animation->Finished()) {
 				to_delete = true;
 		}
 		break;
@@ -175,7 +180,6 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
-		CheckSurroundings();
 		break;
 	case unit_move:
 		offset = m_offset;
@@ -183,7 +187,6 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
-		CheckSurroundings();
 		break;
 	case unit_move_to_enemy:
 		offset = m_offset;
@@ -227,10 +230,10 @@ bool Unit::PostUpdate()
 	if (GetSelected())
 		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
-	if (to_delete)
-	{
-		App->entity->DeleteEntity(this);
-	}
+	//if (to_delete)
+	//{
+	//	App->entity->DeleteEntity(this);
+	//}
 
 
 	return ret;
@@ -277,6 +280,11 @@ Collider * Unit::GetCollider()
 entity_type Unit::GetType()
 {
 	return type;
+}
+
+void Unit::SetSelected(bool _selected) {
+	if (life > 0)
+		selected = _selected;
 }
 
 void Unit::SetPath(vector<iPoint> _path)

@@ -52,7 +52,7 @@ public:
 		return type;
 	}
 
-	void SetSelected(bool _selected) {
+	virtual void SetSelected(bool _selected) {
 		selected = _selected;
 	}
 	bool GetSelected() {
@@ -60,7 +60,8 @@ public:
 	}
 public:
 	entity_type type = entity_type::null;
-private:
+	bool to_delete = false;
+protected:
 	bool selected = false;
 };
 

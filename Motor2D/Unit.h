@@ -63,6 +63,7 @@ public:
 	GameObject* GetGameObject();
 	Collider* GetCollider();
 	entity_type GetType();
+	void SetSelected(bool _selected);
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
@@ -92,7 +93,6 @@ public:
 	unit_state state = unit_state::unit_null;
 	entity_name name;
 	bool flip = false;
-	bool to_delete = false;
   
 public:
 	vector<iPoint> path;
@@ -176,7 +176,6 @@ public:
 	bool IsInsideCircle(int x, int y);
 
 public:
-	bool is_selected = false;
 	bool shout_fx = true;
 };
 

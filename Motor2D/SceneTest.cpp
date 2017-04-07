@@ -60,11 +60,11 @@ bool SceneTest::Start()
 	App->collisions->UpdateQuadtree();
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
-	cursor_r = { 1, 1, 37, 40 };
+	cursor_r = { 1, 7, 37, 40 };
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
-	ui_r = { 1, 84, 800, 600 };
+	ui_r = { 0, 88, 1680, 1050 };
 	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
 
 	InitCameraMovement();
@@ -74,7 +74,7 @@ bool SceneTest::Start()
 	gold = 0;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 
-	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ 110, 1 }, App->font->default_15);
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
