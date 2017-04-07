@@ -81,9 +81,9 @@ bool Player::Start()
 	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
 	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 7, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 10), 60, 60);
-	battlecry_ability->AddImage("standard", { 705, 0, 60, 60 });
+	battlecry_ability->AddImage("standard", { 517, 0, 64, 64 });
 	battlecry_ability->SetImage("standard");
-	battlecry_ability->AddImage("clicked", { 645, 0, 60, 60 });
+	battlecry_ability->AddImage("clicked", { 581, 0, 64, 64 });
 
 	//player_abilities->SetEnabledAndChilds(false);
 
@@ -178,7 +178,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();
@@ -263,7 +263,7 @@ bool Player::PostUpdate()
 	}
 	
 	if (draw == true) {
-		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(8), 255, 255, 255, 255); // radius needs revision
+		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(8), 255, 0, 0, 255); // radius needs revision
 	}
 
 	return ret;
