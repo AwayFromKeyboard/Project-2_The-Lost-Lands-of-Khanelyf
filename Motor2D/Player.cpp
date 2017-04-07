@@ -80,10 +80,10 @@ bool Player::Start()
 
 	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
-	shout_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 7, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 10), 60, 60);
-	shout_ability->AddImage("standard", { 705, 0, 60, 60 });
-	shout_ability->SetImage("standard");
-	shout_ability->AddImage("clicked", { 645, 0, 60, 60 });
+	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 7, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 10), 60, 60);
+	battlecry_ability->AddImage("standard", { 705, 0, 60, 60 });
+	battlecry_ability->SetImage("standard");
+	battlecry_ability->AddImage("clicked", { 645, 0, 60, 60 });
 
 	//player_abilities->SetEnabledAndChilds(false);
 
@@ -143,30 +143,30 @@ bool Player::PreUpdate()
 	}
 
 	//player abilities
-	if (shout_ability->MouseEnter()) {
+	if (battlecry_ability->MouseEnter()) {
 		draw = true;
 	}
 
-	if (shout_ability->MouseOut()) {
+	if (battlecry_ability->MouseOut()) {
 		draw = false;
 	}
 
-	if (shout_ability->MouseClickEnterLeft() && shout_ability->CompareState("standard")) {
-		shout_ability->SetImage("clicked");
+	if (battlecry_ability->MouseClickEnterLeft() && battlecry_ability->CompareState("standard")) {
+		battlecry_ability->SetImage("clicked");
 	
-		shout_state = true;
+		battlecry_state = true;
 		Battlecry();
 		BattlecryModifier(5);
 
-		shout_timer.Start();
+		battlecry_timer.Start();
 	}
 	
-	if (shout_timer.ReadSec() >= 10) {
-		shout_ability->SetImage("standard");
+	if (battlecry_timer.ReadSec() >= 10) {
+		battlecry_ability->SetImage("standard");
 	}
 	
-	else if (shout_timer.ReadSec() >= 5) {
-		shout_state = false;
+	else if (battlecry_timer.ReadSec() >= 5) {
+		battlecry_state = false;
 		BattlecryModifier(-5);
 		buffed_list.clear();
 	}

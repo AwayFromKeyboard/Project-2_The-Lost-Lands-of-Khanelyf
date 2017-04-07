@@ -64,18 +64,18 @@ private:
 	UI_Button* create_unit_button2 = nullptr;
 
 	//buttons for abilities
-	UI_Button* shout_ability = nullptr;
+	UI_Button* battlecry_ability = nullptr;
 
 public:
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
 	//player abilities
-	bool shout_state = false;
+	bool battlecry_state = false;
 	bool draw = false;
 
 private:
-	j1Timer shout_timer;
+	j1Timer battlecry_timer;
 };
 
 
