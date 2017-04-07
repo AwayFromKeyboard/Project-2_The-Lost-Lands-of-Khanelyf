@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
+#include "j1Timer.h"
 
 #include "Point.h"
 
@@ -47,6 +48,7 @@ public:
 	Hero* GetHero();
 public:
 	UI_Window* barracks_ui_window = nullptr;
+	UI_Window* player_abilities = false;
 	iPoint barracks_position;
 
 private:
@@ -55,10 +57,18 @@ private:
 	UI_Button* create_unit_button = nullptr;
 	UI_Button* create_unit_button2 = nullptr;
 
+	//buttons for abilities
+	UI_Button* shout_ability = nullptr;
+
 public:
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
+	//player abilities
+	bool shout_state = false;
+
+private:
+	j1Timer shout_timer;
 };
 
 

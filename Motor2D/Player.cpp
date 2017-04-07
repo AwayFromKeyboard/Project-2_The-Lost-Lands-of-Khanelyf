@@ -16,6 +16,7 @@
 #include "Swordsman.h"
 #include "SceneTest.h"
 #include "j1Scene.h"
+#include "j1Window.h"
 
 Player::Player()
 {
@@ -51,7 +52,7 @@ bool Player::Start()
 	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
-	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
+	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 98);
 
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
@@ -74,6 +75,17 @@ bool Player::Start()
 	swordsman_img->click_through = true;
 
 	barracks_ui_window->SetEnabledAndChilds(false);
+
+	//player abilities
+
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 99);
+
+	shout_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 7, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 10), 60, 60);
+	shout_ability->AddImage("standard", { 705, 0, 60, 60 });
+	shout_ability->SetImage("standard");
+	shout_ability->AddImage("clicked", { 645, 0, 60, 60 });
+
+	//player_abilities->SetEnabledAndChilds(false);
 
 	return ret;
 }
@@ -130,6 +142,24 @@ bool Player::PreUpdate()
 		create_unit_button2->SetImage("standard");
 	}
 
+	//player abilities
+
+	if (shout_ability->MouseClickEnterLeft() && shout_ability->CompareState("standard")) {
+		shout_ability->SetImage("clicked");
+	
+		shout_state = true;
+		// buffed variable of allys set to true and give + 5 dmg to them
+		shout_timer.Start();
+	}
+	
+	if (shout_timer.ReadSec() >= 10) {
+		shout_ability->SetImage("standard");
+	}
+	
+	else if (shout_timer.ReadSec() >= 5) {
+		shout_state = false;
+		// - 5 dmg to buffed allys and set buffed variable to false
+	}
 
 	return ret;
 }
