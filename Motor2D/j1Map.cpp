@@ -9,11 +9,9 @@
 #include "j1Window.h"
 #include "Entity.h"
 #include "j1Entity.h"
-#include "Hero.h"
-#include "Barbarian.h"
-#include "Swordsman.h"
 #include "j1App.h"
 #include "GameObject.h"
+#include "Player.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -75,7 +73,16 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					//magic numbers +30 to fix
-					App->render->Blit(tileset->texture, pos.x+32, pos.y+30, &r);
+					if(layer->name=="trees")
+						App->render->Blit(tileset->texture, pos.x+20, pos.y-140, &r);
+					else if(layer->name == "special")
+						App->render->Blit(tileset->texture, pos.x +20, pos.y - 195, &r);
+					else if (layer->name == "casas")
+						App->render->Blit(tileset->texture, pos.x + 35, pos.y - 95, &r);
+					else if (layer->name == "tower")
+						App->render->Blit(tileset->texture, pos.x+30, pos.y - 110, &r);
+					else
+						App->render->Blit(tileset->texture, pos.x+32, pos.y + 30, &r);
 				}
 			}
 			count++;
@@ -323,6 +330,7 @@ bool j1Map::Load(const char* file_name)
 			data.layers.push_back(lay);
 	}
 
+	// ret = LoadResources(map_file.child("map"));
 	if (ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -352,6 +360,14 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	map_loaded = ret;
+
+	// Load the matrix -----------------
+	vector<void*> tmp_vec;
+	for (int j = 0; j < data.height; ++j) 
+		tmp_vec.push_back(nullptr);
+
+	for (int i = 0; i < data.width; ++i)
+		entity_matrix.push_back(tmp_vec);
 
 	return ret;
 }
@@ -539,6 +555,32 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	return ret;
 }
 
+bool j1Map::LoadResources(pugi::xml_node & node)
+{
+	bool ret = true;
+	//data.mapWidth = data.width * data.tile_width;
+	//data.mapHeight = data.height * data.tile_height;
+
+	/*pugi::xml_node resourceNode;
+
+	for (resourceNode = node.child("objectgroup"); resourceNode; resourceNode = resourceNode.next_sibling("objectgroup"))
+	{
+		pugi::xml_node prop;
+
+		for (prop = resourceNode.child("object"); prop; prop = prop.next_sibling("object"))
+		{
+			
+			string name = prop.attribute("name").as_string();
+			Resource* resource = App->entityManager->CreateResource(prop.attribute("x").as_int(), prop.attribute("y").as_int(), (resourceType)type, 0);
+			
+			data.PropResources.push_back(resource);
+			
+		}
+	}
+	*/
+	return ret;
+}
+
 void j1Map::TilesToDraw_x(int & x_ini, int & x_end, MapLayer * layer) const
 {
 	iPoint ini = WorldToMap(fit_square.x, fit_square.y);
@@ -660,7 +702,6 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 
 void j1Map::GetEntitiesSpawn() const
 {
-
 	for (std::list<MapLayer*>::const_iterator item = data.layers.begin(); item != data.layers.end(); item++)
 	{
 		MapLayer* layer = *item;
@@ -683,22 +724,23 @@ void j1Map::GetEntitiesSpawn() const
 						{
 						case 27: // Hero
 						{
-							Hero* player_unit = (Hero*)App->entity->CreateEntity(hero, player);
-							player_unit->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							Entity* player_unit = App->entity->CreateEntity(hero, player);
+							App->player->SetHero((Hero*)player_unit);
+							player_unit->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
 						
 						case 28: // Enemies (probably swordsmans)
 						{
-							Barbarian* barb_enemy = (Barbarian*)App->entity->CreateEntity(barbarian, enemy);
-							barb_enemy->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy);
+							barb_enemy->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
 						
 						case 29: // NPC
 						{
-							Barbarian* barb_npc = (Barbarian*)App->entity->CreateEntity(barbarian, npc);
-							barb_npc->game_object->SetPos(App->map->FMapToWorld(x + 2, y));
+							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc);
+							barb_npc->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
 						}
 						break;
 						

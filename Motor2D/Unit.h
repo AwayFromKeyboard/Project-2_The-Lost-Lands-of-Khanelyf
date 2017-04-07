@@ -63,6 +63,7 @@ public:
 	GameObject* GetGameObject();
 	Collider* GetCollider();
 	entity_type GetType();
+	void SetSelected(bool _selected);
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
@@ -73,6 +74,7 @@ public:
 	void LookAtMovement();
 
 	// Attack
+	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
 	void LookAtAttack();
 	void UnitAttack();
@@ -82,7 +84,6 @@ public:
   
 	// Death
 	void CheckDeathDirection();
-	j1Timer death_timer;
 
 	//Decompose
 	void CheckDecomposeDirection();
@@ -92,7 +93,6 @@ public:
 	unit_state state = unit_state::unit_null;
 	entity_name name;
 	bool flip = false;
-	bool to_delete = false;
   
 public:
 	vector<iPoint> path;
@@ -106,7 +106,9 @@ public:
 	bool has_moved = false;
 public:
 	int life = 0;
-	int cost = 0;
+	int cost = 0; // only for allies
+	int human_cost = 0; // only for allies
+	int gold_drop = 0; // only for enemies
 	float speed = 0;
 	int damage = 0;
 	int armor = 0;
@@ -114,9 +116,9 @@ public:
 	int range = 0;
 
 	iPoint position = NULLPOINT;
+	iPoint position_map = NULLPOINT;
 
 	Collider* collision = nullptr;
-	entity_type type = entity_type::null;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
@@ -165,7 +167,16 @@ public:
 	Animation de_north;
 
 public:
-	bool is_selected = false;
+	uint radius_of_action = 0;
+
+private:
+		j1Timer death_timer;
+		j1Timer AI_timer;
+public:
+	bool IsInsideCircle(int x, int y);
+
+public:
+	bool shout_fx = true;
 };
 
 #endif

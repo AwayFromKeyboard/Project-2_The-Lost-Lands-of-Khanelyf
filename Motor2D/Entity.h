@@ -49,16 +49,19 @@ public:
 	}
 
 	virtual entity_type GetType() {
-		return entity_type::null;
+		return type;
 	}
 
-	void SetSelected(bool _selected) {
+	virtual void SetSelected(bool _selected) {
 		selected = _selected;
 	}
 	bool GetSelected() {
 		return selected;
 	}
-private:
+public:
+	entity_type type = entity_type::null;
+	bool to_delete = false;
+protected:
 	bool selected = false;
 };
 

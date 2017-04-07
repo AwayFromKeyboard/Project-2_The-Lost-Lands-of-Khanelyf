@@ -35,6 +35,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
 		default = Load(path, size);
 		default_15 = Load(path, 15);
+		default_10 = Load(path, 10);
 	}
 
 	return ret;

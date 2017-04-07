@@ -59,13 +59,16 @@ bool Barbarian::LoadEntity()
 		game_object->SetListener((j1Module*)App->entity);
 		game_object->SetFixedRotation(true);
 
-		cost = node.child("cost").attribute("value").as_int();
+		cost = node.child("cost").attribute("value").as_int(0);
+		human_cost = node.child("human_cost").attribute("value").as_int(0);
+		gold_drop = node.child("gold_drop").attribute("value").as_int(0);
 		speed = node.child("speed").attribute("value").as_float();
 		damage = node.child("damage").attribute("value").as_int();
 		armor = node.child("armor").attribute("value").as_int();
 		pierce_armor = node.child("pierce_armor").attribute("value").as_int();
 		range = node.child("range").attribute("value").as_int();
 		life = node.child("life").attribute("value").as_int();
+		radius_of_action = node.child("radius_of_action").attribute("value").as_int(0);
 
 		std::string texture = node.child("texture").attribute("value").as_string();
 		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
@@ -91,13 +94,6 @@ bool Barbarian::LoadEntity()
 		state = unit_state::unit_idle;
 	}
 	else LOG("\nERROR, no node found\n");
-
-	return ret;
-}
-
-bool Barbarian::Start()
-{
-	bool ret = true;
 
 	return ret;
 }

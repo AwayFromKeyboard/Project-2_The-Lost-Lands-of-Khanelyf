@@ -7,6 +7,9 @@
 #include "GameObject.h"
 #include "j1Input.h"
 #include "j1Collisions.h"
+#include "Barracks.h"
+#include "j1Gui.h"
+#include "Player.h"
 
 j1Entity::j1Entity()
 {
@@ -62,8 +65,16 @@ bool j1Entity::PostUpdate()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		ret = (*it)->PostUpdate();
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();) {
+		if ((*it)->to_delete == true) {
+			DeleteEntity(*it);
+			it = entity_list.erase(it);
+		}
+		else {
+			ret = (*it)->PostUpdate();
+			++it;
+		}
+	}
 
 	App->collisions->DebugDraw();
 
@@ -113,8 +124,12 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 		break;
 	case barbarian:
 		ret = new Barbarian(type);
-		
 		break;
+	case swordsman:
+		ret = new Swordsman(type);
+		break;
+	case barracks:
+		ret = new Barracks(type);
 	default:
 		break;
 	}
@@ -134,7 +149,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 void j1Entity::DeleteEntity(Entity* entity)
 {
 	entity->CleanUp();
-	entity_list.remove(entity);
+	//entity_list.remove(entity);
 	RELEASE(entity);
 }
 
@@ -144,7 +159,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 	{
 		iPoint unit = (*it)->GetGameObject()->GetPos();
 		
-		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
 			{
@@ -164,7 +179,17 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
-				selected.push_back((Unit*)*it);
+				if ((*it)->GetType() == building) {
+					App->entity->UnselectEverything();
+					App->player->barracks_ui_window->SetEnabledAndChilds(true);
+					App->player->barracks_position = (*it)->GetGameObject()->GetPos();
+					(*it)->SetSelected(true);
+				}
+				else {
+					if (App->player->barracks_ui_window->enabled)
+						App->player->barracks_ui_window->SetEnabledAndChilds(false);
+					selected.push_back((Unit*)*it);
+				}
 		}
 	}
 }
@@ -182,6 +207,9 @@ void j1Entity::UnselectEverything()
 		else
 			it++;
 	}
+	if (App->player->barracks_ui_window->enabled)
+		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+
 	selected.clear();
 }
 

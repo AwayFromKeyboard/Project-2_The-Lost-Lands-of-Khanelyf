@@ -64,9 +64,6 @@
     <ClCompile Include="Building.cpp">
       <Filter>Engine\4. Entities</Filter>
     </ClCompile>
-    <ClCompile Include="j1Entity.cpp">
-      <Filter>Engine\4. Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Unit.cpp">
       <Filter>Engine\4. Entities</Filter>
     </ClCompile>
@@ -102,6 +99,15 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Entity.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestManager.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Barracks.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,9 +178,6 @@
     <ClInclude Include="Building.h">
       <Filter>Engine\4. Entities</Filter>
     </ClInclude>
-    <ClInclude Include="j1Entity.h">
-      <Filter>Engine\4. Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Unit.h">
       <Filter>Engine\4. Entities</Filter>
     </ClInclude>
@@ -226,6 +229,15 @@
     <ClInclude Include="Player.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestManager.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Barracks.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -239,6 +251,9 @@
     </Xml>
     <Xml Include="..\Game\config.xml">
       <Filter>Engine\5. Tools</Filter>
+    </Xml>
+    <Xml Include="..\Game\Buildings.xml">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +286,9 @@
     </Filter>
     <Filter Include="Engine\5. Tools\PuguiXML">
       <UniqueIdentifier>{9e68fe9b-5e8e-42f7-b88d-21041aa7c3e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. Entities\Buildings">
+      <UniqueIdentifier>{0c97d919-f506-417a-886a-52e1513121ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
