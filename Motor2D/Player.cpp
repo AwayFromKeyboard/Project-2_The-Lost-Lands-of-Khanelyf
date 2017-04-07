@@ -143,15 +143,15 @@ bool Player::PreUpdate()
 	}
 
 	//player abilities
-	if (battlecry_ability->MouseEnter()) {
+	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
 		draw = true;
 	}
 
-	if (battlecry_ability->MouseOut()) {
+	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up) {
 		draw = false;
 	}
 
-	if (battlecry_ability->MouseClickEnterLeft() && battlecry_ability->CompareState("standard")) {
+	if ((battlecry_ability->MouseClickEnterLeft() && battlecry_ability->CompareState("standard")) || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 		battlecry_ability->SetImage("clicked");
 	
 		battlecry_state = true;
