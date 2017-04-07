@@ -52,7 +52,7 @@ bool Player::Start()
 	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
-	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 98);
+	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
 
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
@@ -78,7 +78,7 @@ bool Player::Start()
 
 	//player abilities
 
-	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 99);
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
 	shout_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 7, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 10), 60, 60);
 	shout_ability->AddImage("standard", { 705, 0, 60, 60 });
@@ -143,12 +143,21 @@ bool Player::PreUpdate()
 	}
 
 	//player abilities
+	if (shout_ability->MouseEnter()) {
+		draw = true;
+	}
+
+	if (shout_ability->MouseOut()) {
+		draw = false;
+	}
 
 	if (shout_ability->MouseClickEnterLeft() && shout_ability->CompareState("standard")) {
 		shout_ability->SetImage("clicked");
 	
 		shout_state = true;
-		// buffed variable of allys set to true and give + 5 dmg to them
+		Battlecry();
+		BattlecryModifier(5);
+
 		shout_timer.Start();
 	}
 	
@@ -158,7 +167,8 @@ bool Player::PreUpdate()
 	
 	else if (shout_timer.ReadSec() >= 5) {
 		shout_state = false;
-		// - 5 dmg to buffed allys and set buffed variable to false
+		BattlecryModifier(-5);
+		buffed_list.clear();
 	}
 
 	return ret;
@@ -251,6 +261,10 @@ bool Player::PostUpdate()
 	if (hero != nullptr) {
 		UpdateAttributes();
 	}
+	
+	if (draw == true) {
+		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(8), 255, 255, 255, 255); // radius needs revision
+	}
 
 	return ret;
 }
@@ -335,4 +349,39 @@ void Player::SetHero(Hero * hero)
 Hero* Player::GetHero()
 {
 	return hero;
+}
+
+void Player::Battlecry() {
+
+	buffed_list.clear();
+	std::list<iPoint> frontier;
+	std::list<iPoint> visited;
+
+	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+	for (int i = 0; i < 10; ++i) {
+		for (int j = frontier.size(); j > 0; j--) {
+			iPoint neighbors[4];
+			neighbors[0] = frontier.front() + iPoint(1, 0);
+			neighbors[1] = frontier.front() + iPoint(-1, 0);
+			neighbors[2] = frontier.front() + iPoint(0, 1);
+			neighbors[3] = frontier.front() + iPoint(0, -1);
+			frontier.pop_front();
+
+			for (int k = 0; k < 4; k++) {
+				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+				if (found != nullptr && found->life > 0 && found->type == ally) {
+					buffed_list.push_back(found);
+				}
+			}
+		}
+	}
+}
+
+void Player::BattlecryModifier(int damage_buff)
+{
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+		(*it)->damage += damage_buff;
+	}
 }

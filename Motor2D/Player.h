@@ -24,6 +24,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void Battlecry();
+	void BattlecryModifier(int damage_buff);
+
 private:
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
@@ -46,6 +49,9 @@ private:
 public:
 	void SetHero(Hero* hero);
 	Hero* GetHero();
+
+	std::list<Unit*> buffed_list;
+
 public:
 	UI_Window* barracks_ui_window = nullptr;
 	UI_Window* player_abilities = false;
@@ -66,6 +72,7 @@ public:
 
 	//player abilities
 	bool shout_state = false;
+	bool draw = false;
 
 private:
 	j1Timer shout_timer;
