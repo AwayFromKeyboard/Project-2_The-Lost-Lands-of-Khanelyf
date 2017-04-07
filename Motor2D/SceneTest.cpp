@@ -17,6 +17,7 @@
 #include "Unit.h"
 #include "GameObject.h"
 #include "j1Collisions.h"
+#include "QuestManager.h"
 #include "Barracks.h"
 #include "Building.h"
 
@@ -70,11 +71,10 @@ bool SceneTest::Start()
 
 	App->map->GetEntitiesSpawn();
 
-	gold = 100;
-	gold_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 46, 2 }, App->font->default_15);
+	gold = 0;
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
-
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
@@ -145,25 +145,30 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	std::string txt2 = oss2.str();
 	human_resources_txt->SetText(txt2);
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
 		barb->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 		gold -= barb->cost;
 		current_human_resources += barb->human_cost;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
+
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
 		sword->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 		gold -= sword->cost;
 		current_human_resources += sword->human_cost;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 1)
+	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 100 && create_barrack == true)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building);
 		barrack->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));
 		gold -= barrack->cost;
+		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+			App->questmanager->GetCurrentQuest()->progress++;
+		}
+		create_barrack = false;
 	}
 }
 

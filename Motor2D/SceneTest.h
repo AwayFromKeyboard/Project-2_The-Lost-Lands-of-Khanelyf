@@ -54,6 +54,8 @@ public:
 	int current_human_resources = 0;
 	UI_Text* human_resources_txt = nullptr;
 
+	bool create_barrack = false;
+
 public:
 	//FXs
 	unsigned int death_id;

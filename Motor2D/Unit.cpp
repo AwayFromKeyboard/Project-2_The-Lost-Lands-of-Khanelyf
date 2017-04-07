@@ -15,6 +15,7 @@
 #include "SceneTest.h"
 #include "j1Audio.h"
 #include "Functions.h"
+#include "QuestManager.h"
 
 Unit::Unit()
 {
@@ -144,10 +145,14 @@ bool Unit::Update(float dt)
 			App->collisions->EraseCollider(collision);
 		if (!current_animation->Finished())
 			death_timer.Start();
-		else if (death_timer.ReadSec() > 2) {
-			if (type == entity_type::enemy)
-				App->scene->scene_test->IncreaseGold(gold_drop);
+		else if (death_timer.ReadSec() > 2)
+		{
 			state = unit_state::unit_decompose;
+			if (type == entity_type::enemy) {
+				App->scene->scene_test->IncreaseGold(gold_drop);
+				if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
+					App->questmanager->GetCurrentQuest()->progress++;
+			}
 		}
 		break;
 
