@@ -80,12 +80,13 @@ bool Player::Start()
 
 	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
-	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 7, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 10), 60, 60);
-	battlecry_ability->AddImage("standard", { 517, 0, 64, 64 });
+	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
+	battlecry_ability->AddImage("standard", { 645, 60, 25, 25 });
 	battlecry_ability->SetImage("standard");
-	battlecry_ability->AddImage("clicked", { 581, 0, 64, 64 });
+	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
-	//player_abilities->SetEnabledAndChilds(false);
+	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+	battlecry_cd->SetEnabled(false);
 
 	return ret;
 }
@@ -158,15 +159,17 @@ bool Player::PreUpdate()
 		Battlecry();
 		BattlecryModifier(5);
 		draw_buff = true;
+		battlecry_cd->SetEnabled(true);
 
 		battlecry_timer.Start();
 	}
 	
-	if (battlecry_timer.ReadSec() >= 10) {
+	if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+		battlecry_cd->SetEnabled(false);
 		battlecry_ability->SetImage("standard");
 	}
 	
-	else if (battlecry_timer.ReadSec() >= 5) {
+	else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
 		draw_buff = false;
 		battlecry_state = false;
 		BattlecryModifier(-5);
@@ -269,6 +272,10 @@ bool Player::PostUpdate()
 
 	if (draw_buff == true)
 		DrawBuff();
+
+	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY) {
+		DrawCD(1);
+	}
 
 	return ret;
 }
@@ -385,7 +392,8 @@ void Player::Battlecry() {
 
 void Player::BattlecryModifier(int damage_buff)
 {
-	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) 
+	{
 		(*it)->damage += damage_buff;
 	}
 }
@@ -397,5 +405,25 @@ void Player::DrawBuff()
 			App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
 			hero->life += 1;
 		}
+	}
+}
+
+void Player::DrawCD(int ability_number)
+{
+	std::stringstream oss;
+
+	if (ability_number == 1) {
+		int timer = COOLDOWN_BATTLECRY - battlecry_timer.ReadSec() + 1;
+		oss << timer;
+		std::string txt = oss.str();
+		battlecry_cd->SetText(txt);
+	}
+
+	else if (ability_number == 2) {
+
+	}
+
+	else if (ability_number == 3) {
+
 	}
 }

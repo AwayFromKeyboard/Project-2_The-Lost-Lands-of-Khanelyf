@@ -7,6 +7,9 @@
 
 #include "Point.h"
 
+#define DURATION_BATTLECRY 5
+#define COOLDOWN_BATTLECRY 10
+
 class Unit;
 class UI_Window;
 class UI_Text;
@@ -28,12 +31,16 @@ public:
 	void BattlecryModifier(int damage_buff);
 	void DrawBuff();
 
+	void DrawCD(int ability_number);
+
 private:
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;
 	UI_Text* armor_txt = nullptr;
 	UI_Text* pierce_armor_txt = nullptr;
+
+	UI_Text* battlecry_cd = nullptr;
 
 	UI_Window* levelup_window = nullptr;
 	UI_Button* life_button = nullptr;
