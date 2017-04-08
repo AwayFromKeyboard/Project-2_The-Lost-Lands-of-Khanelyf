@@ -157,6 +157,7 @@ bool Player::PreUpdate()
 		battlecry_state = true;
 		Battlecry();
 		BattlecryModifier(5);
+		draw_buff = true;
 
 		battlecry_timer.Start();
 	}
@@ -166,6 +167,7 @@ bool Player::PreUpdate()
 	}
 	
 	else if (battlecry_timer.ReadSec() >= 5) {
+		draw_buff = false;
 		battlecry_state = false;
 		BattlecryModifier(-5);
 		buffed_list.clear();
@@ -262,9 +264,11 @@ bool Player::PostUpdate()
 		UpdateAttributes();
 	}
 	
-	if (draw == true) {
+	if (draw == true)
 		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(8), 255, 0, 0, 255); // radius needs revision
-	}
+
+	if (draw_buff == true)
+		DrawBuff();
 
 	return ret;
 }
@@ -383,5 +387,15 @@ void Player::BattlecryModifier(int damage_buff)
 {
 	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
 		(*it)->damage += damage_buff;
+	}
+}
+
+void Player::DrawBuff()
+{
+	if (buffed_list.empty() != true) {
+		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+			App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
+			hero->life += 1;
+		}
 	}
 }

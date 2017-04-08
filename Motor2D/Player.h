@@ -26,6 +26,7 @@ public:
 
 	void Battlecry();
 	void BattlecryModifier(int damage_buff);
+	void DrawBuff();
 
 private:
 	UI_Window* attributes_window = nullptr;
@@ -73,6 +74,7 @@ public:
 	//player abilities
 	bool battlecry_state = false;
 	bool draw = false;
+	bool draw_buff = false;
 
 private:
 	j1Timer battlecry_timer;
