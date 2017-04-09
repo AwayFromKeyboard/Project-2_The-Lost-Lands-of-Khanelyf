@@ -9,6 +9,14 @@
 #include "j1Entity.h"
 #include <list>
 
+enum entity_state {
+	entity_idle,
+	entity_move,
+	entity_move_to_enemy,
+	entity_attack,
+	entity_death,
+	entity_decompose,
+	entity_null
 };
 
 class b2Fixture;
@@ -63,10 +71,12 @@ public:
 
 	void KillEntity(){
 		life = 0;
+		state = entity_death;
 	};
 
 public:
 	entity_type type = entity_type::null;
+	entity_state state = entity_state::entity_null;
 	bool to_delete = false;
 
 	int life = 0;

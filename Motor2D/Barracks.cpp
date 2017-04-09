@@ -62,6 +62,7 @@ bool Barracks::LoadEntity()
 		
 		life = node.child("life").attribute("value").as_int();
 
+		state = entity_idle;
 
 		App->entity->building_game_objects_list.push_back(game_object);
 	}

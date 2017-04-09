@@ -45,6 +45,7 @@ bool Building::Update(float dt)
 
 	switch (state) {
 
+	case entity_death:
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
@@ -58,6 +59,7 @@ bool Building::Draw(float dt)
 {
 	bool ret = true;
 
+	if (state == entity_idle)
 		App->scene->LayerBlit(6, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
 
 	return ret;
