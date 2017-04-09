@@ -147,20 +147,14 @@ bool Player::PreUpdate()
 	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
 		draw_battlecry_range = true;
 	}
-
 	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up) {
 		draw_battlecry_range = false;
 	}
 
 	if ((battlecry_ability->MouseClickEnterLeft() && battlecry_ability->CompareState("standard")) || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 		battlecry_ability->SetImage("clicked");
-	
-		battlecry_state = true;
-		Battlecry();
-		BattlecryModifier(5);
-		draw_buff = true;
+		Battlecry(BATTLECRY_BUFF);
 		battlecry_cd->SetEnabled(true);
-
 		battlecry_timer.Start();
 	}
 	
@@ -168,12 +162,8 @@ bool Player::PreUpdate()
 		battlecry_cd->SetEnabled(false);
 		battlecry_ability->SetImage("standard");
 	}
-	
 	else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
-		draw_buff = false;
-		battlecry_state = false;
-		BattlecryModifier(-5);
-		buffed_list.clear();
+		StopBuff(-BATTLECRY_BUFF);
 	}
 
 	return ret;
@@ -362,8 +352,8 @@ Hero* Player::GetHero()
 	return hero;
 }
 
-void Player::Battlecry() {
-
+void Player::Battlecry(int modifier) {
+	battlecry_state = true;
 	buffed_list.clear();
 	std::list<iPoint> frontier;
 	std::list<iPoint> visited;
@@ -382,12 +372,29 @@ void Player::Battlecry() {
 
 			for (int k = 0; k < 4; k++) {
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == ally) {
+				if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
 					buffed_list.push_back(found);
+					found->buffed = true;
+				}
+				else {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						visited.push_back(neighbors[k]);
+					}
 				}
 			}
 		}
 	}
+
+	BattlecryModifier(modifier);
+	draw_buff = true;
 }
 
 void Player::BattlecryModifier(int damage_buff)
@@ -403,9 +410,20 @@ void Player::DrawBuff()
 	if (buffed_list.empty() != true) {
 		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
 			App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
-			hero->life += 1;
 		}
 	}
+}
+
+void Player::StopBuff(int modifier)
+{
+	draw_buff = false;
+	battlecry_state = false;
+	BattlecryModifier(modifier);
+
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+		(*it)->buffed = false;
+	}
+	buffed_list.clear();
 }
 
 void Player::DrawCD(int ability_number)
