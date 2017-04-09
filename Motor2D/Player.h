@@ -80,7 +80,7 @@ public:
 
 	//player abilities
 	bool battlecry_state = false;
-	bool draw = false;
+	bool draw_battlecry_range = false;
 	bool draw_buff = false;
 
 private:

@@ -145,11 +145,11 @@ bool Player::PreUpdate()
 
 	//player abilities
 	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
-		draw = true;
+		draw_battlecry_range = true;
 	}
 
 	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up) {
-		draw = false;
+		draw_battlecry_range = false;
 	}
 
 	if ((battlecry_ability->MouseClickEnterLeft() && battlecry_ability->CompareState("standard")) || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
@@ -267,14 +267,14 @@ bool Player::PostUpdate()
 		UpdateAttributes();
 	}
 	
-	if (draw == true)
+	if (draw_battlecry_range == true)
 		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(8), 255, 0, 0, 255); // radius needs revision
 
 	if (draw_buff == true)
 		DrawBuff();
 
 	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY) {
-		DrawCD(1);
+		DrawCD(1); // 1 == Battlecry
 	}
 
 	return ret;
