@@ -72,19 +72,18 @@ bool Building::PostUpdate()
 	if (GetSelected())
 		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
-	if (to_delete)
-	{
-		App->entity->DeleteEntity(this);
-	}
-
 	return ret;
 }
 
 bool Building::CleanUp()
 {
-	for (std::list<GameObject*>::iterator it = App->entity->building_game_objects_list.begin(); it != App->entity->building_game_objects_list.end(); it++)
-		RELEASE(*it);
-	App->entity->building_game_objects_list.clear();
+	
+	bool ret = true;
+
+	App->entity->building_game_objects_list.remove(game_object);
+	RELEASE(game_object);
+
+	return ret;
 
 	return true;
 }
