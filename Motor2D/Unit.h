@@ -6,16 +6,6 @@
 
 struct Collider;
 
-enum unit_state {
-	unit_idle,
-	unit_move,
-	unit_move_to_enemy,
-	unit_attack,
-	unit_death,
-	unit_decompose,
-	unit_null
-};
-
 enum attack_state {
 	attack_unit,
 	attack_building,
@@ -90,7 +80,6 @@ public:
   
 public:
 	GameObject* game_object = nullptr;
-	unit_state state = unit_state::unit_null;
 	entity_name name;
 	bool flip = false;
   
@@ -105,8 +94,6 @@ public:
 	attack_state att_state = attack_state::attack_null;
 	bool has_moved = false;
 public:
-	int life = 0;
-	int cost = 0; // only for allies
 	int human_cost = 0; // only for allies
 	int gold_drop = 0; // only for enemies
 	float speed = 0;
@@ -170,8 +157,8 @@ public:
 	uint radius_of_action = 0;
 
 private:
-		j1Timer death_timer;
-		j1Timer AI_timer;
+	j1Timer death_timer;
+	j1Timer AI_timer;
 public:
 	bool IsInsideCircle(int x, int y);
 

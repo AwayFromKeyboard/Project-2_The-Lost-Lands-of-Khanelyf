@@ -43,6 +43,14 @@ bool Building::Update(float dt)
 	position = { game_object->GetPos().x, game_object->GetPos().y };
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
+	switch (state) {
+
+		if(collision != nullptr)
+			App->collisions->EraseCollider(collision);
+		to_delete = true;
+		break;
+	}
+
 	return true;
 }
 
@@ -50,7 +58,7 @@ bool Building::Draw(float dt)
 {
 	bool ret = true;
 
-	App->scene->LayerBlit(6, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
+		App->scene->LayerBlit(6, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
 
 	return ret;
 }

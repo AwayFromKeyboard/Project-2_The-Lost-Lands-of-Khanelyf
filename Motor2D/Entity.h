@@ -9,6 +9,8 @@
 #include "j1Entity.h"
 #include <list>
 
+};
+
 class b2Fixture;
 class PhysBody;
 class GameObject;
@@ -58,9 +60,18 @@ public:
 	bool GetSelected() {
 		return selected;
 	}
+
+	void KillEntity(){
+		life = 0;
+	};
+
 public:
 	entity_type type = entity_type::null;
 	bool to_delete = false;
+
+	int life = 0;
+	int cost = 0; // only for allies
+
 protected:
 	bool selected = false;
 };

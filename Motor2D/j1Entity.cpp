@@ -67,8 +67,9 @@ bool j1Entity::PostUpdate()
 
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();) {
 		if ((*it)->to_delete == true) {
+			list<Entity*>::iterator it_next = std::next(it);
 			DeleteEntity(*it);
-			it = entity_list.erase(it);
+			it = it_next;
 		}
 		else {
 			ret = (*it)->PostUpdate();
@@ -149,7 +150,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 void j1Entity::DeleteEntity(Entity* entity)
 {
 	entity->CleanUp();
-	//entity_list.remove(entity);
+	entity_list.remove(entity);
 	RELEASE(entity);
 }
 
