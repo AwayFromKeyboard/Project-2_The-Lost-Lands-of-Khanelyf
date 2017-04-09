@@ -258,7 +258,7 @@ bool Player::PostUpdate()
 	}
 	
 	if (draw_battlecry_range == true)
-		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(8), 255, 0, 0, 255); // radius needs revision
+		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(5), 255, 0, 0, 255); // radius needs revision
 
 	if (draw_buff == true)
 		DrawBuff();
@@ -407,11 +407,11 @@ void Player::BattlecryModifier(int damage_buff)
 
 void Player::DrawBuff()
 {
-	if (buffed_list.empty() != true) {
-		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
-			App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
-		}
-	}
+	//if (buffed_list.empty() != true) {
+	//	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+	//		App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
+	//	}
+	//}
 }
 
 void Player::StopBuff(int modifier)
