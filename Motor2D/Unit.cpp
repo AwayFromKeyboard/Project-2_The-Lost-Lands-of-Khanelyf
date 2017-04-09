@@ -230,12 +230,6 @@ bool Unit::PostUpdate()
 	if (GetSelected())
 		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
 
-	//if (to_delete)
-	//{
-	//	App->entity->DeleteEntity(this);
-	//}
-
-
 	return ret;
 }
 
