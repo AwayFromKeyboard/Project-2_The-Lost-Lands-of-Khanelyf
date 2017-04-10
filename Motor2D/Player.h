@@ -10,6 +10,7 @@
 #define DURATION_BATTLECRY 5
 #define COOLDOWN_BATTLECRY 10
 #define BATTLECRY_BUFF 5
+#define BATTLECRY_RANGE 10
 
 class Unit;
 class UI_Window;
@@ -28,8 +29,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void Battlecry(int modifier);
+	void Battlecry(int modifier, int range);
 	void BattlecryModifier(int damage_buff);
+	void CheckBattlecryRange(int range);
 	void DrawBuff();
 	void StopBuff(int modifier);
 	void DrawCD(int ability_number);
@@ -59,10 +61,7 @@ public:
 	void SetHero(Hero* hero);
 	Hero* GetHero();
 
-
-
 	std::list<Unit*> buffed_list;
-
 public:
 	UI_Window* barracks_ui_window = nullptr;
 	UI_Window* player_abilities = false;

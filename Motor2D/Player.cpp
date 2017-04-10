@@ -151,9 +151,9 @@ bool Player::PreUpdate()
 		draw_battlecry_range = false;
 	}
 
-	if ((battlecry_ability->MouseClickEnterLeft() && battlecry_ability->CompareState("standard")) || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
+	if ((battlecry_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
 		battlecry_ability->SetImage("clicked");
-		Battlecry(BATTLECRY_BUFF);
+		Battlecry(BATTLECRY_BUFF, BATTLECRY_RANGE);
 		battlecry_cd->SetEnabled(true);
 		battlecry_timer.Start();
 	}
@@ -165,6 +165,8 @@ bool Player::PreUpdate()
 	else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
 		StopBuff(-BATTLECRY_BUFF);
 	}
+
+	CheckBattlecryRange(BATTLECRY_RANGE);
 
 	return ret;
 }
@@ -257,9 +259,6 @@ bool Player::PostUpdate()
 		UpdateAttributes();
 	}
 	
-	if (draw_battlecry_range == true)
-		App->render->DrawCircle(hero->position.x + App->render->camera.x, hero->position.y + App->render->camera.y, METERS_TO_PIXELS(5), 255, 0, 0, 255); // radius needs revision
-
 	if (draw_buff == true)
 		DrawBuff();
 
@@ -352,7 +351,7 @@ Hero* Player::GetHero()
 	return hero;
 }
 
-void Player::Battlecry(int modifier) {
+void Player::Battlecry(int modifier, int range) {
 	battlecry_state = true;
 	buffed_list.clear();
 	std::list<iPoint> frontier;
@@ -361,7 +360,7 @@ void Player::Battlecry(int modifier) {
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < range; ++i) {
 		for (int j = frontier.size(); j > 0; j--) {
 			iPoint neighbors[4];
 			neighbors[0] = frontier.front() + iPoint(1, 0);
@@ -402,6 +401,46 @@ void Player::BattlecryModifier(int damage_buff)
 	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) 
 	{
 		(*it)->damage += damage_buff;
+	}
+}
+
+void Player::CheckBattlecryRange(int range)
+{
+	if (draw_battlecry_range == true)
+	{
+		std::list<iPoint> frontier;
+		std::list<iPoint> visited;
+
+		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+		frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+		for (int i = 0; i < range; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[4];
+				neighbors[0] = frontier.front() + iPoint(1, 0);
+				neighbors[1] = frontier.front() + iPoint(-1, 0);
+				neighbors[2] = frontier.front() + iPoint(0, 1);
+				neighbors[3] = frontier.front() + iPoint(0, -1);
+				frontier.pop_front();
+
+				for (int k = 0; k < 4; k++) {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						visited.push_back(neighbors[k]);
+					}
+				}
+			}
+		}
+		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+		}
 	}
 }
 
