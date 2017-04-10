@@ -1,4 +1,4 @@
-# Age of Empires: The Lost Lands of Khanelyf
+﻿# Age of Empires: The Lost Lands of Khanelyf
 ## Description
 The game follows the story of a hero in the lands of Khanelyf, he will have to go through challenges to conquer the land. A rpg that reminds us of Warcraft III but giving more value to the strategy and troop movement of Age of Empires and also keeping their art style. The game supports tutorials and the singleplayer mode. Every acomplishment you make will elevate your status and gain you respect from your people allowing you to make your civilitzation stronger.
 
@@ -21,6 +21,9 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 * [Oriol Rodriguez](https://github.com/Eweer) (UI)
 
 ## Instructions
+
+Controls:
+
 * Use the arrow keys to move the camera
 
 * Use the left mouse button to select your units
@@ -31,6 +34,20 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
  
   * Move the selected troops
 
-* Press A to create Barbarian units
+* F1 to debug mode
 
-* Press S to create Swordsman units
+* Z to level up points
+
+* B to constuct barrack(then you can create 2 types of units with left click)
+
+Goal:
+
+Follow and complete the quests without getting your hero killed. 
+
+
+Quests:
+
+1st: Kill 5 enemies(there's two hidden on your right and three more in the town going north), you will receive some gold.
+2nd: Create a barrack and create troops in it.
+3rd: Go east and kill 4 enemies that protect the towers.
+4rd: Go north and conquer the enemy fortress.
