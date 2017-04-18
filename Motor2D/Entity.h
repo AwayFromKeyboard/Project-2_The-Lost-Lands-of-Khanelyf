@@ -61,6 +61,10 @@ public:
 public:
 	entity_type type = entity_type::null;
 	bool to_delete = false;
+
+	int life = 0;
+	int cost = 0; // only for allies
+
 protected:
 	bool selected = false;
 };

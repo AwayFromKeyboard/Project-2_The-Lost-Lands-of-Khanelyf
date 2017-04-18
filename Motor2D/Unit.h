@@ -105,8 +105,6 @@ public:
 	attack_state att_state = attack_state::attack_null;
 	bool has_moved = false;
 public:
-	int life = 0;
-	int cost = 0; // only for allies
 	int human_cost = 0; // only for allies
 	int gold_drop = 0; // only for enemies
 	float speed = 0;
@@ -168,14 +166,15 @@ public:
 
 public:
 	uint radius_of_action = 0;
-
+	bool buffed = false;
 private:
-		j1Timer death_timer;
-		j1Timer AI_timer;
+	j1Timer death_timer;
+	j1Timer AI_timer;
 public:
 	bool IsInsideCircle(int x, int y);
 
 public:
+	// attacked audio
 	bool shout_fx = true;
 };
 

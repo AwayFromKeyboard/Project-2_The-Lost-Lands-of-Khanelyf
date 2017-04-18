@@ -16,6 +16,7 @@
 #include "Swordsman.h"
 #include "SceneTest.h"
 #include "j1Scene.h"
+#include "j1Window.h"
 
 Player::Player()
 {
@@ -51,7 +52,7 @@ bool Player::Start()
 	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
-	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 99);
+	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
 
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
@@ -74,6 +75,18 @@ bool Player::Start()
 	swordsman_img->click_through = true;
 
 	barracks_ui_window->SetEnabledAndChilds(false);
+
+	//player abilities
+
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
+
+	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
+	battlecry_ability->AddImage("standard", { 645, 60, 25, 25 });
+	battlecry_ability->SetImage("standard");
+	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
+
+	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+	battlecry_cd->SetEnabled(false);
 
 	return ret;
 }
@@ -130,6 +143,30 @@ bool Player::PreUpdate()
 		create_unit_button2->SetImage("standard");
 	}
 
+	//player abilities
+	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+		draw_battlecry_range = true;
+	}
+	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+		draw_battlecry_range = false;
+	}
+
+	if ((battlecry_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+		battlecry_ability->SetImage("clicked");
+		Battlecry(BATTLECRY_BUFF, BATTLECRY_RANGE);
+		battlecry_cd->SetEnabled(true);
+		battlecry_timer.Start();
+	}
+	
+	if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+		battlecry_cd->SetEnabled(false);
+		battlecry_ability->SetImage("standard");
+	}
+	else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+		StopBuff(-BATTLECRY_BUFF);
+	}
+
+	CheckBattlecryRange(BATTLECRY_RANGE);
 
 	return ret;
 }
@@ -138,7 +175,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();
@@ -220,6 +257,13 @@ bool Player::PostUpdate()
 
 	if (hero != nullptr) {
 		UpdateAttributes();
+	}
+	
+	if (draw_buff == true)
+		DrawBuff();
+
+	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY) {
+		DrawCD(1); // 1 == Battlecry
 	}
 
 	return ret;
@@ -305,4 +349,138 @@ void Player::SetHero(Hero * hero)
 Hero* Player::GetHero()
 {
 	return hero;
+}
+
+void Player::Battlecry(int modifier, int range) {
+	battlecry_state = true;
+	buffed_list.clear();
+	std::list<iPoint> frontier;
+	std::list<iPoint> visited;
+
+	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+	for (int i = 0; i < range; ++i) {
+		for (int j = frontier.size(); j > 0; j--) {
+			iPoint neighbors[4];
+			neighbors[0] = frontier.front() + iPoint(1, 0);
+			neighbors[1] = frontier.front() + iPoint(-1, 0);
+			neighbors[2] = frontier.front() + iPoint(0, 1);
+			neighbors[3] = frontier.front() + iPoint(0, -1);
+			frontier.pop_front();
+
+			for (int k = 0; k < 4; k++) {
+				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+				if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
+					buffed_list.push_back(found);
+					found->buffed = true;
+				}
+				else {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						visited.push_back(neighbors[k]);
+					}
+				}
+			}
+		}
+	}
+
+	BattlecryModifier(modifier);
+	draw_buff = true;
+}
+
+void Player::BattlecryModifier(int damage_buff)
+{
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) 
+	{
+		(*it)->damage += damage_buff;
+	}
+}
+
+void Player::CheckBattlecryRange(int range)
+{
+	if (draw_battlecry_range == true)
+	{
+		std::list<iPoint> frontier;
+		std::list<iPoint> visited;
+
+		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+		frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+		for (int i = 0; i < range; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[4];
+				neighbors[0] = frontier.front() + iPoint(1, 0);
+				neighbors[1] = frontier.front() + iPoint(-1, 0);
+				neighbors[2] = frontier.front() + iPoint(0, 1);
+				neighbors[3] = frontier.front() + iPoint(0, -1);
+				frontier.pop_front();
+
+				for (int k = 0; k < 4; k++) {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						visited.push_back(neighbors[k]);
+					}
+				}
+			}
+		}
+		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+		}
+	}
+}
+
+void Player::DrawBuff()
+{
+	//if (buffed_list.empty() != true) {
+	//	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+	//		App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
+	//	}
+	//}
+}
+
+void Player::StopBuff(int modifier)
+{
+	draw_buff = false;
+	battlecry_state = false;
+	BattlecryModifier(modifier);
+
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+		(*it)->buffed = false;
+	}
+	buffed_list.clear();
+}
+
+void Player::DrawCD(int ability_number)
+{
+	std::stringstream oss;
+
+	if (ability_number == 1) {
+		int timer = COOLDOWN_BATTLECRY - battlecry_timer.ReadSec() + 1;
+		oss << timer;
+		std::string txt = oss.str();
+		battlecry_cd->SetText(txt);
+	}
+
+	else if (ability_number == 2) {
+
+	}
+
+	else if (ability_number == 3) {
+
+	}
 }

@@ -40,8 +40,6 @@ public:
 
 public:
 
-	int cost = 0;
-
 	iPoint position = NULLPOINT;
 	iPoint offset = NULLPOINT;
 
