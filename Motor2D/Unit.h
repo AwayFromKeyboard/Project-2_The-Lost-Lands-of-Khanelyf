@@ -6,16 +6,6 @@
 
 struct Collider;
 
-enum unit_state {
-	unit_idle,
-	unit_move,
-	unit_move_to_enemy,
-	unit_attack,
-	unit_death,
-	unit_decompose,
-	unit_null
-};
-
 enum attack_state {
 	attack_unit,
 	attack_building,
@@ -90,7 +80,6 @@ public:
   
 public:
 	GameObject* game_object = nullptr;
-	unit_state state = unit_state::unit_null;
 	entity_name name;
 	bool flip = false;
   

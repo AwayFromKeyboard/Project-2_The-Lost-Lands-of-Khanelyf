@@ -91,7 +91,7 @@ bool Swordsman::LoadEntity()
 		direction = { 0, 1 };
 		App->entity->unit_game_objects_list.push_back(game_object);
 
-		state = unit_state::unit_idle;
+		state = entity_state::entity_idle;
 	}
 	else LOG("\nERROR, no node found\n");
 

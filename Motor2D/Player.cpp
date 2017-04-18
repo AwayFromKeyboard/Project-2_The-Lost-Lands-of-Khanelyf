@@ -248,6 +248,19 @@ bool Player::Update(float dt)
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_K) == key_down) {
+
+		iPoint mouse;
+		App->input->GetMouseWorld(mouse.x, mouse.y);
+
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+			Collider* unit = (*it)->GetCollider();
+
+			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+				(*it)->KillEntity();
+		}
+	}
+
 	return ret;
 }
 
@@ -278,7 +291,7 @@ bool Player::CleanUp()
 void Player::MoveToTile(iPoint tile) {
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), tile);
-		(*it)->state = unit_state::unit_move;
+		(*it)->state = entity_state::entity_move;
 		(*it)->attacked_unit = nullptr;
 	}
 }
@@ -287,7 +300,7 @@ void Player::SetAttackingEnemy(Unit* enemy) {
 	if (enemy->life > 0) {
 		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 			(*it)->SetAttackingUnit(enemy);
-			(*it)->state = unit_state::unit_move_to_enemy;
+			(*it)->state = entity_state::entity_move_to_enemy;
 		}
 	}
 }

@@ -44,15 +44,15 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0 && state != unit_state::unit_move_to_enemy) 
+	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy) 
 	{
 		if (path.size() > 0)
 		{
-			state = unit_move;
+			state = entity_move;
 		}
 		else
 		{
-			state = unit_idle;
+			state = entity_idle;
 		}
 	}
 
@@ -74,25 +74,25 @@ bool Unit::Update(float dt)
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 	
 	switch (state) {
-	case unit_state::unit_idle:
+	case entity_state::entity_idle:
 		CheckDirection();
 		CheckSurroundings();
 		break;
 
-	case unit_state::unit_move:
+	case entity_state::entity_move:
 		FollowPath(dt);
 		//CheckSurroundings();
 		break;
 
-	case unit_state::unit_move_to_enemy:
+	case entity_state::entity_move_to_enemy:
 	{
 		if (attacked_unit == nullptr || attacked_unit->life <= 0)
-			state = unit_idle;
+			state = entity_idle;
 		else {
 			if (IsInRange(attacked_unit)) {
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				state = unit_state::unit_attack;
+				state = entity_state::entity_attack;
 				has_moved = false;
 			}
 			else if (!has_moved) {
@@ -109,10 +109,10 @@ bool Unit::Update(float dt)
 	}
 		break;
 
-	case unit_state::unit_attack:
+	case entity_state::entity_attack:
 		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
 			attacked_unit == nullptr;
-			state = unit_idle;
+			state = entity_idle;
 		}
 		else
 		{
@@ -120,7 +120,7 @@ bool Unit::Update(float dt)
 				att_state = attack_unit;
 			}
 			else {
-				state = unit_state::unit_move_to_enemy;
+				state = entity_state::entity_move_to_enemy;
 				current_animation = &i_north;
 				att_state = attack_null;
 				attacked_unit = nullptr;
@@ -139,7 +139,7 @@ bool Unit::Update(float dt)
 
 		break;
 
-	case unit_state::unit_death:
+	case entity_state::entity_death:
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
@@ -147,7 +147,7 @@ bool Unit::Update(float dt)
 			death_timer.Start();
 		else if (death_timer.ReadSec() > 2)
 		{
-			state = unit_state::unit_decompose;
+			state = entity_state::entity_decompose;
 			if (type == entity_type::enemy) {
 				App->scene->scene_test->IncreaseGold(gold_drop);
 				if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
@@ -156,7 +156,7 @@ bool Unit::Update(float dt)
 		}
 		break;
 
-	case unit_state::unit_decompose:
+	case entity_state::entity_decompose:
 		CheckDecomposeDirection();
 			if (current_animation->Finished()) {
 				to_delete = true;
@@ -174,42 +174,42 @@ bool Unit::Draw(float dt)
 
 	switch (state)
 	{
-	case unit_idle:
+	case entity_idle:
 		offset = i_offset;
 		if(flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_move:
+	case entity_move:
 		offset = m_offset;
 		if(flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_move_to_enemy:
+	case entity_move_to_enemy:
 		offset = m_offset;
 		if (flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_attack:
+	case entity_attack:
 		offset = a_offset;
 		if (flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_a_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_death:
+	case entity_death:
 		offset = d_offset;
 		if (flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_d_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_decompose:
+	case entity_decompose:
 		offset = de_offset;
 		if (flip)
 			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_de_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
@@ -229,12 +229,6 @@ bool Unit::PostUpdate()
 
 	if (GetSelected())
 		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
-
-	//if (to_delete)
-	//{
-	//	App->entity->DeleteEntity(this);
-	//}
-
 
 	return ret;
 }
@@ -363,7 +357,7 @@ void Unit::FollowPath(float dt)
 
 	if (path.size() == 0)
 	{
-		state = unit_idle;
+		state = entity_idle;
 		has_destination = false;
 	}
 }
@@ -508,14 +502,14 @@ bool Unit::CheckSurroundings() {
 						case ally:
 							if (found->type == enemy) {
 								attacked_unit = found;
-								state = unit_move_to_enemy;
+								state = entity_move_to_enemy;
 								return true;
 							}
 							break;
 						case enemy:
 							if (found->type == player || found->type == ally) {
 								attacked_unit = found;
-								state = unit_move_to_enemy;
+								state = entity_move_to_enemy;
 								return true;
 							}
 						}
@@ -641,8 +635,8 @@ void Unit::UnitAttack()
 		if (attacked_unit->life <= 0)
 		{
 			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
-			state = unit_idle;
-			attacked_unit->state = unit_death;
+			state = entity_idle;
+			attacked_unit->state = entity_death;
 			attacked_unit = nullptr;
 		}
 		shout_fx = true;

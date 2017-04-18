@@ -60,6 +60,9 @@ bool Barracks::LoadEntity()
 		std::string texture = node.child("texture").attribute("value").as_string();
 		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
 		
+		life = node.child("life").attribute("value").as_int();
+
+		state = entity_idle;
 
 		App->entity->building_game_objects_list.push_back(game_object);
 	}
