@@ -1156,6 +1156,17 @@ void UI_Button::SetImage(char* name)
 	}
 }
 
+bool UI_Button::CompareState(char* name) {
+	for (list<rect_text>::iterator it = rect_list.begin(); it != rect_list.end(); it++)
+	{
+		if (TextCmp((*it).name.c_str(), name) && curr.x == (*it).rect.x && curr.y == (*it).rect.y && curr.w == (*it).rect.w && curr.h == (*it).rect.h)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 // -----------------------------------
 // ---------------------------- Button
 

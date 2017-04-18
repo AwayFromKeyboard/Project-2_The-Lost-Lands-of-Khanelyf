@@ -160,7 +160,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		gold -= sword->cost;
 		current_human_resources += sword->human_cost;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 100 && create_barrack == true)
+	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building);
 		barrack->game_object->SetPos(fPoint(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y));

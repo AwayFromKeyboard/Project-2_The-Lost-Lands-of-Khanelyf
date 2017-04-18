@@ -155,7 +155,7 @@ public:
 
 public:
 	uint radius_of_action = 0;
-
+	bool buffed = false;
 private:
 	j1Timer death_timer;
 	j1Timer AI_timer;
@@ -163,6 +163,7 @@ public:
 	bool IsInsideCircle(int x, int y);
 
 public:
+	// attacked audio
 	bool shout_fx = true;
 };
 

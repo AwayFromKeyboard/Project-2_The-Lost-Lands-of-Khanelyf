@@ -252,6 +252,8 @@ public:
 	void AddImage(char* name, SDL_Rect rect);
 	void SetImage(char* name);
 
+	bool CompareState(char * name);
+
 private:
 	void ChangeButtonStats();
 
