@@ -32,6 +32,7 @@ class j1Collisions;
 class Player;
 class QuestManager;
 class j1XMLLoader;
+class j1CutSceneManager;
 
 class j1App
 {
@@ -123,6 +124,7 @@ public:
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
 	j1XMLLoader*		xmlloader = nullptr;
+	j1CutSceneManager*  cutscenemanager = nullptr;
 
 	// Console logs
 	list<string>        logs;
