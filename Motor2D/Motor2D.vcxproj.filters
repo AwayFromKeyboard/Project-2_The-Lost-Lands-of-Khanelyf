@@ -109,6 +109,12 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="CutSceneManager.cpp">
+      <Filter>Engine\6. CutScene Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="j1XMLLoader.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -238,6 +244,12 @@
     <ClInclude Include="Barracks.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="CutSceneManager.h">
+      <Filter>Engine\6. CutScene Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="j1XMLLoader.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -289,6 +301,9 @@
     </Filter>
     <Filter Include="Engine\4. Entities\Buildings">
       <UniqueIdentifier>{0c97d919-f506-417a-886a-52e1513121ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. CutScene Manager">
+      <UniqueIdentifier>{88046d79-9be9-4c53-a8a8-93842bd52c49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
