@@ -82,6 +82,10 @@ public:
 	int life = 0;
 	int cost = 0; // only for allies
 
+	iPoint position = NULLPOINT;
+	Collider* collision = nullptr;
+	//std::string texture = NULL;
+
 protected:
 	bool selected = false;
 };
