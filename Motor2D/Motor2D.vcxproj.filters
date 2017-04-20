@@ -115,6 +115,9 @@
     <ClCompile Include="j1XMLLoader.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
+    <ClCompile Include="BezierEasing.cpp">
+      <Filter>Engine\5. Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -249,6 +252,9 @@
     </ClInclude>
     <ClInclude Include="j1XMLLoader.h">
       <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierEasing.h">
+      <Filter>Engine\5. Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

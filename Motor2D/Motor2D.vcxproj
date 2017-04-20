@@ -78,6 +78,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
+    <ClCompile Include="BezierEasing.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="CutSceneManager.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
+    <ClInclude Include="BezierEasing.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="CutSceneManager.h" />

@@ -106,7 +106,7 @@ bool j1CutSceneManager::HasFinished() const
 void j1CutSceneManager::Load(const char * path)
 {
 	pugi::xml_document doc;
-	App->xmls->LoadXML(path, doc);
+	App->xmlloader->LoadXML(path, doc);
 
 	pugi::xml_node elements = doc.child("file").child("elements");
 
@@ -324,7 +324,7 @@ void j1CutSceneManager::ChangeScene()
 		image_pos.y /= size;
 
 		//draw mask
-		App->view->LayerBlit(200, circle_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size, false);
+		App->scene->LayerBlit(200, circle_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size);
 
 		//draw margins
 		if (size < 10) {
@@ -371,7 +371,7 @@ void j1CutSceneManager::ChangeScene()
 		image_pos.y /= size;
 
 		//draw mask
-		App->view->LayerBlit(200, star_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size, false);
+		App->scene->LayerBlit(200, star_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size, false);
 
 		//draw margins
 		if (size < 10) {
@@ -425,7 +425,7 @@ void j1CutSceneManager::ClearScene()
 		it = active_actions.erase(it);
 	}
 
-	App->view->SetCamera(0, 0);
+	App->render->SetCamera(0, 0);
 	App->audio->StopMusic();
 
 }
@@ -509,7 +509,7 @@ void j1CutSceneManager::UpdateElements(float dt)
 			if ((*ele)->active == true)
 			{
 				CutsceneImage* image = dynamic_cast<CutsceneImage*>(*ele);
-				App->view->LayerBlit(image->GetLayer(), image->GetTexture(), image->GetPos(), image->GetRect());
+				App->scene->LayerBlit(image->GetLayer(), image->GetTexture(), image->GetPos(), image->GetRect());
 			}
 		}
 	}
