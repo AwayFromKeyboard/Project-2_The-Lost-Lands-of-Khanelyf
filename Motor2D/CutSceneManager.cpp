@@ -289,7 +289,7 @@ void j1CutSceneManager::ChangeScene()
 			alpha = 255 - 255 * (rel_time - 1);
 		}
 
-		App->view->LayerDrawQuad({ 0,0,(int)win_w,(int)win_h }, 0, 0, 0, alpha, true, 200);
+		App->scene->LayerDrawQuad({ 0,0,(int)win_w,(int)win_h }, 0, 0, 0, alpha, true, 200);
 		break;
 	case c_s_e_circle:
 	{
@@ -328,10 +328,10 @@ void j1CutSceneManager::ChangeScene()
 
 		//draw margins
 		if (size < 10) {
-			App->view->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true);
-			App->view->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true);
-			App->view->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true);
-			App->view->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true);
+			App->scene->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true);
+			App->scene->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true);
+			App->scene->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true);
+			App->scene->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true);
 		}
 
 		break;
@@ -791,7 +791,7 @@ void j1CutSceneManager::PerformModify(CutsceneElement * ele, CutsceneAction * ac
 			case e_a_spawn:
 				if (e->GetEntity() == nullptr)
 				{
-					e->SetEntity(App->entity->CreateEntity(modify->pos, e->path.c_str()));
+					e->SetEntity(App->entity->CreateEntity(modify->, e->path.c_str()));
 				}
 				break;
 			case e_a_change_pos:
@@ -927,7 +927,7 @@ void j1CutSceneManager::MoveCamera(CutsceneMove * move)
 
 CutsceneElement::CutsceneElement(elements_groups group, const char * path, const char* name, bool active) : group(group), path(path), active(active), name(name)
 {
-	id = App->cutscene->GetNextID();
+	id = App->cutscenemanager->GetNextID();
 }
 //----------------------
 
@@ -1071,14 +1071,14 @@ void CutsceneSoundEffect::Play()
 
 CutsceneText::CutsceneText(elements_groups group, const char * path, const char* name, bool active, iPoint pos) : CutsceneElement(group, path, name, active)
 {
-	if (App->cutscene->gui_win == nullptr)
+	if (App->cutscenemanager->gui_win == nullptr)
 	{
 		uint win_w, win_h;
 		App->win->GetWindowSize(win_w, win_h);
 
-		App->cutscene->gui_win = App->gui->UI_CreateWin({ 0,0 }, win_w, win_h, 0, false);
+		App->cutscenemanager->gui_win = App->gui->UI_CreateWin({ 0,0 }, win_w, win_h, 0, false);
 	}
-	text = App->cutscene->gui_win->CreateText(pos, App->font->default);
+	text = App->cutscenemanager->gui_win->CreateText(pos, App->font->default);
 
 	if (!active)
 		text->enabled = false;
@@ -1086,10 +1086,10 @@ CutsceneText::CutsceneText(elements_groups group, const char * path, const char*
 
 CutsceneText::~CutsceneText()
 {
-	if (App->cutscene->gui_win != nullptr && !App->end_program)
+	if (App->cutscenemanager->gui_win != nullptr && !App->end_program)
 	{
-		App->gui->DeleteElement(App->cutscene->gui_win);
-		App->cutscene->gui_win = nullptr;
+		App->gui->DeleteElement(App->cutscenemanager->gui_win);
+		App->cutscenemanager->gui_win = nullptr;
 	}
 }
 

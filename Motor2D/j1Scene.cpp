@@ -127,6 +127,31 @@ void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_
 	layer_list.push(lblit);
 }
 
+void j1Scene::LayerDrawQuad(const SDL_Rect rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, int layer, bool use_camera)
+{
+	layer_quad q(rect, r, g, b, a, filled, use_camera);
+	q.layer = layer;
+
+	quad_list.push(q);
+}
+
+void j1Scene::LayerDrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int layer, bool use_camera)
+{
+	layer_line l(x1, y1, x2, y2, r, g, b, a, use_camera);
+	l.layer = layer;
+
+	line_list.push(l);
+}
+
+void j1Scene::LayerDrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int layer, bool filled, bool use_camera)
+{
+	layer_circle c(x1, y1, redius, r, g, b, a, filled, use_camera);
+	c.layer = layer;
+
+	circle_list.push(c);
+
+}
+
 void j1Scene::OnCollision(Collider* c1, Collider* c2)
 {
 	// CONVERT

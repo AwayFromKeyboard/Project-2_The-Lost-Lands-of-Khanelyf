@@ -709,6 +709,25 @@ void UI_Element::SetDebugColor(SDL_Color _color)
 	color.r = _color.r; color.g = _color.g; color.b = _color.b; color.a = _color.a;
 }
 
+iPoint UI_Element::GetPos()
+{
+	return iPoint(rect.x, rect.y);
+}
+
+void UI_Element::SetPos(iPoint newpos)
+{
+	list<UI_Element*> childs;
+	App->gui->GetChilds(this, childs);
+
+	iPoint distance(newpos.x - GetPos().x, newpos.y - GetPos().y);
+
+	for (list<UI_Element*>::iterator it = childs.begin(); it != childs.end(); it++)
+	{
+		(*it)->rect.x += distance.x;
+		(*it)->rect.y += distance.y;
+	}
+}
+
 // -----------------------------------
 // --------------------------- Element
 

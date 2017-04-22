@@ -141,6 +141,9 @@ public:
 	bool MouseClickOutLeftIntern();
 
 	void SetDebugColor(SDL_Color color);
+	
+	iPoint GetPos();
+	void SetPos(iPoint newpos);
 
 	bool PutWindowToTop();
 

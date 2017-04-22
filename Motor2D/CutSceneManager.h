@@ -6,6 +6,7 @@
 #include "j1Render.h"
 #include "BezierEasing.h"
 #include "j1Timer.h"
+#include <deque>
 
 class Entity;
 class UI_Text;
