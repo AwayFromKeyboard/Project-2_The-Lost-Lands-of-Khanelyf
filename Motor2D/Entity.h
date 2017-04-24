@@ -74,6 +74,16 @@ public:
 		state = entity_death;
 	};
 
+	iPoint Entity::GetWorldPos() const
+	{
+		return position;
+	}
+
+	iPoint Entity::GetMapPos() const
+	{
+		return App->map->WorldToMap(position.x, position.y);
+	}
+
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
@@ -87,6 +97,7 @@ public:
 	//std::string texture = NULL;
 
 	bool active = true;
+	iPoint	target_pos = NULLPOINT;
 
 protected:
 	bool selected = false;

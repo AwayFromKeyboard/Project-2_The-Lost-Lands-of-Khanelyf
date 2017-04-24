@@ -78,6 +78,10 @@ public:
 	//Decompose
 	void CheckDecomposeDirection();
   
+	//Cutscene
+	void MoveToWorld(iPoint target_pos);
+	void MoveToMap(iPoint target_pos);
+
 public:
 	GameObject* game_object = nullptr;
 	entity_name name;

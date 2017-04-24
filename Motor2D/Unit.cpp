@@ -764,6 +764,24 @@ void Unit::CheckDecomposeDirection()
 	}
 }
 
+void Unit::MoveToWorld(iPoint target_pos)
+{
+	iPoint prev_pos = this->target_pos;
+	this->target_pos = App->map->WorldToMap(target_pos.x, target_pos.y);
+	path_id = App->pathfinding->CreatePath(GetMapPos(), this->target_pos);
+	if (path_id == 1)
+		this->target_pos = prev_pos;
+}
+
+void Unit::MoveToMap(iPoint target_pos)
+{
+	iPoint prev_pos = this->target_pos;
+	this->target_pos = target_pos;
+	path_id = App->pathfinding->CreatePath(GetMapPos(), this->target_pos);
+	if (path_id == -1)
+		this->target_pos = prev_pos;
+}
+
 bool Unit::IsInsideCircle(int x, int y)
 {
 	iPoint center = game_object->GetPos();

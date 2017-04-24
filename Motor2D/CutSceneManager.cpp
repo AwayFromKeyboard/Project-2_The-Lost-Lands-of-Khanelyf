@@ -9,6 +9,7 @@
 #include "j1Gui.h"
 #include "j1Window.h"
 #include "Log.h"
+#include "Unit.h"
 #include "j1Scene.h"
 
 #define MASK_W  128
@@ -769,7 +770,7 @@ void j1CutSceneManager::PerformModify(CutsceneElement * ele, CutsceneAction * ac
 	if (act->element_name == "camera")
 	{
 		CutsceneModifyCamera* modify = static_cast<CutsceneModifyCamera*>(act);
-		App->view->SetCamera(-modify->position.x, -modify->position.y);
+		App->render->SetCamera(-modify->position.x, -modify->position.y);
 	}
 	else
 	{
@@ -989,7 +990,7 @@ void CutsceneImage::ChangeRect(SDL_Rect r)
 
 CutsceneEntity::CutsceneEntity(elements_groups group, const char * path, const char* name, bool active, iPoint pos, entity_name _entity, entity_type _type) : CutsceneElement(group, path, name, active)
 {
-	entity = App->entity->CreateEntity(_entity, _type);
+	entity = (Unit*)App->entity->CreateEntity(_entity, _type);
 	entity->position.create(pos.x, pos.y);
 	entity->active = active;
 }
@@ -998,7 +999,7 @@ CutsceneEntity::~CutsceneEntity()
 {
 }
 
-Entity * CutsceneEntity::GetEntity() const
+Unit * CutsceneEntity::GetEntity() const
 {
 	return entity;
 }
@@ -1079,7 +1080,7 @@ CutsceneText::CutsceneText(elements_groups group, const char * path, const char*
 
 		App->cutscenemanager->gui_win = App->gui->UI_CreateWin({ 0,0 }, win_w, win_h, 0, false);
 	}
-	text = App->cutscenemanager->gui_win->CreateText(pos, App->font->default);
+	text = (UI_Text*)App->cutscenemanager->gui_win->CreateText(pos, App->font->default);
 
 	if (!active)
 		text->enabled = false;

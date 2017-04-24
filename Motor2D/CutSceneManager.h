@@ -9,6 +9,7 @@
 #include <deque>
 
 class Entity;
+class Unit;
 class UI_Text;
 class Scene;
 
@@ -70,18 +71,21 @@ private:
 
 };
 
+enum entity_name;
+enum entity_type;
+
 class CutsceneEntity : public CutsceneElement
 {
 public:
 	CutsceneEntity(elements_groups group, const char* path, const char* name, bool active = true, iPoint pos = { 0,0 }, entity_name _entity = entity_name::test, entity_type _type = entity_type::null);
 	~CutsceneEntity();
 
-	Entity* GetEntity()const;
+	Unit* GetEntity()const;
 	void SetNull();
 	void SetEntity(Entity* e);
 
 private:
-	Entity*	entity;
+	Unit*	entity;
 };
 
 class CutsceneMusic : public CutsceneElement
