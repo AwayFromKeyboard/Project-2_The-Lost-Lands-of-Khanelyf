@@ -30,46 +30,46 @@ bool Player::Start()
 {
 	bool ret = true;
 
-	attributes_window = App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_txt = attributes_window->CreateText({ 149, 940 }, App->font->default_15);
-	damage_txt = attributes_window->CreateText({ 149, 956 }, App->font->default_15);
-	armor_txt = attributes_window->CreateText({ 149, 972 }, App->font->default_15);
-	pierce_armor_txt = attributes_window->CreateText({ 149, 988 }, App->font->default_15);
+	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
+	life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
+	damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
+	armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 972 }, App->font->default_15);
+	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 988 }, App->font->default_15);
 	
-	levelup_window = App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_button = levelup_window->CreateButton({ 169, 937 }, 10, 10);
+	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
+	life_button = (UI_Button*)levelup_window->CreateButton({ 169, 937 }, 10, 10);
 	life_button->AddImage("standard", { 792, 73, 10, 10 });
 	life_button->SetImage("standard");
-	damage_button = levelup_window->CreateButton({ 169, 953 }, 10, 10);
+	damage_button = (UI_Button*)levelup_window->CreateButton({ 169, 953 }, 10, 10);
 	damage_button->AddImage("standard", { 792, 73, 10, 10 });
 	damage_button->SetImage("standard");
-	armor_button = levelup_window->CreateButton({ 169, 969 }, 10, 10);
+	armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 969 }, 10, 10);
 	armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	armor_button->SetImage("standard");
-	pierce_armor_button = levelup_window->CreateButton({ 169, 985 }, 10, 10);
+	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 985 }, 10, 10);
 	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
-	level_points_txt = levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
+	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
-	barracks_ui_window = App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
+	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
 
-	create_unit_button = barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
+	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 645, 0, 60, 60 });
 
-	create_unit_button2 = barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
+	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
 	create_unit_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 645, 0, 60, 60 });
 
-	barbarian_img = barracks_ui_window->CreateButton(iPoint(297, 510), 37, 36);
+	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(297, 510), 37, 36);
 	barbarian_img->AddImage("standard", { 765, 0, 37, 36 });
 	barbarian_img->SetImage("standard");
 	barbarian_img->click_through = true;
 
-	swordsman_img = barracks_ui_window->CreateButton(iPoint(395, 510), 37, 36);
+	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(395, 510), 37, 36);
 	swordsman_img->AddImage("standard", { 765, 36, 37, 36 });
 	swordsman_img->SetImage("standard");
 	swordsman_img->click_through = true;
@@ -78,14 +78,14 @@ bool Player::Start()
 
 	//player abilities
 
-	player_abilities = App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
-	battlecry_ability = player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
+	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
 	battlecry_ability->AddImage("standard", { 645, 60, 25, 25 });
 	battlecry_ability->SetImage("standard");
 	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
-	battlecry_cd = player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
 
 	return ret;
