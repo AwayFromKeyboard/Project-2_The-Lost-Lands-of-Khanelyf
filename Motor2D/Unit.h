@@ -102,10 +102,7 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 
-	iPoint position = NULLPOINT;
 	iPoint position_map = NULLPOINT;
-
-	Collider* collision = nullptr;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
