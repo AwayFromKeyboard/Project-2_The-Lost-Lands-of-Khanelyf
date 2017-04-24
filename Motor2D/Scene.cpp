@@ -5,14 +5,14 @@
 
 void Scene::InitCameraMovement()
 {
-	movement_window_u = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, -1), App->win->_GetWindowSize().x - 2 * MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_d = (UI_Window*)App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), App->win->_GetWindowSize().x - 2 * MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, MOVEMENT_AREA), MOVEMENT_AREA, App->win->_GetWindowSize().y - 2 * MOVEMENT_AREA, 5);
-	movement_window_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, MOVEMENT_AREA), MOVEMENT_AREA, App->win->_GetWindowSize().y - 2 * MOVEMENT_AREA, 5);
-	movement_window_u_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_u_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_d_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
-	movement_window_d_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_u = App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, -1), App->win->_GetWindowSize().x - 2 * MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_d = App->gui->UI_CreateWin(iPoint(MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), App->win->_GetWindowSize().x - 2 * MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_l = App->gui->UI_CreateWin(iPoint(-1, MOVEMENT_AREA), MOVEMENT_AREA, App->win->_GetWindowSize().y - 2 * MOVEMENT_AREA, 5);
+	movement_window_r = App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, MOVEMENT_AREA), MOVEMENT_AREA, App->win->_GetWindowSize().y - 2 * MOVEMENT_AREA, 5);
+	movement_window_u_l = App->gui->UI_CreateWin(iPoint(-1, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_u_r = App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, -1), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_d_l = App->gui->UI_CreateWin(iPoint(-1, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
+	movement_window_d_r = App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
 
 	/*rect_u = (UI_ColoredRect*)movement_window_u->CreateColoredRect(movement_window_u->GetPosition(), movement_window_u->GetRect().w, movement_window_u->GetRect().h, { 255, 0, 0, 100 });
 	rect_d = (UI_ColoredRect*)movement_window_d->CreateColoredRect(movement_window_d->GetPosition(), movement_window_d->GetRect().w, movement_window_d->GetRect().h, { 255, 0, 0, 100 });
