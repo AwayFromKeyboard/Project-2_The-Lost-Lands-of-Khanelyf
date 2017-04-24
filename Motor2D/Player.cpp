@@ -190,7 +190,7 @@ bool Player::Update(float dt)
 					App->entity->UnselectEverything();
 					(*it)->SetSelected(true);
 					barracks_ui_window->SetEnabledAndChilds(true);
-					barracks_position = (*it)->GetGameObject()->GetPos();
+					barracks_position = (*it)->position;
 					break;
 				}
 				else {

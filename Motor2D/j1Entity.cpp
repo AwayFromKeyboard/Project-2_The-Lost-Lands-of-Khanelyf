@@ -158,7 +158,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 {
 	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 	{
-		iPoint unit = (*it)->GetGameObject()->GetPos();
+		iPoint unit = (*it)->position;
 		
 		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
 		{
@@ -183,7 +183,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 				if ((*it)->GetType() == building) {
 					App->entity->UnselectEverything();
 					App->player->barracks_ui_window->SetEnabledAndChilds(true);
-					App->player->barracks_position = (*it)->GetGameObject()->GetPos();
+					App->player->barracks_position = (*it)->position;
 					(*it)->SetSelected(true);
 				}
 				else {
