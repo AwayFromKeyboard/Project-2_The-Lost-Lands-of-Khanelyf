@@ -135,6 +135,18 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 	return ret;
 }
 
+void j1Render::MoveCamera(int x, int y)
+{
+	camera.x += x;
+	camera.y += y;
+}
+
+void j1Render::SetCamera(int x, int y)
+{
+	camera.x = x;
+	camera.y = y;
+}
+
 // Blit to screen
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float _scale, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
 {
