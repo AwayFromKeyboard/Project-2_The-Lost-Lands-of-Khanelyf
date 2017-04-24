@@ -40,7 +40,7 @@ bool Building::PreUpdate()
 
 bool Building::Update(float dt)
 {
-	position = { game_object->GetPos().x, game_object->GetPos().y };
+	//position = { game_object->GetPos().x, game_object->GetPos().y };
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
 	switch (state) {
@@ -60,7 +60,7 @@ bool Building::Draw(float dt)
 	bool ret = true;
 
 	if (state == entity_idle)
-		App->scene->LayerBlit(6, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
+		App->scene->LayerBlit(6, game_object->GetTexture(), { position.x - offset.x, position.y - offset.y }, tex_rect);
 
 	return ret;
 }
@@ -70,7 +70,7 @@ bool Building::PostUpdate()
 	bool ret = true;
 
 	if (GetSelected())
-		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
+		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }

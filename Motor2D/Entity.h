@@ -30,7 +30,7 @@ public:
 
 	virtual ~Entity() {};
 
-	virtual bool LoadEntity() { return true; };
+	virtual bool LoadEntity(iPoint pos) { return true; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update(float dt) { return true; };

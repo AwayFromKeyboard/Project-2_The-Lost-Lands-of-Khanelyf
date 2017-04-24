@@ -114,7 +114,7 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 		(*it)->OnColl(col1, col2);
 }
 
-Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
+Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 {
 	Entity* ret = nullptr;
 
@@ -137,7 +137,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity();
+		ret->LoadEntity(pos);
 		ret->Start();
 		entity_list.push_back(ret);
 	}

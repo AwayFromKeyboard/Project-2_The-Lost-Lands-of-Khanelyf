@@ -25,7 +25,7 @@ Barracks::~Barracks()
 {
 }
 
-bool Barracks::LoadEntity()
+bool Barracks::LoadEntity(iPoint pos)
 {
 	bool ret = true;
 

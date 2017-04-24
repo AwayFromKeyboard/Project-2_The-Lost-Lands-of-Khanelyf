@@ -347,8 +347,7 @@ void Unit::FollowPath(float dt)
 {
 	SetDirection();
 
-	fPoint pos;
-	pos.create(position.x, position.y);
+	fPoint pos = fPoint(position.x, position.y);
 
 	pos.x += direction.x * speed;
 	pos.y += direction.y * speed;

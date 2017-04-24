@@ -22,7 +22,7 @@ Swordsman::~Swordsman()
 {
 }
 
-bool Swordsman::LoadEntity()
+bool Swordsman::LoadEntity(iPoint pos)
 {
 	bool ret = true;
 

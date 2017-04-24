@@ -22,7 +22,7 @@ Barbarian::~Barbarian()
 {
 }
 
-bool Barbarian::LoadEntity()
+bool Barbarian::LoadEntity(iPoint pos)
 {
 	bool ret = true;
 
