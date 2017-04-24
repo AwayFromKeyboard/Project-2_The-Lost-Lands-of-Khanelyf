@@ -86,8 +86,11 @@ public:
 	Collider* collision = nullptr;
 	//std::string texture = NULL;
 
+	bool active = true;
+
 protected:
 	bool selected = false;
+	
 };
 
 #endif

@@ -371,14 +371,14 @@ void j1CutSceneManager::ChangeScene()
 		image_pos.y /= size;
 
 		//draw mask
-		App->scene->LayerBlit(200, star_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size, false);
+		App->scene->LayerBlit(200, star_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size);
 
 		//draw margins
 		if (size < 10) {
-			App->view->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true, 200);
-			App->view->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true, 200);
-			App->view->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true, 200);
-			App->view->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true, 200);
+			App->scene->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true, 200);
+			App->scene->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true, 200);
+			App->scene->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true, 200);
+			App->scene->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true, 200);
 		}
 
 		break;
@@ -911,14 +911,14 @@ void j1CutSceneManager::MoveCamera(CutsceneMove * move)
 
 	if (move->first_time)
 	{
-		move->initial_pos = App->view->camera1;
+		move->initial_pos.create(App->render->camera.x, App->render->camera.y);
 		move->first_time = false;
 	}
 
 	int delta_x = -move->dest.x - move->initial_pos.x;
 	int delta_y = -move->dest.y - move->initial_pos.y;
 
-	App->view->SetCamera(move->initial_pos.x + move->bezier->GetEasingProgress(rel_time)*delta_x, move->initial_pos.y + move->bezier->GetEasingProgress(rel_time)*delta_y);
+	App->render->SetCamera(move->initial_pos.x + move->bezier->GetEasingProgress(rel_time)*delta_x, move->initial_pos.y + move->bezier->GetEasingProgress(rel_time)*delta_y);
 }
 
 //-----------------------
@@ -987,9 +987,10 @@ void CutsceneImage::ChangeRect(SDL_Rect r)
 // Entity
 //-----------------------
 
-CutsceneEntity::CutsceneEntity(elements_groups group, const char * path, const char* name, bool active, iPoint pos) : CutsceneElement(group, path, name, active)
+CutsceneEntity::CutsceneEntity(elements_groups group, const char * path, const char* name, bool active, iPoint pos, entity_name _entity, entity_type _type) : CutsceneElement(group, path, name, active)
 {
-	entity = App->entity->CreateEntity(pos, path);
+	entity = App->entity->CreateEntity(_entity, _type);
+	entity->position.create(pos.x, pos.y);
 	entity->active = active;
 }
 
