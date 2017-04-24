@@ -543,7 +543,7 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	if (attacked_entity == nullptr) return false;
 
 	iPoint attacked_pos = attacked_entity->position;
-	iPoint pos = game_object->GetPos();
+	iPoint pos = position;
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
 	pos = App->map->WorldToMapPoint(pos);
 
@@ -767,7 +767,7 @@ void Unit::CheckDecomposeDirection()
 
 bool Unit::IsInsideCircle(int x, int y)
 {
-	iPoint center = game_object->GetPos();
+	iPoint center = position;
 	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
 }
 
