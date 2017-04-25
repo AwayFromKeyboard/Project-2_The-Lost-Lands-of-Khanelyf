@@ -10,7 +10,6 @@
 #include "Entity.h"
 #include "j1Entity.h"
 #include "j1App.h"
-#include "GameObject.h"
 #include "Player.h"
 #include <sstream> 
 

@@ -7,7 +7,6 @@
 
 class b2Fixture;
 class PhysBody;
-class GameObject;
 
 enum entity_name
 {
@@ -82,8 +81,6 @@ private:
 public:
 	// List with all entities
 	std::list<Entity*> entity_list;
-	std::list<GameObject*> unit_game_objects_list;
-	std::list<GameObject*> building_game_objects_list;
 
 	std::list<SelectedList> lists_selected;
 	std::list<Unit*> selected;

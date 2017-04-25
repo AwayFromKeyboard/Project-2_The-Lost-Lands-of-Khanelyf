@@ -21,7 +21,6 @@ enum entity_state {
 
 class b2Fixture;
 class PhysBody;
-class GameObject;
 
 class Entity
 {
@@ -49,10 +48,6 @@ public:
 	}
 
 	virtual void OnColl(Collider* col1, Collider* col2) {};
-
-	virtual GameObject* GetGameObject() {
-		return nullptr;
-	}
 
 	virtual Collider* GetCollider() {
 		return nullptr;

@@ -3,7 +3,6 @@
 #include "j1Entity.h"
 #include "j1Input.h"
 #include "Scene.h"
-#include "GameObject.h"
 #include "j1Map.h"
 #include "Hero.h"
 #include "Barbarian.h"
@@ -237,9 +236,6 @@ bool Unit::CleanUp()
 {
 	bool ret = true;
 
-	App->entity->unit_game_objects_list.remove(game_object);
-	RELEASE(game_object);
-
 	return ret;
 }
 
@@ -259,11 +255,6 @@ void Unit::OnColl(Collider* col1, Collider* col2)
 	{
 		
 	}
-}
-
-GameObject * Unit::GetGameObject()
-{
-	return game_object;
 }
 
 Collider * Unit::GetCollider()

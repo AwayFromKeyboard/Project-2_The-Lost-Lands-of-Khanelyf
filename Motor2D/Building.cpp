@@ -1,5 +1,4 @@
 #include "Building.h"
-#include "GameObject.h"
 #include "j1Entity.h"
 #include "j1Collisions.h"
 #include "j1Map.h"
@@ -79,12 +78,7 @@ bool Building::CleanUp()
 	
 	bool ret = true;
 
-	App->entity->building_game_objects_list.remove(game_object);
-	RELEASE(game_object);
-
 	return ret;
-
-	return true;
 }
 
 bool Building::Load(pugi::xml_node &)
@@ -99,11 +93,6 @@ bool Building::Save(pugi::xml_node &) const
 
 void Building::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
-}
-
-GameObject * Building::GetGameObject()
-{
-	return game_object;
 }
 
 Collider * Building::GetCollider()

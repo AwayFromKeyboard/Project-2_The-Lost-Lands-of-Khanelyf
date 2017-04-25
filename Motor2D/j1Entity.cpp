@@ -4,7 +4,6 @@
 #include "Barbarian.h"
 #include "Swordsman.h"
 #include "Log.h"
-#include "GameObject.h"
 #include "j1Input.h"
 #include "j1Collisions.h"
 #include "Barracks.h"
@@ -90,9 +89,6 @@ bool j1Entity::CleanUp()
 	{
 		ret = (*it)->CleanUp();
 	}
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) 
-		RELEASE(*it);
-	App->entity->unit_game_objects_list.clear();
 
 	selected.clear();
 

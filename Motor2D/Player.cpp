@@ -8,7 +8,6 @@
 #include "j1Map.h"
 #include "j1Collisions.h"
 #include "j1Entity.h"
-#include "GameObject.h"
 #include "Defs.h"
 #include "Hero.h"
 #include "Log.h"
@@ -120,7 +119,6 @@ bool Player::PreUpdate()
 
 		if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
 			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 300, barracks_position.y));
-			//barb->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
 			App->scene->scene_test->gold -= barb->cost;
 			App->scene->scene_test->current_human_resources += barb->human_cost;
 		}
@@ -134,7 +132,6 @@ bool Player::PreUpdate()
 
 		if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
 			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 300, barracks_position.y));
-			//sword->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
 			App->scene->scene_test->gold -= sword->cost;
 			App->scene->scene_test->current_human_resources += sword->human_cost;
 		}
