@@ -3,7 +3,6 @@
 #include "j1Entity.h"
 #include "j1Input.h"
 #include "Scene.h"
-#include "GameObject.h"
 #include "j1Map.h"
 #include "Hero.h"
 #include "Barbarian.h"
@@ -56,7 +55,7 @@ bool Unit::PreUpdate()
 		}
 	}
 
-	position = { game_object->GetPos().x, game_object->GetPos().y };
+	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
 	if (life > 0) {
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
@@ -99,7 +98,7 @@ bool Unit::Update(float dt)
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
 			}
 			else{
 				if (path.size() > 0)
@@ -177,44 +176,44 @@ bool Unit::Draw(float dt)
 	case entity_idle:
 		offset = i_offset;
 		if(flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_i_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move:
 		offset = m_offset;
 		if(flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move_to_enemy:
 		offset = m_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_attack:
 		offset = a_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_a_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_a_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_death:
 		offset = d_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_d_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_d_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_decompose:
 		offset = de_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_de_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_de_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	}
 
@@ -228,7 +227,7 @@ bool Unit::PostUpdate()
 	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
-		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
+		App->render->DrawCircle(pos2.x + App->render->camera.x, pos2.y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }
@@ -236,9 +235,6 @@ bool Unit::PostUpdate()
 bool Unit::CleanUp()
 {
 	bool ret = true;
-
-	App->entity->unit_game_objects_list.remove(game_object);
-	RELEASE(game_object);
 
 	return ret;
 }
@@ -259,11 +255,6 @@ void Unit::OnColl(Collider* col1, Collider* col2)
 	{
 		
 	}
-}
-
-GameObject * Unit::GetGameObject()
-{
-	return game_object;
 }
 
 Collider * Unit::GetCollider()
@@ -348,12 +339,13 @@ void Unit::FollowPath(float dt)
 {
 	SetDirection();
 
-	fPoint pos = game_object->fGetPos();
+	fPoint pos = fPoint(pos2.x, pos2.y);
 
 	pos.x += direction.x * speed;
 	pos.y += direction.y * speed;
 
-	game_object->SetPos(pos);
+	pos2.x = pos.x;
+	pos2.y = pos.y;
 
 	if (path.size() == 0)
 	{
@@ -482,8 +474,8 @@ bool Unit::CheckSurroundings() {
 		std::list<iPoint> visited;
 
 
-		visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
-		frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+		visited.push_back(App->map->WorldToMapPoint(position));
+		frontier.push_back(App->map->WorldToMapPoint(position));
 
 		for (int i = 0; i < radius_of_action; ++i) {
 			for (int j = frontier.size(); j > 0; j--) {
@@ -541,8 +533,8 @@ bool Unit::IsInRange(Entity* attacked_entity)
 
 	if (attacked_entity == nullptr) return false;
 
-	iPoint attacked_pos = attacked_entity->GetGameObject()->GetPos();
-	iPoint pos = game_object->GetPos();
+	iPoint attacked_pos = attacked_entity->pos2;
+	iPoint pos = pos2;
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
 	pos = App->map->WorldToMapPoint(pos);
 
@@ -766,7 +758,7 @@ void Unit::CheckDecomposeDirection()
 
 bool Unit::IsInsideCircle(int x, int y)
 {
-	iPoint center = game_object->GetPos();
+	iPoint center = pos2;
 	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
 }
 

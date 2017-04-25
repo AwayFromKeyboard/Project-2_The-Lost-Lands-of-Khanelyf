@@ -10,7 +10,7 @@ public:
 	Barracks(entity_type _type);
 	~Barracks();
 
-	bool LoadEntity();
+	bool LoadEntity(iPoint pos);
 
 	bool Start();
 

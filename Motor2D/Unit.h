@@ -23,7 +23,6 @@ enum unit_direction {
 	south_east
 };
 
-class GameObject;
 enum entity_name;
 enum entity_type;
 
@@ -50,7 +49,6 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(Collider* col1, Collider* col2);
-	GameObject* GetGameObject();
 	Collider* GetCollider();
 	entity_type GetType();
 	void SetSelected(bool _selected);
@@ -79,7 +77,6 @@ public:
 	void CheckDecomposeDirection();
   
 public:
-	GameObject* game_object = nullptr;
 	entity_name name;
 	bool flip = false;
   

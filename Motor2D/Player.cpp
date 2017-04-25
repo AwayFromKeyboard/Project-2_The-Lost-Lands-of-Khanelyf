@@ -8,7 +8,6 @@
 #include "j1Map.h"
 #include "j1Collisions.h"
 #include "j1Entity.h"
-#include "GameObject.h"
 #include "Defs.h"
 #include "Hero.h"
 #include "Log.h"
@@ -119,8 +118,7 @@ bool Player::PreUpdate()
 		create_unit_button->SetImage("clicked");
 
 		if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
-			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally);
-			barb->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 300, barracks_position.y));
 			App->scene->scene_test->gold -= barb->cost;
 			App->scene->scene_test->current_human_resources += barb->human_cost;
 		}
@@ -133,8 +131,7 @@ bool Player::PreUpdate()
 		create_unit_button2->SetImage("clicked");
 
 		if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
-			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally);
-			sword->game_object->SetPos(fPoint(barracks_position.x + 300, barracks_position.y)); // Barracks position
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 300, barracks_position.y));
 			App->scene->scene_test->gold -= sword->cost;
 			App->scene->scene_test->current_human_resources += sword->human_cost;
 		}
@@ -190,7 +187,7 @@ bool Player::Update(float dt)
 					App->entity->UnselectEverything();
 					(*it)->SetSelected(true);
 					barracks_ui_window->SetEnabledAndChilds(true);
-					barracks_position = (*it)->GetGameObject()->GetPos();
+					barracks_position = (*it)->position;
 					break;
 				}
 				else {
@@ -290,7 +287,7 @@ bool Player::CleanUp()
 
 void Player::MoveToTile(iPoint tile) {
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
-		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->game_object->GetPos()), tile);
+		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->position), tile);
 		(*it)->state = entity_state::entity_move;
 		(*it)->attacked_unit = nullptr;
 	}
@@ -461,7 +458,7 @@ void Player::DrawBuff()
 {
 	//if (buffed_list.empty() != true) {
 	//	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
-	//		App->scene->LayerBlit(5, (*it)->GetGameObject()->GetTexture(), { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
+	//		App->scene->LayerBlit(5, (*it)->entity_texture, { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
 	//	}
 	//}
 }
