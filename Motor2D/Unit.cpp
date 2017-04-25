@@ -56,6 +56,7 @@ bool Unit::PreUpdate()
 		}
 	}
 
+	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
 	if (life > 0) {
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
@@ -347,13 +348,13 @@ void Unit::FollowPath(float dt)
 {
 	SetDirection();
 
-	fPoint pos = fPoint(position.x, position.y);
+	fPoint pos = fPoint(pos2.x, pos2.y);
 
 	pos.x += direction.x * speed;
 	pos.y += direction.y * speed;
 
-	position.x = pos.x;
-	position.y = pos.y;
+	pos2.x = pos.x;
+	pos2.y = pos.y;
 
 	if (path.size() == 0)
 	{

@@ -83,6 +83,7 @@ public:
 	int cost = 0; // only for allies
 
 	iPoint position = NULLPOINT;
+	iPoint pos2 = NULLPOINT;
 	Collider* collision = nullptr;
 	//std::string texture = NULL;
 

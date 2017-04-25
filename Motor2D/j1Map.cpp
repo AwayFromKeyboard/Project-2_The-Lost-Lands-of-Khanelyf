@@ -724,23 +724,21 @@ void j1Map::GetEntitiesSpawn() const
 						{
 						case 27: // Hero
 						{
-							Entity* player_unit = App->entity->CreateEntity(hero, player, {x + 2, y});
+							Entity* player_unit = App->entity->CreateEntity(hero, player, App->map->MapToWorld(x + 2, y));
 							App->player->SetHero((Hero*)player_unit);
-							//player_unit->GetGameObject()->SetPos(App->map->FMapToWorld(x + 2, y));
-							player_unit->position = App->map->MapToWorld(x + 2, y);
 						}
 						break;
 						
 						case 28: // Enemies
 						{
-							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, { x + 2, y });
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 2, y));
 							barb_enemy->position = App->map->MapToWorld(x + 2, y);
 						}
 						break;
 						
 						case 29: // NPC
 						{
-							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc, { x + 2, y });
+							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 2, y));
 							barb_npc->position = App->map->MapToWorld(x + 2, y);
 						}
 						break;
