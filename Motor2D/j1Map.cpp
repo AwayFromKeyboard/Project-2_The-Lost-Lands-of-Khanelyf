@@ -77,8 +77,10 @@ void j1Map::Draw()
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					else if (layer->name == "Buildings")
 						App->render->Blit(tileset->texture, pos.x -10, pos.y - 70, &r);
+					else if (layer->name == "Towers")
+						App->render->Blit(tileset->texture, pos.x + 10, pos.y - 80, &r);
 					else
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						App->render->Blit(tileset->texture, pos.x - 32, pos.y + 32, &r);
 				}
 			}
 			count++;
