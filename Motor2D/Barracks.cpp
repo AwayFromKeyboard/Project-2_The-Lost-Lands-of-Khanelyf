@@ -14,6 +14,7 @@
 #include "Functions.h"
 #include "Log.h"
 #include "j1Gui.h"
+#include "Player.h"
 
 Barracks::Barracks(entity_type _type)
 {
@@ -42,6 +43,7 @@ bool Barracks::LoadEntity(iPoint pos)
 	if (node)
 	{
 		position = {pos.x, pos.y};
+		App->player->barracks_position = position;
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
