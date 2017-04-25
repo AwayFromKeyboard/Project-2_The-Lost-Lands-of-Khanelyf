@@ -1201,8 +1201,14 @@ void UI_Text::Set(iPoint _pos, _TTF_Font* _font, int _spacing, uint r, uint g, u
 void UI_Text::SetText(string _text)
 {
 	// Clean last texts
-	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
-		App->tex->UnLoadTexture((*it).texture);
+	if (!tex_str_list.empty())
+	{
+		if (!tex_str_list.empty())
+		{
+			for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+				App->tex->UnLoadTexture((*it).texture);
+		}
+	}
 
 	tex_str_list.clear();
 
@@ -1224,7 +1230,9 @@ void UI_Text::SetText(string _text)
 
 		comp[words_counter] = '\0';
 
-		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font));
+		int width = 0; int height = 0;
+		App->font->CalcSize(comp.c_str(), width, height, font);
+		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font), { 0, 0, width, height });
 		tex_str_list.push_back(ts);
 	}
 }
@@ -1250,12 +1258,16 @@ bool UI_Text::update()
 	
 	// Get highest w and add all h
 	int w = 0, h = 0;
-	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+
+	if (!tex_str_list.empty())
 	{
-		App->font->CalcSize((*it).text.c_str(), rect.w, rect.h, font);
-		h += rect.h;
-		if (rect.w > w)
-		w = rect.w;
+		for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+		{
+			App->font->CalcSize((*it).text.c_str(), rect.w, rect.h, font);
+			h += rect.h;
+			if (rect.w > w)
+			w = rect.w;
+		}
 	}
 
 	rect.w = w;
