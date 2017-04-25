@@ -177,44 +177,44 @@ bool Unit::Draw(float dt)
 	case entity_idle:
 		offset = i_offset;
 		if(flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x - flip_i_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_i_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move:
 		offset = m_offset;
 		if(flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move_to_enemy:
 		offset = m_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_attack:
 		offset = a_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x - flip_a_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_a_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_death:
 		offset = d_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x - flip_d_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_d_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_decompose:
 		offset = de_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x - flip_de_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_de_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	}
 

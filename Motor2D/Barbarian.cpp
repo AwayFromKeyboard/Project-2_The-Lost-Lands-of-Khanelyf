@@ -70,10 +70,9 @@ bool Barbarian::LoadEntity(iPoint pos)
 		life = node.child("life").attribute("value").as_int();
 		radius_of_action = node.child("radius_of_action").attribute("value").as_int(0);
 
-		std::string texture = node.child("texture").attribute("value").as_string();
-		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
+		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("value").as_string());
 		node = node.child("animations");
-		game_object->LoadAnimationsFromUnitsXML(node, this);
+		animator->LoadAnimationsFromUnitsXML(node, this);
 
 		i_offset.create(node.child("idle").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
 		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("move").attribute("offset_y").as_int());

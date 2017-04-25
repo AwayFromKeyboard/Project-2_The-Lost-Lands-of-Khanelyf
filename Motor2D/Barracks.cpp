@@ -57,8 +57,7 @@ bool Barracks::LoadEntity(iPoint pos)
 
 		offset = iPoint(node.child("offset").attribute("offset_x").as_int(), node.child("offset").attribute("offset_y").as_int());
 
-		std::string texture = node.child("texture").attribute("value").as_string();
-		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
+		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("value").as_string());
 		
 		life = node.child("life").attribute("value").as_int();
 

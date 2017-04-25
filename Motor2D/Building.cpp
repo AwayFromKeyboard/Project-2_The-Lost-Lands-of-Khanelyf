@@ -59,7 +59,7 @@ bool Building::Draw(float dt)
 	bool ret = true;
 
 	if (state == entity_idle)
-		App->scene->LayerBlit(6, game_object->GetTexture(), { position.x - offset.x, position.y - offset.y }, tex_rect);
+		App->scene->LayerBlit(6, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
 
 	return ret;
 }

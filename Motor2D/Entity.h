@@ -85,7 +85,8 @@ public:
 	iPoint position = NULLPOINT;
 	iPoint pos2 = NULLPOINT;
 	Collider* collision = nullptr;
-	//std::string texture = NULL;
+	SDL_Texture* entity_texture;
+	Animator* animator;
 
 protected:
 	bool selected = false;
