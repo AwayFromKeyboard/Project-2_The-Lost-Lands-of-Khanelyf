@@ -81,7 +81,6 @@
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="j1Console.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1FileSystem.cpp" />
@@ -96,7 +95,6 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
-    <ClCompile Include="j1Physics.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
@@ -105,6 +103,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="QuestManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
@@ -120,7 +119,6 @@
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="j1Console.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1FileSystem.h" />
@@ -131,7 +129,6 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
-    <ClInclude Include="j1Physics.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
     <ClInclude Include="Log.h" />
@@ -148,6 +145,7 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="QuestManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneTest.h" />

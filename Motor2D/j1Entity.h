@@ -3,10 +3,10 @@
 
 #include "j1Module.h"
 #include "Defs.h"
+#include "Point.h"
 
 class b2Fixture;
 class PhysBody;
-class GameObject;
 
 enum entity_name
 {
@@ -67,7 +67,7 @@ public:
 
 	void OnCollision(Collider* col1, Collider* col2);
 
-	Entity* CreateEntity(entity_name name, entity_type type);
+	Entity* CreateEntity(entity_name name, entity_type type, iPoint pos);
 	void DeleteEntity(Entity* entity);
 
 	void SelectInQuad(const SDL_Rect& select_rect);
@@ -81,8 +81,6 @@ private:
 public:
 	// List with all entities
 	std::list<Entity*> entity_list;
-	std::list<GameObject*> unit_game_objects_list;
-	std::list<GameObject*> building_game_objects_list;
 
 	std::list<SelectedList> lists_selected;
 	std::list<Unit*> selected;

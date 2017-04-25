@@ -5,7 +5,6 @@
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
 enum entity_type;
-class GameObject;
 
 class Barbarian : public Unit
 {
@@ -14,7 +13,7 @@ public:
 	~Barbarian();
 
 	// Load animations
-	bool LoadEntity();
+	bool LoadEntity(iPoint pos);
 
 	// On Collision
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);

@@ -6,16 +6,6 @@
 
 struct Collider;
 
-enum unit_state {
-	unit_idle,
-	unit_move,
-	unit_move_to_enemy,
-	unit_attack,
-	unit_death,
-	unit_decompose,
-	unit_null
-};
-
 enum attack_state {
 	attack_unit,
 	attack_building,
@@ -33,7 +23,6 @@ enum unit_direction {
 	south_east
 };
 
-class GameObject;
 enum entity_name;
 enum entity_type;
 
@@ -60,7 +49,6 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(Collider* col1, Collider* col2);
-	GameObject* GetGameObject();
 	Collider* GetCollider();
 	entity_type GetType();
 	void SetSelected(bool _selected);
@@ -89,8 +77,6 @@ public:
 	void CheckDecomposeDirection();
   
 public:
-	GameObject* game_object = nullptr;
-	unit_state state = unit_state::unit_null;
 	entity_name name;
 	bool flip = false;
   
@@ -105,8 +91,6 @@ public:
 	attack_state att_state = attack_state::attack_null;
 	bool has_moved = false;
 public:
-	int life = 0;
-	int cost = 0; // only for allies
 	int human_cost = 0; // only for allies
 	int gold_drop = 0; // only for enemies
 	float speed = 0;
@@ -115,10 +99,7 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 
-	iPoint position = NULLPOINT;
 	iPoint position_map = NULLPOINT;
-
-	Collider* collision = nullptr;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
@@ -168,14 +149,15 @@ public:
 
 public:
 	uint radius_of_action = 0;
-
+	bool buffed = false;
 private:
-		j1Timer death_timer;
-		j1Timer AI_timer;
+	j1Timer death_timer;
+	j1Timer AI_timer;
 public:
 	bool IsInsideCircle(int x, int y);
 
 public:
+	// attacked audio
 	bool shout_fx = true;
 };
 
