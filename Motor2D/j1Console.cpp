@@ -198,8 +198,7 @@ void j1Console::OnCommand(std::list<std::string>& tokens)
 			ready = false;
 		}
 		else if ((*it) == "save") {
-			App->Save
-			("config.xml");
+			App->SaveGame("config.xml");
 		}
 		else if ((*it) == "clear") {
 			scroll->ClearElements();

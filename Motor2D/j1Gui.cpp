@@ -1255,7 +1255,7 @@ bool UI_Text::update()
 		App->font->CalcSize((*it).text.c_str(), rect.w, rect.h, font);
 		h += rect.h;
 		if (rect.w > w)
-			w = rect.w;
+		w = rect.w;
 	}
 
 	rect.w = w;
