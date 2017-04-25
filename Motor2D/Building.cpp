@@ -40,7 +40,6 @@ bool Building::PreUpdate()
 
 bool Building::Update(float dt)
 {
-	//position = { game_object->GetPos().x, game_object->GetPos().y };
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
 	switch (state) {

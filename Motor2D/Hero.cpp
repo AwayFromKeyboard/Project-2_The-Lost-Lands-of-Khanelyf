@@ -42,7 +42,7 @@ bool Hero::LoadEntity(iPoint pos)
 		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
 
 		pos2 = { pos.x, pos.y };
-		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
+		collision = App->collisions->AddCollider({ pos2.x, pos2.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
 
