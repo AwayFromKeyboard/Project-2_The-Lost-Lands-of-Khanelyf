@@ -4,7 +4,6 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "PugiXml\src\pugixml.hpp"
-#include "j1Physics.h"
 #include "Animation.h"
 #include "j1Entity.h"
 #include <list>

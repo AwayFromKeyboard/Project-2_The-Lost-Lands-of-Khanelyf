@@ -28,9 +28,6 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Physics.cpp">
-      <Filter>Engine\1. Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Render.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
@@ -41,9 +38,6 @@
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Engine\2. Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
       <Filter>Engine\2. Components</Filter>
     </ClCompile>
     <ClCompile Include="Parallax.cpp">
@@ -139,9 +133,6 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Physics.h">
-      <Filter>Engine\1. Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1Render.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
@@ -155,9 +146,6 @@
       <Filter>Engine\2. Components</Filter>
     </ClInclude>
     <ClInclude Include="CollisionFilters.h">
-      <Filter>Engine\2. Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
       <Filter>Engine\2. Components</Filter>
     </ClInclude>
     <ClInclude Include="Parallax.h">
