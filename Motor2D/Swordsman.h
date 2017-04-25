@@ -5,7 +5,6 @@
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
 enum entity_type;
-class GameObject;
 
 class Swordsman : public Unit
 {

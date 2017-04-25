@@ -4,7 +4,6 @@
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
-class GameObject;
 class Hero : public Unit
 {
 public:
