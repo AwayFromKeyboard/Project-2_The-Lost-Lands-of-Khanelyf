@@ -73,16 +73,12 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					//magic numbers +30 to fix
-					if(layer->name=="trees")
-						App->render->Blit(tileset->texture, pos.x+20, pos.y-140, &r);
-					else if(layer->name == "special")
-						App->render->Blit(tileset->texture, pos.x +20, pos.y - 195, &r);
-					else if (layer->name == "casas")
-						App->render->Blit(tileset->texture, pos.x + 35, pos.y - 95, &r);
-					else if (layer->name == "tower")
-						App->render->Blit(tileset->texture, pos.x+30, pos.y - 110, &r);
+					if(layer->name == "Nature")
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					else if (layer->name == "Buildings")
+						App->render->Blit(tileset->texture, pos.x -10, pos.y - 70, &r);
 					else
-						App->render->Blit(tileset->texture, pos.x+32, pos.y + 30, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 				}
 			}
 			count++;
