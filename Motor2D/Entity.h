@@ -4,7 +4,6 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "PugiXml\src\pugixml.hpp"
-#include "j1Physics.h"
 #include "Animation.h"
 #include "j1Entity.h"
 #include <list>
@@ -21,7 +20,6 @@ enum entity_state {
 
 class b2Fixture;
 class PhysBody;
-class GameObject;
 
 class Entity
 {
@@ -30,7 +28,7 @@ public:
 
 	virtual ~Entity() {};
 
-	virtual bool LoadEntity() { return true; };
+	virtual bool LoadEntity(iPoint pos) { return true; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update(float dt) { return true; };
@@ -49,10 +47,6 @@ public:
 	}
 
 	virtual void OnColl(Collider* col1, Collider* col2) {};
-
-	virtual GameObject* GetGameObject() {
-		return nullptr;
-	}
 
 	virtual Collider* GetCollider() {
 		return nullptr;
@@ -83,8 +77,10 @@ public:
 	int cost = 0; // only for allies
 
 	iPoint position = NULLPOINT;
+	iPoint pos2 = NULLPOINT;
 	Collider* collision = nullptr;
-	//std::string texture = NULL;
+	SDL_Texture* entity_texture;
+	Animator* animator;
 
 protected:
 	bool selected = false;

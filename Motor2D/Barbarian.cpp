@@ -1,5 +1,4 @@
 #include "Barbarian.h"
-#include "GameObject.h"
 #include "Scene.h"
 #include "j1App.h"
 #include "j1Input.h"
@@ -22,7 +21,7 @@ Barbarian::~Barbarian()
 {
 }
 
-bool Barbarian::LoadEntity()
+bool Barbarian::LoadEntity(iPoint pos)
 {
 	bool ret = true;
 
@@ -49,15 +48,10 @@ bool Barbarian::LoadEntity()
 	}
 	if (node)
 	{
-		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
-
-		position = { 0, 0 };
-		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
+		pos2 = { pos.x, pos.y };
+		collision = App->collisions->AddCollider({ pos2.x, pos2.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
-
-		game_object->SetListener((j1Module*)App->entity);
-		game_object->SetFixedRotation(true);
 
 		cost = node.child("cost").attribute("value").as_int(0);
 		human_cost = node.child("human_cost").attribute("value").as_int(0);
@@ -70,10 +64,9 @@ bool Barbarian::LoadEntity()
 		life = node.child("life").attribute("value").as_int();
 		radius_of_action = node.child("radius_of_action").attribute("value").as_int(0);
 
-		std::string texture = node.child("texture").attribute("value").as_string();
-		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
+		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("value").as_string());
 		node = node.child("animations");
-		game_object->LoadAnimationsFromUnitsXML(node, this);
+		animator->LoadAnimationsFromUnitsXML(node, this);
 
 		i_offset.create(node.child("idle").attribute("offset_x").as_int(), node.child("idle").attribute("offset_y").as_int());
 		m_offset.create(node.child("move").attribute("offset_x").as_int(), node.child("move").attribute("offset_y").as_int());
@@ -89,7 +82,6 @@ bool Barbarian::LoadEntity()
 
 		current_animation = &i_south;
 		direction = { 0, 1 };
-		App->entity->unit_game_objects_list.push_back(game_object);
 
 		state = entity_state::entity_idle;
 	}

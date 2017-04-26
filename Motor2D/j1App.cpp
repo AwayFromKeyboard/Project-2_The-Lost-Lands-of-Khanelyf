@@ -17,7 +17,6 @@
 #include "j1Gui.h"
 #include "j1App.h"
 #include "j1Console.h"
-#include "j1Physics.h"
 #include "j1Entity.h"
 #include "j1Collisions.h"
 #include "Player.h"
@@ -40,7 +39,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font = new j1Fonts();
 	gui = new j1Gui();
 	console = new j1Console();
-	physics = new j1Physics();
 	collisions = new j1Collisions();
 	entity = new j1Entity();
 	player = new Player();
@@ -56,7 +54,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(font);
-	AddModule(physics);
 	AddModule(console);
 	AddModule(collisions);
 	AddModule(entity);
