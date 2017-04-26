@@ -59,7 +59,7 @@ bool Unit::PreUpdate()
 	}
 
 	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
-		LifeBar({ 50, 5 }, { -20, -40 });
+		LifeBar({ 50, 5 }, { -20, -35 });
 
 	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
