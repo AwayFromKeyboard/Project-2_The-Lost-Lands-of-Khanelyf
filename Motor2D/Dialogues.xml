@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<npcs>
+  <npc id="1">
+    <dialogue state="0">
+      <text value="Hi! I'm your first quest "/>
+      <text value="Go to the town"/>
+    </dialogue>
+    <dialogue state="1">
+      <text value="Well done!"/>
+    </dialogue>
+  </npc>
+  <npc id="2">
+    <dialogue state="0">
+      <text value="Hi! Im the second quest!"/>
+    </dialogue>
+    <dialogue state="1">
+      <text value="All are dead now"/>
+    </dialogue>
+  </npc>
+</npcs>

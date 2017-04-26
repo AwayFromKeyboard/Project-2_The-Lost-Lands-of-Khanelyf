@@ -79,6 +79,7 @@
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="Barracks.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
@@ -162,6 +164,7 @@
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="Dialogues.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
