@@ -731,14 +731,12 @@ void j1Map::GetEntitiesSpawn() const
 						case 28: // Enemies
 						{
 							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 2, y));
-							barb_enemy->position = App->map->MapToWorld(x + 2, y);
 						}
 						break;
 						
 						case 29: // NPC
 						{
 							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 2, y));
-							barb_npc->position = App->map->MapToWorld(x + 2, y);
 						}
 						break;
 						
