@@ -57,7 +57,8 @@ bool Unit::PreUpdate()
 			state = entity_idle;
 		}
 	}
-	LifeBar({ 20, 20 }, { 0, 0 });
+
+	LifeBar({ 50, 5 }, { -20, -40 });
 
 	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
