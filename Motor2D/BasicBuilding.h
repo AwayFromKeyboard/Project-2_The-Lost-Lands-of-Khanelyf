@@ -7,10 +7,10 @@ class BasicBuilding : public Building
 {
 
 public:
-	BasicBuilding(entity_type _type);
+	BasicBuilding(entity_type _type, int _building_rect_number);
 	~BasicBuilding();
 
-	bool LoadEntity(iPoint pos);
+	bool LoadEntity(iPoint pos); // rect_number 1,2 or 3
 
 	bool Start();
 };

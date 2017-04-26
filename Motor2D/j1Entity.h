@@ -14,6 +14,7 @@ enum entity_name
 	barbarian,
 	swordsman,
 	barracks,
+	basic_building,
 	test
 };
 
@@ -24,7 +25,8 @@ enum entity_type
 	ally,
 	npc,
 	enemy,
-	building
+	building,
+	enemy_building
 };
 
 class Entity;
@@ -68,6 +70,7 @@ public:
 	void OnCollision(Collider* col1, Collider* col2);
 
 	Entity* CreateEntity(entity_name name, entity_type type, iPoint pos);
+	Entity* CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number);
 	void DeleteEntity(Entity* entity);
 
 	void SelectInQuad(const SDL_Rect& select_rect);

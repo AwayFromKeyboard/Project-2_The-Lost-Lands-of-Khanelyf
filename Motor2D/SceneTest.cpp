@@ -18,6 +18,7 @@
 #include "j1Collisions.h"
 #include "QuestManager.h"
 #include "Barracks.h"
+#include "BasicBuilding.h"
 #include "Building.h"
 
 SceneTest::SceneTest()
@@ -168,6 +169,18 @@ void SceneTest::CheckUnitCreation(iPoint p)
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
 		create_barrack = false;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_U) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_I) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_O) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
 }
 
