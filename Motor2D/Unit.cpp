@@ -35,7 +35,10 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
+	
 	AI_timer.Start();
+	max_life = life;
+	
 	return ret;
 }
 
@@ -47,13 +50,16 @@ bool Unit::PreUpdate()
 	{
 		if (path.size() > 0)
 		{
-			state = entity_move;
+			state = entity_state::entity_move;
 		}
 		else
 		{
-			state = entity_idle;
+			state = entity_state::entity_idle;
 		}
 	}
+
+	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
+		LifeBar({ 50, 5 }, { -20, -35 });
 
 	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
