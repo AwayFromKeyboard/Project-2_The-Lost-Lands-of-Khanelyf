@@ -127,6 +127,12 @@ void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_
 	layer_list.push(lblit);
 }
 
+void j1Scene::LayerDrawQuad(const SDL_Rect rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, int layer, int viewport, bool use_camera)
+{
+	layer_quad lblit(rect, r, g, b, a, filled, use_camera, layer);
+	quad_list.push(lblit);	
+}
+
 void j1Scene::OnCollision(Collider* c1, Collider* c2)
 {
 	// CONVERT
