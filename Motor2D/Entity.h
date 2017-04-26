@@ -12,6 +12,7 @@ enum entity_state {
 	entity_idle,
 	entity_move,
 	entity_move_to_enemy,
+	entity_move_to_building,
 	entity_attack,
 	entity_death,
 	entity_decompose,
