@@ -26,6 +26,7 @@ enum entity_type
 	npc,
 	enemy,
 	building,
+	ally_building,
 	enemy_building
 };
 

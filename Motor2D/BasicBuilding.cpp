@@ -39,7 +39,7 @@ bool BasicBuilding::LoadEntity(iPoint pos)
 			node = building;
 			break;
 		}
-		else if (TextCmp(building.attribute("type").as_string(), "BasicBuilding_ally") && type == entity_type::enemy)
+		else if (TextCmp(building.attribute("type").as_string(), "BasicBuilding_ally") && type == entity_type::ally_building)
 		{
 			node = building;
 			break;
