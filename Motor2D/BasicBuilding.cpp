@@ -34,7 +34,7 @@ bool BasicBuilding::LoadEntity(iPoint pos)
 	App->LoadXML("Buildings.xml", doc);
 	for (pugi::xml_node building = doc.child("buildings").child("building"); building; building = building.next_sibling("building"))
 	{
-		if (TextCmp(building.attribute("type").as_string(), "BasicBuilding_enemy") && type == entity_type::enemy)
+		if (TextCmp(building.attribute("type").as_string(), "BasicBuilding_enemy") && type == entity_type::enemy_building)
 		{
 			node = building;
 			break;

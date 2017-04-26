@@ -16,6 +16,7 @@
 #include "SceneTest.h"
 #include "j1Scene.h"
 #include "j1Window.h"
+#include "Building.h"
 
 Player::Player()
 {
@@ -230,6 +231,10 @@ bool Player::Update(float dt)
 				case entity_type::building:
 					mouse_over_entity = true;
 					break;
+				case entity_type::enemy_building:
+					SetAttackingBuilding((Building*)*it);
+					mouse_over_entity = true;
+					break;
 				default:
 					break;
 				}
@@ -297,6 +302,15 @@ void Player::SetAttackingEnemy(Unit* enemy) {
 		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 			(*it)->SetAttackingUnit(enemy);
 			(*it)->state = entity_state::entity_move_to_enemy;
+		}
+	}
+}
+
+void Player::SetAttackingBuilding(Building* building) {
+	if (building->life > 0) {
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+			(*it)->SetAttackingBuilding(building);
+			(*it)->state = entity_state::entity_move_to_building;
 		}
 	}
 }

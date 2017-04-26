@@ -172,15 +172,15 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
-		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_I) == key_down)
 	{
-		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_O) == key_down)
 	{
-		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
 }
 
