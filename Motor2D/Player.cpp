@@ -294,6 +294,7 @@ void Player::MoveToTile(iPoint tile) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->pos2), tile);
 		(*it)->state = entity_state::entity_move;
 		(*it)->attacked_unit = nullptr;
+		(*it)->attacked_building = nullptr;
 	}
 }
 

@@ -44,7 +44,7 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy) 
+	if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building))
 	{
 		if (path.size() > 0)
 		{
@@ -148,7 +148,7 @@ bool Unit::Update(float dt)
 	break;
 
 	case entity_state::entity_attack:
-		if (attacked_unit == nullptr || attacked_building == nullptr || attacked_unit->life <= 0 || attacked_building->life <= 0) {
+		if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0)) {
 			attacked_unit == nullptr;
 			attacked_building == nullptr;
 			state = entity_idle;
@@ -237,6 +237,13 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move_to_enemy:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case entity_move_to_building:
 		offset = m_offset;
 		if (flip)
 			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
@@ -720,7 +727,7 @@ void Unit::BuildingAttack()
 			//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
 			state = entity_idle;
 			attacked_building->state = entity_death;
-			attacked_unit = nullptr;
+			attacked_building = nullptr;
 		}
 		shout_fx = true;
 	}
