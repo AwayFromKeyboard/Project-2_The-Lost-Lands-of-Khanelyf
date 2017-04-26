@@ -109,6 +109,9 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="BasicBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -236,6 +239,9 @@
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
     <ClInclude Include="Barracks.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
   </ItemGroup>
