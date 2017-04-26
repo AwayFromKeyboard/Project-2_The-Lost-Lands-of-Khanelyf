@@ -50,15 +50,16 @@ bool Unit::PreUpdate()
 	{
 		if (path.size() > 0)
 		{
-			state = entity_move;
+			state = entity_state::entity_move;
 		}
 		else
 		{
-			state = entity_idle;
+			state = entity_state::entity_idle;
 		}
 	}
 
-	LifeBar({ 50, 5 }, { -20, -40 });
+	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
+		LifeBar({ 50, 5 }, { -20, -40 });
 
 	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
