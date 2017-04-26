@@ -104,9 +104,18 @@ bool Unit::Update(float dt)
 			else{
 				if (path.size() > 0) {
 					FollowPath(dt);
+
+					if (type == entity_type::enemy) {
+						if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
+							state = entity_idle;
+							attacked_unit = nullptr;
+						}
+						else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
+							state = entity_death;
+							attacked_unit = nullptr;
+						}
+					}
 				}
-				if (type == entity_type::enemy && App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2)
-					state = entity_idle;
 			}
 		}
 	}
