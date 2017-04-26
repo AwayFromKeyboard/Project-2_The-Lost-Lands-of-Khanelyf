@@ -76,6 +76,7 @@ bool Unit::Update(float dt)
 	case entity_state::entity_idle:
 		CheckDirection();
 		CheckSurroundings();
+		has_moved = false;
 		break;
 
 	case entity_state::entity_move:
@@ -101,8 +102,11 @@ bool Unit::Update(float dt)
 				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_unit->pos2));
 			}
 			else{
-				if (path.size() > 0)
+				if (path.size() > 0) {
 					FollowPath(dt);
+				}
+				if (type == entity_type::enemy && App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2)
+					state = entity_idle;
 			}
 		}
 	}
@@ -120,9 +124,7 @@ bool Unit::Update(float dt)
 			}
 			else {
 				state = entity_state::entity_move_to_enemy;
-				current_animation = &i_north;
 				att_state = attack_null;
-				attacked_unit = nullptr;
 				break;
 			}
 		}
