@@ -98,7 +98,7 @@ bool Unit::Update(float dt)
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_unit->pos2));
 			}
 			else{
 				if (path.size() > 0)
@@ -474,8 +474,8 @@ bool Unit::CheckSurroundings() {
 		std::list<iPoint> visited;
 
 
-		visited.push_back(App->map->WorldToMapPoint(position));
-		frontier.push_back(App->map->WorldToMapPoint(position));
+		visited.push_back(App->map->WorldToMapPoint(pos2));
+		frontier.push_back(App->map->WorldToMapPoint(pos2));
 
 		for (int i = 0; i < radius_of_action; ++i) {
 			for (int j = frontier.size(); j > 0; j--) {
