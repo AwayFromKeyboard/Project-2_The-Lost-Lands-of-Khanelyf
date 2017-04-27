@@ -249,7 +249,7 @@
     <Xml Include="..\Game\Buildings.xml">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </Xml>
-    <Xml Include="Dialogues.xml">
+    <Xml Include="..\Game\Dialogues.xml">
       <Filter>Engine\5. Tools</Filter>
     </Xml>
   </ItemGroup>

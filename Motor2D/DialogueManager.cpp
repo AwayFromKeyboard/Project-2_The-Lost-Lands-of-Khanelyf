@@ -2,6 +2,8 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Gui.h"
+#include "Log.h"
+#include "j1Gui.h"
 
 DialogueManager::DialogueManager() : j1Module()
 {
@@ -14,23 +16,11 @@ bool DialogueManager::Awake(pugi::xml_node & Dialogues)
 
 	LOG("Loading DialogManager data");
 
-	pugi::xml_document doc;
-	pugi::xml_node node;
 	App->LoadXML("Dialogues.xml", doc);
 
-	
-	
-	folder = Dialogues.child("npcs").attribute("folder").as_string();
-	
-	char* buf;
-	int size = App->fs->Load(folder.c_str(), &buf);
-	pugi::xml_parse_result result = dialogueDataFile.load_buffer(buf, size);
-
-	RELEASE(buf);
-
-	if (result == NULL)
+	if (doc == NULL)
 	{
-		LOG("Could not load gui xml file %s. pugi error: %s", dialogueDataFile, result.description());
+		LOG("Could not load gui xml file %s.", doc);
 		ret = false;
 	}
 
@@ -40,10 +30,10 @@ bool DialogueManager::Awake(pugi::xml_node & Dialogues)
 bool DialogueManager::Start()
 {
 	bool ret = true;
-	dialogueNode = dialogueDataFile.child("npcs");
+	node = doc.child("npcs");
 	// Allocate memory
 	int i = 0;
-	for (pugi::xml_node npc = dialogueNode.child("npc"); npc != NULL; npc = npc.next_sibling(), i++)
+	for (pugi::xml_node npc = node.child("npc"); npc != NULL; npc = npc.next_sibling(), i++)
 	{
 		//Allocate Dialog with his ID and State
 		Dialogue* tmp = new Dialogue(npc.attribute("id").as_int());
@@ -60,12 +50,8 @@ bool DialogueManager::Start()
 		}
 	}
 
-	//Prepare UI to print
-/*	screen = App->gui->CreateScreen(screen);
-	text_on_screen = (UI_String*)App->gui->Add_element(STRING, this);
-	text_on_screen->Set_Active_state(false);
-	text_on_screen->Set_Interactive_Box({ 400, 400, 0, 0 });
-	screen->AddChild(text_on_screen);*/
+	win = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 10);
+	text_on_screen = (UI_Text*)win->CreateText(TEXT_POSITION, App->font->default_15);
 
 	return ret;
 }
@@ -128,6 +114,7 @@ bool DialogueManager::BlitDialog(uint id, uint state)
 			{
 				if (dialog[i]->texts[dialogueStep + j]->state == state)
 				{
+					text_on_screen->SetText(dialog[i]->texts[dialogueStep + j]->line->c_str());
 					//text_on_screen->Set_String((char*)dialog[i]->texts[dialogueStep + j]->line->c_str());
 					return true;
 				}

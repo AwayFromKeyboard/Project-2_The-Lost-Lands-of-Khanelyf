@@ -6,13 +6,14 @@
 #include "j1Module.h"
 #include <string>
 #include "Defs.h"
-#include "Log.h"
+
 #include "j1App.h"
 #include "j1FileSystem.h"
 //#include "j1GameLayer.h"
 #include "j1Gui.h"
 #include <vector>
-
+class UI_Window;
+class UI_Text;
 /*class Entity;
 class Player;
 class Enemy;
@@ -21,6 +22,9 @@ class UI_String;
 enum ENTITY_TYPE;
 enum ENEMY_TYPE;
 */
+
+#define TEXT_POSITION iPoint(150, 150)
+
 class TextLine
 {
 public:
@@ -61,11 +65,11 @@ private:
 	vector<Dialogue*> dialog;
 
 	/*-- Data to load XML --*/
-	std::string folder;
-	std::string path;
-	pugi::xml_document dialogueDataFile;
-	pugi::xml_node dialogueNode;
 	
+	std::string path;
+	
+	pugi::xml_document doc;
+	pugi::xml_node node;
 
 	/*--- UI elements to print dialogues on screen ---
 	UI_element* screen = nullptr;
@@ -76,6 +80,9 @@ private:
 	uint id = 1;
 	uint NPCstate = 0;
 	
+public:
+	UI_Window* win = nullptr;
+	UI_Text* text_on_screen = nullptr;
 };
 
 #endif
