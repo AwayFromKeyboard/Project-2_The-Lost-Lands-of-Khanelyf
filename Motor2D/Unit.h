@@ -64,6 +64,7 @@ public:
 	// Attack
 	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
+	bool IsInBuildingRange(Entity* attacked_entity);
 	void LookAtAttack();
 	void UnitAttack();
 	void BuildingAttack();

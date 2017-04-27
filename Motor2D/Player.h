@@ -13,6 +13,7 @@
 #define BATTLECRY_RANGE 10
 
 class Unit;
+class Building;
 class UI_Window;
 class UI_Text;
 class UI_Button;
@@ -56,6 +57,7 @@ private:
 private:
 	void MoveToTile(iPoint tile);
 	void SetAttackingEnemy(Unit* enemy);
+	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();
 public:
 	void SetHero(Hero* hero);

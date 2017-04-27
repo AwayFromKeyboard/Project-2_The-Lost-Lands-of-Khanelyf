@@ -15,6 +15,7 @@
 #include "j1Audio.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "Building.h"
 
 Unit::Unit()
 {
@@ -47,7 +48,7 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy) 
+	if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building))
 	{
 		if (path.size() > 0)
 		{
@@ -90,11 +91,11 @@ bool Unit::Update(float dt)
 		}
 		CheckDirection();
 		CheckSurroundings();
+		has_moved = false;
 		break;
 
 	case entity_state::entity_move:
 		FollowPath(dt);
-		//CheckSurroundings();
 		break;
 
 	case entity_state::entity_move_to_enemy:
@@ -115,28 +116,76 @@ bool Unit::Update(float dt)
 				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
 			}
 			else{
-				if (path.size() > 0)
+				if (path.size() > 0) {
 					FollowPath(dt);
+
+					if (type == entity_type::enemy) {
+						if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
+							state = entity_idle;
+							attacked_unit = nullptr;
+						}
+						else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
+							state = entity_death;
+							attacked_unit = nullptr;
+						}
+					}
+				}
 			}
 		}
 	}
 		break;
 
+	case entity_state::entity_move_to_building:
+	{
+		if (attacked_building == nullptr || attacked_building->life <= 0)
+			state = entity_idle;
+		else {
+			if (IsInBuildingRange(attacked_building)) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				state = entity_state::entity_attack;
+				has_moved = false;
+			}
+			else if (!has_moved) {
+				has_moved = true;
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_building->position));
+			}
+			else {
+				if (path.size() > 0) {
+					FollowPath(dt);
+				}
+			}
+		}
+	}
+	break;
+
 	case entity_state::entity_attack:
-		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
+		if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0)) {
 			attacked_unit == nullptr;
+			attacked_building == nullptr;
 			state = entity_idle;
 		}
-		else
+		else if (attacked_building == nullptr)
 		{
 			if (IsInRange(attacked_unit)) {
 				att_state = attack_unit;
 			}
 			else {
 				state = entity_state::entity_move_to_enemy;
-				current_animation = &i_north;
 				att_state = attack_null;
-				attacked_unit = nullptr;
+				break;
+			}
+		}
+		else
+		{
+			if (IsInBuildingRange(attacked_building)) {
+				att_state = attack_building;
+			}
+			else {
+				state = entity_state::entity_move_to_building;
+				att_state = attack_null;
 				break;
 			}
 		}
@@ -207,6 +256,13 @@ bool Unit::Draw(float dt)
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case entity_move_to_building:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_attack:
 		offset = a_offset;
@@ -560,6 +616,25 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	return ret;
 }
 
+bool Unit::IsInBuildingRange(Entity* attacked_entity)
+{
+	bool ret = true;
+
+	if (attacked_entity == nullptr) return false;
+
+	iPoint attacked_pos = attacked_entity->position;
+	iPoint pos = position;
+	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
+	pos = App->map->WorldToMapPoint(pos);
+
+	direction.x = attacked_pos.x - pos.x;
+	direction.y = attacked_pos.y - pos.y;
+
+	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
+
+	return ret;
+}
+
 void Unit::LookAtAttack()
 {
 	if (direction.x > 0)
@@ -652,6 +727,24 @@ void Unit::UnitAttack()
 void Unit::BuildingAttack()
 {
 	LookAtAttack();
+	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+		shout_fx = false;
+	}
+
+	if (current_animation->Finished())
+	{
+		attacked_building->life -= damage;
+		current_animation->Reset();
+		if (attacked_building->life <= 0)
+		{
+			//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
+			state = entity_idle;
+			attacked_building->state = entity_death;
+			attacked_building = nullptr;
+		}
+		shout_fx = true;
+	}
 }
 
 void Unit::SetAttackingUnit(Unit * att_unit)
