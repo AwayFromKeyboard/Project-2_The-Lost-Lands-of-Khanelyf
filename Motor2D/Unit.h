@@ -99,6 +99,7 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 
+	j1Timer life_up_timer;
 	iPoint position_map = NULLPOINT;
 
 	iPoint offset = NULLPOINT;
