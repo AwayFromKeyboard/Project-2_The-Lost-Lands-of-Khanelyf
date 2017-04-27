@@ -140,7 +140,7 @@ bool Unit::Update(float dt)
 		if (attacked_building == nullptr || attacked_building->life <= 0)
 			state = entity_idle;
 		else {
-			if (IsInBuildingRange(attacked_building)) {
+			if (IsInRange(attacked_building)) {
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
 				state = entity_state::entity_attack;
@@ -150,7 +150,7 @@ bool Unit::Update(float dt)
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_building->position));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_building->position));
 			}
 			else {
 				if (path.size() > 0) {
@@ -180,7 +180,7 @@ bool Unit::Update(float dt)
 		}
 		else
 		{
-			if (IsInBuildingRange(attacked_building)) {
+			if (IsInRange(attacked_building)) {
 				att_state = attack_building;
 			}
 			else {
@@ -260,9 +260,9 @@ bool Unit::Draw(float dt)
 	case entity_move_to_building:
 		offset = m_offset;
 		if (flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_attack:
 		offset = a_offset;
@@ -598,25 +598,6 @@ bool Unit::CheckSurroundings() {
 }
 
 bool Unit::IsInRange(Entity* attacked_entity)
-{
-	bool ret = true;
-
-	if (attacked_entity == nullptr) return false;
-
-	iPoint attacked_pos = attacked_entity->position;
-	iPoint pos = position;
-	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
-	pos = App->map->WorldToMapPoint(pos);
-
-	direction.x = attacked_pos.x - pos.x;
-	direction.y = attacked_pos.y - pos.y;
-
-	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
-
-	return ret;
-}
-
-bool Unit::IsInBuildingRange(Entity* attacked_entity)
 {
 	bool ret = true;
 
