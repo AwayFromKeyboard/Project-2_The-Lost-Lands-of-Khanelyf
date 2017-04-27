@@ -15,7 +15,7 @@
 using namespace std;
 
 class j1App;
-class Collider;
+struct Collider;
 class b2Fixture;
 
 class j1Module

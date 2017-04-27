@@ -5,7 +5,6 @@
 #include "j1Render.h"
 #include "j1Gui.h"
 
-class GameObject;
 class b2Fixture;
 class Parallax;
 class Hero;
@@ -53,6 +52,8 @@ public:
 	int human_resources_max = 15;
 	int current_human_resources = 0;
 	UI_Text* human_resources_txt = nullptr;
+
+	bool create_barrack = false;
 
 public:
 	//FXs

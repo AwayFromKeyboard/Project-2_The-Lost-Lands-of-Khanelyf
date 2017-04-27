@@ -7,7 +7,6 @@ struct Collider;
 
 enum entity_name;
 enum entity_type;
-class GameObject;
 
 class Building : public Entity
 {
@@ -27,20 +26,16 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
-	GameObject* GetGameObject();
 	Collider* GetCollider();
 	entity_type GetType();
 	entity_name GetName();
 
 public:
 
-	GameObject* game_object = nullptr;
 	entity_name name;
 	bool to_delete = false;
 
 public:
-
-	int cost = 0;
 
 	iPoint position = NULLPOINT;
 	iPoint offset = NULLPOINT;
