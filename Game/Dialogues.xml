@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <npcs>
-  <npc id="1">
+  <npc id="0">
     <dialogue state="0">
-      <text value="Hi! I'm your first quest "/>
-      <text value="Go to the town"/>
+      <text value="Farmer: Here young traveler. I come from north seeking for help. There are a few warriors plundering my town. Would you help me? "/>
+      <text value="Go to the town and surroundings and kill up to 5 enemies. Gold: 100. "/>
     </dialogue>
     <dialogue state="1">
       <text value="Well done!"/>
     </dialogue>
   </npc>
-  <npc id="2">
+  <npc id="1">
     <dialogue state="0">
-      <text value="Hi! Im the second quest!"/>
+      <text value="Thanks! You can build a barrack(use b key) now!"/>
+      <text value="Hi Leader, we have detected some hostil soldiers... We need to do something with the nearby enemy camps before they dare to attack us!"/>
     </dialogue>
     <dialogue state="1">
       <text value="All are dead now"/>

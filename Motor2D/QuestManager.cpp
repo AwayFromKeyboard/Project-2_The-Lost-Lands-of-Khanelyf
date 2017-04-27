@@ -5,6 +5,7 @@
 #include "SceneTest.h"
 #include "Player.h"
 #include "Hero.h"
+#include "DialogueManager.h"
 
 QuestManager::QuestManager() {
 
@@ -66,6 +67,14 @@ bool QuestManager::Update(float dt) {
 		}
 	
 	}
+
+	App->dialogs->id = current_quest->id;
+	if (current_quest->completed) {
+		App->dialogs->NPCstate = 1;
+	}
+	else
+		App->dialogs->NPCstate = 0;
+
 
 	return true;
 }

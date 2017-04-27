@@ -1,29 +1,18 @@
 #ifndef __DIALOG_MANAGER_H__
 #define __DIALOG_MANAGER_H__
 
-
 #include "PugiXml\src\pugixml.hpp"
 #include "j1Module.h"
 #include <string>
 #include "Defs.h"
-
 #include "j1App.h"
 #include "j1FileSystem.h"
-//#include "j1GameLayer.h"
 #include "j1Gui.h"
 #include <vector>
 class UI_Window;
 class UI_Text;
-/*class Entity;
-class Player;
-class Enemy;
-class UI_element;
-class UI_String;
-enum ENTITY_TYPE;
-enum ENEMY_TYPE;
-*/
 
-#define TEXT_POSITION iPoint(150, 150)
+#define TEXT_POSITION iPoint(230, 930)
 
 class TextLine
 {
@@ -71,13 +60,9 @@ private:
 	pugi::xml_document doc;
 	pugi::xml_node node;
 
-	/*--- UI elements to print dialogues on screen ---
-	UI_element* screen = nullptr;
-	UI_String* text_on_screen = nullptr;
-	*/
-
+public:
 	/*---CODE TO TEST IN-GAME RESULTS ---*/
-	uint id = 1;
+	uint id = 0;
 	uint NPCstate = 0;
 	
 public:

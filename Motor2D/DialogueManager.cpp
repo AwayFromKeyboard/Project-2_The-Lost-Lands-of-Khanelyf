@@ -51,7 +51,7 @@ bool DialogueManager::Start()
 	}
 
 	win = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 10);
-	text_on_screen = (UI_Text*)win->CreateText(TEXT_POSITION, App->font->default_15);
+	text_on_screen = (UI_Text*)win->CreateText(TEXT_POSITION, App->font->default_15, 0, false, 0,51,51);
 
 	return ret;
 }
@@ -59,19 +59,18 @@ bool DialogueManager::Start()
 bool DialogueManager::PostUpdate()
 {
 	/*--- CODE TO TEST RESULTS IN-GAME ---*/
-	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down)
+	if (App->input->GetKey(SDL_SCANCODE_R) == key_down)
 	{
 		dialogueStep = 0;
-		if (id == 1)
-		{
-			id = 2;
-		}
-		else
+		if (id == 0)
 		{
 			id = 1;
 		}
+		else
+		{
+			id = 0;
+		}
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_X) == key_down)
 	{
 		dialogueStep = 0;
