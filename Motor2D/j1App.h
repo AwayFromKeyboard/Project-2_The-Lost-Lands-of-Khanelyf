@@ -30,6 +30,7 @@ class j1Entity;
 class j1Collisions;
 class Player;
 class QuestManager;
+class Minimap;
 
 class j1App
 {
@@ -119,7 +120,8 @@ public:
 	j1Collisions*		collisions = nullptr;
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
-
+	Minimap*			minimap = nullptr;
+	
 	// Console logs
 	list<string>        logs;
 
