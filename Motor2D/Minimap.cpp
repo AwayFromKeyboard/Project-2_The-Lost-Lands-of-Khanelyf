@@ -26,7 +26,7 @@ bool Minimap::Start()
 	buildings = blue;
 
 
-	rect = { App->win->_GetWindowSize().x - 271,  App->win->_GetWindowSize().y - 138, 271, 138 };
+	rect = { App->win->_GetWindowSize().x - 292,  App->win->_GetWindowSize().y - 138, 271, 138 };
 	scale = { 1, 1 };
 
 	return ret;
@@ -37,7 +37,7 @@ bool Minimap::PreUpdate()
 	bool ret = true;
 
 
-	
+
 
 
 	return ret;
@@ -54,11 +54,7 @@ bool Minimap::PostUpdate()
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		if ((*it)->type == entity_type::player) {
-			App->render->DrawQuad({ WorldToMinimap((*it)->pos2).x,  WorldToMinimap((*it)->pos2).y, 2, 2 }, allies.r, allies.g, allies.b, allies.a, true, false);
-		}
-	}
+	DrawMinimap();
 
 	return ret;
 }
@@ -75,9 +71,17 @@ iPoint Minimap::WorldToMinimap(const iPoint &world_pos) const
 	iPoint mini_map_pos;
 
 	//iPoint map_pos = App->map->WorldToMapPoint(world_pos);
-
+	iPoint upper_left_corner = App->map->MapToWorldPoint({ -54, 54 });
 	mini_map_pos.x = rect.x + (world_pos.x * 0.1f);
 	mini_map_pos.y = rect.y + (world_pos.y * 0.1f);
 
 	return mini_map_pos;
+}
+
+void Minimap::DrawMinimap() {
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::player) {
+			App->render->DrawQuad({ WorldToMinimap((*it)->pos2).x, 500, 5, 5 }, allies.r, allies.g, allies.b, allies.a, true, false);
+		}
+	}
 }

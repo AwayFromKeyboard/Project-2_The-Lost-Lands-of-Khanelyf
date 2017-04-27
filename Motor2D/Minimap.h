@@ -29,6 +29,8 @@ public:
 
 	iPoint WorldToMinimap(const iPoint & world_pos) const;
 
+	void DrawMinimap();
+
 private:
 	QuadColor enemies; // red
 	QuadColor allies; // green 

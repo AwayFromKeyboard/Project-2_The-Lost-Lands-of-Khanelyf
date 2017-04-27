@@ -20,6 +20,7 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Building.h"
+#include "Minimap.h"
 
 SceneTest::SceneTest()
 {
@@ -103,6 +104,7 @@ bool SceneTest::Update(float dt)
 	UpdateCameraMovement();
 
 	App->map->Draw();
+	App->minimap->DrawMinimap();
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
@@ -145,8 +147,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	iPoint pa = App->render->ScreenToWorld(x, y);
 	pa = App->map->WorldToMap(pa.x, pa.y);
 
-	if (App->pathfinding->IsWalkable(pa)) human_resources_txt->SetText("IS WALKABLE");
-	else human_resources_txt->SetText("IS NOT WALKABLE");
+	stringstream oss2;
+	oss2 << pa.x << "   " << pa.y;
+	human_resources_txt->SetText(oss2.str());
+
 
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{

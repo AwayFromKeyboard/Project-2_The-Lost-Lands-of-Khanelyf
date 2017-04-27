@@ -65,11 +65,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	// Scene
 	AddModule(scene);
 
-	// Gui
-	AddModule(gui);
-
 	// Minimap
 	AddModule(minimap);
+
+	// Gui
+	AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);
