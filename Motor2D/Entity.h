@@ -68,12 +68,15 @@ public:
 		state = entity_death;
 	};
 
+	void LifeBar(iPoint size, iPoint offset);
+
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
 	bool to_delete = false;
 
 	int life = 0;
+	int max_life = 0;
 	int cost = 0; // only for allies
 
 	iPoint position = NULLPOINT;
@@ -82,6 +85,7 @@ public:
 	SDL_Texture* entity_texture;
 	Animator* animator;
 
+	bool show_life_bar = true;
 protected:
 	bool selected = false;
 };
