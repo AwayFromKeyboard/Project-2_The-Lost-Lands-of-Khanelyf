@@ -62,8 +62,8 @@ bool Unit::PreUpdate()
 	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
 		LifeBar({ 50, 5 }, { -20, -35 });
 
-	position = pos2;
-	position_map = App->map->WorldToMapPoint(position);
+	aux_pos = position;
+	position_map = App->map->WorldToMapPoint(aux_pos);
 	if (life > 0) {
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
 	}
@@ -77,7 +77,7 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+	collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
 	switch (state) {
 	case entity_state::entity_idle:
@@ -112,7 +112,7 @@ bool Unit::Update(float dt)
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_unit->pos2));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
 			}
 			else{
 				if (path.size() > 0)
@@ -190,44 +190,44 @@ bool Unit::Draw(float dt)
 	case entity_idle:
 		offset = i_offset;
 		if(flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_i_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_i_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move:
 		offset = m_offset;
 		if(flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move_to_enemy:
 		offset = m_offset;
 		if (flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_attack:
 		offset = a_offset;
 		if (flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_a_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_a_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_death:
 		offset = d_offset;
 		if (flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_d_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_d_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_decompose:
 		offset = de_offset;
 		if (flip)
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_de_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_de_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	}
 
@@ -241,7 +241,7 @@ bool Unit::PostUpdate()
 	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
-		App->render->DrawCircle(pos2.x + App->render->camera.x, pos2.y + App->render->camera.y, 2, 255, 255, 255);
+		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }
@@ -353,13 +353,13 @@ void Unit::FollowPath(float dt)
 {
 	SetDirection();
 
-	fPoint pos = fPoint(pos2.x, pos2.y);
+	fPoint pos = fPoint(position.x, position.y);
 
 	pos.x += direction.x * speed;
 	pos.y += direction.y * speed;
 
-	pos2.x = pos.x;
-	pos2.y = pos.y;
+	position.x = pos.x;
+	position.y = pos.y;
 
 	if (path.size() == 0)
 	{
@@ -378,19 +378,19 @@ void Unit::SetDirection()
 	case south:
 		break;
 	case north:
-		position.y += offset.y;
+		aux_pos.y += offset.y;
 		break;
 	case north_east:
-		position.y += offset.y;
+		aux_pos.y += offset.y;
 	case south_east:
 	case east:
-		position.x -= offset.x;
+		aux_pos.x -= offset.x;
 		break;
 	case north_west:
-		position.y += offset.y;
+		aux_pos.y += offset.y;
 	case south_west:
 	case west:
-		position.x += offset.x;
+		aux_pos.x += offset.x;
 		break;
 	}
 
@@ -488,8 +488,8 @@ bool Unit::CheckSurroundings() {
 		std::list<iPoint> visited;
 
 
-		visited.push_back(App->map->WorldToMapPoint(pos2));
-		frontier.push_back(App->map->WorldToMapPoint(pos2));
+		visited.push_back(App->map->WorldToMapPoint(position));
+		frontier.push_back(App->map->WorldToMapPoint(position));
 
 		for (int i = 0; i < radius_of_action; ++i) {
 			for (int j = frontier.size(); j > 0; j--) {
@@ -547,8 +547,8 @@ bool Unit::IsInRange(Entity* attacked_entity)
 
 	if (attacked_entity == nullptr) return false;
 
-	iPoint attacked_pos = attacked_entity->pos2;
-	iPoint pos = pos2;
+	iPoint attacked_pos = attacked_entity->position;
+	iPoint pos = position;
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
 	pos = App->map->WorldToMapPoint(pos);
 
@@ -772,7 +772,7 @@ void Unit::CheckDecomposeDirection()
 
 bool Unit::IsInsideCircle(int x, int y)
 {
-	iPoint center = pos2;
+	iPoint center = position;
 	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
 }
 
