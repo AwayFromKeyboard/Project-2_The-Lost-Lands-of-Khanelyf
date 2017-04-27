@@ -70,7 +70,7 @@ bool SceneTest::Start()
 
 	App->map->GetEntitiesSpawn();
 
-	gold = 0;
+	gold = 2000;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);

@@ -388,8 +388,21 @@ void Unit::SetDirection()
 
 	if (position_map == path.front()) {
 			path.erase(path.begin());
+			checked_next_tile = false;
 			SetDirection();
 			return;
+	}
+
+	if (!checked_next_tile && App->map->entity_matrix[path.front().x][path.front().y] != nullptr) {
+		checked_next_tile = true;
+		Unit* local = (Unit*)App->map->entity_matrix[path.front().x][path.front().y];
+		if (local->type == entity_type::player || local->type == entity_type::ally) {
+			if (path.size() > 1)
+				local->ForceMovement(position_map, path.at(1));
+			else
+				local->ForceMovement(position_map, position_map);
+		}
+
 	}
 
 	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
@@ -471,6 +484,27 @@ void Unit::LookAtMovement()
 			flip = true;
 		}
 	}
+}
+
+void Unit::ForceMovement(iPoint origin, iPoint next_position)
+{
+	PathNode current = { 0,0,position_map,nullptr };
+	PathList walkable;
+	current.FindWalkableAdjacents(walkable);
+	bool found = false;
+
+	while (walkable.node_list.size() != 0) {
+		PathNode temp;
+		temp = walkable.node_list.back();
+		walkable.node_list.pop_back();
+		if (temp.pos != next_position && temp.pos != origin) 			{
+			path_id = App->pathfinding->CreatePath(position_map, temp.pos);
+			found = true;
+			break;
+		}
+	}
+	if (!found)
+		path_id = App->pathfinding->CreatePath(position, next_position);
 }
 
 bool Unit::CheckSurroundings() {

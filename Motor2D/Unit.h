@@ -32,6 +32,7 @@ class Unit : public Entity
 {
 private:
 	unit_direction destination;
+	bool checked_next_tile = false;
 
 public:
 	Unit();
@@ -60,6 +61,7 @@ public:
 	void FollowPath(float dt);
 	void SetDirection();
 	void LookAtMovement();
+	void ForceMovement(iPoint origin, iPoint next_position);
 
 	// Attack
 	bool CheckSurroundings();
