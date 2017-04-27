@@ -8,6 +8,7 @@
 #include "j1Gui.h"
 #include "j1Entity.h"
 #include "Functions.h"
+#include "j1Scene.h"
 
 #include <iostream> 
 #include <sstream> 

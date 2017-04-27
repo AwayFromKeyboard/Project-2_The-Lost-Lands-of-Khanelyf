@@ -61,13 +61,15 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(player);
 	AddModule(questmanager);
-	AddModule(minimap);
 
 	// Scene
 	AddModule(scene);
 
 	// Gui
 	AddModule(gui);
+
+	// Minimap
+	AddModule(minimap);
 
 	// render last to swap buffer
 	AddModule(render);

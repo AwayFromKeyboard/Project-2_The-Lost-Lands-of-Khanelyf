@@ -26,7 +26,7 @@ bool Minimap::Start()
 	buildings = blue;
 
 
-	rect = { App->win->_GetWindowSize().x - 100, 670, 271, 138 };
+	rect = { App->win->_GetWindowSize().x - 271,  App->win->_GetWindowSize().y - 138, 271, 138 };
 	scale = { 1, 1 };
 
 	return ret;
@@ -36,11 +36,9 @@ bool Minimap::PreUpdate()
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		if ((*it)->type == entity_type::player) {
-			App->scene->LayerDrawQuad({ WorldToMinimap((*it)->pos2).x,  WorldToMinimap((*it)->pos2).y, 20, 20 }, allies.r, allies.g, allies.b, allies.a, true, false, 3);
-		}
-	}
+
+	
+
 
 	return ret;
 }
@@ -55,6 +53,12 @@ bool Minimap::Update(float dt)
 bool Minimap::PostUpdate()
 {
 	bool ret = true;
+
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::player) {
+			App->render->DrawQuad({ WorldToMinimap((*it)->pos2).x,  WorldToMinimap((*it)->pos2).y, 2, 2 }, allies.r, allies.g, allies.b, allies.a, true, false);
+		}
+	}
 
 	return ret;
 }
