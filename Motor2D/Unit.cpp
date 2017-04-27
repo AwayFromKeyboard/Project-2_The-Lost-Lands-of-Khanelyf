@@ -37,6 +37,7 @@ bool Unit::Start()
 	bool ret = true;
 	
 	AI_timer.Start();
+	life_up_timer.Start();
 	max_life = life;
 	
 	return ret;
@@ -77,9 +78,16 @@ bool Unit::PreUpdate()
 bool Unit::Update(float dt)
 {
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
-	
+
 	switch (state) {
 	case entity_state::entity_idle:
+
+		if (life < max_life) {
+			if (life_up_timer.ReadSec() >= 1) {
+				life += 1;
+				life_up_timer.Start();
+			}
+		}
 		CheckDirection();
 		CheckSurroundings();
 		break;
