@@ -1,4 +1,7 @@
 #include "Minimap.h"
+#include "j1Scene.h"
+#include "j1Scene.h"
+#include "Entity.h"
 
 Minimap::Minimap()
 {
@@ -26,6 +29,12 @@ bool Minimap::Start()
 bool Minimap::PreUpdate()
 {
 	bool ret = true;
+
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::player) {
+			App->scene->LayerDrawQuad({ 50, 50, 50, 50 }, allies.r, allies.g, allies.b, allies.a, true, false, 5);
+		}
+	}
 
 	return ret;
 }
