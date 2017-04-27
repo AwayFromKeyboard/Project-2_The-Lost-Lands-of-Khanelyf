@@ -103,6 +103,9 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="DialogueManager.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Engine\4. Entities</Filter>
     </ClCompile>
@@ -229,6 +232,9 @@
     <ClInclude Include="Barracks.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="DialogueManager.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -245,6 +251,9 @@
     </Xml>
     <Xml Include="..\Game\Buildings.xml">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </Xml>
+    <Xml Include="..\Game\Dialogues.xml">
+      <Filter>Engine\5. Tools</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>

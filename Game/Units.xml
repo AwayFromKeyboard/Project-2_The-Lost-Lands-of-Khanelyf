@@ -103,7 +103,7 @@
     <texture value="textures/Hero.png"/>
     <cost value="0"/>
     <human_cost value="0"/>
-    <speed value="2"/>
+    <speed value="5"/>
     <damage value="20"/>
     <armor value="10"/>
     <pierce_armor value="0"/>
