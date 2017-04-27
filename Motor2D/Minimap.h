@@ -1,7 +1,9 @@
 #ifndef _MINIMAP_H_
 #define _MINIMAP_H_
 
+#include "SDL/include/SDL.h"
 #include "j1Module.h"
+#include "Point.h"
 
 struct QuadColor {
 	QuadColor() {}
@@ -25,10 +27,16 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	iPoint WorldToMinimap(const iPoint & world_pos) const;
+
 private:
 	QuadColor enemies; // red
 	QuadColor allies; // green 
 	QuadColor buildings; // blue
+
+public:
+	SDL_Rect rect = NULLRECT;
+	iPoint scale = NULLPOINT;
 };
 
 #endif // !_MINIMAP_H_
