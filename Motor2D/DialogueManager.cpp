@@ -13,6 +13,13 @@ bool DialogueManager::Awake(pugi::xml_node & Dialogues)
 	bool ret = true;
 
 	LOG("Loading DialogManager data");
+
+	pugi::xml_document doc;
+	pugi::xml_node node;
+	App->LoadXML("Dialogues.xml", doc);
+
+	
+	
 	folder = Dialogues.child("npcs").attribute("folder").as_string();
 	
 	char* buf;
