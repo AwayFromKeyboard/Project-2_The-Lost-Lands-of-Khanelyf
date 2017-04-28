@@ -76,6 +76,10 @@ bool j1Entity::PostUpdate()
 		}
 	}
 
+	//for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++) {
+	//	if ((*it)->pos)
+	//}
+
 	App->collisions->DebugDraw();
 
 	return ret;
