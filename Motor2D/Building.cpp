@@ -27,6 +27,8 @@ bool Building::Start()
 {
 	bool ret = true;
 
+	layer = 5;
+
 	return ret;
 }
 
@@ -58,7 +60,7 @@ bool Building::Draw(float dt)
 	bool ret = true;
 
 	if (state == entity_idle)
-		App->scene->LayerBlit(6, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
+		App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
 
 	return ret;
 }

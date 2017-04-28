@@ -86,6 +86,8 @@ public:
 	Animator* animator;
 
 	bool show_life_bar = true;
+
+	int layer = 0;
 protected:
 	bool selected = false;
 };
