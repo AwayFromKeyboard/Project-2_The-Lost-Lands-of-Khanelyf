@@ -51,6 +51,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ShowIncludes>false</ShowIncludes>
+      <AdditionalIncludeDirectories>C:\Users\simonsb\Documents\GitHub\Project-2_The-Lost-Lands-of-Khanelyf\Game\Brofiler-1.1.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,6 +81,8 @@
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="BasicBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="DialogueManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -118,6 +121,7 @@
     <ClInclude Include="BasicBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
@@ -160,6 +164,7 @@
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\Dialogues.xml" />
     <Xml Include="..\Game\test.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
