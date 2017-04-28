@@ -7,6 +7,7 @@
 #include "j1Input.h"
 #include "j1Collisions.h"
 #include "Barracks.h"
+#include "BasicBuilding.h"
 #include "j1Gui.h"
 #include "Player.h"
 
@@ -142,6 +143,32 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 
 	return ret;
 }
+
+Entity * j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
+{
+	Entity* ret = nullptr;
+
+	switch (name)
+	{
+	case basic_building:
+		ret = new BasicBuilding(type, building_rect_number);
+		break;
+	default:
+		break;
+	}
+
+	if (ret != nullptr)
+	{
+		ret->LoadEntity(pos);
+		ret->Start();
+		entity_list.push_back(ret);
+	}
+	else
+		LOG("Entity creation returned nullptr");
+
+	return ret;
+}
+
 void j1Entity::DeleteEntity(Entity* entity)
 {
 	entity->CleanUp();

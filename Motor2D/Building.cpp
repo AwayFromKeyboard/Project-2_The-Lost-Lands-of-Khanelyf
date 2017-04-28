@@ -95,8 +95,11 @@ bool Building::Save(pugi::xml_node &) const
 
 void Building::OnColl(Entity * en1, Entity * en2)
 {
+
 	if (en1 == this) {
-		if (position.y > en2->position.y) {
+		iPoint position_map = App->map->WorldToMapPoint(position);
+		iPoint en2_position_map = App->map->WorldToMapPoint(en2->position);
+		if (position_map.y > en2_position_map.y && position_map.x < en2_position_map.x) {
 			layer = 6;
 			en2->layer = 5;
 		}
