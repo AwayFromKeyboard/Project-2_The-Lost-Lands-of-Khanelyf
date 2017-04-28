@@ -76,10 +76,6 @@ bool j1Entity::PostUpdate()
 		}
 	}
 
-	//for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++) {
-	//	if ((*it)->pos)
-	//}
-
 	App->collisions->DebugDraw();
 
 	return ret;
@@ -111,7 +107,7 @@ bool j1Entity::CleanUp()
 void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		(*it)->OnColl(col1, col2);
+		(*it)->OnColl(*it, *it);
 }
 
 Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
@@ -146,7 +142,6 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 
 	return ret;
 }
-
 void j1Entity::DeleteEntity(Entity* entity)
 {
 	entity->CleanUp();

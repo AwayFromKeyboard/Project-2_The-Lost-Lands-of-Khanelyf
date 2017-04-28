@@ -60,7 +60,7 @@ bool Building::Draw(float dt)
 	bool ret = true;
 
 	if (state == entity_idle)
-		App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
+		App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
 
 	return ret;
 }
@@ -93,8 +93,19 @@ bool Building::Save(pugi::xml_node &) const
 	return true;
 }
 
-void Building::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Building::OnColl(Entity * en1, Entity * en2)
 {
+	if (en1 == this) {
+		if (position.y > en2->position.y) {
+			layer = 6;
+			en2->layer = 5;
+		}
+		else {
+			layer = 5;
+			en2->layer = 6;
+		}
+	}
+
 }
 
 Collider * Building::GetCollider()

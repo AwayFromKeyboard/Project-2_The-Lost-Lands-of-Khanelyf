@@ -14,6 +14,7 @@ enum collider_type
 {
 	COLLIDER_NONE = -1,
 	COLLIDER_UNIT,
+	COLLIDER_BUILDING,
 
 	COLLIDER_MAX
 };
