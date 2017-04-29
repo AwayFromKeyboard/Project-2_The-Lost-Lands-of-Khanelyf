@@ -460,6 +460,8 @@ void Player::Whirlwind(int damage, int range)
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 				if (found != nullptr && found->life > 0 && found->type == enemy) {
 					found->life -= damage;
+					if (found->life <= 0)
+						found->state = unit_death;
 				}
 				else {
 					bool is_visited = false;
