@@ -80,6 +80,8 @@ bool Player::Start()
 
 	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
+	//Battlecry
+
 	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
 	battlecry_ability->AddImage("standard", { 645, 60, 25, 25 });
 	battlecry_ability->SetImage("standard");
@@ -87,6 +89,16 @@ bool Player::Start()
 
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
+
+	//Whirlwind
+
+	whirlwind_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12), 60, 60);
+	whirlwind_ability->AddImage("standard", { 645, 60, 25, 25 });
+	whirlwind_ability->SetImage("standard");
+	whirlwind_ability->AddImage("clicked", { 670, 60, 25, 25 });
+
+	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
+	whirlwind_cd->SetEnabled(false);
 
 	return ret;
 }
@@ -144,20 +156,22 @@ bool Player::PreUpdate()
 	}
 
 	//player abilities
+
+	//Battlecry
+
 	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
 		draw_battlecry_range = true;
+		CheckAbilityRange(BATTLECRY_RANGE);
 	}
 	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up) {
 		draw_battlecry_range = false;
 	}
-
 	if ((battlecry_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
 		battlecry_ability->SetImage("clicked");
 		Battlecry(BATTLECRY_BUFF, BATTLECRY_RANGE);
 		battlecry_cd->SetEnabled(true);
 		battlecry_timer.Start();
 	}
-	
 	if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
 		battlecry_cd->SetEnabled(false);
 		battlecry_ability->SetImage("standard");
@@ -166,7 +180,25 @@ bool Player::PreUpdate()
 		StopBuff(-BATTLECRY_BUFF);
 	}
 
-	CheckBattlecryRange(BATTLECRY_RANGE);
+	// Whirlwind
+
+	if (whirlwind_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+		draw_whirlwind_range = true;
+		CheckAbilityRange(WHIRLWIND_RANGE);
+	}
+	else if (whirlwind_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+		draw_whirlwind_range = false;
+	}
+	if ((whirlwind_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+		whirlwind_ability->SetImage("clicked");
+		Whirlwind(WHIRLWIND_DAMAGE, WHIRLWIND_RANGE);
+		whirlwind_cd->SetEnabled(true);
+		whirlwind_timer.Start();
+	}
+	if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
+		whirlwind_cd->SetEnabled(false);
+		whirlwind_ability->SetImage("standard");
+	}
 
 	return ret;
 }
@@ -175,7 +207,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();
@@ -266,6 +298,10 @@ bool Player::PostUpdate()
 		DrawCD(1); // 1 == Battlecry
 	}
 
+	if (whirlwind_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
+		DrawCD(2); // 2 == Whirlwind
+	}
+
 	return ret;
 }
 
@@ -352,7 +388,6 @@ Hero* Player::GetHero()
 }
 
 void Player::Battlecry(int modifier, int range) {
-	battlecry_state = true;
 	buffed_list.clear();
 	std::list<iPoint> frontier;
 	std::list<iPoint> visited;
@@ -404,9 +439,49 @@ void Player::BattlecryModifier(int damage_buff)
 	}
 }
 
-void Player::CheckBattlecryRange(int range)
+void Player::Whirlwind(int damage, int range)
 {
-	if (draw_battlecry_range == true)
+	std::list<iPoint> frontier;
+	std::list<iPoint> visited;
+
+	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+	for (int i = 0; i < range; ++i) {
+		for (int j = frontier.size(); j > 0; j--) {
+			iPoint neighbors[4];
+			neighbors[0] = frontier.front() + iPoint(1, 0);
+			neighbors[1] = frontier.front() + iPoint(-1, 0);
+			neighbors[2] = frontier.front() + iPoint(0, 1);
+			neighbors[3] = frontier.front() + iPoint(0, -1);
+			frontier.pop_front();
+
+			for (int k = 0; k < 4; k++) {
+				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+				if (found != nullptr && found->life > 0 && found->type == enemy) {
+					found->life -= damage;
+				}
+				else {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						visited.push_back(neighbors[k]);
+					}
+				}
+			}
+		}
+	}
+}
+
+void Player::CheckAbilityRange(int range)
+{
+	if (draw_battlecry_range == true || draw_whirlwind_range == true)
 	{
 		std::list<iPoint> frontier;
 		std::list<iPoint> visited;
@@ -456,7 +531,6 @@ void Player::DrawBuff()
 void Player::StopBuff(int modifier)
 {
 	draw_buff = false;
-	battlecry_state = false;
 	BattlecryModifier(modifier);
 
 	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
@@ -476,11 +550,14 @@ void Player::DrawCD(int ability_number)
 		battlecry_cd->SetText(txt);
 	}
 
-	else if (ability_number == 2) {
-
+	if (ability_number == 2) {
+		int timer = COOLDOWN_WHIRLWIND - whirlwind_timer.ReadSec() + 1;
+		oss << timer;
+		std::string txt = oss.str();
+		whirlwind_cd->SetText(txt);
 	}
 
-	else if (ability_number == 3) {
+	if (ability_number == 3) {
 
 	}
 }

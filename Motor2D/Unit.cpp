@@ -72,6 +72,9 @@ bool Unit::PreUpdate()
 bool Unit::Update(float dt)
 {
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+
+	//if (life <= 0)
+	//	state = unit_death;
 	
 	switch (state) {
 	case unit_state::unit_idle:
