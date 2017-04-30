@@ -534,6 +534,7 @@ void Player::Charge(int damage, int range) {
 		for (int k = 0; k < 8; k++) {
 
 			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+			if (found != nullptr && found->life > 0 && found->type == enemy) { // need another condition (if the mouse is over the found enemy)
 				//GetHero()->speed += 5;
 				//GetHero()->damage += CHARGE_DAMAGE;
 				//Hero needs to go to (neighbors[k].x, neighbors[k].y) and hit the enemy if he is at range (this should be done automaticly after the pathfinding)
