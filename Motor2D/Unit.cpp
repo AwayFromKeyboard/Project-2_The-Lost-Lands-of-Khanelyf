@@ -49,7 +49,7 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy) 
+	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy && to_pick_object == nullptr) 
 	{
 		if (path.size() > 0)
 		{
@@ -190,7 +190,7 @@ bool Unit::Update(float dt)
 			has_moved = true;
 			App->pathfinding->DeletePath(path_id);
 			path.clear();
-			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_unit->pos2));
+			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(to_pick_object->position));
 		}
 		else {
 			if (path.size() > 0)
