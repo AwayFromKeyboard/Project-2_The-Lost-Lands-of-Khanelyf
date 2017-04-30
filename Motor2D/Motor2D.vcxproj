@@ -105,6 +105,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Provisions.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="QuestManager.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
     <ClInclude Include="Parallax.h" />
+    <ClInclude Include="Provisions.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="QuadTree.h" />
@@ -165,10 +167,10 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\Dialogues.xml" />
-    <Xml Include="..\Game\test.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="Objects.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />

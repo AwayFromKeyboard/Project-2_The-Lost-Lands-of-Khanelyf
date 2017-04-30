@@ -14,6 +14,7 @@ enum entity_name
 	barbarian,
 	swordsman,
 	barracks,
+	provisions,
 	test
 };
 

@@ -9,6 +9,7 @@
 #include "Barracks.h"
 #include "j1Gui.h"
 #include "Player.h"
+#include "Provisions.h"
 
 j1Entity::j1Entity()
 {
@@ -127,6 +128,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case barracks:
 		ret = new Barracks(type);
+	case provisions:
+		ret = new Provisions(type);
 	default:
 		break;
 	}

@@ -19,6 +19,7 @@
 #include "QuestManager.h"
 #include "Barracks.h"
 #include "Building.h"
+#include "Object.h"
 
 SceneTest::SceneTest()
 {
@@ -165,6 +166,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
 		create_barrack = false;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_J) == key_down)
+	{
+		Object* object = (Object*)App->entity->CreateEntity(provisions, entity_type::object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 }
 
