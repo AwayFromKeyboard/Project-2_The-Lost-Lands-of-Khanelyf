@@ -16,6 +16,10 @@
 #define WHIRLWIND_DAMAGE 40
 #define WHIRLWIND_RANGE 2
 
+#define COOLDOWN_CHARGE 5
+#define CHARGE_DAMAGE 40
+#define CHARGE_RANGE 5
+
 class Unit;
 class UI_Window;
 class UI_Text;
@@ -36,10 +40,13 @@ public:
 	void Battlecry(int modifier, int range);
 	void BattlecryModifier(int damage_buff);
 	void CheckAbilityRange(int range);
+	void CheckStraightAbilityRange(int range);
 	void DrawBuff();
 	void StopBuff(int modifier);
 
 	void Whirlwind(int damage, int range);
+
+	void Charge(int damage, int range);
 
 	void DrawCD(int ability_number);
 
@@ -52,6 +59,7 @@ private:
 
 	UI_Text* battlecry_cd = nullptr;
 	UI_Text* whirlwind_cd = nullptr;
+	UI_Text* charge_cd = nullptr;
 
 	UI_Window* levelup_window = nullptr;
 	UI_Button* life_button = nullptr;
@@ -84,6 +92,7 @@ private:
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;
 	UI_Button* whirlwind_ability = nullptr;
+	UI_Button* charge_ability = nullptr;
 
 public:
 	bool create_barbarian = true;
@@ -92,11 +101,13 @@ public:
 	//player abilities
 	bool draw_battlecry_range = false;
 	bool draw_whirlwind_range = false;
+	bool draw_charge_range = false;
 	bool draw_buff = false;
 
 private:
 	j1Timer battlecry_timer;
 	j1Timer whirlwind_timer;
+	j1Timer charge_timer;
 };
 
 

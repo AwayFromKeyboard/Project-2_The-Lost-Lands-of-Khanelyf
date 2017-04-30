@@ -100,6 +100,16 @@ bool Player::Start()
 	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 	whirlwind_cd->SetEnabled(false);
 
+	//Charge
+
+	charge_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18), 60, 60);
+	charge_ability->AddImage("standard", { 645, 60, 25, 25 });
+	charge_ability->SetImage("standard");
+	charge_ability->AddImage("clicked", { 670, 60, 25, 25 });
+
+	charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
+	charge_cd->SetEnabled(false);
+
 	return ret;
 }
 
@@ -200,6 +210,23 @@ bool Player::PreUpdate()
 		whirlwind_ability->SetImage("standard");
 	}
 
+	//Charge
+
+	if (charge_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+		draw_charge_range = true;
+		CheckStraightAbilityRange(CHARGE_RANGE);
+	}
+	else if (charge_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_V) == key_up) {
+		draw_charge_range = false;
+	}
+	if ((charge_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+		Charge(CHARGE_DAMAGE, CHARGE_RANGE);
+	}
+	if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+		charge_cd->SetEnabled(false);
+		charge_ability->SetImage("standard");
+	}
+
 	return ret;
 }
 
@@ -207,7 +234,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();
@@ -300,6 +327,10 @@ bool Player::PostUpdate()
 
 	if (whirlwind_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
 		DrawCD(2); // 2 == Whirlwind
+	}
+
+	if (charge_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
+		DrawCD(3); // 3 == Charge
 	}
 
 	return ret;
@@ -481,6 +512,58 @@ void Player::Whirlwind(int damage, int range)
 	}
 }
 
+void Player::Charge(int damage, int range) {
+
+	std::list<iPoint> visited;
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
+
+	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+	for (int i = 0; i < range; ++i) {
+		iPoint neighbors[8];
+		neighbors[0] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 0);
+		neighbors[1] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 0);
+		neighbors[2] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(0, 1 + i);
+		neighbors[3] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(0, -1 - i);
+		neighbors[4] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 1 + i);
+		neighbors[5] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, -1 - i);
+		neighbors[6] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 1 + i);
+		neighbors[7] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, -1 - i);
+
+		for (int k = 0; k < 8; k++) {
+
+			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+			if (found != nullptr && found->life > 0 && found->type == enemy) { // need another condition (if the mouse is over the found enemy)
+				//GetHero()->speed += 5;
+				//GetHero()->damage += CHARGE_DAMAGE;
+				//Hero needs to go to (neighbors[k].x, neighbors[k].y) and hit the enemy if he is at range (this should be done automaticly after the pathfinding)
+
+				//After hitting the enemy or finishing the movement, the buffs should be removed.
+
+				charge_ability->SetImage("clicked");
+				charge_cd->SetEnabled(true);
+				charge_timer.Start();
+
+			}
+			else
+			{
+				bool is_visited = false;
+				for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+					if (neighbors[k] == *it) {
+						is_visited = true;
+						break;
+					}
+				}
+				if (!is_visited) {
+					visited.push_back(neighbors[k]);
+				}
+			}
+		}
+	}
+
+}
+
 void Player::CheckAbilityRange(int range)
 {
 	if (draw_battlecry_range == true || draw_whirlwind_range == true)
@@ -512,6 +595,44 @@ void Player::CheckAbilityRange(int range)
 						frontier.push_back(neighbors[k]);
 						visited.push_back(neighbors[k]);
 					}
+				}
+			}
+		}
+		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+		}
+	}
+}
+
+void Player::CheckStraightAbilityRange(int range)
+{
+	if (draw_battlecry_range == true || draw_charge_range == true)
+	{
+		std::list<iPoint> visited;
+
+		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
+
+		for (int i = 0; i < range; ++i) {
+			iPoint neighbors[8];
+			neighbors[0] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 0);
+			neighbors[1] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 0);
+			neighbors[2] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(0, 1 + i);
+			neighbors[3] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(0, -1 - i);
+			neighbors[4] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 1 + i);
+			neighbors[5] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, -1 - i);
+			neighbors[6] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 1 + i);
+			neighbors[7] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, -1 - i);
+
+			for (int k = 0; k < 8; k++) {
+				bool is_visited = false;
+				for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+					if (neighbors[k] == *it) {
+						is_visited = true;
+						break;
+					}
+				}
+				if (!is_visited) {
+					visited.push_back(neighbors[k]);
 				}
 			}
 		}
@@ -560,6 +681,9 @@ void Player::DrawCD(int ability_number)
 	}
 
 	if (ability_number == 3) {
-
+		int timer = COOLDOWN_CHARGE - charge_timer.ReadSec() + 1;
+		oss << timer;
+		std::string txt = oss.str();
+		charge_cd->SetText(txt);
 	}
 }
