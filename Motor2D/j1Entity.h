@@ -24,7 +24,8 @@ enum entity_type
 	ally,
 	npc,
 	enemy,
-	building
+	building,
+	object,
 };
 
 class Entity;

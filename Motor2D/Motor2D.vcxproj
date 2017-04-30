@@ -102,6 +102,7 @@
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="j1Module.h" />
     <ClInclude Include="MemLeaks.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="j1Render.h" />

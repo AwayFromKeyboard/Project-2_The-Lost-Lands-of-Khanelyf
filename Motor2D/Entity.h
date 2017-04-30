@@ -15,6 +15,7 @@ enum entity_state {
 	entity_attack,
 	entity_death,
 	entity_decompose,
+	entity_carried,
 	entity_null
 };
 
