@@ -178,7 +178,7 @@ bool Player::PreUpdate()
 	}
 	if ((battlecry_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
 		battlecry_ability->SetImage("clicked");
-		Battlecry(BATTLECRY_BUFF, BATTLECRY_RANGE);
+		Battlecry();
 		battlecry_cd->SetEnabled(true);
 		battlecry_timer.Start();
 	}
@@ -201,7 +201,7 @@ bool Player::PreUpdate()
 	}
 	if ((whirlwind_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
 		whirlwind_ability->SetImage("clicked");
-		Whirlwind(WHIRLWIND_DAMAGE, WHIRLWIND_RANGE);
+		Whirlwind();
 		whirlwind_cd->SetEnabled(true);
 		whirlwind_timer.Start();
 	}
@@ -220,8 +220,21 @@ bool Player::PreUpdate()
 		draw_charge_range = false;
 	}
 	if ((charge_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
-		Charge(CHARGE_DAMAGE, CHARGE_RANGE);
+		Charge();
 	}
+
+	if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+	{
+		GetHero()->speed -= CHARGE_SPEED;
+		charge_speed_buff = false;
+	}
+
+	if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+	{
+		GetHero()->damage -= CHARGE_DAMAGE;
+		charge_damage_buff = false;
+	}
+
 	if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
 		charge_cd->SetEnabled(false);
 		charge_ability->SetImage("standard");
@@ -418,7 +431,7 @@ Hero* Player::GetHero()
 	return hero;
 }
 
-void Player::Battlecry(int modifier, int range) {
+void Player::Battlecry() {
 	buffed_list.clear();
 	std::list<iPoint> frontier;
 	std::list<iPoint> visited;
@@ -426,7 +439,7 @@ void Player::Battlecry(int modifier, int range) {
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < range; ++i) {
+	for (int i = 0; i < BATTLECRY_RANGE; ++i) {
 		for (int j = frontier.size(); j > 0; j--) {
 			iPoint neighbors[4];
 			neighbors[0] = frontier.front() + iPoint(1, 0);
@@ -458,7 +471,7 @@ void Player::Battlecry(int modifier, int range) {
 		}
 	}
 
-	BattlecryModifier(modifier);
+	BattlecryModifier(BATTLECRY_BUFF);
 	draw_buff = true;
 }
 
@@ -470,7 +483,7 @@ void Player::BattlecryModifier(int damage_buff)
 	}
 }
 
-void Player::Whirlwind(int damage, int range)
+void Player::Whirlwind()
 {
 	std::list<iPoint> frontier;
 	std::list<iPoint> visited;
@@ -478,7 +491,7 @@ void Player::Whirlwind(int damage, int range)
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < range; ++i) {
+	for (int i = 0; i < WHIRLWIND_RANGE; ++i) {
 		for (int j = frontier.size(); j > 0; j--) {
 			iPoint neighbors[4];
 			neighbors[0] = frontier.front() + iPoint(1, 0);
@@ -490,7 +503,7 @@ void Player::Whirlwind(int damage, int range)
 			for (int k = 0; k < 4; k++) {
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 				if (found != nullptr && found->life > 0 && found->type == enemy) {
-					found->life -= damage;
+					found->life -= WHIRLWIND_DAMAGE;
 					if (found->life <= 0)
 						found->state = unit_death;
 				}
@@ -512,15 +525,16 @@ void Player::Whirlwind(int damage, int range)
 	}
 }
 
-void Player::Charge(int damage, int range) {
-
+void Player::Charge()
+{
 	std::list<iPoint> visited;
 	iPoint mouse;
+	//Collider* col;  //Using this collider and the lines commented below the ability will trigger if the player clicks on the collision of the enemy instead of the tile
 	App->input->GetMouseWorld(mouse.x, mouse.y);
 
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < range; ++i) {
+	for (int i = 0; i < CHARGE_RANGE; ++i) {
 		iPoint neighbors[8];
 		neighbors[0] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 0);
 		neighbors[1] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 0);
@@ -534,12 +548,44 @@ void Player::Charge(int damage, int range) {
 		for (int k = 0; k < 8; k++) {
 
 			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-			if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map) {
-				//GetHero()->speed += 5;
-				//GetHero()->damage += CHARGE_DAMAGE;
-				//Hero needs to go to (neighbors[k].x, neighbors[k].y) and hit the enemy if he is at range (this should be done automaticly after the pathfinding)
 
-				//After hitting the enemy or finishing the movement, the buffs should be removed.
+			//if (found != nullptr)
+			//	col = found->GetCollider();
+			//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
+
+			if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
+			{
+				GetHero()->speed += CHARGE_SPEED;
+				GetHero()->damage += CHARGE_DAMAGE;
+				charge_speed_buff = true;
+				charge_damage_buff = true;
+
+				switch (k) {
+				case 0:
+					MoveToTile(found->position_map + iPoint(-1, 0));
+					break;
+				case 1:
+					MoveToTile(found->position_map + iPoint(1, 0));
+					break;
+				case 2:
+					MoveToTile(found->position_map + iPoint(0, -1));
+					break;
+				case 3:
+					MoveToTile(found->position_map + iPoint(0, 1));
+					break;
+				case 4:
+					MoveToTile(found->position_map + iPoint(-1, -1));
+					break;
+				case 5:
+					MoveToTile(found->position_map + iPoint(-1, 1));
+					break;
+				case 6:
+					MoveToTile(found->position_map + iPoint(1, -1));
+					break;
+				case 7:
+					MoveToTile(found->position_map + iPoint(1, 1));
+					break;
+				}
 
 				charge_ability->SetImage("clicked");
 				charge_cd->SetEnabled(true);

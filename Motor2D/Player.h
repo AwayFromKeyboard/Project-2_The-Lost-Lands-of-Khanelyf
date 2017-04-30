@@ -8,17 +8,18 @@
 #include "Point.h"
 
 #define DURATION_BATTLECRY 5
-#define COOLDOWN_BATTLECRY 10
+#define COOLDOWN_BATTLECRY 30
 #define BATTLECRY_BUFF 5
 #define BATTLECRY_RANGE 10
 
-#define COOLDOWN_WHIRLWIND 5
+#define COOLDOWN_WHIRLWIND 8
 #define WHIRLWIND_DAMAGE 40
 #define WHIRLWIND_RANGE 2
 
-#define COOLDOWN_CHARGE 5
+#define COOLDOWN_CHARGE 12
 #define CHARGE_DAMAGE 40
 #define CHARGE_RANGE 5
+#define CHARGE_SPEED 5
 
 class Unit;
 class UI_Window;
@@ -37,16 +38,16 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void Battlecry(int modifier, int range);
+	void Battlecry();
 	void BattlecryModifier(int damage_buff);
 	void CheckAbilityRange(int range);
 	void CheckStraightAbilityRange(int range);
 	void DrawBuff();
 	void StopBuff(int modifier);
 
-	void Whirlwind(int damage, int range);
+	void Whirlwind();
 
-	void Charge(int damage, int range);
+	void Charge();
 
 	void DrawCD(int ability_number);
 
@@ -103,6 +104,8 @@ public:
 	bool draw_whirlwind_range = false;
 	bool draw_charge_range = false;
 	bool draw_buff = false;
+	bool charge_speed_buff = false;
+	bool charge_damage_buff = false;
 
 private:
 	j1Timer battlecry_timer;
