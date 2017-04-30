@@ -251,6 +251,13 @@ bool Unit::Draw(float dt)
 		else
 			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
+	case entity_pick_object:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x - flip_m_offset, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, entity_texture, { pos2.x - offset.x, pos2.y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
 	}
 
 	return ret;
