@@ -38,11 +38,14 @@ public:
 public:
 
 	iPoint offset = NULLPOINT;
-
 	SDL_Rect tex_rect = NULLRECT;
 
 public:
-	bool is_selected = false;
+	bool is_carried = false;
+	bool pickable = false;
+
+private:
+	Collider* collision_aux = nullptr;
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include "SceneTest.h"
 #include "j1Scene.h"
 #include "j1Window.h"
+#include "Object.h"
 
 Player::Player()
 {
@@ -87,6 +88,14 @@ bool Player::Start()
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
 
+	//drop object interface
+
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
+	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	item_drop->SetImage("standard");
+	item_drop->SetEnabled(false);
+
 	return ret;
 }
 
@@ -141,14 +150,15 @@ bool Player::PreUpdate()
 	}
 
 	//player abilities
-	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+	
+	if (battlecry_ability->MouseEnter() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && GetHero()->is_holding_object == false) {
 		draw_battlecry_range = true;
 	}
-	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+	else if (battlecry_ability->MouseOut() || App->input->GetKey(SDL_SCANCODE_X) == key_up && GetHero()->is_holding_object == false) {
 		draw_battlecry_range = false;
 	}
 
-	if ((battlecry_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+	if ((battlecry_ability->MouseClickEnterLeft() || App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && GetHero()->is_holding_object == false) {
 		battlecry_ability->SetImage("clicked");
 		Battlecry(BATTLECRY_BUFF, BATTLECRY_RANGE);
 		battlecry_cd->SetEnabled(true);
@@ -165,6 +175,13 @@ bool Player::PreUpdate()
 
 	CheckBattlecryRange(BATTLECRY_RANGE);
 
+	//Object interface
+
+	if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+	{
+		GetHero()->DropObject();
+	}
+
 	return ret;
 }
 
@@ -172,7 +189,8 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat)
+	{
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();
@@ -194,7 +212,6 @@ bool Player::Update(float dt)
 				}		
 			}
 		}
-
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
 		iPoint mouse;
@@ -205,7 +222,8 @@ bool Player::Update(float dt)
 		p = App->map->WorldToMap(p.x, p.y);
 		bool mouse_over_entity = false;
 
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
 			Collider* unit = (*it)->GetCollider();
 
 			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
@@ -228,6 +246,10 @@ bool Player::Update(float dt)
 					mouse_over_entity = true;
 					break;
 				case entity_type::building:
+					mouse_over_entity = true;
+					break;
+				case entity_type::object:
+					SetPickingObject((Object*)*it);
 					mouse_over_entity = true;
 					break;
 				default:
@@ -346,6 +368,16 @@ void Player::UpdateAttributes() {
 				hero->levelup_points -= 1;
 				hero->pierce_armor += 1;
 			}
+		}
+	}
+}
+
+void Player::SetPickingObject(Object* object)
+{
+	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+		if ((*it)->type == player && (*it)->is_holding_object == false) {
+			(*it)->SetPickObject(object);
+			(*it)->state = entity_state::entity_pick_object;
 		}
 	}
 }

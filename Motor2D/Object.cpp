@@ -6,6 +6,8 @@
 #include "SceneTest.h"
 #include "Scene.h"
 #include "Functions.h"
+#include "Player.h"
+#include "Hero.h"
 
 Object::Object()
 {
@@ -38,12 +40,22 @@ bool Object::PreUpdate()
 
 bool Object::Update(float dt)
 {
-	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
 	switch (state) {
 
-	case entity_carried:
-		
+	case entity_idle:
+		collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+		break;
+
+	case object_picked:
+		collision_aux = collision;
+		collision->rect = { 0, 0, 0, 0 };
+		break;
+
+	case object_dropped:
+		collision = collision_aux;
+		position = App->player->GetHero()->position;
+		state = entity_idle;
 		break;
 	}
 

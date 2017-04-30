@@ -17,6 +17,7 @@ class UI_Window;
 class UI_Text;
 class UI_Button;
 class Hero;
+class Object;
 
 class Player : public j1Module {
 public:
@@ -29,6 +30,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	//Abilities
 	void Battlecry(int modifier, int range);
 	void BattlecryModifier(int damage_buff);
 	void CheckBattlecryRange(int range);
@@ -57,6 +59,7 @@ private:
 	void MoveToTile(iPoint tile);
 	void SetAttackingEnemy(Unit* enemy);
 	void UpdateAttributes();
+	void SetPickingObject(Object* object);
 public:
 	void SetHero(Hero* hero);
 	Hero* GetHero();
@@ -65,7 +68,10 @@ public:
 public:
 	UI_Window* barracks_ui_window = nullptr;
 	UI_Window* player_abilities = false;
+	UI_Window* inventory = nullptr;
 	iPoint barracks_position;
+
+	UI_Button* item_drop = nullptr;
 
 private:
 	UI_Button* barbarian_img = nullptr;

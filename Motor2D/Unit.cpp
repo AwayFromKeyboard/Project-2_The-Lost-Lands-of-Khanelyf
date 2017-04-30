@@ -15,6 +15,8 @@
 #include "j1Audio.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "Object.h"
+#include "Player.h"
 
 Unit::Unit()
 {
@@ -173,6 +175,26 @@ bool Unit::Update(float dt)
 		CheckDecomposeDirection();
 			if (current_animation->Finished()) {
 				to_delete = true;
+		}
+		break;
+
+	case entity_state::entity_pick_object:
+		if (IsInRange(to_pick_object)) {
+			App->pathfinding->DeletePath(path_id);
+			path.clear();
+			state = entity_state::entity_idle;
+			PickObject();
+			has_moved = false;
+		}
+		else if (!has_moved) {
+			has_moved = true;
+			App->pathfinding->DeletePath(path_id);
+			path.clear();
+			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_unit->pos2));
+		}
+		else {
+			if (path.size() > 0)
+				FollowPath(dt);
 		}
 		break;
 	}
@@ -768,6 +790,27 @@ void Unit::CheckDecomposeDirection()
 			flip = false;
 		}
 	}
+}
+
+void Unit::SetPickObject(Object* object)
+{
+	to_pick_object = object;
+}
+
+void Unit::PickObject()
+{
+	App->player->item_drop->SetEnabled(true);
+	to_pick_object->state = object_picked;
+	speed -= 1;
+	is_holding_object = true;
+}
+
+void Unit::DropObject()
+{
+	App->player->item_drop->SetEnabled(false);
+	to_pick_object->state = object_dropped;
+	speed += 1;
+	is_holding_object = false;
 }
 
 bool Unit::IsInsideCircle(int x, int y)
