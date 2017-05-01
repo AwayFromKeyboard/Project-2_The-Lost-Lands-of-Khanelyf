@@ -125,7 +125,7 @@ bool Unit::Update(float dt)
 		break;
 
 	case entity_state::entity_attack:
-		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
+		if (attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) {
 			attacked_unit == nullptr;
 			state = entity_idle;
 		}
