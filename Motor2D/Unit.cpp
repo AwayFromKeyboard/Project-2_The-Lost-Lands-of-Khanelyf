@@ -49,7 +49,7 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy && to_pick_object == nullptr) 
+	if (attacked_unit == nullptr && life > 0 && state != entity_state::entity_move_to_enemy && state != entity_state::entity_pick_object) 
 	{
 		if (path.size() > 0)
 		{
@@ -837,6 +837,7 @@ void Unit::DropObject()
 	to_pick_object->state = object_dropped;
 	speed += 1;
 	is_holding_object = false;
+	to_pick_object = nullptr;
 }
 
 bool Unit::IsInsideCircle(int x, int y)
