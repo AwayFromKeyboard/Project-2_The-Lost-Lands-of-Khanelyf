@@ -179,7 +179,7 @@ bool Unit::Update(float dt)
 		break;
 
 	case entity_state::entity_pick_object:
-		if (IsInRange(to_pick_object)) {
+		if (IsInObjectRange(to_pick_object)) {
 			App->pathfinding->DeletePath(path_id);
 			path.clear();
 			state = entity_state::entity_idle;
@@ -577,6 +577,25 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	if (attacked_entity == nullptr) return false;
 
 	iPoint attacked_pos = attacked_entity->pos2;
+	iPoint pos = pos2;
+	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
+	pos = App->map->WorldToMapPoint(pos);
+
+	direction.x = attacked_pos.x - pos.x;
+	direction.y = attacked_pos.y - pos.y;
+
+	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
+
+	return ret;
+}
+
+bool Unit::IsInObjectRange(Entity* object_to_pick)
+{
+	bool ret = true;
+
+	if (object_to_pick == nullptr) return false;
+
+	iPoint attacked_pos = object_to_pick->position;
 	iPoint pos = pos2;
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
 	pos = App->map->WorldToMapPoint(pos);

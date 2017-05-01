@@ -48,12 +48,15 @@ bool Object::Update(float dt)
 		break;
 
 	case object_picked:
-		collision_aux = collision;
-		collision->rect = { 0, 0, 0, 0 };
+		if (aux_collision_rect.x == 0 && aux_collision_rect.y == 0 && aux_collision_rect.w == 0 && aux_collision_rect.h == 0) {
+			aux_collision_rect = collision->rect;
+		}
+		collision->rect = NULLRECT;
 		break;
 
 	case object_dropped:
-		collision = collision_aux;
+		collision->rect = aux_collision_rect;
+		aux_collision_rect = NULLRECT;
 		position = App->player->GetHero()->position;
 		state = entity_idle;
 		break;

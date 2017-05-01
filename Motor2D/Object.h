@@ -45,7 +45,7 @@ public:
 	bool pickable = false;
 
 private:
-	Collider* collision_aux = nullptr;
+	SDL_Rect aux_collision_rect = NULLRECT;
 };
 
 #endif
