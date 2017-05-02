@@ -93,6 +93,7 @@ struct MapData
 	int					height;
 	int					tile_width;
 	int					tile_height;
+	int					tile_diagonal;
 	SDL_Color			background_color;
 	map_types			type;
 	std::list<TileSet*>	tilesets;

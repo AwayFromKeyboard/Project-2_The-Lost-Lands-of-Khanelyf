@@ -94,6 +94,7 @@ public:
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
+	fPoint w_direction = NULLPOINT;
 	bool has_destination = false;
 	uint path_id;
 public:

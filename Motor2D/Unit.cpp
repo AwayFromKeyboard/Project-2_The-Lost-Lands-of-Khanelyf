@@ -374,7 +374,7 @@ void Unit::SetPath(vector<iPoint> _path)
 {
 	path = _path;
 	path.erase(path.begin());
-	direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 	LookAtMovement();
 }
 
@@ -464,20 +464,20 @@ void Unit::SetDirection()
 
 	switch (destination) {
 	case south:
-		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
 		}
 		break;
 	case north:
-		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -485,10 +485,10 @@ void Unit::SetDirection()
 		aux_pos.y += offset.y;
 		break;
 	case north_east:
-		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -497,10 +497,10 @@ void Unit::SetDirection()
 		aux_pos.x -= offset.x;
 		break;
 	case south_east:
-		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -511,7 +511,7 @@ void Unit::SetDirection()
 		if (position.x >= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -519,10 +519,10 @@ void Unit::SetDirection()
 		aux_pos.x -= offset.x;
 		break;
 	case north_west:
-		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -534,7 +534,7 @@ void Unit::SetDirection()
 		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -545,7 +545,7 @@ void Unit::SetDirection()
 		if (position.x <= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
 			path.erase(path.begin());
 			checked_next_tile = false;
-			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
 			SetDirection();
 			LookAtMovement();
 			return;
@@ -560,10 +560,12 @@ void Unit::SetDirection()
 		checked_next_tile = true;
 		Unit* local = (Unit*)App->map->entity_matrix[path.front().x][path.front().y];
 		if (local->type == entity_type::player || local->type == entity_type::ally) {
-			if (path.size() > 1)
-				local->ForceMovement(position_map, path.at(1));
-			else
-				local->ForceMovement(position_map, position_map);
+			if (local != this) {
+				if (path.size() > 1)
+					local->ForceMovement(position_map, path.at(1));
+				else
+					local->ForceMovement(position_map, position_map);
+			}
 		}
 
 	}
@@ -573,9 +575,9 @@ void Unit::SetDirection()
 
 void Unit::LookAtMovement()
 {
-	if (direction.x > 0) 
+	if (w_direction.x > 0) 
 	{
-		if (direction.y > 0)
+		if (w_direction.y > 0)
 		{
 			direction = { 0,1 };
 			current_animation = &m_south;
@@ -583,7 +585,7 @@ void Unit::LookAtMovement()
 			flip = false;
 		}
 
-		else if (direction.y < 0)
+		else if (w_direction.y < 0)
 		{
 			direction = { 1,0 };
 			current_animation = &m_west;
@@ -592,23 +594,23 @@ void Unit::LookAtMovement()
 		}
 		else
 		{
-			direction = { +1,+0.5 };
+			direction = { +1,+1 };
 			current_animation = &m_south_west;
 			destination = south_east;
 			flip = true;
 		}
 
 	}
-	else if (direction.x < 0) 
+	else if (w_direction.x < 0)
 	{
-		if (direction.y > 0)
+		if (w_direction.y > 0)
 		{
 			direction = { -1,0 };
 			current_animation = &m_west;
 			destination = west;
 			flip = false;
 		}
-		else if (direction.y < 0)
+		else if (w_direction.y < 0)
 		{
 			direction = { 0,-1 };
 			current_animation = &m_north;
@@ -618,7 +620,7 @@ void Unit::LookAtMovement()
 
 		else
 		{
-			direction = { -1,-0.5 };
+			direction = { -1,-1 };
 			current_animation = &m_north_west;
 			destination = north_west;
 			flip = false;
@@ -626,21 +628,22 @@ void Unit::LookAtMovement()
 	}
 	else 
 	{
-		if (direction.y > 0)
+		if (w_direction.y > 0)
 		{
-			direction = { -1,0.5 };
+			direction = { -1,1 };
 			current_animation = &m_south_west;
 			destination = south_west;
 			flip = false;
 		}
-		else if (direction.y < 0)
+		else if (w_direction.y < 0)
 		{
-			direction = { 1,-0.5 };
+			direction = { 1,-1 };
 			current_animation = &m_north_west;
 			destination = north_east;
 			flip = true;
 		}
 	}
+	direction.Normalize();
 	//iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
 	//direction = { (float)direction_i.x, (float)direction_i.y };
 	//direction.Normalize();

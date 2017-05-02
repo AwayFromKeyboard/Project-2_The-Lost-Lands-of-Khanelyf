@@ -391,6 +391,7 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
+		data.tile_diagonal = sqrt(data.tile_width * data.tile_width + data.tile_height * data.tile_height);
 		std::string bg_color(map.attribute("backgroundcolor").as_string());
 
 		data.background_color.r = 0;
