@@ -57,6 +57,7 @@ private:
 	iPoint FindNearestWalkable(const iPoint& origin);
 	iPoint FindNearestWalkableToOrigin(const iPoint & origin, const iPoint& destination);
 	int CalculatePath(Path* path, int max_iterations);
+	void FillGaps(Path* path);
 private:
 	// Timer
 	j1Timer timer;

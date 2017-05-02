@@ -485,7 +485,29 @@ int j1PathFinding::CalculatePath(Path * path, int max_iterations)
 			break;
 	}
 
+	if (path->completed)
+		FillGaps(path);
+
 	return it_time;
+}
+
+void j1PathFinding::FillGaps(Path * path)
+{
+	const int iterations = path->finished_path.size() - 1;
+	int current_element = 0;
+	for (int i = 0; i < iterations; ++i) {
+		iPoint origin = path->finished_path[current_element];
+		iPoint destination = path->finished_path[++current_element];
+		iPoint direction = destination - origin;
+		if (direction.x != 0)
+			direction.x /= abs(direction.x);
+		if (direction.y != 0)
+			direction.y /= abs(direction.y);
+		while (destination - direction != origin){
+			origin += direction;
+			path->finished_path.insert(path->finished_path.begin() + current_element++, origin);
+		}
+	}
 }
 
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
