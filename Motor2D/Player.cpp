@@ -333,6 +333,7 @@ bool Player::Update(float dt)
 					break;
 				case entity_type::object:
 					SetPickingObject((Object*)*it);
+					mouse_over_entity = true;
 					break;
 				case entity_type::enemy_building:
 					SetAttackingBuilding((Building*)*it);
@@ -478,11 +479,9 @@ void Player::UpdateAttributes() {
 
 void Player::SetPickingObject(Object* object)
 {
-	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
-		if ((*it)->type == player && (*it)->is_holding_object == false) {
-			(*it)->SetPickObject(object);
-			(*it)->state = entity_state::entity_pick_object;
-		}
+	if (hero->GetSelected() && hero->is_holding_object == false) {
+		hero->SetPickObject(object);
+		hero->state = entity_state::entity_pick_object;
 	}
 }
 
