@@ -15,6 +15,8 @@
 #include "j1Audio.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "Object.h"
+#include "Player.h"
 #include "Building.h"
 
 Unit::Unit()
@@ -48,7 +50,7 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building))
+	if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building && state != entity_state::entity_pick_object))
 	{
 		if (path.size() > 0)
 		{
@@ -162,7 +164,7 @@ bool Unit::Update(float dt)
 	break;
 
 	case entity_state::entity_attack:
-		if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0)) {
+		if ((attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) && (attacked_building == nullptr || attacked_building->life <= 0)) {
 			attacked_unit == nullptr;
 			attacked_building == nullptr;
 			state = entity_idle;
@@ -198,7 +200,6 @@ bool Unit::Update(float dt)
 			BuildingAttack();
 			break;
 		}
-
 		break;
 
 	case entity_state::entity_death:
@@ -222,6 +223,26 @@ bool Unit::Update(float dt)
 		CheckDecomposeDirection();
 			if (current_animation->Finished()) {
 				to_delete = true;
+		}
+		break;
+
+	case entity_state::entity_pick_object:
+		if (IsInRange(to_pick_object)) {
+			App->pathfinding->DeletePath(path_id);
+			path.clear();
+			state = entity_state::entity_idle;
+			PickObject();
+			has_moved = false;
+		}
+		else if (!has_moved) {
+			has_moved = true;
+			App->pathfinding->DeletePath(path_id);
+			path.clear();
+			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(to_pick_object->position));
+		}
+		else {
+			if (path.size() > 0)
+				FollowPath(dt);
 		}
 		break;
 	}
@@ -282,6 +303,13 @@ bool Unit::Draw(float dt)
 		offset = de_offset;
 		if (flip)
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_de_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case entity_pick_object:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
@@ -602,7 +630,7 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	bool ret = true;
 
 	if (attacked_entity == nullptr) return false;
-
+	
 	iPoint attacked_pos = attacked_entity->position;
 	iPoint pos = position;
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
@@ -611,8 +639,12 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	direction.x = attacked_pos.x - pos.x;
 	direction.y = attacked_pos.y - pos.y;
 
-	if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
-
+	if (attacked_entity->type != entity_type::object) {
+		if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
+	}
+	else {
+		if (std::abs(direction.x) > range|| std::abs(direction.y) > range) ret = false;
+	}
 	return ret;
 }
 
@@ -842,6 +874,28 @@ void Unit::CheckDecomposeDirection()
 			flip = false;
 		}
 	}
+}
+
+void Unit::SetPickObject(Object* object)
+{
+	to_pick_object = object;
+}
+
+void Unit::PickObject()
+{
+	App->player->item_drop->SetEnabled(true);
+	to_pick_object->state = object_picked;
+	speed -= 1;
+	is_holding_object = true;
+}
+
+void Unit::DropObject()
+{
+	App->player->item_drop->SetEnabled(false);
+	to_pick_object->state = object_dropped;
+	speed += 1;
+	is_holding_object = false;
+	to_pick_object = nullptr;
 }
 
 bool Unit::IsInsideCircle(int x, int y)

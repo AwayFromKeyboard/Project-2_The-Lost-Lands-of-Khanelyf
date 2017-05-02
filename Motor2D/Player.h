@@ -27,6 +27,7 @@ class UI_Window;
 class UI_Text;
 class UI_Button;
 class Hero;
+class Object;
 
 class Player : public j1Module {
 public:
@@ -80,6 +81,7 @@ private:
 	void SetAttackingEnemy(Unit* enemy);
 	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();
+	void SetPickingObject(Object* object);
 public:
 	void SetHero(Hero* hero);
 	Hero* GetHero();
@@ -88,7 +90,10 @@ public:
 public:
 	UI_Window* barracks_ui_window = nullptr;
 	UI_Window* player_abilities = false;
+	UI_Window* inventory = nullptr;
 	iPoint barracks_position;
+
+	UI_Button* item_drop = nullptr;
 
 private:
 	UI_Button* barbarian_img = nullptr;

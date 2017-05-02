@@ -14,6 +14,7 @@ enum entity_name
 	barbarian,
 	swordsman,
 	barracks,
+	provisions,
 	basic_building,
 	test
 };
@@ -26,6 +27,7 @@ enum entity_type
 	npc,
 	enemy,
 	building,
+	object,
 	ally_building,
 	enemy_building
 };

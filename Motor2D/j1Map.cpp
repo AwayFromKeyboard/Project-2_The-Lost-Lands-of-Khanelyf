@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1App.h"
 #include "Player.h"
+#include "Functions.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -730,7 +731,7 @@ void j1Map::GetEntitiesSpawn() const
 						}
 						break;
 						
-						case 28: // Enemies
+						case 28: // Barbarian Enemy
 						{
 							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 1, y));
 						}
@@ -738,11 +739,34 @@ void j1Map::GetEntitiesSpawn() const
 						
 						case 29: // NPC
 						{
-							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
+							Entity* barb_npc = App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 						
+						case 30: // Object
+						{
+							Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(x + 1, y));
 						}
+						break;
+
+						case 31: // Basic Building Ally
+						{
+							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
+						}
+						break;
+
+						case 32: // Basic Building Enemy
+						{
+							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
+						}
+						break;
+
+						case 33: // Swordsman Enemy
+						{
+							Entity* swordsman_enemy = App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+					}
 					}
 				}		
 			}
