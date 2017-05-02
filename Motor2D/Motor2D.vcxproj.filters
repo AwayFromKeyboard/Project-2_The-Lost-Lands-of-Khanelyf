@@ -249,6 +249,7 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Engine\4. Entities\Objects</Filter>
+	</ClInclude>
     <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
