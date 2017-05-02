@@ -65,7 +65,6 @@ public:
 	// Attack
 	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
-	bool IsInObjectRange(Entity* object_to_pick);
 	void LookAtAttack();
 	void UnitAttack();
 	void BuildingAttack();
@@ -112,6 +111,7 @@ public:
 
 	j1Timer life_up_timer;
 	iPoint position_map = NULLPOINT;
+	iPoint aux_pos = NULLPOINT;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;

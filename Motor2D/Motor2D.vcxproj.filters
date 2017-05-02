@@ -115,6 +115,9 @@
     <ClCompile Include="Object.cpp">
       <Filter>Engine\4. Entities\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="BasicBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -246,6 +249,8 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Engine\4. Entities\Objects</Filter>
+    <ClInclude Include="BasicBuilding.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

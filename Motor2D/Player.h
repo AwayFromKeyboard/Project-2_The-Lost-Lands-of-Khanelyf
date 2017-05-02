@@ -8,11 +8,21 @@
 #include "Point.h"
 
 #define DURATION_BATTLECRY 5
-#define COOLDOWN_BATTLECRY 10
+#define COOLDOWN_BATTLECRY 30
 #define BATTLECRY_BUFF 5
 #define BATTLECRY_RANGE 10
 
+#define COOLDOWN_WHIRLWIND 8
+#define WHIRLWIND_DAMAGE 40
+#define WHIRLWIND_RANGE 2
+
+#define COOLDOWN_CHARGE 12
+#define CHARGE_DAMAGE 40
+#define CHARGE_RANGE 5
+#define CHARGE_SPEED 5
+
 class Unit;
+class Building;
 class UI_Window;
 class UI_Text;
 class UI_Button;
@@ -30,12 +40,17 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	//Abilities
-	void Battlecry(int modifier, int range);
+	void Battlecry();
 	void BattlecryModifier(int damage_buff);
-	void CheckBattlecryRange(int range);
+	void CheckAbilityRange(int range);
+	void CheckStraightAbilityRange(int range);
 	void DrawBuff();
 	void StopBuff(int modifier);
+
+	void Whirlwind();
+
+	void Charge();
+
 	void DrawCD(int ability_number);
 
 private:
@@ -46,6 +61,12 @@ private:
 	UI_Text* pierce_armor_txt = nullptr;
 
 	UI_Text* battlecry_cd = nullptr;
+	UI_Text* whirlwind_cd = nullptr;
+	UI_Text* charge_cd = nullptr;
+
+	UI_Text* battlecry_key = nullptr;
+	UI_Text* whirlwind_key = nullptr;
+	UI_Text* charge_key = nullptr;
 
 	UI_Window* levelup_window = nullptr;
 	UI_Button* life_button = nullptr;
@@ -58,6 +79,7 @@ private:
 private:
 	void MoveToTile(iPoint tile);
 	void SetAttackingEnemy(Unit* enemy);
+	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();
 	void SetPickingObject(Object* object);
 public:
@@ -81,18 +103,25 @@ private:
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;
+	UI_Button* whirlwind_ability = nullptr;
+	UI_Button* charge_ability = nullptr;
 
 public:
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
 	//player abilities
-	bool battlecry_state = false;
 	bool draw_battlecry_range = false;
+	bool draw_whirlwind_range = false;
+	bool draw_charge_range = false;
 	bool draw_buff = false;
+	bool charge_speed_buff = false;
+	bool charge_damage_buff = false;
 
 private:
 	j1Timer battlecry_timer;
+	j1Timer whirlwind_timer;
+	j1Timer charge_timer;
 };
 
 

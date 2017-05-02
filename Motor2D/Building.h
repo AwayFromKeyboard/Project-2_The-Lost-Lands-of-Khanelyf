@@ -34,15 +34,11 @@ public:
 
 	entity_name name;
 	bool to_delete = false;
+	int building_rect_number;
 
 public:
-
-	iPoint position = NULLPOINT;
 	iPoint offset = NULLPOINT;
-
-	Collider* collision = nullptr;
 	SDL_Rect tex_rect = NULLRECT;
-	entity_type type = entity_type::null;
 
 public:
 	bool is_selected = false;
