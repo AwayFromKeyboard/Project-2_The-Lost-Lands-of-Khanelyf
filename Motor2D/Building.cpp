@@ -1,5 +1,4 @@
 #include "Building.h"
-#include "GameObject.h"
 #include "j1Entity.h"
 #include "j1Collisions.h"
 #include "j1Map.h"
@@ -40,8 +39,16 @@ bool Building::PreUpdate()
 
 bool Building::Update(float dt)
 {
-	position = { game_object->GetPos().x, game_object->GetPos().y };
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+
+	switch (state) {
+
+	case entity_death:
+		if(collision != nullptr)
+			App->collisions->EraseCollider(collision);
+		to_delete = true;
+		break;
+	}
 
 	return true;
 }
@@ -50,7 +57,8 @@ bool Building::Draw(float dt)
 {
 	bool ret = true;
 
-	App->scene->LayerBlit(6, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, tex_rect);
+	if (state == entity_idle)
+		App->scene->LayerBlit(6, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
 
 	return ret;
 }
@@ -60,23 +68,17 @@ bool Building::PostUpdate()
 	bool ret = true;
 
 	if (GetSelected())
-		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
-
-	if (to_delete)
-	{
-		App->entity->DeleteEntity(this);
-	}
+		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }
 
 bool Building::CleanUp()
 {
-	for (std::list<GameObject*>::iterator it = App->entity->building_game_objects_list.begin(); it != App->entity->building_game_objects_list.end(); it++)
-		RELEASE(*it);
-	App->entity->building_game_objects_list.clear();
+	
+	bool ret = true;
 
-	return true;
+	return ret;
 }
 
 bool Building::Load(pugi::xml_node &)
@@ -91,11 +93,6 @@ bool Building::Save(pugi::xml_node &) const
 
 void Building::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
-}
-
-GameObject * Building::GetGameObject()
-{
-	return game_object;
 }
 
 Collider * Building::GetCollider()

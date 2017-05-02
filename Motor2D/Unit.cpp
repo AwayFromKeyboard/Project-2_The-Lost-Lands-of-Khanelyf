@@ -3,7 +3,6 @@
 #include "j1Entity.h"
 #include "j1Input.h"
 #include "Scene.h"
-#include "GameObject.h"
 #include "j1Map.h"
 #include "Hero.h"
 #include "Barbarian.h"
@@ -16,6 +15,7 @@
 #include "j1Audio.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "Building.h"
 
 Unit::Unit()
 {
@@ -36,7 +36,11 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
+	
 	AI_timer.Start();
+	life_up_timer.Start();
+	max_life = life;
+	
 	return ret;
 }
 
@@ -44,20 +48,23 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if (attacked_unit == nullptr && life > 0 && state != unit_state::unit_move_to_enemy) 
+	if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building))
 	{
 		if (path.size() > 0)
 		{
-			state = unit_move;
+			state = entity_state::entity_move;
 		}
 		else
 		{
-			state = unit_idle;
+			state = entity_state::entity_idle;
 		}
 	}
 
-	position = { game_object->GetPos().x, game_object->GetPos().y };
-	position_map = App->map->WorldToMapPoint(position);
+	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
+		LifeBar({ 50, 5 }, { -20, -35 });
+
+	aux_pos = position;
+	position_map = App->map->WorldToMapPoint(aux_pos);
 	if (life > 0) {
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
 	}
@@ -71,59 +78,114 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
-	
+	collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
+
 	switch (state) {
-	case unit_state::unit_idle:
+	case entity_state::entity_idle:
+
+		if (life < max_life) {
+			if (life_up_timer.ReadSec() >= 1) {
+				life += 1;
+				life_up_timer.Start();
+			}
+		}
 		CheckDirection();
 		CheckSurroundings();
+		has_moved = false;
 		break;
 
-	case unit_state::unit_move:
+	case entity_state::entity_move:
 		FollowPath(dt);
-		//CheckSurroundings();
 		break;
 
-	case unit_state::unit_move_to_enemy:
+	case entity_state::entity_move_to_enemy:
 	{
 		if (attacked_unit == nullptr || attacked_unit->life <= 0)
-			state = unit_idle;
+			state = entity_idle;
 		else {
 			if (IsInRange(attacked_unit)) {
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				state = unit_state::unit_attack;
+				state = entity_state::entity_attack;
 				has_moved = false;
 			}
 			else if (!has_moved) {
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(game_object->GetPos()), App->map->WorldToMapPoint(attacked_unit->game_object->GetPos()));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
 			}
 			else{
-				if (path.size() > 0)
+				if (path.size() > 0) {
 					FollowPath(dt);
+
+					if (type == entity_type::enemy) {
+						if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
+							state = entity_idle;
+							attacked_unit = nullptr;
+						}
+						else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
+							state = entity_death;
+							attacked_unit = nullptr;
+						}
+					}
+				}
 			}
 		}
 	}
 		break;
 
-	case unit_state::unit_attack:
-		if (attacked_unit == nullptr || attacked_unit->life <= 0) {
-			attacked_unit == nullptr;
-			state = unit_idle;
+	case entity_state::entity_move_to_building:
+	{
+		if (attacked_building == nullptr || attacked_building->life <= 0)
+			state = entity_idle;
+		else {
+			if (IsInRange(attacked_building)) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				state = entity_state::entity_attack;
+				has_moved = false;
+			}
+			else if (!has_moved) {
+				has_moved = true;
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_building->position));
+			}
+			else {
+				if (path.size() > 0) {
+					FollowPath(dt);
+				}
+			}
 		}
-		else
+	}
+	break;
+
+	case entity_state::entity_attack:
+		if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0)) {
+			attacked_unit == nullptr;
+			attacked_building == nullptr;
+			state = entity_idle;
+		}
+		else if (attacked_building == nullptr)
 		{
 			if (IsInRange(attacked_unit)) {
 				att_state = attack_unit;
 			}
 			else {
-				state = unit_state::unit_move_to_enemy;
-				current_animation = &i_north;
+				state = entity_state::entity_move_to_enemy;
 				att_state = attack_null;
-				attacked_unit = nullptr;
+				break;
+			}
+		}
+		else
+		{
+			if (IsInRange(attacked_building)) {
+				att_state = attack_building;
+			}
+			else {
+				state = entity_state::entity_move_to_building;
+				att_state = attack_null;
 				break;
 			}
 		}
@@ -139,7 +201,7 @@ bool Unit::Update(float dt)
 
 		break;
 
-	case unit_state::unit_death:
+	case entity_state::entity_death:
 		CheckDeathDirection();
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
@@ -147,7 +209,7 @@ bool Unit::Update(float dt)
 			death_timer.Start();
 		else if (death_timer.ReadSec() > 2)
 		{
-			state = unit_state::unit_decompose;
+			state = entity_state::entity_decompose;
 			if (type == entity_type::enemy) {
 				App->scene->scene_test->IncreaseGold(gold_drop);
 				if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
@@ -156,7 +218,7 @@ bool Unit::Update(float dt)
 		}
 		break;
 
-	case unit_state::unit_decompose:
+	case entity_state::entity_decompose:
 		CheckDecomposeDirection();
 			if (current_animation->Finished()) {
 				to_delete = true;
@@ -174,47 +236,54 @@ bool Unit::Draw(float dt)
 
 	switch (state)
 	{
-	case unit_idle:
+	case entity_idle:
 		offset = i_offset;
 		if(flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_i_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_i_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_move:
+	case entity_move:
 		offset = m_offset;
 		if(flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_move_to_enemy:
+	case entity_move_to_enemy:
 		offset = m_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_m_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_attack:
+	case entity_move_to_building:
+		offset = m_offset;
+		if (flip)
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+		else
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
+		break;
+	case entity_attack:
 		offset = a_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_a_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_a_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_death:
+	case entity_death:
 		offset = d_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_d_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_d_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
-	case unit_decompose:
+	case entity_decompose:
 		offset = de_offset;
 		if (flip)
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x - flip_de_offset, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_de_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, game_object->GetTexture(), { game_object->GetPos().x - offset.x, game_object->GetPos().y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	}
 
@@ -228,13 +297,7 @@ bool Unit::PostUpdate()
 	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
-		App->render->DrawCircle(game_object->GetPos().x + App->render->camera.x, game_object->GetPos().y + App->render->camera.y, 2, 255, 255, 255);
-
-	//if (to_delete)
-	//{
-	//	App->entity->DeleteEntity(this);
-	//}
-
+		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
 
 	return ret;
 }
@@ -242,9 +305,6 @@ bool Unit::PostUpdate()
 bool Unit::CleanUp()
 {
 	bool ret = true;
-
-	App->entity->unit_game_objects_list.remove(game_object);
-	RELEASE(game_object);
 
 	return ret;
 }
@@ -265,11 +325,6 @@ void Unit::OnColl(Collider* col1, Collider* col2)
 	{
 		
 	}
-}
-
-GameObject * Unit::GetGameObject()
-{
-	return game_object;
 }
 
 Collider * Unit::GetCollider()
@@ -354,16 +409,17 @@ void Unit::FollowPath(float dt)
 {
 	SetDirection();
 
-	fPoint pos = game_object->fGetPos();
+	fPoint pos = fPoint(position.x, position.y);
 
 	pos.x += direction.x * speed;
 	pos.y += direction.y * speed;
 
-	game_object->SetPos(pos);
+	position.x = pos.x;
+	position.y = pos.y;
 
 	if (path.size() == 0)
 	{
-		state = unit_idle;
+		state = entity_idle;
 		has_destination = false;
 	}
 }
@@ -378,19 +434,19 @@ void Unit::SetDirection()
 	case south:
 		break;
 	case north:
-		position.y += offset.y;
+		aux_pos.y += offset.y;
 		break;
 	case north_east:
-		position.y += offset.y;
+		aux_pos.y += offset.y;
 	case south_east:
 	case east:
-		position.x -= offset.x;
+		aux_pos.x -= offset.x;
 		break;
 	case north_west:
-		position.y += offset.y;
+		aux_pos.y += offset.y;
 	case south_west:
 	case west:
-		position.x += offset.x;
+		aux_pos.x += offset.x;
 		break;
 	}
 
@@ -488,8 +544,8 @@ bool Unit::CheckSurroundings() {
 		std::list<iPoint> visited;
 
 
-		visited.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
-		frontier.push_back(App->map->WorldToMapPoint(game_object->GetPos()));
+		visited.push_back(App->map->WorldToMapPoint(position));
+		frontier.push_back(App->map->WorldToMapPoint(position));
 
 		for (int i = 0; i < radius_of_action; ++i) {
 			for (int j = frontier.size(); j > 0; j--) {
@@ -508,14 +564,14 @@ bool Unit::CheckSurroundings() {
 						case ally:
 							if (found->type == enemy) {
 								attacked_unit = found;
-								state = unit_move_to_enemy;
+								state = entity_move_to_enemy;
 								return true;
 							}
 							break;
 						case enemy:
 							if (found->type == player || found->type == ally) {
 								attacked_unit = found;
-								state = unit_move_to_enemy;
+								state = entity_move_to_enemy;
 								return true;
 							}
 						}
@@ -547,8 +603,8 @@ bool Unit::IsInRange(Entity* attacked_entity)
 
 	if (attacked_entity == nullptr) return false;
 
-	iPoint attacked_pos = attacked_entity->GetGameObject()->GetPos();
-	iPoint pos = game_object->GetPos();
+	iPoint attacked_pos = attacked_entity->position;
+	iPoint pos = position;
 	attacked_pos = App->map->WorldToMapPoint(attacked_pos);
 	pos = App->map->WorldToMapPoint(pos);
 
@@ -641,8 +697,8 @@ void Unit::UnitAttack()
 		if (attacked_unit->life <= 0)
 		{
 			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
-			state = unit_idle;
-			attacked_unit->state = unit_death;
+			state = entity_idle;
+			attacked_unit->state = entity_death;
 			attacked_unit = nullptr;
 		}
 		shout_fx = true;
@@ -652,6 +708,24 @@ void Unit::UnitAttack()
 void Unit::BuildingAttack()
 {
 	LookAtAttack();
+	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+		shout_fx = false;
+	}
+
+	if (current_animation->Finished())
+	{
+		attacked_building->life -= damage;
+		current_animation->Reset();
+		if (attacked_building->life <= 0)
+		{
+			//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
+			state = entity_idle;
+			attacked_building->state = entity_death;
+			attacked_building = nullptr;
+		}
+		shout_fx = true;
+	}
 }
 
 void Unit::SetAttackingUnit(Unit * att_unit)
@@ -772,7 +846,7 @@ void Unit::CheckDecomposeDirection()
 
 bool Unit::IsInsideCircle(int x, int y)
 {
-	iPoint center = game_object->GetPos();
+	iPoint center = position;
 	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
 }
 

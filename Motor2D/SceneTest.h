@@ -5,7 +5,6 @@
 #include "j1Render.h"
 #include "j1Gui.h"
 
-class GameObject;
 class b2Fixture;
 class Parallax;
 class Hero;

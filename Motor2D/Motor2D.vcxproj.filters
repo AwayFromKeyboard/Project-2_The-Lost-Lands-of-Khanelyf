@@ -28,9 +28,6 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Physics.cpp">
-      <Filter>Engine\1. Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Render.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
@@ -41,9 +38,6 @@
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Engine\2. Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
       <Filter>Engine\2. Components</Filter>
     </ClCompile>
     <ClCompile Include="Parallax.cpp">
@@ -109,6 +103,15 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="DialogueManager.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\4. Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -139,9 +142,6 @@
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Physics.h">
-      <Filter>Engine\1. Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1Render.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
@@ -155,9 +155,6 @@
       <Filter>Engine\2. Components</Filter>
     </ClInclude>
     <ClInclude Include="CollisionFilters.h">
-      <Filter>Engine\2. Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
       <Filter>Engine\2. Components</Filter>
     </ClInclude>
     <ClInclude Include="Parallax.h">
@@ -238,6 +235,12 @@
     <ClInclude Include="Barracks.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="DialogueManager.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicBuilding.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -254,6 +257,9 @@
     </Xml>
     <Xml Include="..\Game\Buildings.xml">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </Xml>
+    <Xml Include="..\Game\Dialogues.xml">
+      <Filter>Engine\5. Tools</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>

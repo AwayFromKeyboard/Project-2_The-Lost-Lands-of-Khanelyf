@@ -1,5 +1,4 @@
 #include "Barracks.h"
-#include "GameObject.h"
 #include "j1App.h"
 #include "j1Entity.h"
 #include "j1Input.h"
@@ -15,6 +14,7 @@
 #include "Functions.h"
 #include "Log.h"
 #include "j1Gui.h"
+#include "Player.h"
 
 Barracks::Barracks(entity_type _type)
 {
@@ -25,7 +25,7 @@ Barracks::~Barracks()
 {
 }
 
-bool Barracks::LoadEntity()
+bool Barracks::LoadEntity(iPoint pos)
 {
 	bool ret = true;
 
@@ -42,26 +42,22 @@ bool Barracks::LoadEntity()
 	}
 	if (node)
 	{
-		game_object = new GameObject(iPoint(150, 150), App->cf->CATEGORY_PLAYER, App->cf->MASK_PLAYER, pbody_type::p_t_player, 0);
-
-		position = { 0, 0 };
+		position = {pos.x, pos.y};
+		App->player->barracks_position = position;
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
-
-		game_object->SetListener((j1Module*)App->entity);
-		game_object->SetFixedRotation(true);
 
 		cost = node.child("cost").attribute("value").as_int();
 		tex_rect = { 0, 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
 
 		offset = iPoint(node.child("offset").attribute("offset_x").as_int(), node.child("offset").attribute("offset_y").as_int());
 
-		std::string texture = node.child("texture").attribute("value").as_string();
-		game_object->SetTexture(App->tex->LoadTexture(texture.c_str()));
+		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("value").as_string());
 		
+		life = node.child("life").attribute("value").as_int();
 
-		App->entity->building_game_objects_list.push_back(game_object);
+		state = entity_idle;
 	}
 	else LOG("\nERROR, no node found\n");
 

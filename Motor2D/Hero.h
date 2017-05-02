@@ -4,7 +4,6 @@
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 
-class GameObject;
 class Hero : public Unit
 {
 public:
@@ -12,7 +11,7 @@ public:
 	~Hero();
 
 	// Load animations
-	bool LoadEntity();
+	bool LoadEntity(iPoint pos);
 
 	// On Collision
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);

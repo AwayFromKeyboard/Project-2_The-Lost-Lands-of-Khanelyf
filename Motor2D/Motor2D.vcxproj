@@ -51,6 +51,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ShowIncludes>false</ShowIncludes>
+      <AdditionalIncludeDirectories>C:\Users\simonsb\Documents\GitHub\Project-2_The-Lost-Lands-of-Khanelyf\Game\Brofiler-1.1.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,10 +79,12 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
+    <ClCompile Include="BasicBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="DialogueManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="j1Console.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1FileSystem.cpp" />
@@ -96,7 +99,6 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
-    <ClCompile Include="j1Physics.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
@@ -116,12 +118,13 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
+    <ClInclude Include="BasicBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="j1Console.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1FileSystem.h" />
@@ -132,7 +135,6 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
-    <ClInclude Include="j1Physics.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
     <ClInclude Include="Log.h" />
@@ -162,6 +164,7 @@
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\Dialogues.xml" />
     <Xml Include="..\Game\test.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>

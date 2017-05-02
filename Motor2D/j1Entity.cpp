@@ -4,10 +4,10 @@
 #include "Barbarian.h"
 #include "Swordsman.h"
 #include "Log.h"
-#include "GameObject.h"
 #include "j1Input.h"
 #include "j1Collisions.h"
 #include "Barracks.h"
+#include "BasicBuilding.h"
 #include "j1Gui.h"
 #include "Player.h"
 
@@ -67,8 +67,9 @@ bool j1Entity::PostUpdate()
 
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();) {
 		if ((*it)->to_delete == true) {
+			list<Entity*>::iterator it_next = std::next(it);
 			DeleteEntity(*it);
-			it = entity_list.erase(it);
+			it = it_next;
 		}
 		else {
 			ret = (*it)->PostUpdate();
@@ -89,9 +90,6 @@ bool j1Entity::CleanUp()
 	{
 		ret = (*it)->CleanUp();
 	}
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) 
-		RELEASE(*it);
-	App->entity->unit_game_objects_list.clear();
 
 	selected.clear();
 
@@ -113,7 +111,7 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 		(*it)->OnColl(col1, col2);
 }
 
-Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
+Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 {
 	Entity* ret = nullptr;
 
@@ -136,7 +134,32 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity();
+		ret->LoadEntity(pos);
+		ret->Start();
+		entity_list.push_back(ret);
+	}
+	else
+		LOG("Entity creation returned nullptr");
+
+	return ret;
+}
+
+Entity* j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
+{
+	Entity* ret = nullptr;
+
+	switch (name)
+	{
+	case basic_building:
+		ret = new BasicBuilding(type, building_rect_number);
+		break;
+	default:
+		break;
+	}
+
+	if (ret != nullptr)
+	{
+		ret->LoadEntity(pos);
 		ret->Start();
 		entity_list.push_back(ret);
 	}
@@ -149,7 +172,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type)
 void j1Entity::DeleteEntity(Entity* entity)
 {
 	entity->CleanUp();
-	//entity_list.remove(entity);
+	entity_list.remove(entity);
 	RELEASE(entity);
 }
 
@@ -157,8 +180,9 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 {
 	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 	{
-		iPoint unit = (*it)->GetGameObject()->GetPos();
-		
+
+		iPoint unit = (*it)->position;
+
 		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
@@ -182,7 +206,6 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 				if ((*it)->GetType() == building) {
 					App->entity->UnselectEverything();
 					App->player->barracks_ui_window->SetEnabledAndChilds(true);
-					App->player->barracks_position = (*it)->GetGameObject()->GetPos();
 					(*it)->SetSelected(true);
 				}
 				else {
