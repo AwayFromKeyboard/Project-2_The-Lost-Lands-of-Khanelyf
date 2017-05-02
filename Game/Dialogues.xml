@@ -6,16 +6,17 @@
       <text value="Go to the town and surroundings and kill up to 5 enemies. Gold: 100. "/>
     </dialogue>
     <dialogue state="1">
-      <text value="Well done!"/>
+      <text value="Well done! You have gained the trust of these people please try to lead us through this rough times"/>
+      <text value="You can build a barrack now!(use b key) and buy some soldiers!"/>
     </dialogue>
   </npc>
   <npc id="1">
     <dialogue state="0">
-      <text value="Thanks! You can build a barrack(use b key) now!"/>
-      <text value="Hi Leader, we have detected some hostil soldiers... We need to do something with the nearby enemy camps before they dare to attack us!"/>
+      <text value= "Villager: Hi Leader, We have detected some hostil enemies that control this territoy... We need to do something with the turrets!"/>
+      <text value="Head east to find this turrets and take control over them. Gold: 300"/>
     </dialogue>
     <dialogue state="1">
-      <text value="All are dead now"/>
+      <text value="Well done! my "/>
     </dialogue>
   </npc>
 </npcs>
