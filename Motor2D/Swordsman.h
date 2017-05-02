@@ -19,7 +19,7 @@ public:
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
 public:
-	iPoint mouse_;
+	iPoint mouse_position;
 };
 
 #endif
