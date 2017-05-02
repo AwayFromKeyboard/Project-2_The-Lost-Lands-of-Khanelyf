@@ -74,7 +74,7 @@ bool SceneTest::Start()
 	gold = 0;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 
-	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default);
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
@@ -137,16 +137,11 @@ void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
 	oss << gold;
-	std::string txt = oss.str();
-	gold_txt->SetText(txt);
+	gold_txt->SetText(oss.str());
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint pa = App->render->ScreenToWorld(x, y);
-	pa = App->map->WorldToMap(pa.x, pa.y);
-
-	if (App->pathfinding->IsWalkable(pa)) human_resources_txt->SetText("IS WALKABLE");
-	else human_resources_txt->SetText("IS NOT WALKABLE");
+	std::stringstream oss2;
+	oss2 << current_human_resources << "/" << human_resources_max;
+	human_resources_txt->SetText(oss2.str());
 
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{
