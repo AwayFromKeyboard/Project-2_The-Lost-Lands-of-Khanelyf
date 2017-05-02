@@ -73,13 +73,15 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 					//magic numbers +30 to fix
 					if(layer->name == "Nature")
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 140, &r);
 					else if (layer->name == "Buildings")
-						App->render->Blit(tileset->texture, pos.x -10, pos.y - 70, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y - 96, &r);
 					else if (layer->name == "Towers")
 						App->render->Blit(tileset->texture, pos.x + 10, pos.y - 80, &r);
 					else if (layer->name == "Fortress")
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y - 198, &r);
+					else if (layer->name == "Big House")
+						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 126, &r);
 					else
 						App->render->Blit(tileset->texture, pos.x, pos.y + 16, &r);
 				}
@@ -723,20 +725,20 @@ void j1Map::GetEntitiesSpawn() const
 						{
 						case 27: // Hero
 						{
-							Entity* player_unit = App->entity->CreateEntity(hero, player, App->map->MapToWorld(x + 2, y));
+							Entity* player_unit = App->entity->CreateEntity(hero, player, App->map->MapToWorld(x + 1, y));
 							App->player->SetHero((Hero*)player_unit);
 						}
 						break;
 						
 						case 28: // Enemies
 						{
-							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 2, y));
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 						
 						case 29: // NPC
 						{
-							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 2, y));
+							Entity* barb_npc =App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 						
