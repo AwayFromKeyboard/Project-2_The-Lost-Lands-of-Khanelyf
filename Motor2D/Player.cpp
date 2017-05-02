@@ -680,36 +680,38 @@ void Player::CheckAbilityRange(int range)
 	if (draw_battlecry_range == true || draw_whirlwind_range == true)
 	{
 		std::list<iPoint> frontier;
-		std::list<iPoint> visited;
 
-		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
-		frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+		if (GetHero()->position_map != range_visited.front())
+		{
+			range_visited.clear();
+			range_visited.push_back(GetHero()->position_map);
+			frontier.push_back(GetHero()->position_map);
+			for (int i = 0; i < range; ++i) {
+				for (int j = frontier.size(); j > 0; j--) {
+					iPoint neighbors[4];
+					neighbors[0] = frontier.front() + iPoint(1, 0);
+					neighbors[1] = frontier.front() + iPoint(-1, 0);
+					neighbors[2] = frontier.front() + iPoint(0, 1);
+					neighbors[3] = frontier.front() + iPoint(0, -1);
+					frontier.pop_front();
 
-		for (int i = 0; i < range; ++i) {
-			for (int j = frontier.size(); j > 0; j--) {
-				iPoint neighbors[4];
-				neighbors[0] = frontier.front() + iPoint(1, 0);
-				neighbors[1] = frontier.front() + iPoint(-1, 0);
-				neighbors[2] = frontier.front() + iPoint(0, 1);
-				neighbors[3] = frontier.front() + iPoint(0, -1);
-				frontier.pop_front();
-
-				for (int k = 0; k < 4; k++) {
-					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
-							is_visited = true;
-							break;
+					for (int k = 0; k < 4; k++) {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
 						}
-					}
-					if (!is_visited) {
-						frontier.push_back(neighbors[k]);
-						visited.push_back(neighbors[k]);
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							range_visited.push_back(neighbors[k]);
+						}
 					}
 				}
 			}
 		}
-		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+		for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
 			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 		}
 	}
