@@ -20,6 +20,7 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Building.h"
+#include "Object.h"
 
 SceneTest::SceneTest()
 {

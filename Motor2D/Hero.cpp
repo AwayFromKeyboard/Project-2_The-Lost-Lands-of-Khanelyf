@@ -75,6 +75,7 @@ bool Hero::LoadEntity(iPoint pos)
 		direction = { 0, 1 };
 
 		state = entity_state::entity_idle;
+		can_hold_object = true;
 	}
 	else LOG("\nERROR, no node found\n");
 	

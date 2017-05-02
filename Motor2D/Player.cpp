@@ -16,6 +16,7 @@
 #include "SceneTest.h"
 #include "j1Scene.h"
 #include "j1Window.h"
+#include "Object.h"
 #include "Building.h"
 
 Player::Player()
@@ -92,6 +93,14 @@ bool Player::Start()
 
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
+
+	//drop object interface
+
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
+	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	item_drop->SetImage("standard");
+	item_drop->SetEnabled(false);
 
 	//Whirlwind
 
@@ -173,80 +182,89 @@ bool Player::PreUpdate()
 	}
 
 	//player abilities
-
-	if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
-		draw_battlecry_range = true;
-		CheckAbilityRange(BATTLECRY_RANGE);
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
-		draw_whirlwind_range = true;
-		CheckAbilityRange(WHIRLWIND_RANGE);
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
-		draw_charge_range = true;
-		CheckStraightAbilityRange(CHARGE_RANGE);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
-		draw_battlecry_range = false;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
-		draw_whirlwind_range = false;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
-		draw_charge_range = false;
-	}
-
-	//Battlecry
-
-	if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
-		battlecry_ability->SetImage("clicked");
-		Battlecry();
-		battlecry_cd->SetEnabled(true);
-		battlecry_timer.Start();
-	}
-	if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
-		battlecry_cd->SetEnabled(false);
-		battlecry_ability->SetImage("standard");
-	}
-	else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
-		StopBuff(-BATTLECRY_BUFF);
-	}
-
-	// Whirlwind
-
-	if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
-		whirlwind_ability->SetImage("clicked");
-		Whirlwind();
-		whirlwind_cd->SetEnabled(true);
-		whirlwind_timer.Start();
-	}
-	if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
-		whirlwind_cd->SetEnabled(false);
-		whirlwind_ability->SetImage("standard");
-	}
-
-	//Charge
-
-	if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
-		Charge();
-	}
-
-	if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+	if (!hero->is_holding_object)
 	{
-		GetHero()->speed -= CHARGE_SPEED;
-		charge_speed_buff = false;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+			draw_battlecry_range = true;
+			CheckAbilityRange(BATTLECRY_RANGE);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+			draw_whirlwind_range = true;
+			CheckAbilityRange(WHIRLWIND_RANGE);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+			draw_charge_range = true;
+			CheckStraightAbilityRange(CHARGE_RANGE);
+		}
 
-	if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+		if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+			draw_battlecry_range = false;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+			draw_whirlwind_range = false;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
+			draw_charge_range = false;
+		}
+
+		//Battlecry
+
+
+		if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+			battlecry_ability->SetImage("clicked");
+			Battlecry();
+			battlecry_cd->SetEnabled(true);
+			battlecry_timer.Start();
+		}
+		if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+			battlecry_cd->SetEnabled(false);
+			battlecry_ability->SetImage("standard");
+		}
+		else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+			StopBuff(-BATTLECRY_BUFF);
+		}
+
+		// Whirlwind
+
+		if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+			whirlwind_ability->SetImage("clicked");
+			Whirlwind();
+			whirlwind_cd->SetEnabled(true);
+			whirlwind_timer.Start();
+		}
+		if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
+			whirlwind_cd->SetEnabled(false);
+			whirlwind_ability->SetImage("standard");
+		}
+
+		//Charge
+
+		if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+			Charge();
+		}
+
+		if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+		{
+			GetHero()->speed -= CHARGE_SPEED;
+			charge_speed_buff = false;
+		}
+
+		if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+		{
+			GetHero()->damage -= CHARGE_DAMAGE;
+			charge_damage_buff = false;
+		}
+
+		if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+			charge_cd->SetEnabled(false);
+			charge_ability->SetImage("standard");
+		}
+	}
+	//Object interface
+
+	if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		GetHero()->damage -= CHARGE_DAMAGE;
-		charge_damage_buff = false;
-	}
-
-	if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
-		charge_cd->SetEnabled(false);
-		charge_ability->SetImage("standard");
+		GetHero()->DropObject();
 	}
 
 	return ret;
@@ -256,7 +274,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat && item_drop->MouseClickEnterLeft()) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();
@@ -278,7 +296,6 @@ bool Player::Update(float dt)
 				}		
 			}
 		}
-
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
 		iPoint mouse;
@@ -289,7 +306,8 @@ bool Player::Update(float dt)
 		p = App->map->WorldToMap(p.x, p.y);
 		bool mouse_over_entity = false;
 
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
 			Collider* unit = (*it)->GetCollider();
 
 			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
@@ -312,6 +330,10 @@ bool Player::Update(float dt)
 					mouse_over_entity = true;
 					break;
 				case entity_type::building:
+					mouse_over_entity = true;
+					break;
+				case entity_type::object:
+					SetPickingObject((Object*)*it);
 					mouse_over_entity = true;
 					break;
 				case entity_type::enemy_building:
@@ -453,6 +475,14 @@ void Player::UpdateAttributes() {
 				hero->pierce_armor += 1;
 			}
 		}
+	}
+}
+
+void Player::SetPickingObject(Object* object)
+{
+	if (hero->GetSelected() && hero->is_holding_object == false) {
+		hero->SetPickObject(object);
+		hero->state = entity_state::entity_pick_object;
 	}
 }
 
