@@ -109,10 +109,10 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Engine\4. Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Engine\4. Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Provisions.cpp">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
       <Filter>Engine\4. Entities\Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -241,10 +241,10 @@
     <ClInclude Include="DialogueManager.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Engine\4. Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Provisions.h">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
       <Filter>Engine\4. Entities\Objects</Filter>
     </ClInclude>
   </ItemGroup>
@@ -264,7 +264,7 @@
     <Xml Include="..\Game\Units.xml">
       <Filter>Engine\4. Entities\Troops</Filter>
     </Xml>
-    <Xml Include="Objects.xml">
+    <Xml Include="..\Game\Objects.xml">
       <Filter>Engine\4. Entities\Objects</Filter>
     </Xml>
   </ItemGroup>

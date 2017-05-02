@@ -167,10 +167,10 @@
       <SubType>Designer</SubType>
     </Xml>
     <Xml Include="..\Game\Dialogues.xml" />
+    <Xml Include="..\Game\Objects.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="Objects.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
