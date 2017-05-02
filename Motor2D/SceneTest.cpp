@@ -166,10 +166,6 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		}
 		create_barrack = false;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_J) == key_down)
-	{
-		Object* object = (Object*)App->entity->CreateEntity(provisions, entity_type::object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-	}
 	else if (App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
