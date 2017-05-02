@@ -1,5 +1,5 @@
-#ifndef _Test_
-#define _Test_
+#ifndef _HERO_H_
+#define _HERO_H_
 
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)

@@ -7,6 +7,7 @@
 #include "PugiXml\src\pugixml.hpp"
 #include "CollisionFilters.h"
 #include <list>
+#include "Brofiler\Brofiler.h"
 
 class UI_Window;
 class UI_Button;
