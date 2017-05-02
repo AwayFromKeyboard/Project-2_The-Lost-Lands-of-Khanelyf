@@ -11,6 +11,7 @@
 #include "j1Entity.h"
 #include "j1App.h"
 #include "Player.h"
+#include "Functions.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -750,13 +751,13 @@ void j1Map::GetEntitiesSpawn() const
 
 						case 31: // Basic Building Ally
 						{
-							//Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x + 1, y));
+							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
 						}
 						break;
 
 						case 32: // Basic Building Enemy
 						{
-							//Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x + 1, y));
+							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
 						}
 						break;
 
