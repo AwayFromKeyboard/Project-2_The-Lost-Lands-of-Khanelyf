@@ -529,7 +529,7 @@ void Player::Whirlwind()
 				if (found != nullptr && found->life > 0 && found->type == enemy) {
 					found->life -= WHIRLWIND_DAMAGE;
 					if (found->life <= 0)
-						found->state = unit_death;
+						found->state = entity_death;
 				}
 				else {
 					bool is_visited = false;
