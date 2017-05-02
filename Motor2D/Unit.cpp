@@ -373,6 +373,9 @@ void Unit::SetSelected(bool _selected) {
 void Unit::SetPath(vector<iPoint> _path)
 {
 	path = _path;
+	path.erase(path.begin());
+	direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	LookAtMovement();
 }
 
 vector<iPoint> Unit::GetPath()const
@@ -382,59 +385,52 @@ vector<iPoint> Unit::GetPath()const
 
 void Unit::CheckDirection()
 {
-	if (direction.x == 1)
-	{
-		if (direction.y == 0)
-		{
-			current_animation = &i_west;
-			flip = true;
-		}
-		else if (direction.y == 0.5)
-		{
-			current_animation = &i_south_west;
-			flip = true;
-		}
-		else if (direction.y == -0.5)
-		{
-			current_animation = &i_north_west;
-			flip = true;
-		}
-	}
-	else if (direction.x == 0)
-	{
-		if (direction.y == 1)
-		{
-			current_animation = &i_south;
-			flip = false;
-		}
-		else if (direction.y == -1)
-		{
-			current_animation = &i_north;
-			flip = false;
-		}
-	}
-	else if (direction.x == -1)
-	{
-		if (direction.y == 0)
-		{
-			current_animation = &i_west;
-			flip = false;
-		}
-		else if (direction.y == 0.5)
-		{
-			current_animation = &i_south_west;
-			flip = false;
-		}
-		else if (direction.y == -0.5)
-		{
-			current_animation = &i_north_west;
-			flip = false;
-		}
-	}
+	switch (destination) {
+	case east:
+		current_animation = &i_west;
+		flip = true;
+		break;
+
+	case south_east:
+		current_animation = &i_south_west;
+		flip = true;
+		break;
+	
+	case north_east:
+		current_animation = &i_north_west;
+		flip = true;
+		break;
+	
+	case south:
+		current_animation = &i_south;
+		flip = false;
+		break;
+
+	case north:
+		current_animation = &i_north;
+		flip = false;
+		break;
+
+	case west:
+		current_animation = &i_west;
+		flip = false;
+		break;
+
+	case south_west:
+		current_animation = &i_south_west;
+		flip = false;
+		break;
+
+	case north_west:
+		current_animation = &i_north_west;
+		flip = false;
+		break;
+	}	
 }
 
 void Unit::FollowPath(float dt)
 {
+
 	SetDirection();
 
 	fPoint pos = fPoint(position.x, position.y);
@@ -444,6 +440,9 @@ void Unit::FollowPath(float dt)
 
 	position.x = pos.x;
 	position.y = pos.y;
+
+
+
 
 	if (path.size() == 0)
 	{
@@ -458,32 +457,104 @@ void Unit::SetDirection()
 		return;
 	}
 
+	if (App->debug_mode) {
+		for (std::vector<iPoint>::iterator it = path.begin(); it != path.end(); ++it) 
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+	}
+
 	switch (destination) {
 	case south:
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
 		break;
 	case north:
+		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
 		aux_pos.y += offset.y;
 		break;
 	case north_east:
+		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
 		aux_pos.y += offset.y;
+		aux_pos.x -= offset.x;
+		break;
 	case south_east:
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
+		aux_pos.x -= offset.x;
+		break;
 	case east:
+		if (position.x >= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
 		aux_pos.x -= offset.x;
 		break;
 	case north_west:
+		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
 		aux_pos.y += offset.y;
+		aux_pos.x += offset.x;
+		break;
 	case south_west:
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
+		aux_pos.x += offset.x;
+		break;
 	case west:
+		if (position.x <= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
+			path.erase(path.begin());
+			checked_next_tile = false;
+			direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
 		aux_pos.x += offset.x;
 		break;
 	}
 
-	if (position_map == path.front()) {
-			path.erase(path.begin());
-			checked_next_tile = false;
-			SetDirection();
-			return;
-	}
+	
 
 	if (!checked_next_tile && App->map->entity_matrix[path.front().x][path.front().y] != nullptr) {
 		checked_next_tile = true;
@@ -496,12 +567,6 @@ void Unit::SetDirection()
 		}
 
 	}
-
-	iPoint destination_w(App->map->MapToWorld(path.front().x, path.front().y));
-
-	direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
-
-	LookAtMovement();
 
 	has_destination = true;
 }
@@ -576,6 +641,9 @@ void Unit::LookAtMovement()
 			flip = true;
 		}
 	}
+	//iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
+	//direction = { (float)direction_i.x, (float)direction_i.y };
+	//direction.Normalize();
 }
 
 void Unit::ForceMovement(iPoint origin, iPoint next_position)
