@@ -87,6 +87,9 @@ bool Player::Start()
 	battlecry_ability->SetImage("standard");
 	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
+	battlecry_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+	battlecry_key->SetText("X");
+
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
 
@@ -97,6 +100,9 @@ bool Player::Start()
 	whirlwind_ability->SetImage("standard");
 	whirlwind_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
+	whirlwind_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
+	whirlwind_key->SetText("C");
+
 	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 	whirlwind_cd->SetEnabled(false);
 
@@ -106,6 +112,9 @@ bool Player::Start()
 	charge_ability->AddImage("standard", { 645, 60, 25, 25 });
 	charge_ability->SetImage("standard");
 	charge_ability->AddImage("clicked", { 670, 60, 25, 25 });
+
+	charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
+	charge_key->SetText("V");
 
 	charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	charge_cd->SetEnabled(false);

@@ -63,6 +63,10 @@ private:
 	UI_Text* whirlwind_cd = nullptr;
 	UI_Text* charge_cd = nullptr;
 
+	UI_Text* battlecry_key = nullptr;
+	UI_Text* whirlwind_key = nullptr;
+	UI_Text* charge_key = nullptr;
+
 	UI_Window* levelup_window = nullptr;
 	UI_Button* life_button = nullptr;
 	UI_Button* damage_button = nullptr;
