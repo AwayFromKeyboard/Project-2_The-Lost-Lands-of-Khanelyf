@@ -103,6 +103,9 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\4. Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

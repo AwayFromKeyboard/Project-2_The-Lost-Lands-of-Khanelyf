@@ -35,7 +35,11 @@ bool Unit::LoadEntity()
 bool Unit::Start()
 {
 	bool ret = true;
+	
 	AI_timer.Start();
+	life_up_timer.Start();
+	max_life = life;
+	
 	return ret;
 }
 
@@ -47,13 +51,16 @@ bool Unit::PreUpdate()
 	{
 		if (path.size() > 0)
 		{
-			state = entity_move;
+			state = entity_state::entity_move;
 		}
 		else
 		{
-			state = entity_idle;
+			state = entity_state::entity_idle;
 		}
 	}
+
+	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
+		LifeBar({ 50, 5 }, { -20, -35 });
 
 	position = pos2;
 	position_map = App->map->WorldToMapPoint(position);
@@ -71,9 +78,16 @@ bool Unit::PreUpdate()
 bool Unit::Update(float dt)
 {
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
-	
+
 	switch (state) {
 	case entity_state::entity_idle:
+
+		if (life < max_life) {
+			if (life_up_timer.ReadSec() >= 1) {
+				life += 1;
+				life_up_timer.Start();
+			}
+		}
 		CheckDirection();
 		CheckSurroundings();
 		break;
@@ -98,7 +112,7 @@ bool Unit::Update(float dt)
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(pos2), App->map->WorldToMapPoint(attacked_unit->pos2));
 			}
 			else{
 				if (path.size() > 0)
@@ -474,8 +488,8 @@ bool Unit::CheckSurroundings() {
 		std::list<iPoint> visited;
 
 
-		visited.push_back(App->map->WorldToMapPoint(position));
-		frontier.push_back(App->map->WorldToMapPoint(position));
+		visited.push_back(App->map->WorldToMapPoint(pos2));
+		frontier.push_back(App->map->WorldToMapPoint(pos2));
 
 		for (int i = 0; i < radius_of_action; ++i) {
 			for (int j = frontier.size(); j > 0; j--) {

@@ -51,6 +51,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ShowIncludes>false</ShowIncludes>
+      <AdditionalIncludeDirectories>C:\Users\simonsb\Documents\GitHub\Project-2_The-Lost-Lands-of-Khanelyf\Game\Brofiler-1.1.2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -79,6 +80,7 @@
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="j1Console.cpp" />
