@@ -27,6 +27,7 @@ enum entity_name;
 enum entity_type;
 
 class Building;
+class Object;
 
 class Unit : public Entity
 {
@@ -77,11 +78,19 @@ public:
 
 	//Decompose
 	void CheckDecomposeDirection();
+
+	//Object iteration
+	void SetPickObject(Object* object);
+	void PickObject();
+	void DropObject();
   
 public:
 	entity_name name;
 	bool flip = false;
   
+	bool can_hold_object = false;
+	bool is_holding_object = false;
+
 public:
 	vector<iPoint> path;
 	fPoint direction = NULLPOINT;
@@ -90,6 +99,7 @@ public:
 public:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
+	Object* to_pick_object = nullptr;
 	attack_state att_state = attack_state::attack_null;
 	bool has_moved = false;
 public:
@@ -101,7 +111,9 @@ public:
 	int pierce_armor = 0;
 	int range = 0;
 
+	j1Timer life_up_timer;
 	iPoint position_map = NULLPOINT;
+	iPoint aux_pos = NULLPOINT;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;

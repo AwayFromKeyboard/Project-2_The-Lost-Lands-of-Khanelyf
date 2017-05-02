@@ -7,6 +7,7 @@
 #include "PugiXml\src\pugixml.hpp"
 #include "CollisionFilters.h"
 #include <list>
+#include "Brofiler\Brofiler.h"
 
 class UI_Window;
 class UI_Button;
@@ -30,6 +31,7 @@ class j1Entity;
 class j1Collisions;
 class Player;
 class QuestManager;
+class DialogueManager;
 
 class j1App
 {
@@ -119,6 +121,7 @@ public:
 	j1Collisions*		collisions = nullptr;
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
+	DialogueManager*	dialogs = nullptr;
 
 	// Console logs
 	list<string>        logs;

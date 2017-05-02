@@ -5,6 +5,7 @@
 #include "SceneTest.h"
 #include "Player.h"
 #include "Hero.h"
+#include "DialogueManager.h"
 
 QuestManager::QuestManager() {
 
@@ -109,6 +110,9 @@ Quest * QuestManager::ChangeQuest(quest_id new_quest)
 	for (list<Quest*>::iterator it = quest_list.begin(); it != quest_list.end(); it++) {
 		if ((*it)->id == new_quest) {
 			(*it)->active = active;
+			App->dialogs->id = (*it)->id;
+			App->dialogs->NPCstate = 0;
+			App->dialogs->dialogueStep = 0;
 			return *it;
 		}
 	}
