@@ -18,6 +18,7 @@
 #include "j1Collisions.h"
 #include "QuestManager.h"
 #include "Barracks.h"
+#include "BasicBuilding.h"
 #include "Building.h"
 
 SceneTest::SceneTest()
@@ -30,7 +31,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("map_vertical_slice.tmx") == true)
+	if (App->map->Load("map.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -136,13 +137,11 @@ void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
 	oss << gold;
-	std::string txt = oss.str();
-	gold_txt->SetText(txt);
+	gold_txt->SetText(oss.str());
 
 	std::stringstream oss2;
 	oss2 << current_human_resources << "/" << human_resources_max;
-	std::string txt2 = oss2.str();
-	human_resources_txt->SetText(txt2);
+	human_resources_txt->SetText(oss2.str());
 
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{
@@ -165,6 +164,18 @@ void SceneTest::CheckUnitCreation(iPoint p)
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
 		create_barrack = false;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_U) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_I) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_O) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
 }
 

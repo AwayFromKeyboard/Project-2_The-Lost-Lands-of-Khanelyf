@@ -101,6 +101,7 @@ public:
 
 	j1Timer life_up_timer;
 	iPoint position_map = NULLPOINT;
+	iPoint aux_pos = NULLPOINT;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
