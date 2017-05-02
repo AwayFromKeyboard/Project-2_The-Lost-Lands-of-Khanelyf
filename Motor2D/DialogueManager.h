@@ -49,7 +49,7 @@ public:
 
 private:
 
-	int dialogueStep = 0; //Allows to order the conversarion correctly
+	 //Allows to order the conversarion correctly
 
 	vector<Dialogue*> dialog;
 
@@ -64,7 +64,7 @@ public:
 	/*---CODE TO TEST IN-GAME RESULTS ---*/
 	uint id = 0;
 	uint NPCstate = 0;
-	
+	int dialogueStep = 0;
 public:
 	UI_Window* win = nullptr;
 	UI_Text* text_on_screen = nullptr;
