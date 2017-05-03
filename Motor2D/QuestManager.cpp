@@ -68,14 +68,6 @@ bool QuestManager::Update(float dt) {
 	
 	}
 
-	App->dialogs->id = current_quest->id;
-	if (current_quest->completed) {
-		App->dialogs->NPCstate = 1;
-	}
-	else
-		App->dialogs->NPCstate = 0;
-
-
 	return true;
 }
 
@@ -118,6 +110,9 @@ Quest * QuestManager::ChangeQuest(quest_id new_quest)
 	for (list<Quest*>::iterator it = quest_list.begin(); it != quest_list.end(); it++) {
 		if ((*it)->id == new_quest) {
 			(*it)->active = active;
+			App->dialogs->id = (*it)->id;
+			App->dialogs->NPCstate = 0;
+			App->dialogs->dialogueStep = 0;
 			return *it;
 		}
 	}

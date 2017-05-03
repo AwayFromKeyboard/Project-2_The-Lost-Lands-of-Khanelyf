@@ -105,9 +105,9 @@ bool Player::Start()
 	//Whirlwind
 
 	whirlwind_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12), 60, 60);
-	whirlwind_ability->AddImage("standard", { 645, 60, 25, 25 });
+	whirlwind_ability->AddImage("standard", { 695, 60, 25, 25 });
 	whirlwind_ability->SetImage("standard");
-	whirlwind_ability->AddImage("clicked", { 670, 60, 25, 25 });
+	whirlwind_ability->AddImage("clicked", { 720, 60, 25, 25 });
 
 	whirlwind_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 	whirlwind_key->SetText("C");
@@ -118,9 +118,9 @@ bool Player::Start()
 	//Charge
 
 	charge_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18), 60, 60);
-	charge_ability->AddImage("standard", { 645, 60, 25, 25 });
+	charge_ability->AddImage("standard", { 802, 0, 25, 25 });
 	charge_ability->SetImage("standard");
-	charge_ability->AddImage("clicked", { 670, 60, 25, 25 });
+	charge_ability->AddImage("clicked", { 827, 60, 25, 25 });
 
 	charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	charge_key->SetText("V");
@@ -274,7 +274,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat && item_drop->MouseClickEnterLeft()) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		App->entity->UnselectEverything();

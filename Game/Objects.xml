@@ -1,8 +1,0 @@
-<objects>
-  <object type="Provisions">
-    <texture value="textures/Provisions.png"/>
-    <rect w="35" h="32"/>
-    <collision_box w="35" h="32" offset_x="-10" offset_y="0"/>
-    <offset offset_x="10" offset_y=""/>
-  </object>
-</objects>
