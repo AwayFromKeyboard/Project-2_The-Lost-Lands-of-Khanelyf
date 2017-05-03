@@ -184,15 +184,15 @@ bool Player::PreUpdate()
 	//player abilities
 	if (!hero->is_holding_object)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+		if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat && battlecry_ability->CompareState("standard")) {
 			draw_battlecry_range = true;
 			CheckAbilityRange(BATTLECRY_RANGE);
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+		else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat && whirlwind_ability->CompareState("standard")) {
 			draw_whirlwind_range = true;
 			CheckAbilityRange(WHIRLWIND_RANGE);
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+		else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat && charge_ability->CompareState("standard")) {
 			draw_charge_range = true;
 			CheckStraightAbilityRange(CHARGE_RANGE);
 		}
