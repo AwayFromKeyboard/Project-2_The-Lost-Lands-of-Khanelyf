@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Hero.h"
 #include "DialogueManager.h"
+#include "j1Map.h"
 
 QuestManager::QuestManager() {
 
@@ -27,7 +28,8 @@ bool QuestManager::Start() {
 	CreateQuest("Create a barrack!", "Create a barrack to hire some units, we need more protection", quest_type::create, quest_id::quest_leader, 1, 20, titles::leader, 2, false);
 	CreateQuest("Kill the enemies at the east!", "Go to the east and kill 4 enemies at the fortress", quest_type::kill, quest_id::quest_mayor, 4, 500, titles::mayor, 5, false);
 	CreateQuest("Kill the enemies at the north!", "Go to the north and kill 5 enemies at the fortress", quest_type::kill, quest_id::quest_mayor2, 5, 500, titles::mayor, 5, false);
-	
+	CreateQuest("Give provisions to the other village!", "Go to the captured village and leave the provisions there", quest_type::move_object, quest_id::quest_provisions, 1, 200, titles::mayor, 3, false);
+
 	return true;
 }
 
@@ -57,8 +59,14 @@ bool QuestManager::Update(float dt) {
 			App->player->create_swordsman = true;
 			break;
 		case quest_mayor2:
-			current_quest = ChangeQuest(quest_id::quest_null);
+			current_quest = ChangeQuest(quest_id::quest_provisions);
 			App->player->create_swordsman = true;
+			break;
+		case quest_provisions:
+			current_quest = ChangeQuest(quest_id::quest_null);
+			provision_quest1 = App->map->MapToWorld(provision_quest1.x, provision_quest1.y);
+			provision_quest2 = App->map->MapToWorld(provision_quest2.x, provision_quest2.y);
+			create_provision = true;
 			break;
 		case quest_null:
 			break;
