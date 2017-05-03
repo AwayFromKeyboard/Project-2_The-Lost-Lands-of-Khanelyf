@@ -118,6 +118,8 @@ public:
 	bool charge_speed_buff = false;
 	bool charge_damage_buff = false;
 
+	std::list<iPoint> range_visited;
+
 private:
 	j1Timer battlecry_timer;
 	j1Timer whirlwind_timer;

@@ -247,6 +247,18 @@ bool Unit::Update(float dt)
 		break;
 	}
 
+	if (damaged_by_whirlwind == true && timer_whirlwind_start == true)
+	{
+		whirlwind_damage.Start();
+		timer_whirlwind_start = false;
+	}
+
+	if (whirlwind_damage.ReadSec() >= 4 && damaged_by_whirlwind == true)
+	{
+		damaged_by_whirlwind = false;
+		timer_whirlwind_start = true;
+	}
+	
 	return true;
 }
 
