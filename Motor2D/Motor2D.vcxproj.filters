@@ -118,6 +118,9 @@
     <ClCompile Include="BasicBuilding.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Engine\3. Scene\MainScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -249,9 +252,12 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Engine\4. Entities\Objects</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Engine\3. Scene\MainScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

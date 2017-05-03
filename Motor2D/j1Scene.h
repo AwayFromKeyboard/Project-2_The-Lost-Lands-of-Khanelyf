@@ -8,6 +8,7 @@
 
 struct SDL_Texture;
 class SceneTest;
+class MainMenu;
 
 // LayerBlit struct
 struct layer_blit
@@ -118,7 +119,8 @@ private:
 
 public:
 	// Scenes
-	SceneTest*		     scene_test = nullptr;
+	SceneTest*		    scene_test = nullptr;
+	MainMenu*			main_menu = nullptr;
 private:
 	// Layer Blit list
 	std::priority_queue<layer_blit, std::vector<layer_blit>, compare_layer> layer_list;

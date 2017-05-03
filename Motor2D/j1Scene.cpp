@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "SceneTest.h"
 #include "j1Console.h"
+#include "MainMenu.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -41,12 +42,14 @@ bool j1Scene::Start()
 
 	// Create scenes
 	scene_test = new SceneTest();
+	main_menu = new MainMenu();
 
 	scenes.push_back(scene_test);
+	scenes.push_back(main_menu);
 	// -------------
 
 	// Starting scene
-	current_scene = scene_test;
+	current_scene = main_menu;
 
 	if(current_scene != nullptr)
 		ret = current_scene->Start();
