@@ -63,14 +63,3 @@ bool Barracks::LoadEntity(iPoint pos)
 
 	return ret;
 }
-
-bool Barracks::Start()
-{
-	bool ret = true;
-
-	return ret;
-}
-
-void Barracks::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
-{
-}

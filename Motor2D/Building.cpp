@@ -27,12 +27,18 @@ bool Building::Start()
 {
 	bool ret = true;
 
+	max_life = life;
+
 	return ret;
 }
 
 bool Building::PreUpdate()
 {
 	bool ret = true;
+
+	if (state == entity_state::entity_idle)
+		LifeBar({ 50, 5 }, { -20, -35 });
+
 
 	return ret;
 }

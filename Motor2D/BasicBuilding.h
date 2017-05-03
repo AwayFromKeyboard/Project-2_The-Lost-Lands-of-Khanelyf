@@ -11,8 +11,6 @@ public:
 	~BasicBuilding();
 
 	bool LoadEntity(iPoint pos); // rect_number 1,2 or 3
-
-	bool Start();
 };
 
 #endif
