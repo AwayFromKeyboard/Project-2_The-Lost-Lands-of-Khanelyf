@@ -567,10 +567,11 @@ void Player::Whirlwind()
 
 			for (int k = 0; k < 4; k++) {
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == enemy) {
+				if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
 					found->life -= WHIRLWIND_DAMAGE;
 					if (found->life <= 0)
 						found->state = entity_death;
+					found->damaged_by_whirlwind = true;
 				}
 				else {
 					bool is_visited = false;
