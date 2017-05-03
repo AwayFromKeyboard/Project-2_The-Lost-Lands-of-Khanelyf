@@ -36,8 +36,13 @@ bool Building::PreUpdate()
 {
 	bool ret = true;
 
-	if (state == entity_state::entity_idle)
-		LifeBar({ 50, 5 }, { -20, -35 });
+	if (state == entity_state::entity_idle) {
+		if (type == entity_type::building)
+			LifeBar({ 185, 5 }, { -100, -100 });
+		else
+			LifeBar({ 125, 5 }, { -65, -60 });
+	}
+	
 
 
 	return ret;
@@ -48,11 +53,14 @@ bool Building::Update(float dt)
 	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
 	switch (state) {
-
 	case entity_death:
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
+		if (type == entity_type::enemy_building) {
+			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
+		}
+
 		break;
 	}
 
