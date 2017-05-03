@@ -231,7 +231,8 @@ bool Unit::Update(float dt)
 			App->pathfinding->DeletePath(path_id);
 			path.clear();
 			state = entity_state::entity_idle;
-			PickObject();
+			if (to_pick_object->pickable == true)
+				PickObject();
 			has_moved = false;
 		}
 		else if (!has_moved) {

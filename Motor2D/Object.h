@@ -42,7 +42,7 @@ public:
 
 public:
 	bool is_carried = false;
-	bool pickable = false;
+	bool pickable = true;
 
 private:
 	SDL_Rect aux_collision_rect = NULLRECT;

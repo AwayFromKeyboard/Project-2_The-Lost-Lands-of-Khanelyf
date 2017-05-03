@@ -14,7 +14,7 @@ enum titles {
 };
 
 enum quest_type {
-	kill, capture, hire, create, type_null
+	kill, capture, hire, create, conquer, move_object, type_null
 };
 
 enum quest_id {
@@ -22,6 +22,8 @@ enum quest_id {
 	quest_leader,
 	quest_mayor,
 	quest_mayor2,
+	quest_conquer,
+	quest_provisions,
 	quest_null
 };
 
@@ -76,6 +78,12 @@ public:
 private:
 	list<Quest*> quest_list;
 	Quest* current_quest = nullptr;
+
+public:
+	bool create_provision = true;
+	iPoint provision_quest1 = NULLPOINT;
+	iPoint provision_quest2 = NULLPOINT;
+	SDL_Rect provision_quest_rect = NULLRECT;
 };
 
 #endif

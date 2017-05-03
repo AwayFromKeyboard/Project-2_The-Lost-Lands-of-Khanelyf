@@ -8,6 +8,7 @@
 #include "Functions.h"
 #include "Player.h"
 #include "Hero.h"
+#include "QuestManager.h"
 
 Object::Object()
 {
@@ -59,6 +60,11 @@ bool Object::Update(float dt)
 		aux_collision_rect = NULLRECT;
 		position = App->player->GetHero()->position;
 		state = entity_idle;
+		if (App->questmanager->GetCurrentQuest()->type == quest_type::move_object && App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions &&  position.PointInRect(App->questmanager->provision_quest_rect.x, App->questmanager->provision_quest_rect.y, App->questmanager->provision_quest_rect.w, App->questmanager->provision_quest_rect.h))
+		{
+			pickable = false;
+			App->questmanager->GetCurrentQuest()->progress++;
+		}
 		break;
 	}
 
