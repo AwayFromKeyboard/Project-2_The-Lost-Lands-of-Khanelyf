@@ -18,6 +18,8 @@
 #include "Object.h"
 #include "Player.h"
 #include "Building.h"
+#include "FogOfWar.h"
+
 
 Unit::Unit()
 {
@@ -42,7 +44,9 @@ bool Unit::Start()
 	AI_timer.Start();
 	life_up_timer.Start();
 	max_life = life;
-	
+	fow = new FogOfWar();
+	fow->Start();
+
 	return ret;
 }
 
@@ -66,6 +70,7 @@ bool Unit::PreUpdate()
 		LifeBar({ 50, 5 }, { -20, -35 });
 
 	aux_pos = position;
+	prev_pos = position;
 	position_map = App->map->WorldToMapPoint(aux_pos);
 	if (life > 0) {
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
@@ -247,6 +252,10 @@ bool Unit::Update(float dt)
 		break;
 	}
 
+	next_pos = position;
+
+	fow->Update(prev_pos, next_pos);
+
 	return true;
 }
 
@@ -315,6 +324,7 @@ bool Unit::Draw(float dt)
 		break;
 	}
 
+
 	return ret;
 }
 
@@ -333,6 +343,7 @@ bool Unit::PostUpdate()
 bool Unit::CleanUp()
 {
 	bool ret = true;
+	
 
 	return ret;
 }

@@ -8,6 +8,8 @@
 #include "j1Entity.h"
 #include <list>
 
+class FogOfWar;
+
 enum entity_state {
 	entity_idle,
 	entity_move,
@@ -91,6 +93,11 @@ public:
 	bool show_life_bar = true;
 protected:
 	bool selected = false;
+
+public:
+	FogOfWar* fow = nullptr;
+	iPoint prev_pos = NULLPOINT;
+	iPoint next_pos = NULLPOINT;
 };
 
 #endif

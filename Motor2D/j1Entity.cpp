@@ -31,7 +31,7 @@ bool j1Entity::Awake(pugi::xml_node &)
 bool j1Entity::Start()
 {
 	bool ret = true;
-
+	
 	return ret;
 }
 
@@ -43,7 +43,7 @@ bool j1Entity::PreUpdate()
 		ret = (*it)->PreUpdate();
 
 	AddGroup();
-	
+
 	return ret;
 }
 
@@ -87,11 +87,6 @@ bool j1Entity::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-	{
-		ret = (*it)->CleanUp();
-	}
-
 	selected.clear();
 
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
@@ -102,6 +97,14 @@ bool j1Entity::CleanUp()
 		(*it).key_id = 0;
 	}
 	lists_selected.clear();
+
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();)
+	{
+		list<Entity*>::iterator it_next = ++it;
+		--it;
+		DeleteEntity(*it);
+		it = it_next;
+	}
 
 	return ret;
 }

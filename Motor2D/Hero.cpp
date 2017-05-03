@@ -71,6 +71,7 @@ bool Hero::LoadEntity(iPoint pos)
 		flip_d_offset = node.child("death").attribute("offset_flip").as_int();
 		flip_de_offset = node.child("decompose").attribute("offset_flip").as_int();
 
+
 		current_animation = &i_south;
 		direction = { 0, 1 };
 
