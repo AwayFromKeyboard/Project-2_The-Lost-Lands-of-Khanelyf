@@ -131,6 +131,8 @@ public:
 
 	void GetEntitiesSpawn() const;
 
+	list<iPoint> PropagateBFS(iPoint origin, int field_of_view);
+
 private:
 
 	bool LoadMap();

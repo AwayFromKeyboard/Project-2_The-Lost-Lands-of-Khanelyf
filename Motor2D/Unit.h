@@ -167,6 +167,7 @@ private:
 	j1Timer AI_timer;
 public:
 	bool IsInsideCircle(int x, int y);
+	bool is_on_fow = false;
 
 public:
 	// attacked audio

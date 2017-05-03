@@ -773,3 +773,66 @@ void j1Map::GetEntitiesSpawn() const
 		}
 	}
 }
+
+list<iPoint> j1Map::PropagateBFS(iPoint origin, int field_of_view)
+{
+
+	list<iPoint>		frontier;
+	vector<iPoint>		visited;
+
+	frontier.push_back(origin);
+	visited.push_back(origin);
+
+	int count = 0;
+
+	int current_layer = 0;
+	int layer_done = 4;
+
+	while (current_layer < field_of_view)
+	{
+		iPoint curr = frontier.front();
+		bool is_on_list = false;
+
+		if (curr != iPoint(0, 0))
+		{
+			iPoint neighbors[4];
+			neighbors[0].create(curr.x + 1, curr.y);
+			neighbors[1].create(curr.x, curr.y + 1);
+			neighbors[2].create(curr.x - 1, curr.y);
+			neighbors[3].create(curr.x, curr.y - 1);
+
+			frontier.pop_front();
+
+			for (uint i = 0; i < 4; i++)
+			{
+				for (vector<iPoint>::const_iterator it = visited.cbegin(); it != visited.cend(); it++)
+				{
+					is_on_list = false;
+
+					if (neighbors[i] == *it)
+					{
+						is_on_list = true;
+						break;
+					}
+				}
+
+				if (!is_on_list)
+				{
+					frontier.push_back(neighbors[i]);
+					visited.push_back(neighbors[i]);
+					count++;
+				}
+			}
+		}
+
+		if (count == layer_done)
+		{
+			layer_done = layer_done + 4;
+			count = 0;
+			current_layer++;
+		}
+	}
+
+	return frontier;
+
+}
