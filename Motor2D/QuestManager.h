@@ -14,7 +14,7 @@ enum titles {
 };
 
 enum quest_type {
-	kill, capture, hire, create, move_object, type_null
+	kill, capture, hire, create, conquer, move_object, type_null
 };
 
 enum quest_id {
@@ -22,6 +22,7 @@ enum quest_id {
 	quest_leader,
 	quest_mayor,
 	quest_mayor2,
+	quest_conquer,
 	quest_provisions,
 	quest_null
 };
