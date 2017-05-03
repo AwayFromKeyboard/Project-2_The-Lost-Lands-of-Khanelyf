@@ -33,7 +33,6 @@ public:
 public:
 
 	entity_name name;
-	bool to_delete = false;
 	int building_rect_number;
 
 public:
