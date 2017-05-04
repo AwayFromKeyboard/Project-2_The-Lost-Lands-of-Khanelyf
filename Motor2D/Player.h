@@ -115,7 +115,9 @@ private:
 	UI_Button* charge_ability = nullptr;
 
 public:
-	bool pause_status=false;
+	bool pause_status = false;
+	bool button_on_clicked = false;
+
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
@@ -131,6 +133,7 @@ private:
 	j1Timer battlecry_timer;
 	j1Timer whirlwind_timer;
 	j1Timer charge_timer;
+	j1Timer button_clicked;
 };
 
 

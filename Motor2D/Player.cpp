@@ -156,8 +156,14 @@ bool Player::PreUpdate()
 
 	if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
-		SDL_Delay(200);
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+
+	if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
 		pause_status = !pause_status;
+		button_on_clicked = false;
+		back->SetImage("standard");
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
@@ -191,7 +197,7 @@ bool Player::PreUpdate()
 	//backbutton
 	if (back->MouseEnter())
 		back->SetImage("hovered");
-	else if(back->MouseOut())
+	else if(back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
 
 	/*if (back->MouseClickEnterLeft()) {
