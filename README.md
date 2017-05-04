@@ -24,21 +24,33 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 
 Controls:
 
-* Use the arrow keys to move the camera
+* Use the arrow keys or the mouse to move the camera
 
 * Use the left mouse button to select your units
+
+* Click left mouse button and drag to select multiple units
 
 * Use the right mouse button to:
 
   * Attack enemy units
  
+  * Attack enemy buildings
+ 
   * Move the selected troops
+
+  * Pick objects
 
 * F1 to debug mode
 
 * Z to level up points
 
 * B to constuct barrack(then you can create 2 types of units with left click)
+
+* X + left click to use Battlecry ability (attack buff to allies)
+
+* C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
+
+* V + left click on enemy at range to use Charge (heavy damage to one enemy)
 
 Goal:
 
