@@ -22,6 +22,7 @@
 #include "Player.h"
 #include "QuestManager.h"
 #include "DialogueManager.h"
+#include "Video.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -45,6 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player();
 	questmanager = new QuestManager();
 	dialogs = new DialogueManager();
+	video = new Video();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -61,8 +63,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(player);
 	AddModule(dialogs);
+
+	//Video Player
+	AddModule(video);
+
 	// Scene
 	AddModule(scene);
+
+	// Quest Manager
 	AddModule(questmanager);
 
 	// Gui

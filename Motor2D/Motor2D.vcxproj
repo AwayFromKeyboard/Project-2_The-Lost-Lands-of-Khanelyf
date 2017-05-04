@@ -114,7 +114,9 @@
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Swordsman.cpp" />
+    <ClCompile Include="theoraplay.c" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="Video.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -161,7 +163,9 @@
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Swordsman.h" />
+    <ClInclude Include="theoraplay.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="Video.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\Buildings.xml" />

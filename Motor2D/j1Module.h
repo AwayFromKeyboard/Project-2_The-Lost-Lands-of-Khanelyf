@@ -11,6 +11,7 @@
 #include <list>
 #include <iostream>
 #include "PugiXml\src\pugixml.hpp"
+#include "SDL\include\SDL.h"
 
 using namespace std;
 

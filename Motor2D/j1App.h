@@ -32,6 +32,7 @@ class j1Collisions;
 class Player;
 class QuestManager;
 class DialogueManager;
+class Video;
 
 class j1App
 {
@@ -122,6 +123,7 @@ public:
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
 	DialogueManager*	dialogs = nullptr;
+	Video*				video = nullptr;
 
 	// Console logs
 	list<string>        logs;
