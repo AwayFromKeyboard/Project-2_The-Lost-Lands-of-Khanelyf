@@ -167,9 +167,9 @@ bool Player::PreUpdate()
 	if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
 		button_clicked.Start();
-		button_on_clicked = true;
-		
+		button_on_clicked = true;	
 	}
+
 	if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
 		pause_status = !pause_status;
 		button_on_clicked = false;

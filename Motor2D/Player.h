@@ -117,9 +117,9 @@ private:
 	UI_Button* charge_ability = nullptr;
 
 public:
-	bool pause_status=false;
+	bool pause_status = false;
 	bool button_on_clicked = false;
-	
+
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
