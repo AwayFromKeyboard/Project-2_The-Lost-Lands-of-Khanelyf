@@ -79,7 +79,9 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
+    <ClCompile Include="BasicBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
@@ -101,8 +103,10 @@
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Provisions.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="QuestManager.cpp" />
@@ -116,8 +120,10 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
+    <ClInclude Include="BasicBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
@@ -138,12 +144,14 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="j1Module.h" />
     <ClInclude Include="MemLeaks.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="j1Render.h" />
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
     <ClInclude Include="Parallax.h" />
+    <ClInclude Include="Provisions.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="QuadTree.h" />
@@ -160,7 +168,8 @@
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
-    <Xml Include="..\Game\test.xml" />
+    <Xml Include="..\Game\Dialogues.xml" />
+    <Xml Include="..\Game\Objects.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>

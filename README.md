@@ -49,5 +49,7 @@ Quests:
 
 1st: Kill 5 enemies(there's two hidden on your right and three more in the town going north), you will receive some gold.
 2nd: Create a barrack and create troops in it.
-3rd: Go east and kill 4 enemies that protect the towers.
-4rd: Go north and conquer the enemy fortress.
+3rd: Go east and kill the 4 enemies that protect the towers.
+4rd: Go north and kill the 5 enemies that protect the village.
+5th: Conquer the village at the north (destroy the two enemy buildings).
+6th: Move the provisions from the first village to the village you just conquered.
