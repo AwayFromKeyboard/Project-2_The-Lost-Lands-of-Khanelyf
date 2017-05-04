@@ -160,7 +160,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
+	if (App->player->quit_game->MouseClickEnterLeft())
 		ret = false;
 
 	if(input->GetWindowEvent(we_quit) == true || end_program)

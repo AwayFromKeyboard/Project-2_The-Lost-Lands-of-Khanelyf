@@ -150,8 +150,15 @@ bool Player::PreUpdate()
 	bool ret = true;
 	
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == key_down || back->MouseClickEnterLeft())
-		pause_status = !pause_status; 
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down) {
+		pause_status = !pause_status;
+	}
+
+	if (back->MouseClickEnterLeft()) {
+		back->SetImage("clicked");
+		SDL_Delay(200);
+		pause_status = !pause_status;
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
@@ -172,19 +179,37 @@ bool Player::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F10) == key_down)
 		ShellExecute(NULL, "open", "https://github.com/AwayFromKeyboard/Project-2_The-Lost-Lands-of-Khanelyf/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 
-
+	//pause
 	if (pause_status && !pause_window->enabled) {
 
 		pause_window->SetEnabledAndChilds(true);
-
-		
+				
 	}
 	else if((!pause_status && pause_window->enabled)){
 		pause_window->SetEnabledAndChilds(false);
 	}
+	//backbutton
+	if (back->MouseEnter())
+		back->SetImage("hovered");
+	else if(back->MouseOut())
+		back->SetImage("standard");
 
-	if(quit_game->MouseClickEnterLeft())
-		App->EndSDL();
+	/*if (back->MouseClickEnterLeft()) {
+		back->SetImage("clicked");
+		SDL_Delay(2000);
+	}
+	*/
+
+	//quitbutton
+	if (quit_game->MouseEnter())
+		quit_game->SetImage("hovered");
+	else if (quit_game->MouseOut())
+		quit_game->SetImage("standard");
+	
+	if (quit_game->MouseClickEnterLeft()) {
+		quit_game->SetImage("clicked");
+		SDL_Delay(200);
+	}
 	
 	if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 		create_unit_button->SetImage("clicked");

@@ -53,11 +53,12 @@ public:
 	void Charge();
 
 	void DrawCD(int ability_number);
-
-private:
+public:
 	UI_Window* pause_window = nullptr;
-	UI_Image* pause_bg = nullptr;
 	UI_Button* quit_game = nullptr;
+private:
+	
+	UI_Image* pause_bg = nullptr;
 	UI_Button* back = nullptr;
 
 
