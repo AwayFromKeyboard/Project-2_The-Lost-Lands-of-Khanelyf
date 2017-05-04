@@ -24,15 +24,21 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 
 Controls:
 
-* Use the arrow keys to move the camera
+* Use the arrow keys or the mouse to move the camera
 
 * Use the left mouse button to select your units
+
+* Click left mouse button and drag to select multiple units
 
 * Use the right mouse button to:
 
   * Attack enemy units
  
+  * Attack enemy buildings
+ 
   * Move the selected troops
+
+  * Pick objects
 
 * F1 to debug mode
 
