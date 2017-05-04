@@ -10,6 +10,7 @@
 #include "BasicBuilding.h"
 #include "j1Gui.h"
 #include "Player.h"
+#include "Provisions.h"
 
 j1Entity::j1Entity()
 {
@@ -86,11 +87,6 @@ bool j1Entity::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-	{
-		ret = (*it)->CleanUp();
-	}
-
 	selected.clear();
 
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
@@ -102,13 +98,20 @@ bool j1Entity::CleanUp()
 	}
 	lists_selected.clear();
 
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();)
+	{
+		list<Entity*>::iterator it_next = ++it;
+		--it;
+		DeleteEntity(*it);
+		it = it_next;
+	}
+
 	return ret;
 }
 
 void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		(*it)->OnColl(*it, *it);
+	col2->parent->OnColl(col2->parent, col1->parent);
 }
 
 Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
@@ -128,6 +131,10 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case barracks:
 		ret = new Barracks(type);
+		break;
+	case provisions:
+		ret = new Provisions(type);
+		break;
 	default:
 		break;
 	}

@@ -60,10 +60,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(entity);
 	AddModule(player);
-	AddModule(questmanager);
 	AddModule(dialogs);
 	// Scene
 	AddModule(scene);
+	AddModule(questmanager);
 
 	// Gui
 	AddModule(gui);
@@ -144,8 +144,6 @@ bool j1App::Start()
 	
 
 	startup_time.Start();
-
-	debug_mode = true;
 
 	debug_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 20), 200, 115, 1);
 	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 20), 200, 115, { 20, 20, 20, 125 }, true);

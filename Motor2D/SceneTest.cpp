@@ -20,6 +20,7 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Building.h"
+#include "Object.h"
 
 SceneTest::SceneTest()
 {
@@ -74,7 +75,7 @@ bool SceneTest::Start()
 	gold = 0;
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 
-	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default);
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
@@ -137,29 +138,20 @@ void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
 	oss << gold;
-	std::string txt = oss.str();
-	gold_txt->SetText(txt);
+	gold_txt->SetText(oss.str());
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint pa = App->render->ScreenToWorld(x, y);
-	pa = App->map->WorldToMap(pa.x, pa.y);
+	std::stringstream oss2;
+	oss2 << current_human_resources << "/" << human_resources_max;
+	human_resources_txt->SetText(oss2.str());
 
-	if (App->pathfinding->IsWalkable(pa)) human_resources_txt->SetText("IS WALKABLE");
-	else human_resources_txt->SetText("IS NOT WALKABLE");
-
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= barb->cost;
-		current_human_resources += barb->human_cost;
 	}
 
-	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= sword->cost;
-		current_human_resources += sword->human_cost;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
 	{
@@ -170,17 +162,22 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		}
 		create_barrack = false;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_U) == key_down)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_I) == key_down)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_I) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_O) == key_down)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_O) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
+	}
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true)
+	{
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
+		App->questmanager->create_provision = false;
 	}
 }
 

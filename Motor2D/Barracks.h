@@ -12,7 +12,6 @@ public:
 
 	bool LoadEntity(iPoint pos);
 
-	bool Start();
 };
 
 #endif

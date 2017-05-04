@@ -43,6 +43,7 @@ bool Hero::LoadEntity(iPoint pos)
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->entity);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
+		collision->parent = this;
 
 		cost = node.child("cost").attribute("value").as_int(0);
 		human_cost = node.child("human_cost").attribute("value").as_int(0);
@@ -75,6 +76,7 @@ bool Hero::LoadEntity(iPoint pos)
 		direction = { 0, 1 };
 
 		state = entity_state::entity_idle;
+		can_hold_object = true;
 	}
 	else LOG("\nERROR, no node found\n");
 	

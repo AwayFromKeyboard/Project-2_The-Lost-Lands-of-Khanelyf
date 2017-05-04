@@ -16,7 +16,7 @@ public:
 	bool LoadEntity(iPoint pos);
 
 public:
-	iPoint mouse_;
+	iPoint mouse_position;
 };
 
 #endif

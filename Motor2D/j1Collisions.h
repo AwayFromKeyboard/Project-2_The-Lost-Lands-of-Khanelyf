@@ -9,6 +9,7 @@
 #include "SDL/include/SDL.h"
 
 class QuadTree;
+class Entity;
 
 enum collider_type
 {
@@ -26,6 +27,7 @@ struct Collider
 	collider_type type;
 	bool print_collider = false;
 	j1Module* callback = nullptr;
+	Entity* parent = nullptr;
 	int offset_x = 0;
 	int offset_y = 0;
 
