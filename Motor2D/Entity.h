@@ -17,8 +17,11 @@ enum entity_state {
 	entity_death,
 	entity_decompose,
 	entity_pick_object,
+
 	object_picked,
 	object_dropped,
+	object_destroyed,
+
 	entity_null
 };
 

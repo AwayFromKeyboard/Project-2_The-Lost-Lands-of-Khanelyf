@@ -46,6 +46,9 @@ bool Object::Update(float dt)
 
 	case entity_idle:
 		collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+		if (death_timer.ReadSec() > 10 && pickable == false) {
+			state = object_destroyed;
+		}
 		break;
 
 	case object_picked:
@@ -64,8 +67,16 @@ bool Object::Update(float dt)
 		{
 			pickable = false;
 			App->questmanager->GetCurrentQuest()->progress++;
+			death_timer.Start();
 		}
 		break;
+
+	case object_destroyed:
+		if (collision != nullptr)
+			App->collisions->EraseCollider(collision);
+		to_delete = true;
+		break;
+
 	}
 
 	return true;
