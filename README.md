@@ -40,6 +40,12 @@ Controls:
 
 * B to constuct barrack(then you can create 2 types of units with left click)
 
+* X + left click to use Battlecry ability (attack buff to allies)
+
+* C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
+
+* V + left click on enemy at range to use Charge (heavy damage to one enemy)
+
 Goal:
 
 Follow and complete the quests without getting your hero killed. 
