@@ -2,6 +2,7 @@
 #define _OBJECT_H_
 
 #include "Entity.h"
+#include "j1Timer.h"
 
 struct Collider;
 
@@ -31,9 +32,7 @@ public:
 	entity_name GetName();
 
 public:
-
 	entity_name name;
-	bool to_delete = false;
 
 public:
 
@@ -46,6 +45,7 @@ public:
 
 private:
 	SDL_Rect aux_collision_rect = NULLRECT;
+	j1Timer death_timer;
 };
 
 #endif
