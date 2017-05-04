@@ -199,9 +199,11 @@ bool Player::PreUpdate()
 
 		if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
 			draw_battlecry_range = false;
+			range_visited.clear();
 		}
 		if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
 			draw_whirlwind_range = false;
+			range_visited.clear();
 		}
 		if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
 			draw_charge_range = false;
