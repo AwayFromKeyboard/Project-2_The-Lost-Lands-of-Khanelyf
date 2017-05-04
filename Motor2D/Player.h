@@ -25,6 +25,7 @@ class Unit;
 class Building;
 class UI_Window;
 class UI_Text;
+class UI_Image;
 class UI_Button;
 class Hero;
 class Object;
@@ -54,6 +55,12 @@ public:
 	void DrawCD(int ability_number);
 
 private:
+	UI_Window* pause_window = nullptr;
+	UI_Image* pause_bg = nullptr;
+	UI_Button* quit_game = nullptr;
+	UI_Button* back = nullptr;
+
+
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;
@@ -107,6 +114,7 @@ private:
 	UI_Button* charge_ability = nullptr;
 
 public:
+	bool pause_status=false;
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 

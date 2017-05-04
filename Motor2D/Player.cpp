@@ -31,6 +31,20 @@ bool Player::Start()
 {
 	bool ret = true;
 
+	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
+	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
+	quit_game = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
+	quit_game->AddImage("standard", { 25, 2695, 186, 31 });
+	quit_game->SetImage("standard");
+	quit_game->AddImage("clicked", { 25, 2768, 186, 31 });
+	quit_game->AddImage("hovered", { 26, 2732, 186, 31 });
+	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	back->AddImage("standard", { 25, 2695, 186, 31 });
+	back->SetImage("standard");
+	back->AddImage("clicked", { 25, 2768, 186, 31 });
+	back->AddImage("hovered", { 26, 2732, 186, 31 });
+	pause_window->SetEnabledAndChilds(false);
+
 	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
 	life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
 	damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
@@ -135,6 +149,10 @@ bool Player::PreUpdate()
 {
 	bool ret = true;
 	
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == key_down || back->MouseClickEnterLeft())
+		pause_status = !pause_status; 
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
 
@@ -155,6 +173,19 @@ bool Player::PreUpdate()
 		ShellExecute(NULL, "open", "https://github.com/AwayFromKeyboard/Project-2_The-Lost-Lands-of-Khanelyf/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 
 
+	if (pause_status && !pause_window->enabled) {
+
+		pause_window->SetEnabledAndChilds(true);
+
+		
+	}
+	else if((!pause_status && pause_window->enabled)){
+		pause_window->SetEnabledAndChilds(false);
+	}
+
+	if(quit_game->MouseClickEnterLeft())
+		App->EndSDL();
+	
 	if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 		create_unit_button->SetImage("clicked");
 
