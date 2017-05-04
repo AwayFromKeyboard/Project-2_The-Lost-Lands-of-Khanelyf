@@ -79,9 +79,10 @@ private:
 	Quest* current_quest = nullptr;
 
 public:
-	bool create_provision = false;
-	iPoint provision_quest1 = { 20, 21 };
-	iPoint provision_quest2 = { 6, 19 };
+	bool create_provision = true;
+	iPoint provision_quest1 = NULLPOINT;
+	iPoint provision_quest2 = NULLPOINT;
+	SDL_Rect provision_quest_rect = NULLRECT;
 };
 
 #endif

@@ -363,7 +363,7 @@ bool Player::Update(float dt)
 			Collider* unit = (*it)->GetCollider();
 
 			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
-				(*it)->KillEntity();
+				if ((*it)->life > 0) (*it)->KillEntity();
 		}
 	}
 

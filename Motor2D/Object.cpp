@@ -60,7 +60,7 @@ bool Object::Update(float dt)
 		aux_collision_rect = NULLRECT;
 		position = App->player->GetHero()->position;
 		state = entity_idle;
-		if (App->questmanager->GetCurrentQuest()->type == quest_type::move_object && App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions &&  App->questmanager->provision_quest1.x <= position.x >= App->questmanager->provision_quest2.x && App->questmanager->provision_quest1.y <= position.y >= App->questmanager->provision_quest2.y)
+		if (App->questmanager->GetCurrentQuest()->type == quest_type::move_object && App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions &&  position.PointInRect(App->questmanager->provision_quest_rect.x, App->questmanager->provision_quest_rect.y, App->questmanager->provision_quest_rect.w, App->questmanager->provision_quest_rect.h))
 		{
 			pickable = false;
 			App->questmanager->GetCurrentQuest()->progress++;

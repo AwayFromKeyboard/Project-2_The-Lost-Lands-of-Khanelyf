@@ -60,10 +60,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(entity);
 	AddModule(player);
-	AddModule(questmanager);
 	AddModule(dialogs);
 	// Scene
 	AddModule(scene);
+	AddModule(questmanager);
 
 	// Gui
 	AddModule(gui);
