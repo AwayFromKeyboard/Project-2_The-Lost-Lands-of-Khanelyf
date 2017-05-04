@@ -60,7 +60,9 @@ private:
 	
 	UI_Image* pause_bg = nullptr;
 	UI_Button* back = nullptr;
-
+	UI_Text* pause_menu_txt = nullptr;
+	UI_Text* quit_txt = nullptr;
+	UI_Text* back_txt = nullptr;
 
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
@@ -116,6 +118,8 @@ private:
 
 public:
 	bool pause_status=false;
+	bool button_on_clicked = false;
+	
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
@@ -131,6 +135,7 @@ private:
 	j1Timer battlecry_timer;
 	j1Timer whirlwind_timer;
 	j1Timer charge_timer;
+	j1Timer button_clicked;
 };
 
 

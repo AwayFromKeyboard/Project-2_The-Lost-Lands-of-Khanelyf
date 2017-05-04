@@ -43,7 +43,17 @@ bool Player::Start()
 	back->SetImage("standard");
 	back->AddImage("clicked", { 25, 2768, 186, 31 });
 	back->AddImage("hovered", { 26, 2732, 186, 31 });
+	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
+	pause_menu_txt->SetText("PAUSE");
+	quit_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 140) }, App->font->default);
+	quit_txt->SetText("Quit");
+	quit_txt->click_through = true;
+	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, App->font->default);
+	back_txt->SetText("Resume Game");
+	back_txt->click_through = true;
 	pause_window->SetEnabledAndChilds(false);
+
+
 
 	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
 	life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
@@ -156,10 +166,15 @@ bool Player::PreUpdate()
 
 	if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
-		SDL_Delay(200);
-		pause_status = !pause_status;
+		button_clicked.Start();
+		button_on_clicked = true;
+		
 	}
-
+	if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
+		pause_status = !pause_status;
+		button_on_clicked = false;
+		back->SetImage("standard");
+	}
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
 
@@ -191,14 +206,10 @@ bool Player::PreUpdate()
 	//backbutton
 	if (back->MouseEnter())
 		back->SetImage("hovered");
-	else if(back->MouseOut())
+	else if(back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
 
-	/*if (back->MouseClickEnterLeft()) {
-		back->SetImage("clicked");
-		SDL_Delay(2000);
-	}
-	*/
+	
 
 	//quitbutton
 	if (quit_game->MouseEnter())
@@ -206,10 +217,9 @@ bool Player::PreUpdate()
 	else if (quit_game->MouseOut())
 		quit_game->SetImage("standard");
 	
-	if (quit_game->MouseClickEnterLeft()) {
+	if (quit_game->MouseClickEnterLeft()) 
 		quit_game->SetImage("clicked");
-		SDL_Delay(200);
-	}
+	
 	
 	if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 		create_unit_button->SetImage("clicked");
