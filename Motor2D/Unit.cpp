@@ -756,9 +756,6 @@ void Unit::BuildingAttack()
 			state = entity_idle;
 			attacked_building->state = entity_death;
 			attacked_building = nullptr;
-			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
-				App->questmanager->GetCurrentQuest()->progress++;
-
 		}
 		shout_fx = true;
 	}

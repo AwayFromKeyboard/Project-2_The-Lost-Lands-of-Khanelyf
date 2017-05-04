@@ -32,13 +32,17 @@ bool QuestManager::Start() {
 	CreateQuest("Conquer the north fortress!", "Attack to the enemy houses near the fortress to conquer them", quest_type::conquer, quest_id::quest_conquer, 2, 20, titles::mayor, 3, false);
 	CreateQuest("Give provisions to the other village!", "Go to the captured village and leave the provisions there", quest_type::move_object, quest_id::quest_provisions, 1, 100, titles::mayor, 3, false);
 
-
 	CreateQuest("", "", quest_type::type_null, quest_id::quest_null, 999, 999, titles::titles_null, 999, false);
 
 	// Variables
 	provision_quest1 = App->map->MapToWorldPoint({ 20, 21 });
 	provision_quest2 = App->map->MapToWorldPoint({ 6, 19 });
 	provision_quest_rect = { provision_quest2.x, provision_quest2.y, provision_quest1.x - provision_quest2.x, provision_quest1.y - provision_quest2.y };
+
+	// Dialogs
+	App->dialogs->id = current_quest->id;
+	App->dialogs->NPCstate = 0;
+	App->dialogs->dialogueStep = 0;
 
 	return true;
 }

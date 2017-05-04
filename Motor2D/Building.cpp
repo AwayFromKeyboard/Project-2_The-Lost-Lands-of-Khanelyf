@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Barracks.h"
 #include "Functions.h"
+#include "QuestManager.h"
 
 Building::Building()
 {
@@ -58,6 +59,8 @@ bool Building::Update(float dt)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
 		if (type == entity_type::enemy_building) {
+			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
+				App->questmanager->GetCurrentQuest()->progress++;
 			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
 		}
 
