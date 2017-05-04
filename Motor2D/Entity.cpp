@@ -5,8 +5,7 @@ void Entity::LifeBar(iPoint size, iPoint offset)
 {
 	if (selected || type == entity_type::enemy || type == entity_type::enemy_building)
 	{
-		SDL_Rect rect = NULLRECT;
-		rect = { position.x + offset.x, position.y + offset.y, size.x, size.y };
+		SDL_Rect rect = { position.x + offset.x, position.y + offset.y, size.x, size.y };
 		SDL_Rect life_rect = { rect.x, rect.y, rect.w, rect.h};
 
 		life_rect.w = (rect.w*life) / max_life;
