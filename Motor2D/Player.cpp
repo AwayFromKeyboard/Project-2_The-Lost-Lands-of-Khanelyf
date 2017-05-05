@@ -277,7 +277,7 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 	
-	if (App->minimap->IsMouseOver())
+	if (!App->minimap->IsMouseOver())
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
 			iPoint mouse;

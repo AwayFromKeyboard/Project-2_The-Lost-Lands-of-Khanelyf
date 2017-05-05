@@ -19,10 +19,10 @@ Minimap::~Minimap()
 
 bool Minimap::Start() 
 {
-	map_rect = { 1388,913,273,139 };
+	map_rect = { 1389,912,273,139 };
 
-	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 1388, 913 }, 273, 139, 8);
-	minimap_background = (UI_Image*)minimap_window->CreateImage({ 1388, 913 }, { 1237, 810, 273, 139 });
+	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 1389, 912 }, 273, 139, 8);
+	minimap_background = (UI_Image*)minimap_window->CreateImage({ 1389, 912 }, { 1237, 810, 273, 139 });
 
 	map_size = { 120, 110 };
 
@@ -45,6 +45,8 @@ bool Minimap::Start()
 	}
 
 	update_timer.Start();
+
+	return true;
 }
 
 bool Minimap::PreUpdate()
@@ -139,19 +141,18 @@ bool Minimap::CleanUp()
 	return ret;
 }
 
-
-
 void Minimap::Handle_Input()
 {
-	if (minimap_background->MouseClickEnterLeftIntern()) {
-		iPoint mouse;
-		App->input->GetMousePosition(mouse.x, mouse.y);
-		MoveCameraToPoint(mouse.x, mouse.y);
-	}
-	else if (minimap_background->MouseClickEnterRightIntern()) {
-		iPoint mouse;
-		App->input->GetMousePosition(mouse.x, mouse.y);
-		MoveUnitsToPoint(mouse.x, mouse.y);
+	iPoint mouse;
+	App->input->GetMousePosition(mouse.x, mouse.y);
+	if (mouse.PointInRect(map_rect.x, map_rect.y, map_rect.w, map_rect.h))
+	{
+		if (minimap_background->MouseClickEnterLeftIntern()) {
+			MoveCameraToPoint(mouse.x, mouse.y);
+		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+			MoveUnitsToPoint(mouse.x, mouse.y);
+		}
 	}
 }
 
