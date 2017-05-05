@@ -180,3 +180,31 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+void j1Audio::PauseMusic()
+{
+
+	Mix_PauseMusic();
+
+}
+
+void j1Audio::ResumeMusic()
+{
+	Mix_ResumeMusic();
+
+}
+
+void j1Audio::StopMusic()
+{
+	Mix_HaltMusic();
+}
+
+void j1Audio::ChangeVolume(int volume)
+{
+	Mix_VolumeMusic(volume);
+}
+
+void j1Audio::DefaultVolume()
+{
+	Mix_VolumeMusic(def_volume);
+}

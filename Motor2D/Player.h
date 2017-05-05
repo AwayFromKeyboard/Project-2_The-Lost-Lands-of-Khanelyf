@@ -60,8 +60,12 @@ private:
 	
 	UI_Image* pause_bg = nullptr;
 	UI_Button* back = nullptr;
+	UI_Button* options = nullptr;
+	UI_Button* save = nullptr;
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
+	UI_Text* save_txt = nullptr;
+	UI_Text* options_txt = nullptr;
 	UI_Text* back_txt = nullptr;
 
 	UI_Window* attributes_window = nullptr;
