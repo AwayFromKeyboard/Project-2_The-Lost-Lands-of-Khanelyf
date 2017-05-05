@@ -27,7 +27,7 @@ j1App* App = NULL;
 int main(int argc, char* args[])
 {
 	LOG("Engine starting ... %d");
-	ReportMemoryLeaks();
+	
 	main_state state = main_state::create;
 	int result = EXIT_FAILURE;
 
@@ -107,7 +107,7 @@ int main(int argc, char* args[])
 	}
 
 	LOG("... Bye! :)\n");
-
+	ReportMemoryLeaks();
 	// Dump memory leaks
 	return result;
 }
