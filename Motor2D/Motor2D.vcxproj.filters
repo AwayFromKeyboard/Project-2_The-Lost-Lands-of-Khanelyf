@@ -111,6 +111,21 @@
     </ClCompile>
     <ClCompile Include="Minimap.cpp">
       <Filter>Engine\1. Modules</Filter>
+	</ClCompile>
+    <ClCompile Include="DialogueManager.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\4. Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Provisions.cpp">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +250,15 @@
     <ClInclude Include="Barracks.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="DialogueManager.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Provisions.h">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Engine\4. Entities\Objects</Filter>
+	</ClInclude>
     <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
@@ -246,17 +270,20 @@
     <ResourceCompile Include="2D Engine.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\Game\Units.xml">
-      <Filter>Engine\4. Entities</Filter>
-    </Xml>
-    <Xml Include="..\Game\test.xml">
-      <Filter>Engine\4. Entities\Troops</Filter>
-    </Xml>
     <Xml Include="..\Game\config.xml">
       <Filter>Engine\5. Tools</Filter>
     </Xml>
     <Xml Include="..\Game\Buildings.xml">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </Xml>
+    <Xml Include="..\Game\Dialogues.xml">
+      <Filter>Engine\5. Tools</Filter>
+    </Xml>
+    <Xml Include="..\Game\Units.xml">
+      <Filter>Engine\4. Entities\Troops</Filter>
+    </Xml>
+    <Xml Include="..\Game\Objects.xml">
+      <Filter>Engine\4. Entities\Objects</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +319,9 @@
     </Filter>
     <Filter Include="Engine\4. Entities\Buildings">
       <UniqueIdentifier>{0c97d919-f506-417a-886a-52e1513121ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. Entities\Objects">
+      <UniqueIdentifier>{765f7eb1-3ccd-4a83-bdf3-1a8962346497}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

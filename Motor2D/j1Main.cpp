@@ -5,6 +5,9 @@
 #include "j1App.h"
 #include "MemLeaks.h"
 
+#include "Brofiler\Brofiler.h"
+#pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
+
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "SDL/include/SDL.h"
@@ -33,9 +36,9 @@ int main(int argc, char* args[])
 
 	while(state != exit_)
 	{
+		BROFILER_FRAME("Main")
 		switch(state)
 		{
-
 			// Allocate the engine --------------------------------------------
 			case create:
 			LOG("CREATION PHASE ===============================");

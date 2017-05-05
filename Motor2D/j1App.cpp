@@ -22,6 +22,7 @@
 #include "Player.h"
 #include "QuestManager.h"
 #include "Minimap.h"
+#include "DialogueManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -45,6 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player();
 	questmanager = new QuestManager();
 	minimap = new Minimap();
+	dialogs = new DialogueManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -60,10 +62,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(entity);
 	AddModule(player);
-	AddModule(questmanager);
-
+	AddModule(dialogs);
 	// Scene
 	AddModule(scene);
+	AddModule(questmanager);
 
 	// Minimap
 	AddModule(minimap);
@@ -147,8 +149,6 @@ bool j1App::Start()
 	
 
 	startup_time.Start();
-
-	debug_mode = true;
 
 	debug_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 20), 200, 115, 1);
 	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 20), 200, 115, { 20, 20, 20, 125 }, true);

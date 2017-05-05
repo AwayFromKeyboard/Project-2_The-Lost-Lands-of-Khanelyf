@@ -1,18 +1,19 @@
-#ifndef _BUILDING_H_
-#define _BUILDING_H_
+#ifndef _OBJECT_H_
+#define _OBJECT_H_
 
 #include "Entity.h"
+#include "j1Timer.h"
 
 struct Collider;
 
 enum entity_name;
 enum entity_type;
 
-class Building : public Entity
+class Object : public Entity
 {
 public:
-	Building();
-	~Building();
+	Object();
+	~Object();
 
 	bool LoadEntity();
 	bool Start();
@@ -31,16 +32,20 @@ public:
 	entity_name GetName();
 
 public:
-
 	entity_name name;
-	int building_rect_number;
 
 public:
+
 	iPoint offset = NULLPOINT;
 	SDL_Rect tex_rect = NULLRECT;
 
 public:
-	bool is_selected = false;
+	bool is_carried = false;
+	bool pickable = true;
+
+private:
+	SDL_Rect aux_collision_rect = NULLRECT;
+	j1Timer death_timer;
 };
 
 #endif

@@ -95,10 +95,3 @@ bool BasicBuilding::LoadEntity(iPoint pos)
 
 	return ret;
 }
-
-bool BasicBuilding::Start() 
-{
-	bool ret = true;
-
-	return ret;
-}

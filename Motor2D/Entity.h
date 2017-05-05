@@ -16,6 +16,12 @@ enum entity_state {
 	entity_attack,
 	entity_death,
 	entity_decompose,
+	entity_pick_object,
+
+	object_picked,
+	object_dropped,
+	object_destroyed,
+
 	entity_null
 };
 
@@ -81,7 +87,6 @@ public:
 	int cost = 0; // only for allies
 
 	iPoint position = NULLPOINT;
-	iPoint pos2 = NULLPOINT;
 	Collider* collision = nullptr;
 	SDL_Texture* entity_texture;
 	Animator* animator;

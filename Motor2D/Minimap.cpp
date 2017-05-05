@@ -81,7 +81,7 @@ iPoint Minimap::WorldToMinimap(const iPoint &world_pos) const
 void Minimap::DrawMinimap() {
 	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 		if ((*it)->type == entity_type::player) {
-			App->render->DrawQuad({ WorldToMinimap((*it)->pos2).x, 500, 5, 5 }, allies.r, allies.g, allies.b, allies.a, true, false);
+			App->render->DrawQuad({ WorldToMinimap((*it)->position).x, 500, 5, 5 }, allies.r, allies.g, allies.b, allies.a, true, false);
 		}
 	}
 }
