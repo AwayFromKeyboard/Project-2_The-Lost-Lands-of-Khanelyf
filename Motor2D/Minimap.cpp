@@ -19,10 +19,10 @@ Minimap::~Minimap()
 
 bool Minimap::Start() 
 {
-	map_rect = { 150,150,273,139 };
+	map_rect = { 1388,913,273,139 };
 
-	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 150, 150 }, 273, 139, 8); // 1388 190
-	minimap_background = (UI_Image*)minimap_window->CreateImage({ 150, 150 }, { 1237, 810, 273, 139 });
+	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 1388, 913 }, 273, 139, 8);
+	minimap_background = (UI_Image*)minimap_window->CreateImage({ 1388, 913 }, { 1237, 810, 273, 139 });
 
 	map_size = { 120, 110 };
 
@@ -63,18 +63,18 @@ bool Minimap::PreUpdate()
 			switch ((*it)->GetType())
 			{
 			case player:
-				cells[map_rect.w * pos.y + pos.x].cell_color = { 20,20,255,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x * pos.y + pos.x].cell_color = { 20,20,255,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case ally:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,255,20,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case npc:
 				break;
 			case enemy:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 255,20,20,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 255,20,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case building:
 				
@@ -82,12 +82,12 @@ bool Minimap::PreUpdate()
 			case object:
 				break;
 			case ally_building:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 255,255,20,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 255,255,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case enemy_building:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,255,255,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 20,255,255,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case null:
 				break;
@@ -114,7 +114,6 @@ bool Minimap::Draw()
 {
 	bool ret = true;
 
-	//App->render->DrawQuad(map_rect, 0, 0, 0, 255, true, false);
 	App->scene->LayerDrawQuad(map_rect, 0, 0, 0, 255, true, false, 10);
 
 	// Draw Units in Minimap
@@ -125,7 +124,6 @@ bool Minimap::Draw()
 		color = units_to_print[i].cell_color;
 		
 		App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);
-		//App->render->DrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false);
 	}
 
 	return ret;
@@ -165,18 +163,18 @@ void Minimap::Enable()
 			switch ((*it)->GetType())
 			{
 			case player:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,20,255,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 20,20,255,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case ally:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,255,20,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case npc:
 				break;
 			case enemy:
-				cells[map_rect.w  * pos.y + pos.x].cell_color = { 255,20,20,255 };
-				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				cells[map_size.x  * pos.y + pos.x].cell_color = { 255,20,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case building:
 				break;
