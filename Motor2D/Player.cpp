@@ -18,6 +18,7 @@
 #include "j1Window.h"
 #include "Object.h"
 #include "Building.h"
+#include "Minimap.h"
 
 Player::Player()
 {
@@ -275,88 +276,90 @@ bool Player::PreUpdate()
 bool Player::Update(float dt)
 {
 	bool ret = true;
+	
+	if (App->minimap->IsMouseOver())
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
+			iPoint mouse;
+			App->input->GetMouseWorld(mouse.x, mouse.y);
+			App->entity->UnselectEverything();
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+				Collider* unit = (*it)->GetCollider();
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
-		iPoint mouse;
-		App->input->GetMouseWorld(mouse.x, mouse.y);
-		App->entity->UnselectEverything();
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-			Collider* unit = (*it)->GetCollider();
-			
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
-				(*it)->SetSelected(true);
-			}
-			if ((*it)->GetSelected()) {
-				if ((*it)->GetType() == building) {
-					App->entity->UnselectEverything();
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
 					(*it)->SetSelected(true);
-					barracks_ui_window->SetEnabledAndChilds(true);
-					break;
 				}
-				else {
-					App->entity->selected.push_back((Unit*)*it);
-				}		
+				if ((*it)->GetSelected()) {
+					if ((*it)->GetType() == building) {
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+						barracks_ui_window->SetEnabledAndChilds(true);
+						break;
+					}
+					else {
+						App->entity->selected.push_back((Unit*)*it);
+					}
+				}
+			}
+		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+			iPoint mouse;
+			App->input->GetMouseWorld(mouse.x, mouse.y);
+			iPoint mouse_pathfinding;
+			App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+			iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+			p = App->map->WorldToMap(p.x, p.y);
+			bool mouse_over_entity = false;
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				Collider* unit = (*it)->GetCollider();
+
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+					switch ((*it)->GetType())
+					{
+					case entity_type::ally:
+						MoveToTile(p);
+						mouse_over_entity = true;
+						break;
+					case entity_type::enemy:
+						SetAttackingEnemy((Unit*)*it);
+						mouse_over_entity = true;
+						break;
+					case entity_type::npc:
+						MoveToTile(p);
+						mouse_over_entity = true;
+						break;
+					case entity_type::player:
+						MoveToTile(p);
+						mouse_over_entity = true;
+						break;
+					case entity_type::building:
+						mouse_over_entity = true;
+						break;
+					case entity_type::object:
+						SetPickingObject((Object*)*it);
+						mouse_over_entity = true;
+						break;
+					case entity_type::enemy_building:
+						SetAttackingBuilding((Building*)*it);
+						mouse_over_entity = true;
+						break;
+					default:
+						break;
+					}
+				}
+
+				if (mouse_over_entity)
+					continue;
+			}
+
+			if (!mouse_over_entity) {
+				MoveToTile(p);
 			}
 		}
 	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
-		iPoint mouse;
-		App->input->GetMouseWorld(mouse.x, mouse.y);
-		iPoint mouse_pathfinding;
-		App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
-		iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
-		p = App->map->WorldToMap(p.x, p.y);
-		bool mouse_over_entity = false;
-
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-		{
-			Collider* unit = (*it)->GetCollider();
-
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-				switch ((*it)->GetType())
-				{
-				case entity_type::ally:
-					MoveToTile(p);
-					mouse_over_entity = true;
-					break;
-				case entity_type::enemy:
-					SetAttackingEnemy((Unit*)*it);
-					mouse_over_entity = true;
-					break;
-				case entity_type::npc:
-					MoveToTile(p);
-					mouse_over_entity = true;
-					break;
-				case entity_type::player:
-					MoveToTile(p);
-					mouse_over_entity = true;
-					break;
-				case entity_type::building:
-					mouse_over_entity = true;
-					break;
-				case entity_type::object:
-					SetPickingObject((Object*)*it);
-					mouse_over_entity = true;
-					break;
-				case entity_type::enemy_building:
-					SetAttackingBuilding((Building*)*it);
-					mouse_over_entity = true;
-					break;
-				default:
-					break;
-				}
-			}
-
-			if (mouse_over_entity)
-				continue;
-		}
-		
-		if (!mouse_over_entity) {
-			MoveToTile(p);
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_K) == key_down) {
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down) {
 
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);

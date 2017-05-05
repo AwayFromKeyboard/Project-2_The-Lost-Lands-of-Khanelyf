@@ -148,6 +148,18 @@ void Minimap::Handle_Input()
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		MoveCameraToPoint(mouse.x, mouse.y);
 	}
+	else if (minimap_background->MouseClickEnterRightIntern()) {
+		iPoint mouse;
+		App->input->GetMousePosition(mouse.x, mouse.y);
+		MoveUnitsToPoint(mouse.x, mouse.y);
+	}
+}
+
+bool Minimap::IsMouseOver()
+{
+	iPoint mouse;
+	App->input->GetMousePosition(mouse.x, mouse.y);
+	return mouse.PointInRect(map_rect.x, map_rect.y, map_rect.w, map_rect.h);
 }
 
 void Minimap::Enable()

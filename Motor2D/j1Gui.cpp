@@ -705,6 +705,32 @@ bool UI_Element::MouseClickOutLeftIntern()
 	return false;
 }
 
+bool UI_Element::MouseClickEnterRightIntern()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+	{
+		if (clicked)
+		{
+			clicked = false;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UI_Element::MouseClickOutRightIntern()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_up)
+	{
+		if (clicked)
+		{
+			clicked = false;
+			return true;
+		}
+	}
+}
+
+
 void UI_Element::SetDebugColor(SDL_Color _color)
 {
 	color.r = _color.r; color.g = _color.g; color.b = _color.b; color.a = _color.a;

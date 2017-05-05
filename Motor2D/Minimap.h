@@ -45,13 +45,12 @@ public:
 	// Handle_input_GUI
 	void Handle_Input();
 
+	// Mouse Over
+	bool IsMouseOver();
+
 	// Disable/Enable Module
 	void Enable();
 	void Disable();
-
-	//bool Load(pugi::xml_node &data);
-
-	//bool Save(pugi::xml_node &data) const;
 
 	// MiniMap Input Funtionality ------------------
 	void MoveCameraToPoint(int x = 0, int y = 0);
@@ -67,10 +66,13 @@ public:
 	UI_Window*	minimap_window = nullptr;
 	UI_Image*	minimap_background = nullptr;
 
+
+public:
+	SDL_Rect    map_rect = { 0,0,0,0 };
+
 private:
 	// Map Data
 	bool		in_minimap = false;
-	SDL_Rect    map_rect = { 0,0,0,0 };
 	SDL_Rect	minimap_size = { 0,0,0,0 };
 	fPoint		half_tile_size = { 0.0f,0.0f };
 	iPoint		map_size = NULLPOINT;
