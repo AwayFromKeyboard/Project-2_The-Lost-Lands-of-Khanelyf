@@ -76,8 +76,9 @@ private:
 	UI_Text* level_points_txt = nullptr;
 
 	Hero* hero = nullptr;
-private:
+public:
 	void MoveToTile(iPoint tile);
+private:
 	void SetAttackingEnemy(Unit* enemy);
 	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();

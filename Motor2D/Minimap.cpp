@@ -4,20 +4,27 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Map.h"
+#include "j1Input.h"
+#include "Player.h"
 
 Minimap::Minimap()
 {
 	name = "Minimap";
+}
 
-	App->gui->SetDefaultInputTarget((j1Module*)App->player);
+Minimap::~Minimap()
+{
+	CleanUp();
+}
 
-	minimap_background = (UI_Image*)App->gui->GenerateUI_Element(IMG);
-	minimap_background->SetBox(map_rect);
-	minimap_background->ChangeTextureRect({ 1030, 600, 325, 161 });
-	minimap_background->ChangeTextureId(HUD);
+bool Minimap::Start() 
+{
+	map_rect = { 150,150,273,139 };
 
-	map_size.x = 120;
-	map_size.y = 120;
+	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 150, 150 }, 273, 139, 8); // 1388 190
+	minimap_background = (UI_Image*)minimap_window->CreateImage({ 150, 150 }, { 1237, 810, 273, 139 });
+
+	map_size = { 120, 110 };
 
 	half_tile_size.x = ((float)(map_rect.w) / map_size.x)* 0.5f;
 	half_tile_size.y = ((float)(map_rect.h + 2) / map_size.y)* 0.5f;
@@ -37,25 +44,58 @@ Minimap::Minimap()
 		cells[i].cell_position.y += pos.y;
 	}
 
-	// Generate Texture
-	minimap_fow = SDL_CreateRGBSurface(NULL, map_rect.w, map_rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-	SDL_SetSurfaceBlendMode(minimap_fow, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-	SDL_FillRect(minimap_fow, NULL, SDL_MapRGBA(minimap_fow->format, 0, 0, 0, 255));
-
 	update_timer.Start();
-	fow_timer.Start();
-
-
-}
-
-Minimap::~Minimap()
-{
 }
 
 bool Minimap::PreUpdate()
 {
 	bool ret = true;
 
+	if (update_timer.Read() > MINIMAP_UPDATE_RATE)
+	{
+		units_to_print.clear();
+		units_to_print.reserve(App->entity->entity_list.size());
+
+		iPoint pos = { 0,0 };
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
+			pos = App->map->WorldToMap((*it)->position.x, (*it)->position.y);
+			switch ((*it)->GetType())
+			{
+			case player:
+				cells[map_rect.w * pos.y + pos.x].cell_color = { 20,20,255,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case ally:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case npc:
+				break;
+			case enemy:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 255,20,20,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case building:
+				
+				break;
+			case object:
+				break;
+			case ally_building:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 255,255,20,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case enemy_building:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,255,255,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case null:
+				break;
+			}
+		}
+		update_timer.Start();
+
+	}
 
 	return ret;
 }
@@ -64,6 +104,7 @@ bool Minimap::PostUpdate()
 {
 	bool ret = true;
 
+	Handle_Input();
 	Draw();
 
 	return ret;
@@ -71,389 +112,128 @@ bool Minimap::PostUpdate()
 
 bool Minimap::Draw()
 {
-	return false;
+	bool ret = true;
+
+	//App->render->DrawQuad(map_rect, 0, 0, 0, 255, true, false);
+	App->scene->LayerDrawQuad(map_rect, 0, 0, 0, 255, true, false, 10);
+
+	// Draw Units in Minimap
+	SDL_Color color;
+	int size = units_to_print.size();
+	for (int i = 0; i < size; i++)
+	{
+		color = units_to_print[i].cell_color;
+		
+		App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);
+		//App->render->DrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false);
+	}
+
+	return ret;
 }
 
 bool Minimap::CleanUp()
 {
 	bool ret = true;
 
+	cells.clear();
+	units_to_print.clear();
+
 	return ret;
 }
 
-iPoint Minimap::WorldToMinimap(const iPoint &world_pos) const
+
+
+void Minimap::Handle_Input()
 {
-	iPoint mini_map_pos;
-
-	//iPoint map_pos = App->map->WorldToMapPoint(world_pos);
-	iPoint upper_left_corner = App->map->MapToWorldPoint({ -54, 54 });
-	mini_map_pos.x = rect.x + (world_pos.x * 0.1f);
-	mini_map_pos.y = rect.y + (world_pos.y * 0.1f);
-
-	return mini_map_pos;
-}
-
-void Minimap::DrawMinimap() {
-	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		if ((*it)->type == entity_type::player) {
-			App->render->DrawQuad({ WorldToMinimap((*it)->position).x, 500, 5, 5 }, allies.r, allies.g, allies.b, allies.a, true, false);
-		}
+	if (minimap_background->MouseClickEnterLeftIntern()) {
+		iPoint mouse;
+		App->input->GetMousePosition(mouse.x, mouse.y);
+		MoveCameraToPoint(mouse.x, mouse.y);
 	}
 }
 
-/*
-#include "Hud_MinimapPanel.h"
-#include "j1App.h"
-#include "j1Gui.h"
-#include "j1Input.h"
-#include "j1Map.h"
-#include "j1Render.h"
-#include "j1Player.h"
-#include "j1EntitiesManager.h"
-
-#include "Hud_SelectionPanel.h"
-
-//UI Elements
-#include "UI_Element.h"
-#include "UI_Image.h"
-
-
-Minimap_Panel::Minimap_Panel() : map_rect({ 1030,600,325,161 }), minimap_size({0, 0, 325, 161})
+void Minimap::Enable()
 {
-App->gui->SetDefaultInputTarget((j1Module*)App->player);
+	units_to_print.clear();
+	units_to_print.reserve(App->entity->entity_list.size());
 
-minimap_background = (UI_Image*)App->gui->GenerateUI_Element(IMG);
-minimap_background->SetBox(map_rect);
-minimap_background->ChangeTextureRect({1030, 600, 325, 161});
-minimap_background->ChangeTextureId(HUD);
-
-map_size.x = 120;
-map_size.y = 120;
-
-half_tile_size.x = ((float)(map_rect.w) / map_size.x)* 0.5f;
-half_tile_size.y = ((float)(map_rect.h+2) / map_size.y)* 0.5f;
-
-int size = (map_size.x * map_size.y);
-
-minimap_cell new_cell;
-new_cell.cell_position = { map_rect.x + map_rect.w / 2, map_rect.y };
-
-iPoint pos;
-cells.reserve(size);
-for (int i = 0; i < size; i++)
-{
-pos = MiniMToScreen(i%map_size.x, i/map_size.y);
-cells.push_back(new_cell);
-cells[i].cell_position.x += pos.x;
-cells[i].cell_position.y += pos.y;
+	iPoint pos = { 0,0 };
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+	{
+		{
+			pos = App->map->WorldToMap((*it)->position.x, (*it)->position.y);
+			switch ((*it)->GetType())
+			{
+			case player:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,20,255,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case ally:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case npc:
+				break;
+			case enemy:
+				cells[map_rect.w  * pos.y + pos.x].cell_color = { 255,20,20,255 };
+				units_to_print.push_back(cells[map_rect.w * pos.y + pos.x]);
+				break;
+			case building:
+				break;
+			case object:
+				break;
+			case ally_building:
+				break;
+			case enemy_building:
+				break;
+			case null:
+				break;
+			}
+		}
+		update_timer.Start();
+	}
 }
 
-// Generate Texture
-minimap_fow = SDL_CreateRGBSurface(NULL, map_rect.w, map_rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-SDL_SetSurfaceBlendMode(minimap_fow, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-SDL_FillRect(minimap_fow, NULL, SDL_MapRGBA(minimap_fow->format,0,0,0,255));
-
-update_timer.Start();
-fow_timer.Start();
-
-}
-
-Minimap_Panel::~Minimap_Panel()
+void Minimap::Disable()
 {
-CleanUp();
+	units_to_print.clear();
 }
 
-bool Minimap_Panel::CleanUp()
+void Minimap::MoveCameraToPoint(int x, int y)
 {
-if (minimap_fow_texture != nullptr) SDL_DestroyTexture(minimap_fow_texture);
-if (minimap_fow != nullptr) SDL_FreeSurface(minimap_fow);
-
-cells.clear();
-units_to_print.clear();
-buildings_to_print.clear();
-
-fow_cells_to_clear.clear();
-
-return false;
+	if (MiniMToMap(x, y))
+	{
+		iPoint pos = App->map->MapToWorld(x, y);
+		App->render->camera.x = -(pos.x - App->render->camera.w / 2);
+		App->render->camera.y = -(pos.y - App->render->camera.h / 2);
+	}
 }
 
-bool Minimap_Panel::PreUpdate()
+void Minimap::MoveUnitsToPoint(int x, int y)
 {
-if (update_timer.Read() > MINIMAP_UPDATE_RATE)
+	if (MiniMToMap(x, y))
+	{
+		App->player->MoveToTile({ x, y });
+	}
+}
+
+bool Minimap::MiniMToMap(int& x, int& y)
 {
-units_to_print.clear();
-units_to_print.reserve(App->entities_manager->units.size());
-std::list<Unit*>::const_iterator unit = App->entities_manager->units.begin();
-std::list<Unit*>::const_iterator end = App->entities_manager->units.end();
+	fPoint rec = { (float)x,(float)y };
+	rec.x -= map_rect.x + map_rect.w * 0.5;
+	rec.y -= map_rect.y;
 
-iPoint pos = { 0,0 };
-while (unit != end)
+	float pX = (((rec.x / half_tile_size.x) + (rec.y / half_tile_size.y)) * 0.5f);
+	float pY = (((rec.y / half_tile_size.y) - (rec.x / half_tile_size.x)) * 0.5f);
+
+	x = (int)((pX > (floor(pX) + 0.5f)) ? ceil(pX) : floor(pX));
+	y = (int)((pY > (floor(pY) + 0.5f)) ? ceil(pY) : floor(pY));
+
+	if (x <= 0 || x >= map_rect.w || y <= 0 || y >= map_rect.h) return false;
+	else return true;
+}
+
+iPoint Minimap::MiniMToScreen(int x, int y)
 {
-pos = unit._Ptr->_Myval->GetPositionRounded();
-
-pos = App->map->WorldToMap(pos.x, pos.y);
-switch (unit._Ptr->_Myval->GetDiplomacy())
-{
-case ALLY:
-cells[120 * pos.y + pos.x].cell_color = { 20,20,255,255 };
-units_to_print.push_back(cells[120 * pos.y + pos.x]);
-break;
-case ENEMY:
-cells[120 * pos.y + pos.x].cell_color = { 255,20,20,255 };
-units_to_print.push_back(cells[120 * pos.y + pos.x]);
-break;
-default: break;
+	return iPoint((int)(x - y) * (half_tile_size.x), (int)(x + y) * (half_tile_size.y));
 }
-
-unit++;
-}
-update_timer.Start();
-
-}
-
-EditMinimapFoW();
-
-return false;
-}
-
-bool Minimap_Panel::PostUpdate()
-{
-return false;
-}
-
-bool Minimap_Panel::Draw()
-{
-App->render->DrawQuad(map_rect, 51, 151, 39, 255, true, false);
-
-// Draw Units in Minimap
-SDL_Color color;
-int size = units_to_print.size();
-for (int i = 0; i < size; i++)
-{
-color = units_to_print[i].cell_color;
-App->render->DrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false);
-}
-
-// Draw Buildings in Minimap
-minimap_cell cell;
-std::list<minimap_cell>::const_iterator building = buildings_to_print.end();
-while(building != buildings_to_print.begin())
-{
-building--;
-cell = building._Ptr->_Myval;
-color = cell.cell_color;
-App->render->DrawQuad({ cell.cell_position.x, cell.cell_position.y,4,4 }, color.r, color.g, color.b, color.a, true, false);
-
-}
-
-
-// Draw FoW
-App->render->Blit(minimap_fow_texture, map_rect.x - App->render->camera.x, map_rect.y - App->render->camera.y, &minimap_size);
-
-minimap_background->Draw(false);
-
-return false;
-}
-
-void Minimap_Panel::Handle_Input(UI_Element * ui_element, GUI_INPUT ui_input)
-{
-if (ui_element == minimap_background || (in_minimap && ui_input == MOUSE_RIGHT_BUTTON))
-{
-int x = 0, y = 0;
-App->input->GetMousePosition(x, y);
-if (ui_input == MOUSE_LEFT_BUTTON_DOWN) MoveCameraToPoint(x, y);
-else if (ui_input == MOUSE_RIGHT_BUTTON)
-MoveUnitsToPoint(x, y);
-}
-if (ui_element == minimap_background && ui_input == MOUSE_IN)
-{
-in_minimap = true;
-}
-if (ui_element == minimap_background && ui_input == MOUSE_OUT)
-{
-in_minimap = false;
-}
-}
-
-void Minimap_Panel::Enable()
-{
-units_to_print.clear();
-units_to_print.reserve(App->entities_manager->units.size());
-std::list<Unit*>::const_iterator unit = App->entities_manager->units.begin();
-std::list<Unit*>::const_iterator end = App->entities_manager->units.end();
-
-iPoint pos = { 0,0 };
-while (unit != end)
-{
-pos = unit._Ptr->_Myval->GetPositionRounded();
-
-pos = App->map->WorldToMap(pos.x, pos.y);
-switch (unit._Ptr->_Myval->GetDiplomacy())
-{
-case ALLY:
-cells[120 * pos.y + pos.x].cell_color = { 20,20,255,255 };
-units_to_print.push_back(cells[120 * pos.y + pos.x]);
-break;
-case ENEMY:
-cells[120 * pos.y + pos.x].cell_color = { 255,20,20,255 };
-units_to_print.push_back(cells[120 * pos.y + pos.x]);
-break;
-default: break;
-}
-
-unit++;
-}
-update_timer.Start();
-
-SDL_FillRect(minimap_fow, NULL, SDL_MapRGBA(minimap_fow->format, 0, 0, 0, 255));
-minimap_fow_texture = SDL_CreateTextureFromSurface(App->render->renderer, minimap_fow);
-
-EditMinimapFoW();
-
-}
-
-void Minimap_Panel::Disable()
-{
-units_to_print.clear();
-buildings_to_print.clear();
-fow_cells_to_clear.clear();
-}
-
-bool Minimap_Panel::Load(pugi::xml_node & data)
-{
-return false;
-}
-
-bool Minimap_Panel::Save(pugi::xml_node & data) const
-{
-return false;
-}
-
-void Minimap_Panel::MoveCameraToPoint(int x, int y)
-{
-if (MiniMToMap(x, y))
-{
-iPoint pos = App->map->MapToWorld(x,y);
-App->render->camera.x = -(pos.x - App->render->camera.w / 2);
-App->render->camera.y = -(pos.y - App->render->camera.h / 2);
-App->render->CalculateCameraViewport();
-}
-}
-
-void Minimap_Panel::MoveUnitsToPoint(int x, int y)
-{
-if (MiniMToMap(x, y))
-{
-iPoint pos = App->map->MapToWorld(x, y);
-App->player->selection_panel->MoveSelectedToPoint(pos.x, pos.y);
-}
-}
-
-bool Minimap_Panel::MiniMToMap(int& x, int& y)
-{
-fPoint rec = { (float)x,(float)y };
-rec.x -= map_rect.x + map_rect.w * 0.5;
-rec.y -= map_rect.y;
-
-float pX = (((rec.x / half_tile_size.x) + (rec.y / half_tile_size.y)) * 0.5f);
-float pY = (((rec.y / half_tile_size.y) - (rec.x / half_tile_size.x)) * 0.5f);
-
-x = (int)((pX > (floor(pX) + 0.5f)) ? ceil(pX) : floor(pX));
-y = (int)((pY > (floor(pY) + 0.5f)) ? ceil(pY) : floor(pY));
-
-if (x <= 0 || x >= 120 || y <= 0 || y >= 120) return false;
-else return true;
-}
-
-iPoint Minimap_Panel::MiniMToScreen(int x, int y)
-{
-return iPoint((int)(x - y) * (half_tile_size.x),(int)(x + y) * (half_tile_size.y));
-}
-
-void Minimap_Panel::SetBuildingToPrint(int x, int y, DIPLOMACY diplomacy_type)
-{
-iPoint pos = App->map->WorldToMap(x, y);
-
-switch (diplomacy_type)
-{
-case ALLY:
-cells[120 * pos.y + pos.x].cell_color = { 20,20,200,255 };
-break;
-case ENEMY:
-cells[120 * pos.y + pos.x].cell_color = { 200,20,20,255 };
-break;
-default: break;
-}
-buildings_to_print.push_back(cells[120 * pos.y + pos.x]);
-}
-
-void Minimap_Panel::RemoveBuildingToPrint(int x, int y, DIPLOMACY diplomacy_type)
-{
-iPoint pos = App->map->WorldToMap(x, y);
-
-std::list<minimap_cell>::iterator building = buildings_to_print.end();
-while (building != buildings_to_print.begin())
-{
-building--;
-if (building._Ptr->_Myval.cell_position == cells[120*pos.y+ pos.x].cell_position)
-{
-buildings_to_print.remove(building._Ptr->_Myval);
-break;
-}
-}
-}
-
-void Minimap_Panel::PushTilestoClear(uint k)
-{
-fow_need_update = true;
-fow_cells_to_clear.push_back(k);
-}
-
-bool Minimap_Panel::EditMinimapFoW()
-{
-if (fow_need_update && fow_timer.Read() > MINIMAP_FOW_UPDATE_RATE)
-{
-SDL_LockSurface(minimap_fow);
-
-iPoint pos = { 0,0 };
-int pixel_position = 0;
-int texture_size = minimap_size.w*minimap_size.h;
-
-
-int size = fow_cells_to_clear.size();
-for (int i = 0; i < size; i++)
-{
-pos = cells[fow_cells_to_clear[i]].cell_position;
-pos.x -= (map_rect.x);
-pos.y -= (map_rect.y);
-uint32* pixels;
-unsigned char* pixel_alpha;
-for (int j = pos.x; j < pos.x + 4; j++)
-{
-for (int k = pos.y; k < pos.y + (5 * minimap_size.w); k += minimap_size.w)
-{
-pixel_position = minimap_size.w*k + j;
-if (pixel_position < 0 || pixel_position >= texture_size) continue;
-else
-{
-pixels = (uint32*)minimap_fow->pixels;
-pixels = pixels + minimap_size.w*k + j;
-pixel_alpha = (unsigned char*)pixels + 3;
-*pixel_alpha = 0x11;
-}
-}
-}
-}
-
-SDL_UnlockSurface(minimap_fow);
-if (minimap_fow_texture != nullptr) SDL_DestroyTexture(minimap_fow_texture);
-minimap_fow_texture = SDL_CreateTextureFromSurface(App->render->renderer, minimap_fow);
-fow_cells_to_clear.clear();
-fow_need_update = false;
-fow_timer.Start();
-}
-
-
-return false;
-}
-*/

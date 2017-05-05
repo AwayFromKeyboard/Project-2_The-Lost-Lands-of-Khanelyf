@@ -105,7 +105,7 @@ bool SceneTest::Update(float dt)
 	UpdateCameraMovement();
 
 	App->map->Draw();
-	App->minimap->DrawMinimap();
+
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
