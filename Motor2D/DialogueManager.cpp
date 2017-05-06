@@ -52,7 +52,7 @@ bool DialogueManager::Start()
 	}
 
 	win = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 10);
-	//text_on_screen = (UI_Text*)win->CreateText(TEXT_POSITION, App->font->default_15, 0, false, 0,51,51);
+	text_on_screen = (UI_Text*)win->CreateText(TEXT_POSITION, App->font->default_15, 0, false, 0,51,51);
 
 
 

@@ -776,31 +776,31 @@ UI_Element* UI_Window::CreateButton(iPoint pos, int w, int h, bool _dinamic)
 // ---------------------------------------------------------------------
 // Create text linked to the current window
 // ---------------------------------------------------------------------
-//UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, bool _dinamic, uint r, uint g, uint b)
-//{
-//	UI_Text* ret = nullptr;
-//	ret = new UI_Text();
-//	
-//	if (ret != nullptr)
-//	{
-//		ret->type = ui_text;
-//		ret->Set(pos, font, spacing, r, g, b);
-//		ret->parent = this;
-//		ret->parent_element = this;
-//		ret->dinamic = _dinamic;
-//		ret->started_dinamic = _dinamic;
-//	
-//		// Layers --
-//	
-//		ret->layer = childs.size() + layer + 1;
-//	
-//		// ---------
-//	
-//		PushElements(App->gui->elements_list, ret, ret->layer);
-//		childs.push_back((UI_Element*)ret);
-//	}
-//	return ret;
-//}
+UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, bool _dinamic, uint r, uint g, uint b)
+{
+	UI_Text* ret = nullptr;
+	ret = new UI_Text();
+	
+	if (ret != nullptr)
+	{
+		ret->type = ui_text;
+		ret->Set(pos, font, spacing, r, g, b);
+		ret->parent = this;
+		ret->parent_element = this;
+		ret->dinamic = _dinamic;
+		ret->started_dinamic = _dinamic;
+	
+		// Layers --
+	
+		ret->layer = childs.size() + layer + 1;
+	
+		// ---------
+	
+		PushElements(App->gui->elements_list, ret, ret->layer);
+		childs.push_back((UI_Element*)ret);
+	}
+	return ret;
+}
 
 // ---------------------------------------------------------------------
 // Create an image linked to the current window
@@ -1202,7 +1202,8 @@ void UI_Text::Set(iPoint _pos, _TTF_Font* _font, int _spacing, uint r, uint g, u
 void UI_Text::SetText(string _text)
 {
 	// Clean last texts
-	/*if (!tex_str_list.empty())
+
+	if (!tex_str_list.empty())
 	{
 		if (!tex_str_list.empty())
 		{
@@ -1234,8 +1235,8 @@ void UI_Text::SetText(string _text)
 		int width = 0; int height = 0;
 		App->font->CalcSize(comp.c_str(), width, height, font);
 		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font), { 0, 0, width, height });
-		tex_str_list.push_back(ts);*/
-	/*}*/
+		tex_str_list.push_back(ts);
+	}
 }
 string UI_Text::GetText()
 {
@@ -1403,7 +1404,7 @@ bool UI_Text_Input::update()
 		SetIsActive();
 
 		if (intern_text.size() == 0 && active)
-		text->SetText("");
+			text->SetText("");
 
 		// Manuall change text
 		ChangeTextInput();
