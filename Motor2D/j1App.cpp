@@ -21,6 +21,7 @@
 #include "j1Collisions.h"
 #include "Player.h"
 #include "QuestManager.h"
+#include "Minimap.h"
 #include "DialogueManager.h"
 
 // Constructor
@@ -44,6 +45,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entity = new j1Entity();
 	player = new Player();
 	questmanager = new QuestManager();
+	minimap = new Minimap();
 	dialogs = new DialogueManager();
 
 	// Ordered for awake / Start / Update
@@ -64,6 +66,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	// Scene
 	AddModule(scene);
 	AddModule(questmanager);
+
+	// Minimap
+	AddModule(minimap);
 
 	// Gui
 	AddModule(gui);
