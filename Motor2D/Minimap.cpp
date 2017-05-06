@@ -38,7 +38,7 @@ bool Minimap::Start()
 	cells.reserve(size);
 	for (int i = 0; i < size; i++)
 	{
-		pos = MiniMToScreen(i%map_size.x, i / map_size.y);
+		pos = MiniMToScreen(i % map_size.x, i / map_size.y);
 		cells.push_back(new_cell);
 		cells[i].cell_position.x += pos.x;
 		cells[i].cell_position.y += pos.y;
@@ -97,6 +97,11 @@ bool Minimap::PreUpdate()
 		}
 		update_timer.Start();
 
+		pos = NULLPOINT;
+		pos = App->render->ScreenToWorld(App->render->camera.x, App->render->camera.y);
+		pos = App->map->WorldToMapPoint(pos);
+		cells[map_size.x  * pos.y + pos.x].cell_color = { 255,255,255,255 };
+		units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 	}
 
 	return ret;
@@ -125,8 +130,16 @@ bool Minimap::Draw()
 	{
 		color = units_to_print[i].cell_color;
 		
-		App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);
+		if (color.r == 255 && color.g == 255 && color.b == 255) {
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,15,10 }, color.r, color.g, color.b, color.a, false, false, 11);
+		}
+		else
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);
 	}
+
+	iPoint cam = MiniMToScreen(App->render->camera.x, App->render->camera.y);
+	iPoint cam_size = MiniMToScreen(App->win->_GetWindowSize().x, App->win->_GetWindowSize().y);
+	App->scene->LayerDrawQuad({ cam.x, cam.y, cam_size.x, cam_size.y }, 255, 255, 255, 255, true, true, 11);
 
 	return ret;
 }
