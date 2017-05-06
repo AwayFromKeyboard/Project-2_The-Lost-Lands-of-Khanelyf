@@ -103,6 +103,15 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\4. Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Minimap.cpp">
+      <Filter>Engine\1. Modules</Filter>
+	</ClCompile>
     <ClCompile Include="DialogueManager.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
@@ -264,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="theoraplay.h">
       <Filter>Engine\5. Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Minimap.h">
+      <Filter>Engine\1. Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

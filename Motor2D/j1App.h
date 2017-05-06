@@ -31,6 +31,7 @@ class j1Entity;
 class j1Collisions;
 class Player;
 class QuestManager;
+class Minimap;
 class DialogueManager;
 class Video;
 
@@ -122,6 +123,7 @@ public:
 	j1Collisions*		collisions = nullptr;
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
+	Minimap*			minimap = nullptr;
 	DialogueManager*	dialogs = nullptr;
 	Video*				video = nullptr;
 

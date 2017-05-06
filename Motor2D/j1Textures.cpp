@@ -112,8 +112,8 @@ bool j1Textures::UnLoadTexture(SDL_Texture* texture)
 		}
 	}
 
-	//if(texture != nullptr) 
-	//	SDL_DestroyTexture(texture); /// if texture not found but exist delete it
+	if(texture != nullptr) 
+		SDL_DestroyTexture(texture); /// if texture not found but exist delete it
 
 	return false;
 }

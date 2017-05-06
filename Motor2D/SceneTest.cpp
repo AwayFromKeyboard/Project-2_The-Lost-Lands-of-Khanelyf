@@ -20,6 +20,7 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Building.h"
+#include "Minimap.h"
 #include "Object.h"
 
 SceneTest::SceneTest()
@@ -104,6 +105,7 @@ bool SceneTest::Update(float dt)
 	UpdateCameraMovement();
 
 	App->map->Draw();
+
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;

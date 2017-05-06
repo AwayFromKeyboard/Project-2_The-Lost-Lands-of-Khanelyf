@@ -139,6 +139,8 @@ public:
 	// Mouse functions
 	bool MouseClickEnterLeftIntern();
 	bool MouseClickOutLeftIntern();
+	bool MouseClickEnterRightIntern();
+	bool MouseClickOutRightIntern();
 
 	void SetDebugColor(SDL_Color color);
 
