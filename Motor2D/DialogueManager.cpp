@@ -46,6 +46,7 @@ bool DialogueManager::Start()
 			{
 				TextLine* tmp = new TextLine(dialogue.attribute("state").as_int(), text.attribute("value").as_string());
 				dialog[i]->texts.push_back(tmp);
+
 			}
 		}
 	}
@@ -80,7 +81,7 @@ bool DialogueManager::BlitDialog(uint id, uint state)
 			{
 				if (dialog[i]->texts[dialogueStep + j]->state == state)
 				{
-					text_on_screen->SetText(dialog[i]->texts[dialogueStep + j]->line->c_str());
+					text_on_screen->SetText(dialog[i]->texts[dialogueStep + j]->line.c_str());
 					//text_on_screen->Set_String((char*)dialog[i]->texts[dialogueStep + j]->line->c_str());
 					return true;
 				}
@@ -106,7 +107,7 @@ Dialogue::~Dialogue()
 
 TextLine::TextLine(int NPCstate, std::string text) : state(NPCstate)
 {
-	line = new std::string(text);
+	line = text;
 }
 
 TextLine::~TextLine()

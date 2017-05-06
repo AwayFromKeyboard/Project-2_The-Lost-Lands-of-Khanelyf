@@ -22,7 +22,7 @@ public:
 	~TextLine();
 
 	int state;
-	std::string* line = nullptr;
+	std::string line;
 };
 
 class Dialogue

@@ -555,7 +555,8 @@ bool UI_Element::cleanup()
 
 void UI_Element::SetEnabled(bool set)
 {
-	enabled = set;
+	if (this != NULL)
+		enabled = set;
 }
 
 // ---------------------------------------------------------------------
@@ -806,7 +807,7 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 {
 	UI_Text* ret = nullptr;
 	ret = new UI_Text();
-
+	
 	if (ret != nullptr)
 	{
 		ret->type = ui_text;
@@ -815,13 +816,13 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-
+	
 		// Layers --
-
+	
 		ret->layer = childs.size() + layer + 1;
-
+	
 		// ---------
-
+	
 		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
@@ -1228,6 +1229,7 @@ void UI_Text::Set(iPoint _pos, _TTF_Font* _font, int _spacing, uint r, uint g, u
 void UI_Text::SetText(string _text)
 {
 	// Clean last texts
+
 	if (!tex_str_list.empty())
 	{
 		if (!tex_str_list.empty())
@@ -1429,7 +1431,7 @@ bool UI_Text_Input::update()
 		SetIsActive();
 
 		if (intern_text.size() == 0 && active)
-		text->SetText("");
+			text->SetText("");
 
 		// Manuall change text
 		ChangeTextInput();
