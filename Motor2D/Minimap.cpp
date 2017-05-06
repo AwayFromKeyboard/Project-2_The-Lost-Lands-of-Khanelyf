@@ -147,10 +147,10 @@ void Minimap::Handle_Input()
 	App->input->GetMousePosition(mouse.x, mouse.y);
 	if (mouse.PointInRect(map_rect.x, map_rect.y, map_rect.w, map_rect.h))
 	{
-		if (minimap_background->MouseClickEnterLeftIntern()) {
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 			MoveCameraToPoint(mouse.x, mouse.y);
 		}
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
 			MoveUnitsToPoint(mouse.x, mouse.y);
 		}
 	}
