@@ -32,10 +32,10 @@ bool Player::Start()
 	bool ret = true;
 
 	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
-	damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
-	armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 972 }, App->font->default_15);
-	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 988 }, App->font->default_15);
+	//life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
+	//damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
+	//armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 972 }, App->font->default_15);
+	//pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 988 }, App->font->default_15);
 	
 	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
 	life_button = (UI_Button*)levelup_window->CreateButton({ 169, 937 }, 10, 10);
@@ -50,7 +50,7 @@ bool Player::Start()
 	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 985 }, 10, 10);
 	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
-	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
+	//level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
 	levelup_window->SetEnabledAndChilds(false);
 
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
@@ -88,10 +88,10 @@ bool Player::Start()
 	battlecry_ability->SetImage("standard");
 	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
-	battlecry_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+//	battlecry_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_key->SetText("X");
 
-	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+//	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
 
 	//drop object interface
@@ -109,10 +109,10 @@ bool Player::Start()
 	whirlwind_ability->SetImage("standard");
 	whirlwind_ability->AddImage("clicked", { 720, 60, 25, 25 });
 
-	whirlwind_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
+//	whirlwind_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 	whirlwind_key->SetText("C");
 
-	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
+//	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 	whirlwind_cd->SetEnabled(false);
 
 	//Charge
@@ -122,10 +122,10 @@ bool Player::Start()
 	charge_ability->SetImage("standard");
 	charge_ability->AddImage("clicked", { 827, 60, 25, 25 });
 
-	charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
+	//charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	charge_key->SetText("V");
 
-	charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
+	//charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	charge_cd->SetEnabled(false);
 
 	return ret;
