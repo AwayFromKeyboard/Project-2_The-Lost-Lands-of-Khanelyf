@@ -22,6 +22,7 @@
 #include "Building.h"
 #include "Minimap.h"
 #include "Object.h"
+#include "video.h"
 
 SceneTest::SceneTest()
 {
@@ -78,6 +79,7 @@ bool SceneTest::Start()
 
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
+	App->video->PlayVideo("video.ogv", { 0, 0, 1680, 1050 });
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
 	SDL_ShowCursor(0);

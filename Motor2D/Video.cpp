@@ -139,9 +139,7 @@ void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
 
 void Video::LoadVideo(const char *fname)
 {
-	// TODO 1: Start decoding the file. One simple line of code. Use THEORAPLAY_VIDFMT_IYUV.
-
-	decoder = THEORAPLAY_startDecodeFile(fname, 30, THEORAPLAY_VIDFMT_IYUV);
+	decoder = THEORAPLAY_startDecodeFile(fname, 60, THEORAPLAY_VIDFMT_IYUV);
 
 	// Wait until we have video and/or audio data, so we can set up hardware.
 	while (!audio || !video) {
