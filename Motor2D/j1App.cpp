@@ -149,6 +149,8 @@ bool j1App::Start()
 	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 20), 200, 115, { 20, 20, 20, 125 }, true);
 	debug_text = (UI_Text*)debug_window->CreateText(iPoint(5, 25), App->font->default_15, 15);
 
+	player->active = false;
+
 	PERF_PEEK(ptimer);
 
 	return ret;
@@ -477,4 +479,9 @@ void j1App::FrameRateCalculations()
 void j1App::EndSDL()
 {
 	end_program = true;
+}
+
+void j1App::ActivatePlayer()
+{
+	player->active = true;
 }

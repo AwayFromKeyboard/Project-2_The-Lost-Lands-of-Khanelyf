@@ -79,6 +79,8 @@ bool SceneTest::Start()
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
+	App->ActivatePlayer();
+
 	SDL_ShowCursor(0);
 	return true;
 }
