@@ -80,7 +80,8 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
+	if (collision != nullptr)
+		collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
 	switch (state) {
 	case entity_state::entity_idle:
@@ -204,8 +205,10 @@ bool Unit::Update(float dt)
 
 	case entity_state::entity_death:
 		CheckDeathDirection();
-		if(collision != nullptr)
+		if (collision != nullptr) {
 			App->collisions->EraseCollider(collision);
+			collision = nullptr;
+		}
 		if (!current_animation->Finished())
 			death_timer.Start();
 		else if (death_timer.ReadSec() > 2)
