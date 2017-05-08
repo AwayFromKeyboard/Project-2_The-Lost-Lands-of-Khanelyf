@@ -71,8 +71,13 @@ public:
 
 	bool CleanUp();
 
-	Quest* CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 	Quest* GetCurrentQuest();
+
+private:
+	Quest* CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
 	Quest* ChangeQuest(quest_id new_quest);
 
 private:

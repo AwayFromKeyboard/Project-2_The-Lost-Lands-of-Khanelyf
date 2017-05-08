@@ -72,6 +72,11 @@ public:
 
 	void OnCollision(Collider* col1, Collider* col2);
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+public:
+
 	Entity* CreateEntity(entity_name name, entity_type type, iPoint pos);
 	Entity* CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number);
 	void DeleteEntity(Entity* entity);

@@ -7,7 +7,7 @@
 
 DialogueManager::DialogueManager() : j1Module()
 {
-	name = ("dialogue");
+	name = ("");
 }
 
 bool DialogueManager::Awake(pugi::xml_node & Dialogues)
@@ -90,6 +90,24 @@ bool DialogueManager::BlitDialog(uint id, uint state)
 	}
 
 	return false;
+}
+
+bool DialogueManager::LoadGame(pugi::xml_node& data)
+{
+	id = data.child("id").attribute("value").as_int();
+	NPCstate = data.child("NPCstate").attribute("value").as_int();
+	dialogueStep = data.child("DialogueStep").attribute("value").as_int();
+
+	return true;
+}
+
+bool DialogueManager::SaveGame(pugi::xml_node& data) const
+{
+	data.append_child("id").append_attribute("value") = id;
+	data.append_child("NPCstate").append_attribute("value") = NPCstate;
+	data.append_child("DialogueStep").append_attribute("value") = dialogueStep;
+
+	return true;
 }
 
 DialogueManager::~DialogueManager()
