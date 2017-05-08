@@ -11,9 +11,6 @@ public:
 
 	bool LoadEntity(iPoint pos, entity_name name);
 
-	bool Start();
-
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 };
 
 #endif

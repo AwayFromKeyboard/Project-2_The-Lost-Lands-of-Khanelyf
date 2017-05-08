@@ -11,6 +11,7 @@ public:
 	~Barracks();
 
 	bool LoadEntity(iPoint pos, entity_name name);
+
 };
 
 #endif

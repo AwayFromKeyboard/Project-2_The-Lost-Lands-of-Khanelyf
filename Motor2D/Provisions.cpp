@@ -48,6 +48,7 @@ bool Provisions::LoadEntity(iPoint pos, entity_name name)
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
+		collision->parent = this;
 
 		tex_rect = { 0, 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
 
@@ -60,15 +61,4 @@ bool Provisions::LoadEntity(iPoint pos, entity_name name)
 	else LOG("\nERROR, no node found\n");
 
 	return ret;
-}
-
-bool Provisions::Start()
-{
-	bool ret = true;
-
-	return ret;
-}
-
-void Provisions::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
-{
 }

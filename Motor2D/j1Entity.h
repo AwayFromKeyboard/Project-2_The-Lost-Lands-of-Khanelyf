@@ -6,7 +6,6 @@
 #include "Point.h"
 
 class b2Fixture;
-class PhysBody;
 
 enum entity_name
 {
