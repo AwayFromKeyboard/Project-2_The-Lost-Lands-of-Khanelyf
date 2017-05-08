@@ -98,6 +98,10 @@ bool SceneTest::PreUpdate()
 
 bool SceneTest::Update(float dt)
 {
+	iPoint render_pos = App->map->WorldToMapPoint({ 0,0 });
+	SDL_Rect quad = { render_pos.x, render_pos.y, App->map->data.tile_width, App->map->data.tile_height };
+	App->render->DrawQuad(quad, 255, 0, 0, 255);
+
 	iPoint mouse;
 	App->input->GetMouseWorld(mouse.x, mouse.y);
 	
@@ -146,20 +150,20 @@ void SceneTest::CheckUnitCreation(iPoint p)
 
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
 	{
-		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, p);
 		gold -= barb->cost;
 		current_human_resources += barb->human_cost;
 	}
 
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
 	{
-		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, p);
 		gold -= sword->cost;
 		current_human_resources += sword->human_cost;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
 	{
-		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, p);
 		gold -= barrack->cost;
 		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
 			App->questmanager->GetCurrentQuest()->progress++;

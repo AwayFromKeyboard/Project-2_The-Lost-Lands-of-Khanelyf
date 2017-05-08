@@ -462,53 +462,14 @@ void Unit::SetDirection()
 			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 	}
 
+
 	switch (destination) {
-	case south:
-		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
-			path.erase(path.begin());
-			checked_next_tile = false;
-			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
-			SetDirection();
-			LookAtMovement();
-			return;
-		}
-		break;
-	case north:
-		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
-			path.erase(path.begin());
-			checked_next_tile = false;
-			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
-			SetDirection();
-			LookAtMovement();
-			return;
-		}
-		aux_pos.y += offset.y;
-		break;
 	case north_east:
-		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
-			path.erase(path.begin());
-			checked_next_tile = false;
-			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
-			SetDirection();
-			LookAtMovement();
-			return;
-		}
 		aux_pos.y += offset.y;
-		aux_pos.x -= offset.x;
-		break;
 	case south_east:
-		if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
-			path.erase(path.begin());
-			checked_next_tile = false;
-			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
-			SetDirection();
-			LookAtMovement();
-			return;
-		}
-		aux_pos.x -= offset.x;
-		break;
 	case east:
-		if (position.x >= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
+		if (position.x >= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_width / 2) {
+			position = App->map->MapToWorldPoint(path.front()) + iPoint(App->map->data.tile_width / 2, App->map->data.tile_height / 2);
 			path.erase(path.begin());
 			checked_next_tile = false;
 			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
@@ -518,8 +479,26 @@ void Unit::SetDirection()
 		}
 		aux_pos.x -= offset.x;
 		break;
+
 	case north_west:
-		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+		aux_pos.y += offset.y;
+	case south_west:
+	case west:
+		if (position.x <= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_width / 2) {
+			position = App->map->MapToWorldPoint(path.front()) + iPoint(App->map->data.tile_width / 2, App->map->data.tile_height / 2);
+			path.erase(path.begin());
+			checked_next_tile = false;
+			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+			SetDirection();
+			LookAtMovement();
+			return;
+		}
+		aux_pos.x += offset.x;
+		break;
+
+	case north:
+		if (position.y <= App->map->MapToWorldPoint(path.front()).y + App->map->data.tile_height / 2) {
+			position = App->map->MapToWorldPoint(path.front()) + iPoint(App->map->data.tile_width / 2, App->map->data.tile_height / 2);
 			path.erase(path.begin());
 			checked_next_tile = false;
 			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
@@ -528,10 +507,11 @@ void Unit::SetDirection()
 			return;
 		}
 		aux_pos.y += offset.y;
-		aux_pos.x += offset.x;
 		break;
-	case south_west:
-		if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+
+	case south:
+		if (position.y >= App->map->MapToWorldPoint(path.front()).y + App->map->data.tile_height / 2) {
+			position = App->map->MapToWorldPoint(path.front()) + iPoint(App->map->data.tile_width / 2, App->map->data.tile_height / 2);
 			path.erase(path.begin());
 			checked_next_tile = false;
 			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
@@ -539,20 +519,100 @@ void Unit::SetDirection()
 			LookAtMovement();
 			return;
 		}
-		aux_pos.x += offset.x;
-		break;
-	case west:
-		if (position.x <= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
-			path.erase(path.begin());
-			checked_next_tile = false;
-			w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
-			SetDirection();
-			LookAtMovement();
-			return;
-		}
-		aux_pos.x += offset.x;
 		break;
 	}
+
+	//switch (destination) {
+	//case south:
+	//	if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	break;
+	//case north:
+	//	if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.y += offset.y;
+	//	break;
+	//case north_east:
+	//	if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.y += offset.y;
+	//	aux_pos.x -= offset.x;
+	//	break;
+	//case south_east:
+	//	if (position.y >= App->map->MapToWorldPoint(path.front()).y) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.x -= offset.x;
+	//	break;
+	//case east:
+	//	if (position.x >= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.x -= offset.x;
+	//	break;
+	//case north_west:
+	//	if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.y += offset.y;
+	//	aux_pos.x += offset.x;
+	//	break;
+	//case south_west:
+	//	if (position.y <= App->map->MapToWorldPoint(path.front()).y) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.x += offset.x;
+	//	break;
+	//case west:
+	//	if (position.x <= App->map->MapToWorldPoint(path.front()).x + App->map->data.tile_diagonal / 2) {
+	//		path.erase(path.begin());
+	//		checked_next_tile = false;
+	//		w_direction = fPoint(path.front().x - position_map.x, path.front().y - position_map.y);
+	//		SetDirection();
+	//		LookAtMovement();
+	//		return;
+	//	}
+	//	aux_pos.x += offset.x;
+	//	break;
+	//}
 
 	
 
@@ -643,7 +703,7 @@ void Unit::LookAtMovement()
 			flip = true;
 		}
 	}
-	direction.Normalize();
+	//direction.Normalize();
 	//iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
 	//direction = { (float)direction_i.x, (float)direction_i.y };
 	//direction.Normalize();

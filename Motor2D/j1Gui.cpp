@@ -478,7 +478,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 
 				if (current != *ch)
 					to_add.push_back(current);
-			}
+			} 
 
 			for (list<UI_Element*>::iterator ta = to_add.begin(); ta != to_add.end(); ta++)
 				PushElements(elements_list, (*ta), (*ta)->layer);

@@ -74,17 +74,17 @@ void j1Map::Draw()
 					iPoint pos = MapToWorld(x, y);
 					//magic numbers +30 to fix
 					if(layer->name == "Nature")
-						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 140, &r);
+						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 124, &r);
 					else if (layer->name == "Buildings")
-						App->render->Blit(tileset->texture, pos.x, pos.y - 96, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y - 80, &r);
 					else if (layer->name == "Towers")
-						App->render->Blit(tileset->texture, pos.x + 10, pos.y - 80, &r);
+						App->render->Blit(tileset->texture, pos.x + 10, pos.y - 64, &r);
 					else if (layer->name == "Fortress")
-						App->render->Blit(tileset->texture, pos.x, pos.y - 198, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y - 182, &r);
 					else if (layer->name == "Big House")
-						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 126, &r);
+						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 110, &r);
 					else
-						App->render->Blit(tileset->texture, pos.x, pos.y + 16, &r);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 				}
 			}
 			count++;
@@ -727,44 +727,44 @@ void j1Map::GetEntitiesSpawn() const
 						{
 						case 27: // Hero
 						{
-							Entity* player_unit = App->entity->CreateEntity(hero, player, App->map->MapToWorld(x + 1, y));
+							Entity* player_unit = App->entity->CreateEntity(hero, player, iPoint(x,y));
 							App->player->SetHero((Hero*)player_unit);
 						}
 						break;
 						
 						case 28: // Barbarian Enemy
 						{
-							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 1, y));
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, iPoint(x, y));
 						}
 						break;
 						
 						case 29: // NPC
 						{
-							Entity* barb_npc = App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
+							Entity* barb_npc = App->entity->CreateEntity(barbarian, npc, iPoint(x, y));
 						}
 						break;
 						
 						case 30: // Object
 						{
-							Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(x + 1, y));
+							Entity* object_entity = App->entity->CreateEntity(provisions, object, iPoint(x, y));
 						}
 						break;
 
 						case 31: // Basic Building Ally
 						{
-							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
+							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, iPoint(x, y), RandomGenerate(1, 3));
 						}
 						break;
 
 						case 32: // Basic Building Enemy
 						{
-							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
+							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, iPoint(x, y), RandomGenerate(1, 3));
 						}
 						break;
 
 						case 33: // Swordsman Enemy
 						{
-							Entity* swordsman_enemy = App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(x + 1, y));
+							Entity* swordsman_enemy = App->entity->CreateEntity(swordsman, enemy, iPoint(x, y));
 						}
 						break;
 					}

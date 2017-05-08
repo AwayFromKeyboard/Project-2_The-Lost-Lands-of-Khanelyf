@@ -11,6 +11,7 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "j1Map.h"
 
 j1Entity::j1Entity()
 {
@@ -113,7 +114,7 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 }
 
 Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
-{
+{ 
 	Entity* ret = nullptr;
 
 	switch (name)
@@ -139,7 +140,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity(pos);
+		iPoint world_pos = App->map->MapToWorldPoint(pos) + iPoint(App->map->data.tile_width / 2, App->map->data.tile_height / 2);
+		ret->LoadEntity(world_pos);
 		ret->Start();
 		entity_list.push_back(ret);
 	}
