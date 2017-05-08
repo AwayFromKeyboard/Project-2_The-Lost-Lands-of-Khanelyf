@@ -22,6 +22,7 @@
 
 Player::Player()
 {
+	name = "Player";
 }
 
 Player::~Player()
@@ -416,25 +417,79 @@ bool Player::CleanUp()
 	return ret;
 }
 
-bool Player::Load(pugi::xml_node &)
+bool Player::Load(pugi::xml_node& data)
 {
+	pugi::xml_node pos = data.child("Hero").child("Position");
+	pugi::xml_node stats = data.child("Hero").child("Stats");
+	pugi::xml_node misc = data.child("Hero").child("Misc");
+	pugi::xml_node allies = data.child("Allies");
+
+	hero->position.create(pos.attribute("x").as_int(), pos.attribute("y").as_int());
+
+	hero->life = stats.attribute("current_hp").as_int();
+	hero->max_life = stats.attribute("max_hp").as_int();
+	hero->damage = stats.attribute("damage").as_int();
+	hero->armor = stats.attribute("armor").as_int();
+	hero->pierce_armor = stats.attribute("pierce_armor").as_int();
+	
+	hero->levelup_points = misc.attribute("level_up_Points").as_int();
+	App->scene->scene_test->gold = misc.attribute("gold").as_int();
+	App->scene->scene_test->current_human_resources = misc.attribute("human_resources").as_int();
+	App->scene->scene_test->human_resources_max = misc.attribute("max_human_resources").as_int();
+
+	for (pugi::xml_node ally = allies.child("Ally"); ally != NULL; ally = ally.next_sibling()) {
+		int _name = ally.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barbarian:
+			name = barbarian;
+			break;
+		case swordsman:
+			name = swordsman;
+			break;
+		}
+
+		Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
+		entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+	}
+
+
 	return true;
 }
 
 bool Player::Save(pugi::xml_node& data) const
 {
-	pugi::xml_node _hero = data.append_child("hero");
+	pugi::xml_node _hero = data.append_child("Hero");
+	pugi::xml_node pos = _hero.append_child("Position");
 	pugi::xml_node stats = _hero.append_child("Stats");
+	pugi::xml_node misc = _hero.append_child("Misc");
+	pugi::xml_node allies = data.append_child("Allies");
+
+	pos.append_attribute("x") = hero->position.x;
+	pos.append_attribute("y") = hero->position.y;
+
 	stats.append_attribute("current_hp") = hero->life;
 	stats.append_attribute("max_hp") = hero->max_life;
 	stats.append_attribute("damage") = hero->damage;
 	stats.append_attribute("armor") = hero->armor;
 	stats.append_attribute("pierce_armor") = hero->pierce_armor;
-	pugi::xml_node misc = _hero.append_child("Misc");
+
 	misc.append_attribute("level_up_Points") = hero->levelup_points;
 	misc.append_attribute("gold") = App->scene->scene_test->gold;
 	misc.append_attribute("human_resources") = App->scene->scene_test->current_human_resources;
 	misc.append_attribute("max_human_resources") = App->scene->scene_test->human_resources_max;
+
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::ally) {
+			pugi::xml_node ally = allies.append_child("Ally");
+			ally.append_attribute("name") = (*it)->name;
+	
+			ally.append_child("Position").append_attribute("x") = (*it)->position.x;
+			ally.child("Position").append_attribute("y") = (*it)->position.y;
+		}
+	}
 
 	return true;
 }

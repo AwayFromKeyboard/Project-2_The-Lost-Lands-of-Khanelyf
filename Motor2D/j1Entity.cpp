@@ -142,7 +142,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity(pos);
+		ret->LoadEntity(pos, name);
 		ret->Start();
 		entity_list.push_back(ret);
 	}
@@ -167,7 +167,7 @@ Entity* j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoin
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity(pos);
+		ret->LoadEntity(pos, name);
 		ret->Start();
 		entity_list.push_back(ret);
 	}

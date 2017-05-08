@@ -11,7 +11,7 @@ public:
 	~Hero();
 
 	// Load animations
-	bool LoadEntity(iPoint pos);
+	bool LoadEntity(iPoint pos, entity_name name);
 
 	// On Collision
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
