@@ -119,7 +119,7 @@
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
     <ClCompile Include="FogOfWar.cpp">
-      <Filter>Engine\2. Components</Filter>
+      <Filter>Engine\1. Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,7 +257,7 @@
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="FogOfWar.h">
-      <Filter>Engine\2. Components</Filter>
+      <Filter>Engine\1. Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Functions.h"
 #include <sstream> 
+#include "FogOfWar.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -66,7 +67,9 @@ void j1Map::Draw()
 			for (int y = y_ini; y < y_end; ++y)
 			{
 				int tile_id = layer->Get(x, y);
-				if (tile_id > 0)
+				int visibility = App->fow->Get(x, y);
+
+				if (tile_id > 0 && visibility)
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 
@@ -85,6 +88,12 @@ void j1Map::Draw()
 						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 126, &r);
 					else
 						App->render->Blit(tileset->texture, pos.x, pos.y + 16, &r);
+
+					if (visibility == dim_middle)
+					{
+						r = { 0, 0, 96, 51 };
+						App->render->Blit(App->fow->fog_of_war_texture, pos.x, pos.y, &r);
+					}
 				}
 			}
 			count++;

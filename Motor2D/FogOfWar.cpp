@@ -11,13 +11,6 @@
 FogOfWar::FogOfWar()
 {
 
-	int size = App->map->data.width*App->map->data.height;
-	data = new uint[size];
-
-	memset(data, 0, size * sizeof(uint));
-
-	fog_of_war_texture = App->tex->LoadTexture("maps/fow_tiles.png");
-
 }
 
 FogOfWar::~FogOfWar()
@@ -66,10 +59,19 @@ uint FogOfWar::Get(int x, int y)
 	return data[(y*App->map->data.width) + x];
 }
 
-void FogOfWar::Start()
+bool FogOfWar::Start()
 {
 	//RemoveDimJaggies();
-	//RemoveDarkJaggies(); 
+	//RemoveDarkJaggies();
+
+	int size = App->map->data.width*App->map->data.height;
+	data = new uint[size];
+
+	memset(data, 0, size * sizeof(uint));
+
+	fog_of_war_texture = App->tex->LoadTexture("maps/fow_tiles.png");
+
+	return true;
 }
 
 void FogOfWar::Update(iPoint prev_pos, iPoint next_pos, unsigned int entityID)
@@ -598,7 +600,6 @@ void FogOfWar::DeletePicks(ally_unit& player)
 
 void FogOfWar::ManageCharacters()
 {
-
 	for (list<simple_unit>::iterator it = simple_char_on_fog_pos.begin(); it != simple_char_on_fog_pos.end(); it++)
 	{
 		if (IsVisible((*it).player_pos, (*it).type))
@@ -606,8 +607,8 @@ void FogOfWar::ManageCharacters()
 
 		else
 			it->visible = false;
-	}
 
+	}
 }
 
 bool FogOfWar::IsVisible(iPoint char_pos, entity_type type)

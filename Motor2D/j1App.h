@@ -29,6 +29,7 @@ class j1Gui;
 class j1Console;
 class j1Entity;
 class j1Collisions;
+class FogOfWar;
 class Player;
 class QuestManager;
 class DialogueManager;
@@ -119,6 +120,7 @@ public:
 	j1Console*			console = nullptr;
 	j1Entity*			entity = nullptr;
 	j1Collisions*		collisions = nullptr;
+	FogOfWar*			fow = nullptr;
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
 	DialogueManager*	dialogs = nullptr;

@@ -44,8 +44,7 @@ bool Unit::Start()
 	AI_timer.Start();
 	life_up_timer.Start();
 	max_life = life;
-	fow = new FogOfWar();
-	fow->Start();
+	App->fow->AddPlayer(this);
 
 	entityID = nextID++;
 

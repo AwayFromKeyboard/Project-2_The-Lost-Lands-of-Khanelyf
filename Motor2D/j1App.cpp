@@ -19,6 +19,7 @@
 #include "j1Console.h"
 #include "j1Entity.h"
 #include "j1Collisions.h"
+#include "FogOfWar.h"
 #include "Player.h"
 #include "QuestManager.h"
 #include "DialogueManager.h"
@@ -41,6 +42,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new j1Gui();
 	console = new j1Console();
 	collisions = new j1Collisions();
+	fow = new FogOfWar();
 	entity = new j1Entity();
 	player = new Player();
 	questmanager = new QuestManager();
@@ -58,6 +60,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(font);
 	AddModule(console);
 	AddModule(collisions);
+	AddModule(fow);
 	AddModule(entity);
 	AddModule(player);
 	AddModule(questmanager);

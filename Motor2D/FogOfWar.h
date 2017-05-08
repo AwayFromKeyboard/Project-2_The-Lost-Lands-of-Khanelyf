@@ -4,6 +4,7 @@
 #include <list>
 #include <vector>
 #include "Unit.h"
+#include "j1Module.h"
 
 #define FOW_RADIUM 4
 
@@ -83,14 +84,14 @@ struct simple_unit
 	entity_type		type = null;
 };
 
-class FogOfWar
+class FogOfWar : public j1Module
 {
 public:
 
 	FogOfWar();
 	~FogOfWar();
 
-	void Start();
+	bool Start();
 
 	void Update(iPoint prev_pos, iPoint next_pos, uint entityID);
 
