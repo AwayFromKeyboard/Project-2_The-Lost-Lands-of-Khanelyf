@@ -35,4 +35,13 @@
     <offset2 offset_x="80" offset_y="60"/>
     <offset3 offset_x="90" offset_y="65"/>
   </building>
+  <building type="Tower_enemy">
+    <texture value="textures/Towers.png"/>
+    <life value="200"/>
+    <cost value="90"/>
+    <rect w="280" h="254"/>
+    <collision_box w="265" h="250" offset_x="-140" offset_y="-150"/>
+    <offset offset_x="150" offset_y="150"/>
+  </building>
+  
 </buildings>
