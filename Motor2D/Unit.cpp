@@ -459,7 +459,7 @@ void Unit::SetDirection()
 
 	if (App->debug_mode) {
 		for (std::vector<iPoint>::iterator it = path.begin(); it != path.end(); ++it) 
-			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 32 });
 	}
 
 
@@ -704,9 +704,9 @@ void Unit::LookAtMovement()
 		}
 	}
 	//direction.Normalize();
-	//iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
-	//direction = { (float)direction_i.x, (float)direction_i.y };
-	//direction.Normalize();
+	iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
+	direction = { (float)direction_i.x, (float)direction_i.y };
+	direction.Normalize();
 }
 
 void Unit::ForceMovement(iPoint origin, iPoint next_position)

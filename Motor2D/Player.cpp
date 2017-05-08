@@ -302,7 +302,8 @@ bool Player::Update(float dt)
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 		iPoint mouse_pathfinding;
 		App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
-		iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+		/*iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);*/
+		iPoint p = mouse;
 		p = App->map->WorldToMap(p.x, p.y);
 		bool mouse_over_entity = false;
 
@@ -710,7 +711,7 @@ void Player::CheckAbilityRange(int range)
 			}
 		}
 		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
-			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 32 });
 		}
 	}
 }
@@ -748,7 +749,7 @@ void Player::CheckStraightAbilityRange(int range)
 			}
 		}
 		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
-			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 32 });
 		}
 	}
 }

@@ -182,7 +182,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 
 		float half_width = data.tile_width * 0.5f;
 		float half_height = data.tile_height * 0.5f;
-		ret.x = int((x / half_width + y / half_height) / 2) - 1;
+		ret.x = int((x / half_width + y / half_height) / 2);
 		ret.y = int((y / half_height - (x / half_width)) / 2);
 	}
 	else
@@ -208,7 +208,7 @@ iPoint j1Map::WorldToMapPoint(iPoint position) const
 
 		float half_width = data.tile_width * 0.5f;
 		float half_height = data.tile_height * 0.5f;
-		ret.x = int((position.x / half_width + position.y / half_height) / 2) - 1;
+		ret.x = int((position.x / half_width + position.y / half_height) / 2);
 		ret.y = int((position.y / half_height - (position.x / half_width)) / 2);
 	}
 	else
