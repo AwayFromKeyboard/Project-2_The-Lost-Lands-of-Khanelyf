@@ -22,7 +22,7 @@ public:
 	~TextLine();
 
 	int state;
-	std::string* line = nullptr;
+	std::string line;
 };
 
 class Dialogue
@@ -46,6 +46,9 @@ public:
 	bool Start();
 	bool PostUpdate();
 	bool BlitDialog(uint id, uint state);
+
+	bool LoadGame(pugi::xml_node&);
+	bool SaveGame(pugi::xml_node&) const;
 
 private:
 

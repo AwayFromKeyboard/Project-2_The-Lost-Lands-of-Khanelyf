@@ -25,6 +25,7 @@ class Unit;
 class Building;
 class UI_Window;
 class UI_Text;
+class UI_Image;
 class UI_Button;
 class Hero;
 class Object;
@@ -40,6 +41,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+private:
 	void Battlecry();
 	void BattlecryModifier(int damage_buff);
 	void CheckAbilityRange(int range);
@@ -52,8 +56,21 @@ public:
 	void Charge();
 
 	void DrawCD(int ability_number);
-
+public:
+	UI_Window* pause_window = nullptr;
+	UI_Button* quit_game = nullptr;
 private:
+	
+	UI_Image* pause_bg = nullptr;
+	UI_Button* back = nullptr;
+	UI_Button* options = nullptr;
+	UI_Button* save = nullptr;
+	UI_Text* pause_menu_txt = nullptr;
+	UI_Text* quit_txt = nullptr;
+	UI_Text* save_txt = nullptr;
+	UI_Text* options_txt = nullptr;
+	UI_Text* back_txt = nullptr;
+
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;
@@ -76,8 +93,9 @@ private:
 	UI_Text* level_points_txt = nullptr;
 
 	Hero* hero = nullptr;
-private:
+public:
 	void MoveToTile(iPoint tile);
+private:
 	void SetAttackingEnemy(Unit* enemy);
 	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();
@@ -107,6 +125,9 @@ private:
 	UI_Button* charge_ability = nullptr;
 
 public:
+	bool pause_status = false;
+	bool button_on_clicked = false;
+
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
@@ -124,6 +145,7 @@ private:
 	j1Timer battlecry_timer;
 	j1Timer whirlwind_timer;
 	j1Timer charge_timer;
+	j1Timer button_clicked;
 };
 
 

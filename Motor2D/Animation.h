@@ -87,6 +87,8 @@ public:
 	// Set the frame speed
 	void SetSpeed(float speed);
 
+	void Pause();
+
 	// Set if the animation loops
 	void SetLoop(bool loop);
 

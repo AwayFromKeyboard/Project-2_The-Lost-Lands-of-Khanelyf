@@ -25,7 +25,7 @@ Barracks::~Barracks()
 {
 }
 
-bool Barracks::LoadEntity(iPoint pos)
+bool Barracks::LoadEntity(iPoint pos, entity_name name)
 {
 	bool ret = true;
 
@@ -42,6 +42,8 @@ bool Barracks::LoadEntity(iPoint pos)
 	}
 	if (node)
 	{
+		this->name = name;
+
 		position = {pos.x, pos.y};
 		App->player->barracks_position = position;
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);

@@ -108,6 +108,59 @@ bool QuestManager::CleanUp() {
 	return true;
 }
 
+bool QuestManager::Load(pugi::xml_node& data)
+{
+	pugi::xml_node quest = data.child("Current_Quest");
+	pugi::xml_node dialogues = data.child("Dialogues");
+
+	int _id = quest.attribute("ID").as_int();
+	quest_id id;
+	switch (_id)
+	{
+	case quest_beggar:
+		id = quest_beggar;
+		break;
+	case quest_leader:
+		id = quest_leader;
+		break;
+	case quest_mayor:
+		id = quest_mayor;
+		break;
+	case quest_mayor2:
+		id = quest_mayor2;
+		break;
+	case quest_conquer:
+		id = quest_conquer;
+		break;
+	case quest_provisions:
+		id = quest_provisions;
+		break;
+	case quest_null:
+		id = quest_null;
+		break;
+	}
+
+	ChangeQuest(id);
+	current_quest->progress = quest.attribute("Progress").as_int();
+
+	App->dialogs->LoadGame(dialogues);
+
+	return true;
+}
+
+bool QuestManager::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node quest = data.append_child("Current_Quest");
+	pugi::xml_node dialogues = data.append_child("Dialogues");
+
+	quest.append_attribute("ID") = current_quest->id;
+	quest.append_attribute("Progress") = current_quest->progress;
+
+	App->dialogs->SaveGame(dialogues);
+
+	return true;
+}
+
 Quest* QuestManager::CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active)
 {
 	Quest* quest = new Quest(name, description, type, id, requested, gold, new_title, level_points, active);

@@ -20,7 +20,9 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Building.h"
+#include "Minimap.h"
 #include "Object.h"
+#include "Player.h"
 
 SceneTest::SceneTest()
 {
@@ -103,7 +105,15 @@ bool SceneTest::Update(float dt)
 	
 	UpdateCameraMovement();
 
+	if (App->player->pause_status) {
+		
+		App->audio->PauseMusic();
+	}else
+		App->audio->ResumeMusic();
+	
+	
 	App->map->Draw();
+
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
@@ -174,7 +184,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
-	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true)
+	if ((App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down) || (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true))
 	{
 		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
 		App->questmanager->create_provision = false;
