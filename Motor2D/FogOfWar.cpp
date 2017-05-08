@@ -74,7 +74,7 @@ bool FogOfWar::Start()
 	return true;
 }
 
-void FogOfWar::Update(iPoint prev_pos, iPoint next_pos, unsigned int entityID)
+void FogOfWar::UpdateF(iPoint prev_pos, iPoint next_pos, unsigned int entityID)
 {
 	// We look for the direction that the player is moving
 

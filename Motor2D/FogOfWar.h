@@ -93,7 +93,7 @@ public:
 
 	bool Start();
 
-	void Update(iPoint prev_pos, iPoint next_pos, uint entityID);
+	void UpdateF(iPoint prev_pos, iPoint next_pos, uint entityID);
 
 	bool AddPlayer(Unit* new_entity);
 

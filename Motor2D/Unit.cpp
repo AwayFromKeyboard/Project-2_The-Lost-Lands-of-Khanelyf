@@ -258,7 +258,7 @@ bool Unit::Update(float dt)
 
 	next_pos = position;
 
-	fow->Update(prev_pos, next_pos, entityID);
+	fow->UpdateF(prev_pos, next_pos, entityID);
 
 	return true;
 }
