@@ -79,7 +79,7 @@ bool Player::Start()
 	save_txt->click_through = true;
 
 	options_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
-	options_txt->SetText("Options");
+	options_txt->SetText("Load");
 	options_txt->click_through = true;
 
 	pause_window->SetEnabledAndChilds(false);
@@ -202,19 +202,20 @@ bool Player::PreUpdate()
 	}
 	if (options->MouseClickEnterLeft()) {
 		options->SetImage("clicked");
+		App->LoadGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 	if (save->MouseClickEnterLeft()) {
 		save->SetImage("clicked");
+		App->SaveGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 	if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
 		pause_status = !pause_status;
 		button_on_clicked = false;
-		back->SetImage("standard");
-				
+		back->SetImage("standard");			
 	}
 	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked")|| options->CompareState("clicked"))) {
 		button_on_clicked = false;
