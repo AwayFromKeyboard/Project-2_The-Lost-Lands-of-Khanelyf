@@ -47,8 +47,8 @@ public:
 	bool PostUpdate();
 	bool BlitDialog(uint id, uint state);
 
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+	bool LoadGame(pugi::xml_node&);
+	bool SaveGame(pugi::xml_node&) const;
 
 private:
 
