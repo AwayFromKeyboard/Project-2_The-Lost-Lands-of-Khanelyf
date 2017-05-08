@@ -286,8 +286,11 @@ bool Player::Update(float dt)
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 				Collider* unit = (*it)->GetCollider();
 
-				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
-					(*it)->SetSelected(true);
+				if (unit != nullptr)
+				{
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
+						(*it)->SetSelected(true);
+					}
 				}
 				if ((*it)->GetSelected()) {
 					if ((*it)->GetType() == building) {
@@ -315,38 +318,41 @@ bool Player::Update(float dt)
 			{
 				Collider* unit = (*it)->GetCollider();
 
-				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-					switch ((*it)->GetType())
-					{
-					case entity_type::ally:
-						MoveToTile(p);
-						mouse_over_entity = true;
-						break;
-					case entity_type::enemy:
-						SetAttackingEnemy((Unit*)*it);
-						mouse_over_entity = true;
-						break;
-					case entity_type::npc:
-						MoveToTile(p);
-						mouse_over_entity = true;
-						break;
-					case entity_type::player:
-						MoveToTile(p);
-						mouse_over_entity = true;
-						break;
-					case entity_type::building:
-						mouse_over_entity = true;
-						break;
-					case entity_type::object:
-						SetPickingObject((Object*)*it);
-						mouse_over_entity = true;
-						break;
-					case entity_type::enemy_building:
-						SetAttackingBuilding((Building*)*it);
-						mouse_over_entity = true;
-						break;
-					default:
-						break;
+				if (unit != nullptr)
+				{
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+						switch ((*it)->GetType())
+						{
+						case entity_type::ally:
+							MoveToTile(p);
+							mouse_over_entity = true;
+							break;
+						case entity_type::enemy:
+							SetAttackingEnemy((Unit*)*it);
+							mouse_over_entity = true;
+							break;
+						case entity_type::npc:
+							MoveToTile(p);
+							mouse_over_entity = true;
+							break;
+						case entity_type::player:
+							MoveToTile(p);
+							mouse_over_entity = true;
+							break;
+						case entity_type::building:
+							mouse_over_entity = true;
+							break;
+						case entity_type::object:
+							SetPickingObject((Object*)*it);
+							mouse_over_entity = true;
+							break;
+						case entity_type::enemy_building:
+							SetAttackingBuilding((Building*)*it);
+							mouse_over_entity = true;
+							break;
+						default:
+							break;
+						}
 					}
 				}
 
