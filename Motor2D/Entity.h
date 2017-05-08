@@ -17,8 +17,11 @@ enum entity_state {
 	entity_death,
 	entity_decompose,
 	entity_pick_object,
+
 	object_picked,
 	object_dropped,
+	object_destroyed,
+
 	entity_null
 };
 
@@ -32,7 +35,7 @@ public:
 
 	virtual ~Entity() {};
 
-	virtual bool LoadEntity(iPoint pos) { return true; };
+	virtual bool LoadEntity(iPoint pos, entity_name name) { return true; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update(float dt) { return true; };
@@ -77,6 +80,7 @@ public:
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
+	entity_name name = entity_name::test;
 	bool to_delete = false;
 
 	int life = 0;

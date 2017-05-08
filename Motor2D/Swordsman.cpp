@@ -21,7 +21,7 @@ Swordsman::~Swordsman()
 {
 }
 
-bool Swordsman::LoadEntity(iPoint pos)
+bool Swordsman::LoadEntity(iPoint pos, entity_name name)
 {
 	bool ret = true;
 
@@ -48,6 +48,7 @@ bool Swordsman::LoadEntity(iPoint pos)
 	}
 	if (node)
 	{
+		this->name = name;
 
 		position = { pos.x, pos.y };
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);

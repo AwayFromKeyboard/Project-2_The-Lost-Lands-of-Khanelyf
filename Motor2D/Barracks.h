@@ -10,11 +10,7 @@ public:
 	Barracks(entity_type _type);
 	~Barracks();
 
-	bool LoadEntity(iPoint pos);
-
-	bool Start();
-
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	bool LoadEntity(iPoint pos, entity_name name);
 };
 
 #endif

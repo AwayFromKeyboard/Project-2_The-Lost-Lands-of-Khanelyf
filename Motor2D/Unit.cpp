@@ -83,7 +83,9 @@ bool Unit::PreUpdate()
 bool Unit::Update(float dt)
 {
 	if (App->player->pause_status == false) {
-		collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
+
+		if (collision != nullptr)
+			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
 		switch (state) {
 		case entity_state::entity_idle:
@@ -207,8 +209,10 @@ bool Unit::Update(float dt)
 
 		case entity_state::entity_death:
 			CheckDeathDirection();
-			if (collision != nullptr)
+			if (collision != nullptr) {
 				App->collisions->EraseCollider(collision);
+				collision = nullptr;
+			}
 			if (!current_animation->Finished())
 				death_timer.Start();
 			else if (death_timer.ReadSec() > 2)
@@ -229,12 +233,14 @@ bool Unit::Update(float dt)
 			}
 			break;
 
+
 		case entity_state::entity_pick_object:
 			if (IsInRange(to_pick_object)) {
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
 				state = entity_state::entity_idle;
-				PickObject();
+				if (to_pick_object->pickable == true)
+					PickObject();
 				has_moved = false;
 			}
 			else if (!has_moved) {
@@ -247,8 +253,20 @@ bool Unit::Update(float dt)
 				if (path.size() > 0)
 					FollowPath(dt);
 			}
-			break;
 		}
+
+		if (damaged_by_whirlwind == true && timer_whirlwind_start == true)
+		{
+			whirlwind_damage.Start();
+			timer_whirlwind_start = false;
+		}
+
+		if (whirlwind_damage.ReadSec() >= 4 && damaged_by_whirlwind == true)
+		{
+			damaged_by_whirlwind = false;
+			timer_whirlwind_start = true;
+		}
+
 	}
 	return true;
 }
@@ -262,14 +280,14 @@ bool Unit::Draw(float dt)
 	{
 	case entity_idle:
 		offset = i_offset;
-		if(flip)
+		if (flip)
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_i_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move:
 		offset = m_offset;
-		if(flip)
+		if (flip)
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));

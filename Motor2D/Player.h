@@ -41,6 +41,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+private:
 	void Battlecry();
 	void BattlecryModifier(int damage_buff);
 	void CheckAbilityRange(int range);
@@ -90,8 +93,9 @@ private:
 	UI_Text* level_points_txt = nullptr;
 
 	Hero* hero = nullptr;
-private:
+public:
 	void MoveToTile(iPoint tile);
+private:
 	void SetAttackingEnemy(Unit* enemy);
 	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();
@@ -134,6 +138,8 @@ public:
 	bool draw_buff = false;
 	bool charge_speed_buff = false;
 	bool charge_damage_buff = false;
+
+	std::list<iPoint> range_visited;
 
 private:
 	j1Timer battlecry_timer;

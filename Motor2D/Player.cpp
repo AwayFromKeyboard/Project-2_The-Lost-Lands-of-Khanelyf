@@ -18,9 +18,11 @@
 #include "j1Window.h"
 #include "Object.h"
 #include "Building.h"
+#include "Minimap.h"
 
 Player::Player()
 {
+	name = "";
 }
 
 Player::~Player()
@@ -276,8 +278,6 @@ bool Player::PreUpdate()
 		quit_game->SetImage("clicked");
 	
 	if (!pause_status) {
-
-
 		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
 			hero->levelup_points += 5;
 
@@ -303,94 +303,119 @@ bool Player::PreUpdate()
 				App->scene->scene_test->current_human_resources += sword->human_cost;
 			}
 		}
-		if (create_unit_button2->MouseClickOutLeft()) {
-			create_unit_button2->SetImage("standard");
-		}
-
 		//player abilities
 		if (!hero->is_holding_object)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+			if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat && battlecry_ability->CompareState("standard")) {
 				draw_battlecry_range = true;
 				CheckAbilityRange(BATTLECRY_RANGE);
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+			else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat && whirlwind_ability->CompareState("standard")) {
 				draw_whirlwind_range = true;
 				CheckAbilityRange(WHIRLWIND_RANGE);
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+			else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat && charge_ability->CompareState("standard")) {
 				draw_charge_range = true;
 				CheckStraightAbilityRange(CHARGE_RANGE);
 			}
 
 			if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
 				draw_battlecry_range = false;
+				range_visited.clear();
 			}
 			if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
 				draw_whirlwind_range = false;
+				range_visited.clear();
 			}
-			if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
-				draw_charge_range = false;
-			}
-
-			//Battlecry
-
-
-			if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
-				battlecry_ability->SetImage("clicked");
-				Battlecry();
-				battlecry_cd->SetEnabled(true);
-				battlecry_timer.Start();
-			}
-			if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
-				battlecry_cd->SetEnabled(false);
-				battlecry_ability->SetImage("standard");
-			}
-			else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
-				StopBuff(-BATTLECRY_BUFF);
+			if (create_unit_button2->MouseClickOutLeft()) {
+				create_unit_button2->SetImage("standard");
 			}
 
-			// Whirlwind
-
-			if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
-				whirlwind_ability->SetImage("clicked");
-				Whirlwind();
-				whirlwind_cd->SetEnabled(true);
-				whirlwind_timer.Start();
-			}
-			if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
-				whirlwind_cd->SetEnabled(false);
-				whirlwind_ability->SetImage("standard");
-			}
-
-			//Charge
-
-			if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
-				Charge();
-			}
-
-			if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+			//player abilities
+			if (!hero->is_holding_object)
 			{
-				GetHero()->speed -= CHARGE_SPEED;
-				charge_speed_buff = false;
-			}
+				if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+					draw_battlecry_range = true;
+					CheckAbilityRange(BATTLECRY_RANGE);
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+					draw_whirlwind_range = true;
+					CheckAbilityRange(WHIRLWIND_RANGE);
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+					draw_charge_range = true;
+					CheckStraightAbilityRange(CHARGE_RANGE);
+				}
 
-			if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+				if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+					draw_battlecry_range = false;
+				}
+				if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+					draw_whirlwind_range = false;
+				}
+				if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
+					draw_charge_range = false;
+				}
+
+				//Battlecry
+
+
+				if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+					battlecry_ability->SetImage("clicked");
+					Battlecry();
+					battlecry_cd->SetEnabled(true);
+					battlecry_timer.Start();
+				}
+				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+					battlecry_cd->SetEnabled(false);
+					battlecry_ability->SetImage("standard");
+				}
+				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+					StopBuff(-BATTLECRY_BUFF);
+				}
+
+				// Whirlwind
+
+				if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+					whirlwind_ability->SetImage("clicked");
+					Whirlwind();
+					whirlwind_cd->SetEnabled(true);
+					whirlwind_timer.Start();
+				}
+				if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
+					whirlwind_cd->SetEnabled(false);
+					whirlwind_ability->SetImage("standard");
+				}
+
+				//Charge
+
+				if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+					Charge();
+				}
+
+				if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+				{
+					GetHero()->speed -= CHARGE_SPEED;
+					charge_speed_buff = false;
+				}
+
+				if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+				{
+					GetHero()->damage -= CHARGE_DAMAGE;
+					charge_damage_buff = false;
+				}
+
+				if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+					charge_cd->SetEnabled(false);
+					charge_ability->SetImage("standard");
+				}
+			}
+			//Object interface
+
+			if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 			{
-				GetHero()->damage -= CHARGE_DAMAGE;
-				charge_damage_buff = false;
+				GetHero()->DropObject();
 			}
-
-			if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
-				charge_cd->SetEnabled(false);
-				charge_ability->SetImage("standard");
-			}
-		}
-		//Object interface
-
-		if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-		{
-			GetHero()->DropObject();
 		}
 	}
 	return ret;
@@ -399,88 +424,90 @@ bool Player::PreUpdate()
 bool Player::Update(float dt)
 {
 	bool ret = true;
+	
+	if (!App->minimap->IsMouseOver())
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
+			iPoint mouse;
+			App->input->GetMouseWorld(mouse.x, mouse.y);
+			App->entity->UnselectEverything();
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+				Collider* unit = (*it)->GetCollider();
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
-		iPoint mouse;
-		App->input->GetMouseWorld(mouse.x, mouse.y);
-		App->entity->UnselectEverything();
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-			Collider* unit = (*it)->GetCollider();
-			
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
-				(*it)->SetSelected(true);
-			}
-			if ((*it)->GetSelected()) {
-				if ((*it)->GetType() == building) {
-					App->entity->UnselectEverything();
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
 					(*it)->SetSelected(true);
-					barracks_ui_window->SetEnabledAndChilds(true);
-					break;
 				}
-				else {
-					App->entity->selected.push_back((Unit*)*it);
-				}		
+				if ((*it)->GetSelected()) {
+					if ((*it)->GetType() == building) {
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+						barracks_ui_window->SetEnabledAndChilds(true);
+						break;
+					}
+					else {
+						App->entity->selected.push_back((Unit*)*it);
+					}
+				}
+			}
+		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+			iPoint mouse;
+			App->input->GetMouseWorld(mouse.x, mouse.y);
+			iPoint mouse_pathfinding;
+			App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+			iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+			p = App->map->WorldToMap(p.x, p.y);
+			bool mouse_over_entity = false;
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				Collider* unit = (*it)->GetCollider();
+
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+					switch ((*it)->GetType())
+					{
+					case entity_type::ally:
+						MoveToTile(p);
+						mouse_over_entity = true;
+						break;
+					case entity_type::enemy:
+						SetAttackingEnemy((Unit*)*it);
+						mouse_over_entity = true;
+						break;
+					case entity_type::npc:
+						MoveToTile(p);
+						mouse_over_entity = true;
+						break;
+					case entity_type::player:
+						MoveToTile(p);
+						mouse_over_entity = true;
+						break;
+					case entity_type::building:
+						mouse_over_entity = true;
+						break;
+					case entity_type::object:
+						SetPickingObject((Object*)*it);
+						mouse_over_entity = true;
+						break;
+					case entity_type::enemy_building:
+						SetAttackingBuilding((Building*)*it);
+						mouse_over_entity = true;
+						break;
+					default:
+						break;
+					}
+				}
+
+				if (mouse_over_entity)
+					continue;
+			}
+
+			if (!mouse_over_entity) {
+				MoveToTile(p);
 			}
 		}
 	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
-		iPoint mouse;
-		App->input->GetMouseWorld(mouse.x, mouse.y);
-		iPoint mouse_pathfinding;
-		App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
-		iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
-		p = App->map->WorldToMap(p.x, p.y);
-		bool mouse_over_entity = false;
-
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-		{
-			Collider* unit = (*it)->GetCollider();
-
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-				switch ((*it)->GetType())
-				{
-				case entity_type::ally:
-					MoveToTile(p);
-					mouse_over_entity = true;
-					break;
-				case entity_type::enemy:
-					SetAttackingEnemy((Unit*)*it);
-					mouse_over_entity = true;
-					break;
-				case entity_type::npc:
-					MoveToTile(p);
-					mouse_over_entity = true;
-					break;
-				case entity_type::player:
-					MoveToTile(p);
-					mouse_over_entity = true;
-					break;
-				case entity_type::building:
-					mouse_over_entity = true;
-					break;
-				case entity_type::object:
-					SetPickingObject((Object*)*it);
-					mouse_over_entity = true;
-					break;
-				case entity_type::enemy_building:
-					SetAttackingBuilding((Building*)*it);
-					mouse_over_entity = true;
-					break;
-				default:
-					break;
-				}
-			}
-
-			if (mouse_over_entity)
-				continue;
-		}
-		
-		if (!mouse_over_entity) {
-			MoveToTile(p);
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_K) == key_down) {
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down) {
 
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
@@ -488,8 +515,11 @@ bool Player::Update(float dt)
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 
-			if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
-				(*it)->KillEntity();
+			if (unit != nullptr)
+			{
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+					if ((*it)->life > 0) (*it)->KillEntity();
+			}
 		}
 	}
 
@@ -526,6 +556,85 @@ bool Player::CleanUp()
 {
 	bool ret = true;
 	return ret;
+}
+
+bool Player::Load(pugi::xml_node& data)
+{
+	pugi::xml_node pos = data.child("Hero").child("Position");
+	pugi::xml_node stats = data.child("Hero").child("Stats");
+	pugi::xml_node misc = data.child("Hero").child("Misc");
+	pugi::xml_node allies = data.child("Allies");
+
+	hero = (Hero*)App->entity->CreateEntity(entity_name::hero, entity_type::player, { 0, 0 });
+
+	hero->position.create(pos.attribute("x").as_int(), pos.attribute("y").as_int());
+
+	hero->life = stats.attribute("current_hp").as_int();
+	hero->max_life = stats.attribute("max_hp").as_int();
+	hero->damage = stats.attribute("damage").as_int();
+	hero->armor = stats.attribute("armor").as_int();
+	hero->pierce_armor = stats.attribute("pierce_armor").as_int();
+	
+	hero->levelup_points = misc.attribute("level_up_Points").as_int();
+	App->scene->scene_test->gold = misc.attribute("gold").as_int();
+	App->scene->scene_test->current_human_resources = misc.attribute("human_resources").as_int();
+	App->scene->scene_test->human_resources_max = misc.attribute("max_human_resources").as_int();
+
+	for (pugi::xml_node ally = allies.child("Ally"); ally != NULL; ally = ally.next_sibling()) {
+		int _name = ally.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barbarian:
+			name = barbarian;
+			break;
+		case swordsman:
+			name = swordsman;
+			break;
+		}
+
+		Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
+		entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+	}
+
+
+	return true;
+}
+
+bool Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node _hero = data.append_child("Hero");
+	pugi::xml_node pos = _hero.append_child("Position");
+	pugi::xml_node stats = _hero.append_child("Stats");
+	pugi::xml_node misc = _hero.append_child("Misc");
+	pugi::xml_node allies = data.append_child("Allies");
+
+	pos.append_attribute("x") = hero->position.x;
+	pos.append_attribute("y") = hero->position.y;
+
+	stats.append_attribute("current_hp") = hero->life;
+	stats.append_attribute("max_hp") = hero->max_life;
+	stats.append_attribute("damage") = hero->damage;
+	stats.append_attribute("armor") = hero->armor;
+	stats.append_attribute("pierce_armor") = hero->pierce_armor;
+
+	misc.append_attribute("level_up_Points") = hero->levelup_points;
+	misc.append_attribute("gold") = App->scene->scene_test->gold;
+	misc.append_attribute("human_resources") = App->scene->scene_test->current_human_resources;
+	misc.append_attribute("max_human_resources") = App->scene->scene_test->human_resources_max;
+
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::ally) {
+			pugi::xml_node ally = allies.append_child("Ally");
+			ally.append_attribute("name") = (*it)->name;
+	
+			ally.append_child("Position").append_attribute("x") = (*it)->position.x;
+			ally.child("Position").append_attribute("y") = (*it)->position.y;
+		}
+	}
+
+	return true;
 }
 
 void Player::MoveToTile(iPoint tile) {
@@ -693,10 +802,11 @@ void Player::Whirlwind()
 
 			for (int k = 0; k < 4; k++) {
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == enemy) {
+				if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
 					found->life -= WHIRLWIND_DAMAGE;
 					if (found->life <= 0)
 						found->state = entity_death;
+					found->damaged_by_whirlwind = true;
 				}
 				else {
 					bool is_visited = false;
@@ -806,36 +916,38 @@ void Player::CheckAbilityRange(int range)
 	if (draw_battlecry_range == true || draw_whirlwind_range == true)
 	{
 		std::list<iPoint> frontier;
-		std::list<iPoint> visited;
 
-		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
-		frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
+		if (GetHero()->position_map != range_visited.front())
+		{
+			range_visited.clear();
+			range_visited.push_back(GetHero()->position_map);
+			frontier.push_back(GetHero()->position_map);
+			for (int i = 0; i < range; ++i) {
+				for (int j = frontier.size(); j > 0; j--) {
+					iPoint neighbors[4];
+					neighbors[0] = frontier.front() + iPoint(1, 0);
+					neighbors[1] = frontier.front() + iPoint(-1, 0);
+					neighbors[2] = frontier.front() + iPoint(0, 1);
+					neighbors[3] = frontier.front() + iPoint(0, -1);
+					frontier.pop_front();
 
-		for (int i = 0; i < range; ++i) {
-			for (int j = frontier.size(); j > 0; j--) {
-				iPoint neighbors[4];
-				neighbors[0] = frontier.front() + iPoint(1, 0);
-				neighbors[1] = frontier.front() + iPoint(-1, 0);
-				neighbors[2] = frontier.front() + iPoint(0, 1);
-				neighbors[3] = frontier.front() + iPoint(0, -1);
-				frontier.pop_front();
-
-				for (int k = 0; k < 4; k++) {
-					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
-							is_visited = true;
-							break;
+					for (int k = 0; k < 4; k++) {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
 						}
-					}
-					if (!is_visited) {
-						frontier.push_back(neighbors[k]);
-						visited.push_back(neighbors[k]);
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							range_visited.push_back(neighbors[k]);
+						}
 					}
 				}
 			}
 		}
-		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+		for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
 			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 		}
 	}

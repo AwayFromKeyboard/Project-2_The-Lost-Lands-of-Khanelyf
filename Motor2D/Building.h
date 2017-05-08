@@ -30,10 +30,6 @@ public:
 	entity_type GetType();
 	entity_name GetName();
 
-public:
-
-	entity_name name;
-	bool to_delete = false;
 	int building_rect_number;
 
 public:

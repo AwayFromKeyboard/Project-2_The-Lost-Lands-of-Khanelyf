@@ -14,7 +14,7 @@
 
 j1Entity::j1Entity()
 {
-	name = "entity";
+	name = "entities";
 }
 
 j1Entity::~j1Entity()
@@ -87,11 +87,6 @@ bool j1Entity::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-	{
-		ret = (*it)->CleanUp();
-	}
-
 	selected.clear();
 
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
@@ -103,6 +98,14 @@ bool j1Entity::CleanUp()
 	}
 	lists_selected.clear();
 
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();)
+	{
+		list<Entity*>::iterator it_next = ++it;
+		--it;
+		DeleteEntity(*it);
+		it = it_next;
+	}
+
 	return ret;
 }
 
@@ -110,6 +113,170 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 		(*it)->OnColl(col1, col2);
+}
+
+bool j1Entity::Load(pugi::xml_node& data)
+{
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		(*it)->to_delete = true;
+	}
+
+	pugi::xml_node enemies = data.child("Enemies");
+	pugi::xml_node npcs = data.child("NPCs");
+	pugi::xml_node ally_buildings = data.child("Ally_Buildings");
+	pugi::xml_node enemy_buildings = data.child("Enemy_Buildings");
+	pugi::xml_node objects = data.child("Objects");
+	pugi::xml_node player = data.parent().child("player");
+
+	for (pugi::xml_node enemy = enemies.child("Enemy"); enemy != NULL; enemy = enemy.next_sibling()) {
+		int _name = enemy.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barbarian:
+			name = barbarian;
+			break;
+		case swordsman:
+			name = swordsman;
+			break;
+		}
+
+		Entity* entity = App->entity->CreateEntity(name, entity_type::enemy, { 0, 0 });
+		entity->position.create(enemy.child("Position").attribute("x").as_int(), enemy.child("Position").attribute("y").as_int());
+	}
+	for (pugi::xml_node npc = npcs.child("NPC"); npc != NULL; npc = npc.next_sibling()) {
+		int _name = npc.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barbarian:
+			name = barbarian;
+			break;
+		case swordsman:
+			name = swordsman;
+			break;
+		}
+
+		Entity* entity = App->entity->CreateEntity(name, entity_type::npc, { 0, 0 });
+		entity->position.create(npc.child("Position").attribute("x").as_int(), npc.child("Position").attribute("y").as_int());
+	}
+	for (pugi::xml_node ally_b = ally_buildings.child("Ally_Building"); ally_b != NULL; ally_b = ally_b.next_sibling()) {
+		int _name = ally_b.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barracks:
+			name = barracks;
+			break;
+		case basic_building:
+			name = basic_building;
+			break;
+		}
+		
+		Entity* entity = App->entity->CreateBuildingEntity(name, entity_type::ally_building, { 0, 0 }, ally_b.child("Rect").attribute("number").as_int());
+		entity->position.create(ally_b.child("Position").attribute("x").as_int(), ally_b.child("Position").attribute("y").as_int());
+	}
+	for (pugi::xml_node enemy_b = enemy_buildings.child("Enemy_Building"); enemy_b != NULL; enemy_b = enemy_b.next_sibling()) {
+		int _name = enemy_b.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barracks:
+			name = barracks;
+			break;
+		case basic_building:
+			name = basic_building;
+			break;
+		}
+
+		Entity* entity = App->entity->CreateBuildingEntity(name, entity_type::enemy_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
+		entity->position.create(enemy_b.child("Position").attribute("x").as_int(), enemy_b.child("Position").attribute("y").as_int());
+
+	}
+	for (pugi::xml_node object = objects.child("Object"); object != NULL; object = object.next_sibling()) {
+		int _name = object.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case provisions:
+			name = provisions;
+			break;
+		}
+
+		Object* entity = (Object*)App->entity->CreateEntity(name, entity_type::object, { 0, 0 });
+		entity->position.create(object.child("Position").attribute("x").as_int(), object.child("Position").attribute("y").as_int());
+
+		entity->pickable = object.child("Properties").attribute("Pickable").as_bool();
+		entity->is_carried = object.child("Properties").attribute("IsCarried").as_bool();
+	}
+
+	App->player->Load(player);
+
+	return true;
+}
+
+bool j1Entity::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node enemies = data.append_child("Enemies");
+	pugi::xml_node npcs = data.append_child("NPCs");
+	pugi::xml_node ally_buildings = data.append_child("Ally_Buildings");
+	pugi::xml_node enemy_buildings = data.append_child("Enemy_Buildings");
+	pugi::xml_node objects = data.append_child("Objects");
+	pugi::xml_node player = data.parent().append_child("player");
+
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::enemy) {
+			pugi::xml_node enemy = enemies.append_child("Enemy");
+			enemy.append_attribute("name") = (*it)->name;
+
+			enemy.append_child("Position").append_attribute("x") = (*it)->position.x;
+			enemy.child("Position").append_attribute("y") = (*it)->position.y;
+		}
+		else if ((*it)->type == entity_type::ally_building) {
+			pugi::xml_node building = ally_buildings.append_child("Ally_Building");
+			building.append_attribute("name") = (*it)->name;
+
+			building.append_child("Position").append_attribute("x") = (*it)->position.x;
+			building.child("Position").append_attribute("y") = (*it)->position.y;
+
+			building.append_child("Rect").append_attribute("number") = ((Building*)*it)->building_rect_number;
+		}
+		else if ((*it)->type == entity_type::enemy_building) {
+			pugi::xml_node building = enemy_buildings.append_child("Enemy_Building");
+			building.append_attribute("name") = (*it)->name;
+
+			building.append_child("Position").append_attribute("x") = (*it)->position.x;
+			building.child("Position").append_attribute("y") = (*it)->position.y;
+
+			building.append_child("Rect").append_attribute("number") = ((Building*)*it)->building_rect_number;
+		}
+		else if ((*it)->type == entity_type::object) {
+			pugi::xml_node object = objects.append_child("Object");
+			object.append_attribute("name") = (*it)->name;
+
+			object.append_child("Position").append_attribute("x") = (*it)->position.x;
+			object.child("Position").append_attribute("y") = (*it)->position.y;
+
+			object.append_child("Properties").append_attribute("Pickable") = ((Object*)*it)->pickable;
+			object.child("Properties").append_attribute("IsCarried") = ((Object*)*it)->is_carried;
+		}
+		else if ((*it)->type == entity_type::npc) {
+			pugi::xml_node npc = npcs.append_child("NPC");
+			npc.append_attribute("name") = (*it)->name;
+
+			npc.append_child("Position").append_attribute("x") = (*it)->position.x;
+			npc.child("Position").append_attribute("y") = (*it)->position.y;
+		}
+	}
+
+	App->player->Save(player);
+
+	return true;
 }
 
 Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
@@ -139,7 +306,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity(pos);
+		ret->LoadEntity(pos, name);
 		ret->Start();
 		entity_list.push_back(ret);
 	}
@@ -164,7 +331,7 @@ Entity* j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoin
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity(pos);
+		ret->LoadEntity(pos, name);
 		ret->Start();
 		entity_list.push_back(ret);
 	}

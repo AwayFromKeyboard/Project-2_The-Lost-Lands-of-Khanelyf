@@ -2,6 +2,7 @@
 #define _OBJECT_H_
 
 #include "Entity.h"
+#include "j1Timer.h"
 
 struct Collider;
 
@@ -32,20 +33,16 @@ public:
 
 public:
 
-	entity_name name;
-	bool to_delete = false;
-
-public:
-
 	iPoint offset = NULLPOINT;
 	SDL_Rect tex_rect = NULLRECT;
 
 public:
 	bool is_carried = false;
-	bool pickable = false;
+	bool pickable = true;
 
 private:
 	SDL_Rect aux_collision_rect = NULLRECT;
+	j1Timer death_timer;
 };
 
 #endif

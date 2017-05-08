@@ -15,15 +15,6 @@ void Scene::InitCameraMovement()
 	movement_window_d_l = (UI_Window*)App->gui->UI_CreateWin(iPoint(-1, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
 	movement_window_d_r = (UI_Window*)App->gui->UI_CreateWin(iPoint(App->win->_GetWindowSize().x - MOVEMENT_AREA, App->win->_GetWindowSize().y - MOVEMENT_AREA), MOVEMENT_AREA, MOVEMENT_AREA, 5);
 
-	/*rect_u = (UI_ColoredRect*)movement_window_u->CreateColoredRect(movement_window_u->GetPosition(), movement_window_u->GetRect().w, movement_window_u->GetRect().h, { 255, 0, 0, 100 });
-	rect_d = (UI_ColoredRect*)movement_window_d->CreateColoredRect(movement_window_d->GetPosition(), movement_window_d->GetRect().w, movement_window_d->GetRect().h, { 255, 0, 0, 100 });
-	rect_l = (UI_ColoredRect*)movement_window_l->CreateColoredRect(movement_window_l->GetPosition(), movement_window_l->GetRect().w, movement_window_l->GetRect().h, { 255, 0, 0, 100 });
-	rect_r = (UI_ColoredRect*)movement_window_r->CreateColoredRect(movement_window_r->GetPosition(), movement_window_r->GetRect().w, movement_window_r->GetRect().h, { 255, 0, 0, 100 });
-	rect_u_l = (UI_ColoredRect*)movement_window_u_l->CreateColoredRect(movement_window_u_l->GetPosition(), movement_window_u_l->GetRect().w, movement_window_u_l->GetRect().h, { 0, 255, 0, 100 });
-	rect_u_r = (UI_ColoredRect*)movement_window_u_r->CreateColoredRect(movement_window_u_r->GetPosition(), movement_window_u_r->GetRect().w, movement_window_u_r->GetRect().h, { 0, 255, 0, 100 });
-	rect_d_l = (UI_ColoredRect*)movement_window_d_l->CreateColoredRect(movement_window_d_l->GetPosition(), movement_window_d_l->GetRect().w, movement_window_d_l->GetRect().h, { 0, 255, 0, 100 });
-	rect_d_r = (UI_ColoredRect*)movement_window_d_r->CreateColoredRect(movement_window_d_r->GetPosition(), movement_window_d_r->GetRect().w, movement_window_d_r->GetRect().h, { 0, 255, 0, 100 });*/
-
 	movement_window_u->SetEnabled(true);
 	movement_window_d->SetEnabled(true);
 	movement_window_l->SetEnabled(true);
