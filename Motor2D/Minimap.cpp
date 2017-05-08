@@ -68,13 +68,13 @@ bool Minimap::PreUpdate()
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case ally:
-				cells[map_size.x  * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 20,255,20,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case npc:
 				break;
 			case enemy:
-				cells[map_size.x  * pos.y + pos.x].cell_color = { 255,20,20,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 255,20,20,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case building:
@@ -83,11 +83,11 @@ bool Minimap::PreUpdate()
 			case object:
 				break;
 			case ally_building:
-				cells[map_size.x  * pos.y + pos.x].cell_color = { 255,255,20,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 255,255,20,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case enemy_building:
-				cells[map_size.x  * pos.y + pos.x].cell_color = { 20,255,255,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 20,255,255,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case null:
@@ -96,11 +96,27 @@ bool Minimap::PreUpdate()
 		}
 		update_timer.Start();
 
-		pos = NULLPOINT;
-		pos = App->render->ScreenToWorld(App->render->camera.x, App->render->camera.y);
-		pos = App->map->WorldToMapPoint(pos);
-		cells[map_size.x  * pos.y + pos.x].cell_color = { 255,255,255,255 };
-		units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
+		minimap_quad = App->map->WorldToMap(App->render->camera.x, App->render->camera.y);
+		if (minimap_quad.x >= 0 && minimap_quad.y < 0) // When Minimap quad gets out of limits (needs revision)
+		{
+			cells[map_size.x * -minimap_quad.y + minimap_quad.x].cell_color = { 255,255,255,255 };
+			units_to_print.push_back(cells[map_size.x * -minimap_quad.y + minimap_quad.x]);
+		}
+		else if (minimap_quad.x >= 0 && minimap_quad.y >= 0) // When Minimap quad gets out of limits (needs revision)
+		{
+			cells[map_size.x * minimap_quad.y + minimap_quad.x].cell_color = { 255,255,255,255 };
+			units_to_print.push_back(cells[map_size.x * minimap_quad.y + minimap_quad.x]);
+		}
+		else if (minimap_quad.x < 0 && minimap_quad.y >= 0) // When Minimap quad gets out of limits (needs revision)
+		{
+			cells[map_size.x * minimap_quad.y + -minimap_quad.x].cell_color = { 255,255,255,255 };
+			units_to_print.push_back(cells[map_size.x * minimap_quad.y + -minimap_quad.x]);
+		}
+		else if (minimap_quad.x < 0 && minimap_quad.y < 0)
+		{
+			cells[map_size.x * -minimap_quad.y + -minimap_quad.x].cell_color = { 255,255,255,255 };
+			units_to_print.push_back(cells[map_size.x * -minimap_quad.y + -minimap_quad.x]);
+		}
 	}
 
 	return ret;
@@ -128,17 +144,13 @@ bool Minimap::Draw()
 	for (int i = 0; i < size; i++)
 	{
 		color = units_to_print[i].cell_color;
-		
 		if (color.r == 255 && color.g == 255 && color.b == 255) {
-			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,15,10 }, color.r, color.g, color.b, color.a, false, false, 11);
+			iPoint map_size = { (App->render->camera.w / 26), (App->render->camera.h / 26) };
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x - 5, units_to_print[i].cell_position.y, map_size.x, map_size.y }, color.r, color.g, color.b, color.a, false, false, 11);
 		}
 		else
 			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);
 	}
-
-	iPoint cam = MiniMToScreen(App->render->camera.x, App->render->camera.y);
-	iPoint cam_size = MiniMToScreen(App->win->_GetWindowSize().x, App->win->_GetWindowSize().y);
-	App->scene->LayerDrawQuad({ cam.x, cam.y, cam_size.x, cam_size.y }, 255, 255, 255, 255, true, true, 11);
 
 	return ret;
 }
@@ -146,8 +158,6 @@ bool Minimap::Draw()
 bool Minimap::CleanUp()
 {
 	bool ret = true;
-
-	App->gui->DeleteElement(minimap_window);
 	cells.clear();
 	units_to_print.clear();
 

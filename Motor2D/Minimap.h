@@ -69,6 +69,7 @@ public:
 
 public:
 	SDL_Rect    map_rect = { 0,0,0,0 };
+	iPoint		minimap_quad = NULLPOINT;
 
 private:
 	// Map Data
