@@ -75,6 +75,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	console->AddCommand("save", console, 0, 0, "Save data");
 	console->AddCommand("cap_fps", console, 0, 1, "Cap fps. Min_args: 0 Max_args: 1 Args: num > 0");
 
+	player->active = false;
+	collisions->active = false;
+	pathfinding->active = false;
+	entity->active = false;
+	questmanager->active = false;
+	dialogs->active = false;
+	console->active = false;
+
 	cf = new collision_filters();
 	PERF_PEEK(ptimer);
 }
@@ -148,8 +156,6 @@ bool j1App::Start()
 	debug_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 20), 200, 115, 1);
 	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 20), 200, 115, { 20, 20, 20, 125 }, true);
 	debug_text = (UI_Text*)debug_window->CreateText(iPoint(5, 25), App->font->default_15, 15);
-
-	player->active = false;
 
 	PERF_PEEK(ptimer);
 
@@ -481,7 +487,13 @@ void j1App::EndSDL()
 	end_program = true;
 }
 
-void j1App::ActivatePlayer()
+void j1App::ActivateScene()
 {
 	player->active = true;
+	collisions->active = true;
+	pathfinding->active = true;
+	entity->active = true;
+	questmanager->active = true;
+	dialogs->active = true;
+	console->active = true;
 }

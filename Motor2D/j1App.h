@@ -68,7 +68,7 @@ public:
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
 	void GetSaveGames(std::list<std::string>& list_to_fill) const; 
-	void ActivatePlayer();
+	void ActivateScene();
 
 	// Load an XML file
 	void LoadXML(const char* path, pugi::xml_document& doc);

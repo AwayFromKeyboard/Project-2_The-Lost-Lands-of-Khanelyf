@@ -7,10 +7,8 @@
 #include "j1Gui.h"
 #include "Parallax.h"
 #include "j1Entity.h"
-#include "CollisionFilters.h"
 #include "j1Map.h"
 #include "j1Window.h"
-#include "j1Collisions.h"
 
 MainMenu::MainMenu()
 {
@@ -22,8 +20,6 @@ MainMenu::~MainMenu()
 
 bool MainMenu::Start()
 {
-	App->collisions->UpdateQuadtree();
-
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 7, 37, 40 };
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
