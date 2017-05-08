@@ -42,6 +42,8 @@ bool FogOfWar::AddPlayer(Unit* new_entity)
 		new_unit.id = new_entity->entityID;
 		new_entity->is_on_fow = true;
 		players_on_fog.push_back(new_unit);
+
+		FillFrontier();
 	}
 
 	else
@@ -66,12 +68,8 @@ uint FogOfWar::Get(int x, int y)
 
 void FogOfWar::Start()
 {
-	FillFrontier();
-
 	//RemoveDimJaggies();
 	//RemoveDarkJaggies(); 
-
-	ManageCharacters();
 }
 
 void FogOfWar::Update(iPoint prev_pos, iPoint next_pos, unsigned int entityID)
