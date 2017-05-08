@@ -113,11 +113,11 @@ bool j1Scene::CleanUp()
 void j1Scene::ChangeScene(Scene * new_scene)
 {
 	LOG("Changing current scene");
+	current_scene->CleanUp();
+	current_scene = new_scene;
 
 	App->ActivateScene();
 
-	current_scene->CleanUp();
-	current_scene = new_scene;
 	current_scene->Start();
 }
 

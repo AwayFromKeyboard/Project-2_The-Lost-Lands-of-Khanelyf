@@ -147,9 +147,10 @@ bool j1App::Start()
 	PERF_START(ptimer);
 	bool ret = true;
 
-	for (list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++)
-		ret = (*it)->Start();
-	
+	for (list<j1Module*>::iterator it = modules.begin(); it != modules.end(); it++) {
+		if ((*it)->active == true)
+			ret = (*it)->Start();
+	}
 
 	startup_time.Start();
 
@@ -496,4 +497,12 @@ void j1App::ActivateScene()
 	questmanager->active = true;
 	dialogs->active = true;
 	console->active = true;
+
+	player->Start();
+	collisions->Start();
+	pathfinding->Start();
+	entity->Start();
+	questmanager->Start();
+	dialogs->Start();
+	console->Start();
 }
