@@ -121,7 +121,6 @@ void j1Collisions::DebugDraw()
 				if ((*it)->CheckCollision((*it2)->rect)) {
 					if (matrix[(*it)->type][(*it2)->type] && (*it)->callback)
 						(*it)->callback->OnCollision((*it), (*it2));
-
 					if (matrix[(*it2)->type][(*it)->type] && (*it2)->callback)
 						(*it2)->callback->OnCollision((*it2), (*it));
 				}

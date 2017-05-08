@@ -111,8 +111,7 @@ bool j1Entity::CleanUp()
 
 void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		(*it)->OnColl(col1, col2);
+	col2->parent->OnColl(col2->parent, col1->parent);
 }
 
 bool j1Entity::Load(pugi::xml_node& data)
@@ -316,7 +315,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	return ret;
 }
 
-Entity* j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
+Entity * j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
 {
 	Entity* ret = nullptr;
 

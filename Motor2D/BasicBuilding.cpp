@@ -58,6 +58,7 @@ bool BasicBuilding::LoadEntity(iPoint pos, entity_name name)
 			collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box1").attribute("w").as_int(), node.child("collision_box1").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 			collision->offset_x = node.child("collision_box1").attribute("offset_x").as_int();
 			collision->offset_y = node.child("collision_box1").attribute("offset_y").as_int();
+			collision->parent = this;
 
 			tex_rect = { node.child("rect1").attribute("x").as_int(), node.child("rect1").attribute("y").as_int(), node.child("rect1").attribute("w").as_int(), node.child("rect1").attribute("h").as_int() };
 			offset = iPoint(node.child("offset1").attribute("offset_x").as_int(), node.child("offset1").attribute("offset_y").as_int());
@@ -69,6 +70,7 @@ bool BasicBuilding::LoadEntity(iPoint pos, entity_name name)
 			collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box2").attribute("w").as_int(), node.child("collision_box2").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 			collision->offset_x = node.child("collision_box2").attribute("offset_x").as_int();
 			collision->offset_y = node.child("collision_box2").attribute("offset_y").as_int();
+			collision->parent = this;
 
 			tex_rect = { node.child("rect2").attribute("x").as_int(), node.child("rect2").attribute("y").as_int(), node.child("rect2").attribute("w").as_int(), node.child("rect2").attribute("h").as_int() };
 			offset = iPoint(node.child("offset2").attribute("offset_x").as_int(), node.child("offset2").attribute("offset_y").as_int());
@@ -80,6 +82,7 @@ bool BasicBuilding::LoadEntity(iPoint pos, entity_name name)
 			collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box3").attribute("w").as_int(), node.child("collision_box3").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
 			collision->offset_x = node.child("collision_box3").attribute("offset_x").as_int();
 			collision->offset_y = node.child("collision_box3").attribute("offset_y").as_int();
+			collision->parent = this;
 
 			tex_rect = { node.child("rect3").attribute("x").as_int(), node.child("rect3").attribute("y").as_int(), node.child("rect3").attribute("w").as_int(), node.child("rect3").attribute("h").as_int() };
 			offset = iPoint(node.child("offset3").attribute("offset_x").as_int(), node.child("offset3").attribute("offset_y").as_int());
