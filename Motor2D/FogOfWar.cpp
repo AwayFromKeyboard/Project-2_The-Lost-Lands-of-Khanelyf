@@ -39,7 +39,7 @@ bool FogOfWar::AddPlayer(Unit* new_entity)
 		// Get the frontier and put it on the ally_unit 
 		GetEntitiesCircleArea(new_unit);
 
-		//new_unit.id = new_entity->id;
+		new_unit.id = new_entity->entityID;
 		new_entity->is_on_fow = true;
 		players_on_fog.push_back(new_unit);
 	}
@@ -50,7 +50,8 @@ bool FogOfWar::AddPlayer(Unit* new_entity)
 
 		new_simple_unit.player_pos = new_entity->position_map;
 		new_simple_unit.visible = false;
-		//new_simple_unit.id = new_entity->id;
+		new_simple_unit.id = new_entity->entityID;
+		new_simple_unit.type = new_entity->type;
 		simple_char_on_fog_pos.push_back(new_simple_unit);
 	}
 
@@ -73,23 +74,23 @@ void FogOfWar::Start()
 	ManageCharacters();
 }
 
-void FogOfWar::Update(iPoint prev_pos, iPoint next_pos)
+void FogOfWar::Update(iPoint prev_pos, iPoint next_pos, unsigned int entityID)
 {
 	// We look for the direction that the player is moving
 
 	// Update the character current position in case they move 
 
 	if (prev_pos.x + 1 == next_pos.x)
-		MoveFrontier(prev_pos, "right");
+		MoveFrontier(prev_pos, "right", entityID);
 
 	else if (prev_pos.x - 1 == next_pos.x)
-		MoveFrontier(prev_pos, "left");
+		MoveFrontier(prev_pos, "left", entityID);
 
 	else if (prev_pos.y + 1 == next_pos.y)
-		MoveFrontier(prev_pos, "down");
+		MoveFrontier(prev_pos, "down", entityID);
 
 	else if (prev_pos.y - 1 == next_pos.y)
-		MoveFrontier(prev_pos, "up");
+		MoveFrontier(prev_pos, "up", entityID);
 
 	// ----
 
@@ -399,13 +400,16 @@ void FogOfWar::RemoveDarkJaggies()
 }
 
 
-void FogOfWar::MoveFrontier(iPoint prev_pos, const char* direction)
+void FogOfWar::MoveFrontier(iPoint prev_pos, const char* direction, unsigned int entityID)
 {
 	string direction_str(direction);
 
 	for (vector<ally_unit>::iterator it = players_on_fog.begin(); it != players_on_fog.end(); it++)
 	{
-		MoveArea(*it, direction);
+		if (it->id == entityID)
+		{
+			MoveArea(*it, direction, entityID);
+		}
 	}
 
 }
@@ -457,7 +461,7 @@ void FogOfWar::FillFrontier()
 	}
 }
 
-void FogOfWar::MoveArea(ally_unit& ally_unity, string direction_str)
+void FogOfWar::MoveArea(ally_unit& ally_unity, string direction_str, unsigned int entityID)
 {
 	for (list<iPoint>::iterator it = ally_unity.current_points.begin(); it != ally_unity.current_points.end(); it++)
 		data[(*it).y * App->map->data.width + (*it).x] = dim_middle;
@@ -533,16 +537,16 @@ void FogOfWar::MoveArea(ally_unit& ally_unity, string direction_str)
 
 	// Redraw the others in case of overlaping
 
-	//for (vector<ally_unit>::iterator it = players_on_fog.begin(); it != players_on_fog.end(); it++)
-	//{
-	//	if (it->id != App->entity->curr_entity->id)
-	//	{
-	//		for (list<iPoint>::iterator it2 = it->current_points.begin(); it2 != it->current_points.end(); it2++)
-	//		{
-	//			data[(*it2).y * App->map->data.width + (*it2).x] = dim_clear;
-	//		}
-	//	}
-	//}
+	for (vector<ally_unit>::iterator it = players_on_fog.begin(); it != players_on_fog.end(); it++)
+	{
+		if (it->id != entityID)
+		{
+			for (list<iPoint>::iterator it2 = it->current_points.begin(); it2 != it->current_points.end(); it2++)
+			{
+				data[(*it2).y * App->map->data.width + (*it2).x] = dim_clear;
+			}
+		}
+	}
 
 }
 
@@ -599,7 +603,7 @@ void FogOfWar::ManageCharacters()
 
 	for (list<simple_unit>::iterator it = simple_char_on_fog_pos.begin(); it != simple_char_on_fog_pos.end(); it++)
 	{
-		if (IsVisible((*it).player_pos))
+		if (IsVisible((*it).player_pos, (*it).type))
 			it->visible = true;
 
 		else
@@ -608,20 +612,22 @@ void FogOfWar::ManageCharacters()
 
 }
 
-bool FogOfWar::IsVisible(iPoint char_pos)
+bool FogOfWar::IsVisible(iPoint char_pos, entity_type type)
 {
 
-	if (Get(char_pos.x, char_pos.y) > dim_middle && Get(char_pos.x, char_pos.y) < darkd_middle)
+	if (type == npc && Get(char_pos.x, char_pos.y) == dim_clear)
 		return true;
 
-	if (Get(char_pos.x, char_pos.y) >= darkc_middle && Get(char_pos.x, char_pos.y) < darkc_inner_bottom_right)
+	else if (type == enemy && Get(char_pos.x, char_pos.y) == dim_clear)
 		return true;
 
-	if (Get(char_pos.x, char_pos.y) == dim_clear)
-		return true;
+	//else if (type == building && Get(char_pos.x, char_pos.y) == dim_clear)
+	//	return true;
+	//
+	//else if (type == enemy_building && Get(char_pos.x, char_pos.y) == dim_clear)
+	//	return true;
 
-	else
-		return false;
+	return false;
 
 }
 

@@ -77,9 +77,10 @@ struct ally_unit
 
 struct simple_unit
 {
-	iPoint		player_pos = NULLPOINT;
-	bool		visible = false;
-	int			id = -1;
+	iPoint			player_pos = NULLPOINT;
+	bool			visible = false;
+	int				id = -1;
+	entity_type		type = null;
 };
 
 class FogOfWar
@@ -87,12 +88,11 @@ class FogOfWar
 public:
 
 	FogOfWar();
+	~FogOfWar();
 
 	void Start();
 
-	void Update(iPoint prev_pos, iPoint next_pos);
-
-	~FogOfWar();
+	void Update(iPoint prev_pos, iPoint next_pos, uint entityID);
 
 	bool AddPlayer(Unit* new_entity);
 
@@ -101,9 +101,9 @@ public:
 
 	// Update Methods
 
-	void MoveFrontier(iPoint prev_pos, const char* direction);
+	void MoveFrontier(iPoint prev_pos, const char* direction, uint entityID);
 
-	void MoveArea(ally_unit& player, string direction);
+	void MoveArea(ally_unit& player, string direction, uint entityID);
 
 	SDL_Rect GetRect(int fow_id);
 
@@ -123,7 +123,7 @@ public:
 
 	// Utilility --
 
-	bool IsVisible(iPoint char_pos);
+	bool IsVisible(iPoint char_pos, entity_type type);
 
 	bool IsFrontier(iPoint point, ally_unit& player);
 
@@ -132,13 +132,11 @@ public:
 	// Atlas ---
 
 	SDL_Texture*				fog_of_war_texture;
-
 	list<simple_unit>			simple_char_on_fog_pos;
 
 private:
 
 	vector<ally_unit>			players_on_fog;
-
 	uint*						data = nullptr;
 
 

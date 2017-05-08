@@ -92,8 +92,6 @@ public:
 	std::list<Unit*> selected;
 	//std::list<Props*> props;
 
-public:
-
 };
 
 #endif // __j1ENTITY_H__

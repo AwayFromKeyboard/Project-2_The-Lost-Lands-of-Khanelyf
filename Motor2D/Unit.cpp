@@ -47,6 +47,8 @@ bool Unit::Start()
 	fow = new FogOfWar();
 	fow->Start();
 
+	entityID = nextID++;
+
 	return ret;
 }
 
@@ -254,7 +256,7 @@ bool Unit::Update(float dt)
 
 	next_pos = position;
 
-	fow->Update(prev_pos, next_pos);
+	fow->Update(prev_pos, next_pos, entityID);
 
 	return true;
 }

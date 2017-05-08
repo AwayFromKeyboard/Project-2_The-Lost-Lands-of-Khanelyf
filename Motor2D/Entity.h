@@ -85,6 +85,9 @@ public:
 	int max_life = 0;
 	int cost = 0; // only for allies
 
+	int entityID;
+	int nextID = 0;
+
 	iPoint position = NULLPOINT;
 	Collider* collision = nullptr;
 	SDL_Texture* entity_texture;
