@@ -6,9 +6,13 @@
 #include "PugiXml\src\pugixml.hpp"
 #include <string>
 #include <list>
+#include "j1Map.h"
 
 class UI_Window;
 class UI_ColoredRect;
+
+#define MAP_TOP	200
+#define MAP_LIMIT 500
 
 //class PhysBody;
 class Scene

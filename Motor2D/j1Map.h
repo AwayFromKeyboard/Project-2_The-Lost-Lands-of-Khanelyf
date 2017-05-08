@@ -8,8 +8,8 @@
 #include <list>
 #include <vector>
 
-#define XOFFSET 20
-#define YOFFSET 20
+#define XOFFSET 5
+#define YOFFSET 5
 
 // ----------------------------------------------------
 struct Properties
