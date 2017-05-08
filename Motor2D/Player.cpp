@@ -136,6 +136,10 @@ bool Player::PreUpdate()
 {
 	bool ret = true;
 	
+	if (App->input->GetKey(SDL_SCANCODE_L) == key_down) {
+	}
+	if (App->input->GetKey(SDL_SCANCODE_M) == key_down) {
+	}
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
 
