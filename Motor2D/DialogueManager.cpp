@@ -4,6 +4,7 @@
 #include "j1Gui.h"
 #include "Log.h"
 #include "j1Gui.h"
+#include "Player.h"
 
 DialogueManager::DialogueManager() : j1Module()
 {
@@ -61,9 +62,11 @@ bool DialogueManager::Start()
 
 bool DialogueManager::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_Q) == key_down)
-	{
-		dialogueStep++;
+	if (App->player->pause_status == false) {
+		if (App->input->GetKey(SDL_SCANCODE_Q) == key_down)
+		{
+			dialogueStep++;
+		}
 	}
 
 	BlitDialog(id, NPCstate); //Calls Blit function
