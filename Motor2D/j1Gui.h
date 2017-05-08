@@ -69,6 +69,7 @@ public:
 	void GetParentElements(UI_Element * element, list<UI_Element*>& visited);
 	void ReorderElements();
 	bool Move_Elements();
+	UI_Element * GetMouseHover() const;
 	UI_Element* CheckClickMove(int x, int y);
 	void DeleteElement(UI_Element * element);
 
@@ -138,6 +139,8 @@ public:
 	// Mouse functions
 	bool MouseClickEnterLeftIntern();
 	bool MouseClickOutLeftIntern();
+	bool MouseClickEnterRightIntern();
+	bool MouseClickOutRightIntern();
 
 	void SetDebugColor(SDL_Color color);
 
@@ -251,6 +254,8 @@ public:
 	void AddImage(char* name, SDL_Rect rect);
 	void SetImage(char* name);
 
+	bool CompareState(char * name);
+
 private:
 	void ChangeButtonStats();
 
@@ -279,9 +284,10 @@ private:
 struct tex_str
 {
 	tex_str() {};
-	tex_str(string _text, SDL_Texture* _texture){text = _text, texture = _texture;}
+	tex_str(string _text, SDL_Texture* _texture, SDL_Rect _text_size) { text = _text, texture = _texture, size = _text_size; }
 	SDL_Texture* texture = nullptr;
 	string text;
+	SDL_Rect size = NULLRECT;
 };
 
 class UI_Text : public UI_Element

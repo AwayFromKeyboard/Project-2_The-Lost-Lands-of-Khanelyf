@@ -12,9 +12,16 @@
 #include <sstream>
 #include "j1Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
+#include "Swordsman.h"
 #include "Unit.h"
-#include "GameObject.h"
 #include "j1Collisions.h"
+#include "QuestManager.h"
+#include "Barracks.h"
+#include "BasicBuilding.h"
+#include "Building.h"
+#include "Minimap.h"
+#include "Object.h"
 
 SceneTest::SceneTest()
 {
@@ -26,7 +33,7 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
-	if (App->map->Load("map_vertical_slice.tmx") == true)
+	if (App->map->Load("map.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -35,30 +42,43 @@ bool SceneTest::Start()
 
 		RELEASE_ARRAY(data);
 	}
+
+	//LOAD FXs
+
+	death_id = App->audio->LoadFx("audio/fx/Death.wav");
+	death2_id = App->audio->LoadFx("audio/fx/Death2.wav");
+	get_hit_id = App->audio->LoadFx("audio/fx/Get_hit.wav");
+	get_hit2_id = App->audio->LoadFx("audio/fx/Get_hit2.wav");
+	get_hit3_id = App->audio->LoadFx("audio/fx/Get_hit3.wav");
+	get_hit4_id = App->audio->LoadFx("audio/fx/Get_hit4.wav");
+	swords_clash_id = App->audio->LoadFx("audio/fx/Sword.wav");
+	swords_clash2_id = App->audio->LoadFx("audio/fx/Sword2.wav");
+	swords_clash3_id = App->audio->LoadFx("audio/fx/Sword3.wav");
+	swords_clash4_id = App->audio->LoadFx("audio/fx/Sword4.wav");
+	swords_clash5_id = App->audio->LoadFx("audio/fx/Sword5.wav");
+
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
 
 	App->collisions->UpdateQuadtree();
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
-	cursor_r = { 1, 1, 37, 40 };
+	cursor_r = { 1, 7, 37, 40 };
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
-	ui_r = { 1, 84, 800, 600 };
+	ui_r = { 0, 88, 1680, 1050 };
 	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
-	
+
 	InitCameraMovement();
 
-	troop = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos(App->map->MapToWorld(25, 30).x, App->map->MapToWorld(25, 30).y);
-	troop->game_object->SetPos(pos);
-	
-	troop2 = (Hero*)App->entity->CreateEntity(player);
-	fPoint pos2(App->map->MapToWorld(25, 32).x, App->map->MapToWorld(25, 32).y);
-	troop2->game_object->SetPos(pos2);
+	App->map->GetEntitiesSpawn();
 
-	gold = 1000;
-	gold_txt = (UI_Text*)general_ui_window->CreateText({ 500, 25 }, App->font->default);
+	gold = 0;
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
+
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
+
+	App->audio->PlayMusic("audio/music/main_game.ogg");
 
 	SDL_ShowCursor(0);
 	return true;
@@ -73,6 +93,7 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
+
 	return true;
 }
 
@@ -84,6 +105,7 @@ bool SceneTest::Update(float dt)
 	UpdateCameraMovement();
 
 	App->map->Draw();
+
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
@@ -91,18 +113,12 @@ bool SceneTest::Update(float dt)
 
 bool SceneTest::PostUpdate()
 {
+
 	return true;
 }
 
 bool SceneTest::CleanUp()
 {
-	/*if (App->scene->GetCurrentScene() != App->scene->scene_test)
-	{
-		App->gui->DeleteElement(cursor);
-		App->gui->DeleteElement(general_ui_window);
-		App->gui->DeleteElement(gold_txt);
-	}*/
-
 	return true;
 }
 
@@ -123,15 +139,51 @@ void SceneTest::OnColl(Collider* col1, Collider* col2)
 void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
-	oss << "Gold: " << gold;
-	std::string txt = oss.str();
-	gold_txt->SetText(txt);
+	oss << gold;
+	gold_txt->SetText(oss.str());
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == key_down && gold >= TROOP_PRICE)
+	std::stringstream oss2;
+	oss2 << current_human_resources << "/" << human_resources_max;
+	human_resources_txt->SetText(oss2.str());
+
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down)
 	{
-		gold -= TROOP_PRICE;
-		troop = (Hero*)App->entity->CreateEntity(player);
-		fPoint pos(App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).x, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y).y);
-		troop->game_object->SetPos(pos);
+		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
+
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
+	{
+		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
+	{
+		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		gold -= barrack->cost;
+		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+			App->questmanager->GetCurrentQuest()->progress++;
+		}
+		create_barrack = false;
+	}
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
+	}
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_I) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
+	}
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_O) == key_down)
+	{
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
+	}
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true)
+	{
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
+		App->questmanager->create_provision = false;
+	}
+}
+
+void SceneTest::IncreaseGold(int gold)
+{
+	this->gold += gold;
 }

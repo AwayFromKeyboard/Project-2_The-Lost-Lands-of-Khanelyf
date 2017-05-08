@@ -7,7 +7,6 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Scene.h"
-#include "MainScene.h"
 #include "SceneTest.h"
 #include "j1Console.h"
 
@@ -41,10 +40,8 @@ bool j1Scene::Start()
 	LOG("Start module scene");
 
 	// Create scenes
-	main_scene = new MainScene();
 	scene_test = new SceneTest();
 
-	scenes.push_back(main_scene);
 	scenes.push_back(scene_test);
 	// -------------
 
@@ -130,6 +127,12 @@ void j1Scene::LayerBlit(int layer, SDL_Texture * texture, iPoint pos, const SDL_
 	layer_list.push(lblit);
 }
 
+void j1Scene::LayerDrawQuad(const SDL_Rect rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera, int layer)
+{
+	layer_quad lblit(rect, r, g, b, a, filled, use_camera, layer);
+	quad_list.push(lblit);	
+}
+
 void j1Scene::OnCollision(Collider* c1, Collider* c2)
 {
 	// CONVERT
@@ -139,11 +142,19 @@ void j1Scene::OnCollision(Collider* c1, Collider* c2)
 
 void j1Scene::DoLayerBlit()
 {
-	while(layer_list.size() > 0)
+	while (layer_list.size() > 0)
 	{
 		layer_blit current = layer_list.top();
 		layer_list.pop();
 		App->render->Blit(current.texture, current.pos.x, current.pos.y, &current.section, current.scale, current.flip, current.angle, current.pivot_x, current.pivot_y);
+	}
+
+	while (quad_list.size() > 0)
+	{
+		layer_quad current = quad_list.top();
+		quad_list.pop();
+		App->render->DrawQuad({ current.rect.x, current.rect.y, current.rect.w, current.rect.h }, current.r, current.g, current.b, current.a, current.filled, current.use_camera);
+
 	}
 }
 

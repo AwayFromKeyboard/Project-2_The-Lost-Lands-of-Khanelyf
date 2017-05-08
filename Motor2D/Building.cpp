@@ -1,64 +1,128 @@
 #include "Building.h"
 #include "j1Entity.h"
+#include "j1Collisions.h"
+#include "j1Map.h"
+#include "j1Scene.h"
+#include "SceneTest.h"
 #include "Scene.h"
+#include "Barracks.h"
+#include "Functions.h"
+#include "QuestManager.h"
 
-Bulding::Bulding()
+Building::Building()
 {
 }
 
-Bulding::~Bulding()
+Building::~Building()
 {
 }
 
-bool Bulding::LoadEntity()
+bool Building::LoadEntity()
+{
+	bool ret = true;
+
+	return ret;
+}
+
+bool Building::Start()
+{
+	bool ret = true;
+
+	max_life = life;
+
+	return ret;
+}
+
+bool Building::PreUpdate()
+{
+	bool ret = true;
+
+	if (state == entity_state::entity_idle) {
+		if (type == entity_type::building)
+			LifeBar({ 185, 5 }, { -100, -100 });
+		else
+			LifeBar({ 125, 5 }, { -65, -60 });
+	}
+	
+
+
+	return ret;
+}
+
+bool Building::Update(float dt)
+{
+	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+
+	switch (state) {
+	case entity_death:
+		if(collision != nullptr)
+			App->collisions->EraseCollider(collision);
+		to_delete = true;
+		if (type == entity_type::enemy_building) {
+			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
+				App->questmanager->GetCurrentQuest()->progress++;
+			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
+		}
+
+		break;
+	}
+
+	return true;
+}
+
+bool Building::Draw(float dt)
+{
+	bool ret = true;
+
+	if (state == entity_idle)
+		App->scene->LayerBlit(6, entity_texture, { position.x - offset.x, position.y - offset.y }, tex_rect);
+
+	return ret;
+}
+
+bool Building::PostUpdate()
+{
+	bool ret = true;
+
+	if (GetSelected())
+		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
+
+	return ret;
+}
+
+bool Building::CleanUp()
+{
+	
+	bool ret = true;
+
+	return ret;
+}
+
+bool Building::Load(pugi::xml_node &)
 {
 	return true;
 }
 
-bool Bulding::Start()
+bool Building::Save(pugi::xml_node &) const
 {
 	return true;
 }
 
-bool Bulding::PreUpdate()
+void Building::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
 {
-	return true;
 }
 
-bool Bulding::Update(float dt)
+Collider * Building::GetCollider()
 {
-	return true;
+	return collision;
 }
 
-bool Bulding::Draw(float dt)
+entity_type Building::GetType()
 {
-	return true;
+	return type;
 }
 
-bool Bulding::PostUpdate()
+entity_name Building::GetName()
 {
-	return true;
-}
-
-bool Bulding::CleanUp()
-{
-	for (std::list<GameObject*>::iterator it = App->entity->building_game_objects_list.begin(); it != App->entity->building_game_objects_list.end(); it++)
-		RELEASE(*it);
-	App->entity->building_game_objects_list.clear();
-
-	return true;
-}
-
-bool Bulding::Load(pugi::xml_node &)
-{
-	return true;
-}
-
-bool Bulding::Save(pugi::xml_node &) const
-{
-	return true;
-}
-
-void Bulding::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
-{
+	return name;
 }

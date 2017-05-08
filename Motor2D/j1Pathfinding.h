@@ -10,7 +10,7 @@
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
-#define FIND_RADIUS 10
+#define FIND_RADIUS 5
 
 // forward declarations
 struct Path; 
@@ -52,8 +52,10 @@ public:
 
 	bool Jump(int current_x, int current_y, int dx, int dy, iPoint start, iPoint end, PathNode& new_node);
 
+	void DeletePath(uint path_id);
 private:
 	iPoint FindNearestWalkable(const iPoint& origin);
+	iPoint FindNearestWalkableToOrigin(const iPoint & origin, const iPoint& destination);
 	int CalculatePath(Path* path, int max_iterations);
 private:
 	// Timer
@@ -89,6 +91,8 @@ struct PathNode
 	int CalculateF(const iPoint& destination);
 
 	void IdentifySuccessors(PathList& list_to_fill, iPoint startNode, iPoint endNode, j1PathFinding* path_finder) const;
+
+	iPoint FindNearestWalkableToOrigin(const iPoint & origin, const iPoint destination);
 
 	// -----------
 	int g;

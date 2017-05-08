@@ -6,16 +6,6 @@
 
 struct Collider;
 
-enum unit_state {
-	unit_idle,
-	unit_move,
-	unit_attack,
-	unit_attacking,
-	unit_death,
-	unit_decompose,
-	unit_null
-};
-
 enum attack_state {
 	attack_unit,
 	attack_building,
@@ -33,9 +23,11 @@ enum unit_direction {
 	south_east
 };
 
-class GameObject;
 enum entity_name;
+enum entity_type;
+
 class Building;
+class Object;
 
 class Unit : public Entity
 {
@@ -58,7 +50,9 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(Collider* col1, Collider* col2);
-	GameObject* GetGameObject();
+	Collider* GetCollider();
+	entity_type GetType();
+	void SetSelected(bool _selected);
 
 	// Pathfinding
 	void SetPath(vector<iPoint> _path);
@@ -69,6 +63,7 @@ public:
 	void LookAtMovement();
 
 	// Attack
+	bool CheckSurroundings();
 	bool IsInRange(Entity* attacked_entity);
 	void LookAtAttack();
 	void UnitAttack();
@@ -78,18 +73,21 @@ public:
   
 	// Death
 	void CheckDeathDirection();
-	j1Timer death_timer;
 
 	//Decompose
 	void CheckDecomposeDirection();
+
+	//Object iteration
+	void SetPickObject(Object* object);
+	void PickObject();
+	void DropObject();
   
 public:
-	GameObject* game_object = nullptr;
-	unit_state state = unit_state::unit_null;
-	entity_name type;
+	entity_name name;
 	bool flip = false;
-	bool to_delete = false;
   
+	bool can_hold_object = false;
+	bool is_holding_object = false;
 
 public:
 	vector<iPoint> path;
@@ -99,21 +97,21 @@ public:
 public:
 	Unit* attacked_unit = nullptr;
 	Building* attacked_building = nullptr;
+	Object* to_pick_object = nullptr;
 	attack_state att_state = attack_state::attack_null;
+	bool has_moved = false;
 public:
-	int life = 0;
-	int cost = 0;
+	int human_cost = 0; // only for allies
+	int gold_drop = 0; // only for enemies
 	float speed = 0;
 	int damage = 0;
 	int armor = 0;
 	int pierce_armor = 0;
 	int range = 0;
 
-	iPoint position = NULLPOINT;
-
-	Collider* idle_collision = nullptr;
-	Collider* walk_collision = nullptr;
-	Collider* attack_collision = nullptr;
+	j1Timer life_up_timer;
+	iPoint position_map = NULLPOINT;
+	iPoint aux_pos = NULLPOINT;
 
 	iPoint offset = NULLPOINT;
 	iPoint i_offset = NULLPOINT;
@@ -121,6 +119,13 @@ public:
 	iPoint a_offset = NULLPOINT;
 	iPoint d_offset = NULLPOINT;
 	iPoint de_offset = NULLPOINT;
+
+	//flip
+	int flip_i_offset = 0;
+	int flip_m_offset = 0;
+	int flip_a_offset = 0;
+	int flip_d_offset = 0;
+	int flip_de_offset = 0;
 
 	Animation* current_animation;
 	// Idle
@@ -155,7 +160,19 @@ public:
 	Animation de_north;
 
 public:
-	bool is_selected = false;
+	uint radius_of_action = 0;
+	bool buffed = false;
+private:
+	j1Timer death_timer;
+	j1Timer AI_timer;
+	j1Timer whirlwind_damage;
+	bool timer_whirlwind_start = true;
+public:
+	bool IsInsideCircle(int x, int y);
+	bool damaged_by_whirlwind = false;
+public:
+	// attacked audio
+	bool shout_fx = true;
 };
 
 #endif

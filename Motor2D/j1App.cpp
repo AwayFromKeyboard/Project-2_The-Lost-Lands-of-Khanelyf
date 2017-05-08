@@ -17,9 +17,12 @@
 #include "j1Gui.h"
 #include "j1App.h"
 #include "j1Console.h"
-#include "j1Physics.h"
 #include "j1Entity.h"
 #include "j1Collisions.h"
+#include "Player.h"
+#include "QuestManager.h"
+#include "Minimap.h"
+#include "DialogueManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -38,10 +41,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font = new j1Fonts();
 	gui = new j1Gui();
 	console = new j1Console();
-	physics = new j1Physics();
 	collisions = new j1Collisions();
 	entity = new j1Entity();
-
+	player = new Player();
+	questmanager = new QuestManager();
+	minimap = new Minimap();
+	dialogs = new DialogueManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -53,14 +58,17 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(font);
-	AddModule(physics);
 	AddModule(console);
 	AddModule(collisions);
 	AddModule(entity);
-	
-
+	AddModule(player);
+	AddModule(dialogs);
 	// Scene
 	AddModule(scene);
+	AddModule(questmanager);
+
+	// Minimap
+	AddModule(minimap);
 
 	// Gui
 	AddModule(gui);
@@ -142,8 +150,6 @@ bool j1App::Start()
 
 	startup_time.Start();
 
-	debug_mode = true;
-
 	debug_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 20), 200, 115, 1);
 	debug_colored_rect = (UI_ColoredRect*)debug_window->CreateColoredRect(iPoint(0, 20), 200, 115, { 20, 20, 20, 125 }, true);
 	debug_text = (UI_Text*)debug_window->CreateText(iPoint(5, 25), App->font->default_15, 15);
@@ -158,9 +164,6 @@ bool j1App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
-
-	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
-		debug_mode = !debug_mode;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 		ret = false;
@@ -273,7 +276,9 @@ bool j1App::CleanUp()
 
 	// Cleaning up in reverse order
 	for (list<j1Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend(); it++)
+	{
 		ret = (*it)->CleanUp();
+	}
 
 	PERF_PEEK(ptimer);
 
@@ -466,10 +471,6 @@ void j1App::FrameRateCalculations()
 	{
 		j1PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
-	}
-
-	if (input->GetKey(SDL_SCANCODE_F10) == key_down) {
-		ShellExecute(NULL, "open", "https://github.com/viriato22/Project_2/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 	}
 
 	if (debug_mode && !debug_window->enabled)

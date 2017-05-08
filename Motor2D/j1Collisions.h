@@ -25,6 +25,8 @@ struct Collider
 	collider_type type;
 	bool print_collider = false;
 	j1Module* callback = nullptr;
+	int offset_x = 0;
+	int offset_y = 0;
 
 	Collider(SDL_Rect rectangle, collider_type type, j1Module* callback = nullptr) :
 		rect(rectangle),
@@ -70,12 +72,13 @@ private:
 
 	std::list<Collider*> colliders;
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
-	bool debug = false;
 
 	int quadTreeChecks;
 	QuadTree* quadTree;
 	std::vector<QuadTree*> nodeList;
 	std::list<Collider*> potentialCollisionList;
+public:
+	bool debug = false;
 };
 
 #endif

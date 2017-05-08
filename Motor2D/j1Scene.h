@@ -7,7 +7,6 @@
 #include <queue>
 
 struct SDL_Texture;
-class MainScene;
 class SceneTest;
 
 // LayerBlit struct
@@ -40,9 +39,40 @@ struct layer_blit
 	int layer;
 };
 
+struct layer_quad
+{
+	layer_quad() {};
+	layer_quad(const SDL_Rect _rect, Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a, bool _filled, bool _use_camera, int _layer = 0)
+	{
+		rect = { _rect }; 
+		r = _r; 
+		g = _g;
+		b = _b;
+		a = _a; 
+		filled = _filled;
+		use_camera = _use_camera;
+		layer = _layer;
+	}
+	SDL_Rect rect = NULLRECT;
+	Uint8    r = 0;
+	Uint8    g = 0;
+	Uint8    b = 0;
+	Uint8    a = 0;
+	bool     filled = false;
+	bool     use_camera = true;
+
+	int layer;
+};
+
 struct compare_layer {
 	bool operator()(layer_blit const& l1, layer_blit const& l2) {
 		return l1.layer < l2.layer;
+	}
+};
+
+struct compare_qlayer {
+	bool operator()(layer_quad const& l1, layer_quad const& l2) {
+		return l1.layer > l2.layer;
 	}
 };
 
@@ -79,7 +109,7 @@ public:
 
 	// Blit choosing the layer
 	void LayerBlit(int layer, SDL_Texture* texture, iPoint pos, const SDL_Rect section = NULLRECT, float scale = -1.0f, SDL_RendererFlip _flip = SDL_FLIP_NONE,  double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
-	
+	void LayerDrawQuad(const SDL_Rect rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera = true, int layer = 0);
 	void OnCollision(Collider* col1, Collider* col2);
 
 private:
@@ -88,11 +118,11 @@ private:
 
 public:
 	// Scenes
-	MainScene*           main_scene = nullptr;
 	SceneTest*		     scene_test = nullptr;
 private:
 	// Layer Blit list
 	std::priority_queue<layer_blit, std::vector<layer_blit>, compare_layer> layer_list;
+	std::priority_queue<layer_quad, std::vector<layer_quad>, compare_qlayer> quad_list;
 
 	// Scenes list
 	list<Scene*>         scenes;

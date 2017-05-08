@@ -1,10 +1,16 @@
 #include "j1Entity.h"
 #include "Entity.h"
 #include "Hero.h"
+#include "Barbarian.h"
+#include "Swordsman.h"
 #include "Log.h"
-#include "GameObject.h"
 #include "j1Input.h"
 #include "j1Collisions.h"
+#include "Barracks.h"
+#include "BasicBuilding.h"
+#include "j1Gui.h"
+#include "Player.h"
+#include "Provisions.h"
 
 j1Entity::j1Entity()
 {
@@ -60,8 +66,17 @@ bool j1Entity::PostUpdate()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		ret = (*it)->PostUpdate();
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();) {
+		if ((*it)->to_delete == true) {
+			list<Entity*>::iterator it_next = std::next(it);
+			DeleteEntity(*it);
+			it = it_next;
+		}
+		else {
+			ret = (*it)->PostUpdate();
+			++it;
+		}
+	}
 
 	App->collisions->DebugDraw();
 
@@ -72,16 +87,6 @@ bool j1Entity::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-	{
-		ret = (*it)->CleanUp();
-	}
-	for (std::list<GameObject*>::iterator it = App->entity->unit_game_objects_list.begin(); it != App->entity->unit_game_objects_list.end(); it++) 
-		RELEASE(*it);
-	App->entity->unit_game_objects_list.clear();
-
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) 
-		selected.erase(it);
 	selected.clear();
 
 	for (std::list<SelectedList>::iterator it = lists_selected.begin(); it != lists_selected.end(); it++) {
@@ -93,6 +98,14 @@ bool j1Entity::CleanUp()
 	}
 	lists_selected.clear();
 
+	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end();)
+	{
+		list<Entity*>::iterator it_next = ++it;
+		--it;
+		DeleteEntity(*it);
+		it = it_next;
+	}
+
 	return ret;
 }
 
@@ -102,14 +115,26 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 		(*it)->OnColl(col1, col2);
 }
 
-Entity* j1Entity::CreateEntity(entity_name entity)
+Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 {
 	Entity* ret = nullptr;
 
-	switch (entity)
+	switch (name)
 	{
-	case player:
-		ret = new Hero();
+	case hero:
+		ret = new Hero(type);
+		break;
+	case barbarian:
+		ret = new Barbarian(type);
+		break;
+	case swordsman:
+		ret = new Swordsman(type);
+		break;
+	case barracks:
+		ret = new Barracks(type);
+		break;
+	case provisions:
+		ret = new Provisions(type);
 		break;
 	default:
 		break;
@@ -117,7 +142,32 @@ Entity* j1Entity::CreateEntity(entity_name entity)
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity();
+		ret->LoadEntity(pos);
+		ret->Start();
+		entity_list.push_back(ret);
+	}
+	else
+		LOG("Entity creation returned nullptr");
+
+	return ret;
+}
+
+Entity* j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
+{
+	Entity* ret = nullptr;
+
+	switch (name)
+	{
+	case basic_building:
+		ret = new BasicBuilding(type, building_rect_number);
+		break;
+	default:
+		break;
+	}
+
+	if (ret != nullptr)
+	{
+		ret->LoadEntity(pos);
 		ret->Start();
 		entity_list.push_back(ret);
 	}
@@ -138,27 +188,40 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 {
 	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 	{
-		iPoint unit = (*it)->GetGameObject()->GetPos();
-		
-		if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
-		{
-			(*it)->SetSelected(true);
-		}
-		else if (unit.x < select_rect.x && unit.x > select_rect.w && unit.y < select_rect.y && unit.y > select_rect.h)
-		{
-			(*it)->SetSelected(true);
-		}
-		else if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y < select_rect.y && unit.y > select_rect.h)
-		{
-			(*it)->SetSelected(true);
-		}
-		else if (unit.x < select_rect.x && unit.x > select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
-		{
-			(*it)->SetSelected(true);
-		}
 
-		if ((*it)->GetSelected())
-			selected.push_back((Unit*)*it);
+		iPoint unit = (*it)->position;
+
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
+		{
+			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
+			{
+				(*it)->SetSelected(true);
+			}
+			else if (unit.x < select_rect.x && unit.x > select_rect.w && unit.y < select_rect.y && unit.y > select_rect.h)
+			{
+				(*it)->SetSelected(true);
+			}
+			else if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y < select_rect.y && unit.y > select_rect.h)
+			{
+				(*it)->SetSelected(true);
+			}
+			else if (unit.x < select_rect.x && unit.x > select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
+			{
+				(*it)->SetSelected(true);
+			}
+
+			if ((*it)->GetSelected())
+				if ((*it)->GetType() == building) {
+					App->entity->UnselectEverything();
+					App->player->barracks_ui_window->SetEnabledAndChilds(true);
+					(*it)->SetSelected(true);
+				}
+				else {
+					if (App->player->barracks_ui_window->enabled)
+						App->player->barracks_ui_window->SetEnabledAndChilds(false);
+					selected.push_back((Unit*)*it);
+				}
+		}
 	}
 }
 
@@ -169,9 +232,15 @@ void j1Entity::UnselectEverything()
 		if ((*it)->GetSelected())
 		(*it)->SetSelected(false);
 	}
-	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end(); it++) {
-		selected.erase(it);
+	for (std::list<Unit*>::iterator it = selected.begin(); it != selected.end();) { 
+		if(!selected.empty())
+			it = selected.erase(it);
+		else
+			it++;
 	}
+	if (App->player->barracks_ui_window->enabled)
+		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+
 	selected.clear();
 }
 

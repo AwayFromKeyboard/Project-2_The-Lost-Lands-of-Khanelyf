@@ -8,6 +8,7 @@
 #include "j1Gui.h"
 #include "j1Entity.h"
 #include "Functions.h"
+#include "j1Scene.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -64,13 +65,6 @@ bool j1Gui::Start()
 // ---------------------------------------------------------------------
 bool j1Gui::Update(float dt)
 {
-	// Debug
-	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
-		debug = !debug;
-	else if (!App->debug_mode)
-		debug = false;
-
-
 	// Start -------------------------------------------------
 
 	if (start)
@@ -225,33 +219,38 @@ void j1Gui::GetChilds(UI_Element * element, list<UI_Element*>& visited)
 {
 	list<UI_Element*> frontier;
 
+
 	visited.push_back(element);
 
-	// Add the current childs
-	for (list<UI_Element*>::iterator it = element->childs.begin(); it != element->childs.end(); it++)
-		frontier.push_back(*it);
-
+	if (!element->childs.empty())
+	{
+		// Add the current childs
+		for (list<UI_Element*>::iterator it = element->childs.begin(); it != element->childs.end(); it++)
+			frontier.push_back(*it);
+	}
 
 	// Navigate through all the childs and add them
 
 	int end = 0;
-	while (!frontier.empty())
-	{
-		for (list<UI_Element*>::iterator fr = frontier.begin(); fr != frontier.end(); fr++)
+	if (!frontier.empty()) {
+		list<UI_Element*>::iterator fr = frontier.begin();
+		while (!frontier.empty())
 		{
 			list<UI_Element*>::iterator find = std::find(visited.begin(), visited.end(), *fr);
 			if (find == visited.end() && *fr != element)
 			{
 				visited.push_back(*fr);
-				for (list<UI_Element*>::iterator ch = (*fr)->childs.begin(); ch != (*fr)->childs.end(); ch++)
+				if (!(*fr)->childs.empty())
 				{
-					frontier.push_back(*ch);
+					for (list<UI_Element*>::iterator ch = (*fr)->childs.begin(); ch != (*fr)->childs.end(); ch++)
+					{
+						frontier.push_back(*ch);
+					}
 				}
 			}
-			frontier.erase(fr);
+			fr = frontier.erase(fr);
 		}
 	}
-
 	// ---------------------------------------
 }
 
@@ -366,6 +365,24 @@ bool j1Gui::Move_Elements()
 	return ret;
 }
 
+UI_Element* j1Gui::GetMouseHover() const
+{
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
+
+	for (int it = 0; it < elements_list.size(); it++)
+	{
+		SDL_Rect rect = elements_list[it].data->rect;
+		if (mouse.PointInRect(rect.x, rect.y, rect.w, rect.h) == true && elements_list[it].data->enabled == true && elements_list[it].data->type == ui_element::ui_button)
+		{
+			return (elements_list[it].data);
+		}
+	}
+
+	return nullptr;
+}
+
+
 // ---------------------------------------------------------------------
 // Chooses the element that has to be moved.
 // ---------------------------------------------------------------------
@@ -448,7 +465,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 		if ((*ch)->parent_element != nullptr && (*ch)->parent_element->childs.size() > 0)
 			(*ch)->parent_element->childs.remove(*ch);
 
-		if ((*ch)->type == ui_window && windows.size() > 0)
+		if ((*ch)->type == ui_window && windows.size() > 0) //crash after quit
 			windows.remove((UI_Window*)*ch);
 
 			// Delete from pQ
@@ -479,7 +496,6 @@ void j1Gui::CursorSelection()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
 	{
-		App->entity->UnselectEverything();
 		selection_rect.x = x;
 		selection_rect.y = y;
 		selection_rect.w = selection_rect.x;
@@ -539,7 +555,8 @@ bool UI_Element::cleanup()
 
 void UI_Element::SetEnabled(bool set)
 {
-	enabled = set;
+	if (this != NULL)
+		enabled = set;
 }
 
 // ---------------------------------------------------------------------
@@ -689,6 +706,32 @@ bool UI_Element::MouseClickOutLeftIntern()
 	return false;
 }
 
+bool UI_Element::MouseClickEnterRightIntern()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+	{
+		if (clicked)
+		{
+			clicked = false;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UI_Element::MouseClickOutRightIntern()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_up)
+	{
+		if (clicked)
+		{
+			clicked = false;
+			return true;
+		}
+	}
+}
+
+
 void UI_Element::SetDebugColor(SDL_Color _color)
 {
 	color.r = _color.r; color.g = _color.g; color.b = _color.b; color.a = _color.a;
@@ -764,7 +807,7 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 {
 	UI_Text* ret = nullptr;
 	ret = new UI_Text();
-
+	
 	if (ret != nullptr)
 	{
 		ret->type = ui_text;
@@ -773,13 +816,13 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-
+	
 		// Layers --
-
+	
 		ret->layer = childs.size() + layer + 1;
-
+	
 		// ---------
-
+	
 		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
@@ -1141,6 +1184,17 @@ void UI_Button::SetImage(char* name)
 	}
 }
 
+bool UI_Button::CompareState(char* name) {
+	for (list<rect_text>::iterator it = rect_list.begin(); it != rect_list.end(); it++)
+	{
+		if (TextCmp((*it).name.c_str(), name) && curr.x == (*it).rect.x && curr.y == (*it).rect.y && curr.w == (*it).rect.w && curr.h == (*it).rect.h)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 // -----------------------------------
 // ---------------------------- Button
 
@@ -1175,8 +1229,15 @@ void UI_Text::Set(iPoint _pos, _TTF_Font* _font, int _spacing, uint r, uint g, u
 void UI_Text::SetText(string _text)
 {
 	// Clean last texts
-	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
-		App->tex->UnLoadTexture((*it).texture);
+
+	if (!tex_str_list.empty())
+	{
+		if (!tex_str_list.empty())
+		{
+			for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+				App->tex->UnLoadTexture((*it).texture);
+		}
+	}
 
 	tex_str_list.clear();
 
@@ -1198,7 +1259,9 @@ void UI_Text::SetText(string _text)
 
 		comp[words_counter] = '\0';
 
-		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font));
+		int width = 0; int height = 0;
+		App->font->CalcSize(comp.c_str(), width, height, font);
+		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font), { 0, 0, width, height });
 		tex_str_list.push_back(ts);
 	}
 }
@@ -1224,12 +1287,16 @@ bool UI_Text::update()
 	
 	// Get highest w and add all h
 	int w = 0, h = 0;
-	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+
+	if (!tex_str_list.empty())
 	{
-		App->font->CalcSize((*it).text.c_str(), rect.w, rect.h, font);
-		h += rect.h;
-		if (rect.w > w)
+		for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+		{
+			App->font->CalcSize((*it).text.c_str(), rect.w, rect.h, font);
+			h += rect.h;
+			if (rect.w > w)
 			w = rect.w;
+		}
 	}
 
 	rect.w = w;
@@ -1364,7 +1431,7 @@ bool UI_Text_Input::update()
 		SetIsActive();
 
 		if (intern_text.size() == 0 && active)
-		text->SetText("");
+			text->SetText("");
 
 		// Manuall change text
 		ChangeTextInput();

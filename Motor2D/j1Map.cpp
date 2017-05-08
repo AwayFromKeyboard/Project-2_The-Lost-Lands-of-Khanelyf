@@ -7,6 +7,11 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1Window.h"
+#include "Entity.h"
+#include "j1Entity.h"
+#include "j1App.h"
+#include "Player.h"
+#include "Functions.h"
 #include <sstream> 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -47,7 +52,7 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = *item;
 
-		if(!App->debug_mode && layer->properties.Get("Nodraw") != 0)
+		if(!App->debug_mode && (layer->properties.Get("Nodraw") != 0 || layer->name == "entities"))
 			continue;
 
 		int x_ini, x_end;
@@ -68,7 +73,18 @@ void j1Map::Draw()
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
 					//magic numbers +30 to fix
-					App->render->Blit(tileset->texture, pos.x+32, pos.y+30, &r);
+					if(layer->name == "Nature")
+						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 140, &r);
+					else if (layer->name == "Buildings")
+						App->render->Blit(tileset->texture, pos.x, pos.y - 96, &r);
+					else if (layer->name == "Towers")
+						App->render->Blit(tileset->texture, pos.x + 10, pos.y - 80, &r);
+					else if (layer->name == "Fortress")
+						App->render->Blit(tileset->texture, pos.x, pos.y - 198, &r);
+					else if (layer->name == "Big House")
+						App->render->Blit(tileset->texture, pos.x - 12, pos.y - 126, &r);
+					else
+						App->render->Blit(tileset->texture, pos.x, pos.y + 16, &r);
 				}
 			}
 			count++;
@@ -109,6 +125,29 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
+
+	if (data.type == maptype_orthogonal)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == maptype_isometric)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+fPoint j1Map::FMapToWorld(int x, int y) const
+{
+	fPoint ret;
 
 	if (data.type == maptype_orthogonal)
 	{
@@ -293,6 +332,7 @@ bool j1Map::Load(const char* file_name)
 			data.layers.push_back(lay);
 	}
 
+	// ret = LoadResources(map_file.child("map"));
 	if (ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -322,6 +362,14 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	map_loaded = ret;
+
+	// Load the matrix -----------------
+	vector<void*> tmp_vec;
+	for (int j = 0; j < data.height; ++j) 
+		tmp_vec.push_back(nullptr);
+
+	for (int i = 0; i < data.width; ++i)
+		entity_matrix.push_back(tmp_vec);
 
 	return ret;
 }
@@ -509,6 +557,32 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	return ret;
 }
 
+bool j1Map::LoadResources(pugi::xml_node & node)
+{
+	bool ret = true;
+	//data.mapWidth = data.width * data.tile_width;
+	//data.mapHeight = data.height * data.tile_height;
+
+	/*pugi::xml_node resourceNode;
+
+	for (resourceNode = node.child("objectgroup"); resourceNode; resourceNode = resourceNode.next_sibling("objectgroup"))
+	{
+		pugi::xml_node prop;
+
+		for (prop = resourceNode.child("object"); prop; prop = prop.next_sibling("object"))
+		{
+			
+			string name = prop.attribute("name").as_string();
+			Resource* resource = App->entityManager->CreateResource(prop.attribute("x").as_int(), prop.attribute("y").as_int(), (resourceType)type, 0);
+			
+			data.PropResources.push_back(resource);
+			
+		}
+	}
+	*/
+	return ret;
+}
+
 void j1Map::TilesToDraw_x(int & x_ini, int & x_end, MapLayer * layer) const
 {
 	iPoint ini = WorldToMap(fit_square.x, fit_square.y);
@@ -626,4 +700,76 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	}
 
 	return ret;
+}
+
+void j1Map::GetEntitiesSpawn() const
+{
+	for (std::list<MapLayer*>::const_iterator item = data.layers.begin(); item != data.layers.end(); item++)
+	{
+		MapLayer* layer = *item;
+
+		if (layer->name != "entities")
+			continue;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int id = layer->Get(x, y);
+				if (id != 0)
+				{
+					TileSet* tileset = (id > 0) ? GetTilesetFromTileId(id) : NULL;
+					if (tileset != NULL)
+					{
+						int relative_id = id - tileset->firstgid;
+						switch (id)
+						{
+						case 27: // Hero
+						{
+							Entity* player_unit = App->entity->CreateEntity(hero, player, App->map->MapToWorld(x + 1, y));
+							App->player->SetHero((Hero*)player_unit);
+						}
+						break;
+						
+						case 28: // Barbarian Enemy
+						{
+							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+						
+						case 29: // NPC
+						{
+							Entity* barb_npc = App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+						
+						case 30: // Object
+						{
+							Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+
+						case 31: // Basic Building Ally
+						{
+							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x, y - 1), RandomGenerate(1, 3));
+						}
+						break;
+
+						case 32: // Basic Building Enemy
+						{
+							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x, y - 1), RandomGenerate(1, 3));
+						}
+						break;
+
+						case 33: // Swordsman Enemy
+						{
+							Entity* swordsman_enemy = App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+					}
+					}
+				}		
+			}
+		}
+	}
 }

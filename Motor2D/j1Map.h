@@ -6,6 +6,7 @@
 #include "j1Module.h"
 #include <string>
 #include <list>
+#include <vector>
 
 #define XOFFSET 5
 #define YOFFSET 5
@@ -96,6 +97,7 @@ struct MapData
 	map_types			type;
 	std::list<TileSet*>	tilesets;
 	std::list<MapLayer*>layers;
+	
 };
 
 // ----------------------------------------------------
@@ -121,10 +123,13 @@ public:
 	bool Load(const char* path);
 
 	iPoint MapToWorld(int x, int y) const;
+	fPoint FMapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMapPoint(iPoint position) const;
 	iPoint MapToWorldPoint(iPoint position) const;
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+	void GetEntitiesSpawn() const;
 
 private:
 
@@ -133,6 +138,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool j1Map::LoadResources(pugi::xml_node & node);
 
 	void TilesToDraw_x(int& x_ini, int& x_end, MapLayer* layer) const;
 	void TilesToDraw_y(int count, int x, int x_end, int& y_ini, int& y_end, MapLayer* layer) const;
@@ -143,6 +149,7 @@ public:
 
 	MapData data;
 	SDL_Rect fit_square;
+	vector<vector<void*> > entity_matrix;
 
 private:
 

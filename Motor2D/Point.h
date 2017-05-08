@@ -140,6 +140,16 @@ public:
 	{
 		return abs(v.x - x) + abs(v.y - y);
 	}
+
+	bool PointInRect(const TYPE rx, const TYPE ry, const TYPE rw, const TYPE rh)const
+	{
+		bool ret = false;
+
+		if (x > rx && y > ry && x < rx + rw &&  y < ry + rh)
+			ret = true;
+
+		return ret;
+	}
 };
 
 typedef Point<int> iPoint;

@@ -3,13 +3,16 @@
 
 #include "Entity.h"
 
-class GameObject;
+struct Collider;
 
-class Bulding : public Entity
+enum entity_name;
+enum entity_type;
+
+class Building : public Entity
 {
 public:
-	Bulding();
-	~Bulding();
+	Building();
+	~Building();
 
 	bool LoadEntity();
 	bool Start();
@@ -23,11 +26,21 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	Collider* GetCollider();
+	entity_type GetType();
+	entity_name GetName();
 
 public:
-	GameObject* game_object = nullptr;
 
-	bool flip = false;
+	entity_name name;
+	int building_rect_number;
+
+public:
+	iPoint offset = NULLPOINT;
+	SDL_Rect tex_rect = NULLRECT;
+
+public:
+	bool is_selected = false;
 };
 
 #endif
