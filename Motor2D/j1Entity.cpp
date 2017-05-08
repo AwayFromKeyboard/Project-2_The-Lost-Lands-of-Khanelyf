@@ -122,6 +122,7 @@ bool j1Entity::Load(pugi::xml_node& data)
 	}
 
 	pugi::xml_node enemies = data.child("Enemies");
+	pugi::xml_node npcs = data.child("NPCs");
 	pugi::xml_node ally_buildings = data.child("Ally_Buildings");
 	pugi::xml_node enemy_buildings = data.child("Enemy_Buildings");
 	pugi::xml_node objects = data.child("Objects");
@@ -143,6 +144,23 @@ bool j1Entity::Load(pugi::xml_node& data)
 
 		Entity* entity = App->entity->CreateEntity(name, entity_type::enemy, { 0, 0 });
 		entity->position.create(enemy.child("Position").attribute("x").as_int(), enemy.child("Position").attribute("y").as_int());
+	}
+	for (pugi::xml_node npc = npcs.child("NPC"); npc != NULL; npc = npc.next_sibling()) {
+		int _name = npc.attribute("name").as_int();
+		entity_name name;
+
+		switch (_name)
+		{
+		case barbarian:
+			name = barbarian;
+			break;
+		case swordsman:
+			name = swordsman;
+			break;
+		}
+
+		Entity* entity = App->entity->CreateEntity(name, entity_type::npc, { 0, 0 });
+		entity->position.create(npc.child("Position").attribute("x").as_int(), npc.child("Position").attribute("y").as_int());
 	}
 	for (pugi::xml_node ally_b = ally_buildings.child("Ally_Building"); ally_b != NULL; ally_b = ally_b.next_sibling()) {
 		int _name = ally_b.attribute("name").as_int();
@@ -205,6 +223,7 @@ bool j1Entity::Load(pugi::xml_node& data)
 bool j1Entity::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node enemies = data.append_child("Enemies");
+	pugi::xml_node npcs = data.append_child("NPCs");
 	pugi::xml_node ally_buildings = data.append_child("Ally_Buildings");
 	pugi::xml_node enemy_buildings = data.append_child("Enemy_Buildings");
 	pugi::xml_node objects = data.append_child("Objects");
@@ -245,6 +264,13 @@ bool j1Entity::Save(pugi::xml_node& data) const
 
 			object.append_child("Properties").append_attribute("Pickable") = ((Object*)*it)->pickable;
 			object.child("Properties").append_attribute("IsCarried") = ((Object*)*it)->is_carried;
+		}
+		else if ((*it)->type == entity_type::npc) {
+			pugi::xml_node npc = npcs.append_child("NPC");
+			npc.append_attribute("name") = (*it)->name;
+
+			npc.append_child("Position").append_attribute("x") = (*it)->position.x;
+			npc.child("Position").append_attribute("y") = (*it)->position.y;
 		}
 	}
 
