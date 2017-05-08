@@ -14,7 +14,7 @@
 
 j1Entity::j1Entity()
 {
-	name = "entity";
+	name = "entities";
 }
 
 j1Entity::~j1Entity()
@@ -113,6 +113,79 @@ void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
 	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 		(*it)->OnColl(col1, col2);
+}
+
+bool j1Entity::Load(pugi::xml_node& data)
+{
+
+
+	//for (pugi::xml_node enemy = enemies.child("Ally"); enemy != NULL; enemy = enemy.next_sibling()) {
+	//	int _name = enemy.attribute("name").as_int();
+	//	entity_name name;
+
+	//	switch (_name)
+	//	{
+	//	case barbarian:
+	//		name = barbarian;
+	//		break;
+	//	case swordsman:
+	//		name = swordsman;
+	//		break;
+	//	}
+
+	//	Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
+	//	entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+	//}
+	return true;
+}
+
+bool j1Entity::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node enemies = data.append_child("Enemies");
+	pugi::xml_node ally_buildings = data.append_child("Ally_Buildings");
+	pugi::xml_node enemy_buildings = data.append_child("Enemy_Buildings");
+	pugi::xml_node objects = data.append_child("Objects");
+
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		if ((*it)->type == entity_type::enemy) {
+			pugi::xml_node enemy = enemies.append_child("Enemy");
+			enemy.append_attribute("name") = (*it)->name;
+
+			enemy.append_child("Position").append_attribute("x") = (*it)->position.x;
+			enemy.child("Position").append_attribute("y") = (*it)->position.y;
+		}
+		else if ((*it)->type == entity_type::ally_building) {
+			pugi::xml_node building = enemies.append_child("Ally_Building");
+			building.append_attribute("name") = (*it)->name;
+
+			building.append_child("Position").append_attribute("x") = (*it)->position.x;
+			building.child("Position").append_attribute("y") = (*it)->position.y;
+
+			building.append_child("Rect").append_attribute("number") = ((Building*)*it)->building_rect_number;
+		}
+		else if ((*it)->type == entity_type::enemy_building) {
+			pugi::xml_node building = enemies.append_child("Enemy_Building");
+			building.append_attribute("name") = (*it)->name;
+
+			building.append_child("Position").append_attribute("x") = (*it)->position.x;
+			building.child("Position").append_attribute("y") = (*it)->position.y;
+
+			building.append_child("Rect").append_attribute("number") = ((Building*)*it)->building_rect_number;
+		}
+		else if ((*it)->type == entity_type::object) {
+			pugi::xml_node object = enemies.append_child("Object");
+			object.append_attribute("name") = (*it)->name;
+
+			object.append_child("Position").append_attribute("x") = (*it)->position.x;
+			object.child("Position").append_attribute("y") = (*it)->position.y;
+
+			object.append_child("Properties").append_attribute("Pickable") = ((Object*)*it)->pickable;
+			object.child("Properties").append_attribute("IsCarried") = ((Object*)*it)->is_carried;
+		}
+	}
+
+
+	return true;
 }
 
 Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
