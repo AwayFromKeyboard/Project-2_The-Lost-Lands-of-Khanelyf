@@ -14,7 +14,6 @@ Minimap::Minimap()
 
 Minimap::~Minimap()
 {
-	CleanUp();
 }
 
 bool Minimap::Start() 
@@ -148,6 +147,7 @@ bool Minimap::CleanUp()
 {
 	bool ret = true;
 
+	App->gui->DeleteElement(minimap_window);
 	cells.clear();
 	units_to_print.clear();
 
