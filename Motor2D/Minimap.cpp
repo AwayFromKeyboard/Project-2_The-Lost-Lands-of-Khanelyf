@@ -14,7 +14,6 @@ Minimap::Minimap()
 
 Minimap::~Minimap()
 {
-	CleanUp();
 }
 
 bool Minimap::Start() 

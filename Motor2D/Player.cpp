@@ -33,6 +33,59 @@ bool Player::Start()
 {
 	bool ret = true;
 
+	//pause menu
+
+	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
+	
+	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
+	
+	quit_game = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
+	quit_game->AddImage("standard", { 25, 2695, 186, 31 });
+	quit_game->SetImage("standard");
+	quit_game->AddImage("clicked", { 25, 2768, 186, 31 });
+	quit_game->AddImage("hovered", { 26, 2732, 186, 31 });
+	
+	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	back->AddImage("standard", { 25, 2695, 186, 31 });
+	back->SetImage("standard");
+	back->AddImage("clicked", { 25, 2768, 186, 31 });
+	back->AddImage("hovered", { 26, 2732, 186, 31 });
+	
+	save = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
+	save->AddImage("standard", { 25, 2695, 186, 31 });
+	save->SetImage("standard");
+	save->AddImage("clicked", { 25, 2768, 186, 31 });
+	save->AddImage("hovered", { 26, 2732, 186, 31 });
+	
+	options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
+	options->AddImage("standard", { 25, 2695, 186, 31 });
+	options->SetImage("standard");
+	options->AddImage("clicked", { 25, 2768, 186, 31 });
+	options->AddImage("hovered", { 26, 2732, 186, 31 });
+
+	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
+	pause_menu_txt->SetText("PAUSE");
+	
+	quit_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	quit_txt->SetText("Quit");
+	quit_txt->click_through = true;
+	
+	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	back_txt->SetText("Resume Game");
+	back_txt->click_through = true;
+	//
+	save_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	save_txt->SetText("Save");
+	save_txt->click_through = true;
+
+	options_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
+	options_txt->SetText("Load");
+	options_txt->click_through = true;
+
+	pause_window->SetEnabledAndChilds(false);
+
+	//stats
+
 	attributes_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
 	life_txt = (UI_Text*)attributes_window->CreateText({ 149, 940 }, App->font->default_15);
 	damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
@@ -137,12 +190,43 @@ bool Player::PreUpdate()
 {
 	bool ret = true;
 	
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down) {
+		pause_status = !pause_status;
+	}
+
+	if (back->MouseClickEnterLeft()) {
+		back->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;	
+	}
+	if (options->MouseClickEnterLeft()) {
+		options->SetImage("clicked");
+		App->LoadGame("Save_File.xml");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	if (save->MouseClickEnterLeft()) {
+		save->SetImage("clicked");
+		App->SaveGame("Save_File.xml");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
+		pause_status = !pause_status;
+		button_on_clicked = false;
+		back->SetImage("standard");			
+	}
+	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked")|| options->CompareState("clicked"))) {
+		button_on_clicked = false;
+		save->SetImage("standard");
+		options->SetImage("standard");
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
 
-	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
-		hero->levelup_points += 5;
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
 		App->gui->debug = !App->gui->debug;
 	else if (!App->debug_mode)
@@ -156,121 +240,185 @@ bool Player::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F10) == key_down)
 		ShellExecute(NULL, "open", "https://github.com/AwayFromKeyboard/Project-2_The-Lost-Lands-of-Khanelyf/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 
+	//pause
+	if (pause_status && !pause_window->enabled) {
 
-	if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
-		create_unit_button->SetImage("clicked");
-
-		if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
-			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
-			App->scene->scene_test->gold -= barb->cost;
-			App->scene->scene_test->current_human_resources += barb->human_cost;
-		}
+		pause_window->SetEnabledAndChilds(true);
+				
 	}
-	if (create_unit_button->MouseClickOutLeft()) {
-		create_unit_button->SetImage("standard");
+	else if((!pause_status && pause_window->enabled)){
+		pause_window->SetEnabledAndChilds(false);
 	}
+	
+	//backbutton
+	if (back->MouseEnter())
+		back->SetImage("hovered");
+	else if(back->MouseOut() && back->CompareState("hovered"))
+		back->SetImage("standard");
+	
+	//savebutton
+	if (save->MouseEnter())
+		save->SetImage("hovered");
+	else if (save->MouseOut() && save->CompareState("hovered"))
+		save->SetImage("standard");
+	
+	//optionsbutton
+	if (options->MouseEnter())
+		options->SetImage("hovered");
+	else if (options->MouseOut() && options->CompareState("hovered"))
+		options->SetImage("standard");
+	
 
-	if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
-		create_unit_button2->SetImage("clicked");
+	//quitbutton
+	if (quit_game->MouseEnter())
+		quit_game->SetImage("hovered");
+	else if (quit_game->MouseOut())
+		quit_game->SetImage("standard");
+	
+	if (quit_game->MouseClickEnterLeft()) 
+		quit_game->SetImage("clicked");
+	
+	if (!pause_status) {
+		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
+			hero->levelup_points += 5;
 
-		if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
-			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
-			App->scene->scene_test->gold -= sword->cost;
-			App->scene->scene_test->current_human_resources += sword->human_cost;
-		}
-	}
-	if (create_unit_button2->MouseClickOutLeft()) {
-		create_unit_button2->SetImage("standard");
-	}
+		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
+			create_unit_button->SetImage("clicked");
 
-	//player abilities
-	if (!hero->is_holding_object)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat && battlecry_ability->CompareState("standard")) {
-			draw_battlecry_range = true;
-			CheckAbilityRange(BATTLECRY_RANGE);
+			if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
+				Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
+				App->scene->scene_test->gold -= barb->cost;
+				App->scene->scene_test->current_human_resources += barb->human_cost;
+			}
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat && whirlwind_ability->CompareState("standard")) {
-			draw_whirlwind_range = true;
-			CheckAbilityRange(WHIRLWIND_RANGE);
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat && charge_ability->CompareState("standard")) {
-			draw_charge_range = true;
-			CheckStraightAbilityRange(CHARGE_RANGE);
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
-			draw_battlecry_range = false;
-			range_visited.clear();
-		}
-		if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
-			draw_whirlwind_range = false;
-			range_visited.clear();
-		}
-		if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
-			draw_charge_range = false;
-		}
-
-		//Battlecry
-
-
-		if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
-			battlecry_ability->SetImage("clicked");
-			Battlecry();
-			battlecry_cd->SetEnabled(true);
-			battlecry_timer.Start();
-		}
-		if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
-			battlecry_cd->SetEnabled(false);
-			battlecry_ability->SetImage("standard");
-		}
-		else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
-			StopBuff(-BATTLECRY_BUFF);
+		if (create_unit_button->MouseClickOutLeft()) {
+			create_unit_button->SetImage("standard");
 		}
 
-		// Whirlwind
+		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
+			create_unit_button2->SetImage("clicked");
 
-		if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
-			whirlwind_ability->SetImage("clicked");
-			Whirlwind();
-			whirlwind_cd->SetEnabled(true);
-			whirlwind_timer.Start();
+			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
+				Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
+				App->scene->scene_test->gold -= sword->cost;
+				App->scene->scene_test->current_human_resources += sword->human_cost;
+			}
 		}
-		if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
-			whirlwind_cd->SetEnabled(false);
-			whirlwind_ability->SetImage("standard");
-		}
-
-		//Charge
-
-		if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
-			Charge();
-		}
-
-		if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+		//player abilities
+		if (!hero->is_holding_object)
 		{
-			GetHero()->speed -= CHARGE_SPEED;
-			charge_speed_buff = false;
-		}
+			if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat && battlecry_ability->CompareState("standard")) {
+				draw_battlecry_range = true;
+				CheckAbilityRange(BATTLECRY_RANGE);
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat && whirlwind_ability->CompareState("standard")) {
+				draw_whirlwind_range = true;
+				CheckAbilityRange(WHIRLWIND_RANGE);
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat && charge_ability->CompareState("standard")) {
+				draw_charge_range = true;
+				CheckStraightAbilityRange(CHARGE_RANGE);
+			}
 
-		if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
-		{
-			GetHero()->damage -= CHARGE_DAMAGE;
-			charge_damage_buff = false;
-		}
+			if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+				draw_battlecry_range = false;
+				range_visited.clear();
+			}
+			if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+				draw_whirlwind_range = false;
+				range_visited.clear();
+			}
+			if (create_unit_button2->MouseClickOutLeft()) {
+				create_unit_button2->SetImage("standard");
+			}
 
-		if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
-			charge_cd->SetEnabled(false);
-			charge_ability->SetImage("standard");
+			//player abilities
+			if (!hero->is_holding_object)
+			{
+				if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+					draw_battlecry_range = true;
+					CheckAbilityRange(BATTLECRY_RANGE);
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+					draw_whirlwind_range = true;
+					CheckAbilityRange(WHIRLWIND_RANGE);
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+					draw_charge_range = true;
+					CheckStraightAbilityRange(CHARGE_RANGE);
+				}
+
+				if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+					draw_battlecry_range = false;
+				}
+				if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+					draw_whirlwind_range = false;
+				}
+				if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
+					draw_charge_range = false;
+				}
+
+				//Battlecry
+
+
+				if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+					battlecry_ability->SetImage("clicked");
+					Battlecry();
+					battlecry_cd->SetEnabled(true);
+					battlecry_timer.Start();
+				}
+				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+					battlecry_cd->SetEnabled(false);
+					battlecry_ability->SetImage("standard");
+				}
+				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+					StopBuff(-BATTLECRY_BUFF);
+				}
+
+				// Whirlwind
+
+				if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+					whirlwind_ability->SetImage("clicked");
+					Whirlwind();
+					whirlwind_cd->SetEnabled(true);
+					whirlwind_timer.Start();
+				}
+				if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
+					whirlwind_cd->SetEnabled(false);
+					whirlwind_ability->SetImage("standard");
+				}
+
+				//Charge
+
+				if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+					Charge();
+				}
+
+				if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+				{
+					GetHero()->speed -= CHARGE_SPEED;
+					charge_speed_buff = false;
+				}
+
+				if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+				{
+					GetHero()->damage -= CHARGE_DAMAGE;
+					charge_damage_buff = false;
+				}
+
+				if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+					charge_cd->SetEnabled(false);
+					charge_ability->SetImage("standard");
+				}
+			}
+			//Object interface
+
+			if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+			{
+				GetHero()->DropObject();
+			}
 		}
 	}
-	//Object interface
-
-	if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-	{
-		GetHero()->DropObject();
-	}
-
 	return ret;
 }
 

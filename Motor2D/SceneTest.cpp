@@ -22,6 +22,7 @@
 #include "Building.h"
 #include "Minimap.h"
 #include "Object.h"
+#include "Player.h"
 
 SceneTest::SceneTest()
 {
@@ -104,6 +105,13 @@ bool SceneTest::Update(float dt)
 	
 	UpdateCameraMovement();
 
+	if (App->player->pause_status) {
+		
+		App->audio->PauseMusic();
+	}else
+		App->audio->ResumeMusic();
+	
+	
 	App->map->Draw();
 
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
