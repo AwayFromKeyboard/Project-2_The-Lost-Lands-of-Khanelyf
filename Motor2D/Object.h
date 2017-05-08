@@ -32,9 +32,6 @@ public:
 	entity_name GetName();
 
 public:
-	entity_name name;
-
-public:
 
 	iPoint offset = NULLPOINT;
 	SDL_Rect tex_rect = NULLRECT;

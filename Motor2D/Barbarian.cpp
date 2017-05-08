@@ -21,7 +21,7 @@ Barbarian::~Barbarian()
 {
 }
 
-bool Barbarian::LoadEntity(iPoint pos)
+bool Barbarian::LoadEntity(iPoint pos, entity_name name)
 {
 	bool ret = true;
 
@@ -48,6 +48,8 @@ bool Barbarian::LoadEntity(iPoint pos)
 	}
 	if (node)
 	{
+		this->name = name;
+
 		position = { pos.x, pos.y };
 		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->entity);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();

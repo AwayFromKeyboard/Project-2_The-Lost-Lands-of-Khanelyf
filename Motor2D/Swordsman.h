@@ -13,7 +13,7 @@ public:
 	~Swordsman();
 
 	// Load animations
-	bool LoadEntity(iPoint pos);
+	bool LoadEntity(iPoint pos, entity_name name);
 
 public:
 	iPoint mouse_position;

@@ -52,29 +52,31 @@ bool Unit::PreUpdate()
 {
 	bool ret = true;
 
-	if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building && state != entity_state::entity_pick_object))
-	{
-		if (path.size() > 0)
+	if (App->player->pause_status == false) {
+		if ((attacked_unit == nullptr && attacked_building == nullptr) && life > 0 && (state != entity_state::entity_move_to_enemy && state != entity_state::entity_move_to_building && state != entity_state::entity_pick_object))
 		{
-			state = entity_state::entity_move;
+			if (path.size() > 0)
+			{
+				state = entity_state::entity_move;
+			}
+			else
+			{
+				state = entity_state::entity_idle;
+			}
 		}
-		else
-		{
-			state = entity_state::entity_idle;
+
+		if (state != entity_state::entity_death && state != entity_state::entity_decompose)
+			LifeBar({ 50, 5 }, { -20, -35 });
+
+		aux_pos = position;
+		position_map = App->map->WorldToMapPoint(aux_pos);
+		if (life > 0) {
+			App->map->entity_matrix[position_map.x][position_map.y] = this;
 		}
-	}
-
-	if (state != entity_state::entity_death && state != entity_state::entity_decompose)
-		LifeBar({ 50, 5 }, { -20, -35 });
-
-	aux_pos = position;
-	position_map = App->map->WorldToMapPoint(aux_pos);
-	if (life > 0) {
-		App->map->entity_matrix[position_map.x][position_map.y] = this;
-	}
-	else if (selected) {
-		App->entity->selected.remove(this);
-		selected = false;
+		else if (selected) {
+			App->entity->selected.remove(this);
+			selected = false;
+		}
 	}
 
 	return ret;
@@ -82,186 +84,192 @@ bool Unit::PreUpdate()
 
 bool Unit::Update(float dt)
 {
-	collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
+	if (App->player->pause_status == false) {
 
-	switch (state) {
-	case entity_state::entity_idle:
+		if (collision != nullptr)
+			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
-		if (life < max_life) {
-			if (life_up_timer.ReadSec() >= 1) {
-				life += 1;
-				life_up_timer.Start();
+		switch (state) {
+		case entity_state::entity_idle:
+
+			if (life < max_life) {
+				if (life_up_timer.ReadSec() >= 1) {
+					life += 1;
+					life_up_timer.Start();
+				}
 			}
-		}
-		CheckDirection();
-		CheckSurroundings();
-		has_moved = false;
-		break;
+			CheckDirection();
+			CheckSurroundings();
+			has_moved = false;
+			break;
 
-	case entity_state::entity_move:
-		FollowPath(dt);
-		break;
+		case entity_state::entity_move:
+			FollowPath(dt);
+			break;
 
-	case entity_state::entity_move_to_enemy:
-	{
-		if (attacked_unit == nullptr || attacked_unit->life <= 0)
-			state = entity_idle;
-		else {
-			if (IsInRange(attacked_unit)) {
-				App->pathfinding->DeletePath(path_id);
-				path.clear();
-				state = entity_state::entity_attack;
-				has_moved = false;
-			}
-			else if (!has_moved) {
-				has_moved = true;
-				App->pathfinding->DeletePath(path_id);
-				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
-			}
-			else{
-				if (path.size() > 0) {
-					FollowPath(dt);
+		case entity_state::entity_move_to_enemy:
+		{
+			if (attacked_unit == nullptr || attacked_unit->life <= 0)
+				state = entity_idle;
+			else {
+				if (IsInRange(attacked_unit)) {
+					App->pathfinding->DeletePath(path_id);
+					path.clear();
+					state = entity_state::entity_attack;
+					has_moved = false;
+				}
+				else if (!has_moved) {
+					has_moved = true;
+					App->pathfinding->DeletePath(path_id);
+					path.clear();
+					path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_unit->position));
+				}
+				else {
+					if (path.size() > 0) {
+						FollowPath(dt);
 
-					if (type == entity_type::enemy) {
-						if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
-							state = entity_idle;
-							attacked_unit = nullptr;
-						}
-						else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
-							state = entity_death;
-							attacked_unit = nullptr;
+						if (type == entity_type::enemy) {
+							if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
+								state = entity_idle;
+								attacked_unit = nullptr;
+							}
+							else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
+								state = entity_death;
+								attacked_unit = nullptr;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 		break;
 
-	case entity_state::entity_move_to_building:
-	{
-		if (attacked_building == nullptr || attacked_building->life <= 0)
-			state = entity_idle;
-		else {
-			if (IsInRange(attacked_building)) {
+		case entity_state::entity_move_to_building:
+		{
+			if (attacked_building == nullptr || attacked_building->life <= 0)
+				state = entity_idle;
+			else {
+				if (IsInRange(attacked_building)) {
+					App->pathfinding->DeletePath(path_id);
+					path.clear();
+					state = entity_state::entity_attack;
+					has_moved = false;
+				}
+				else if (!has_moved) {
+					has_moved = true;
+					App->pathfinding->DeletePath(path_id);
+					path.clear();
+					path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_building->position));
+				}
+				else {
+					if (path.size() > 0) {
+						FollowPath(dt);
+					}
+				}
+			}
+		}
+		break;
+
+		case entity_state::entity_attack:
+			if ((attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) && (attacked_building == nullptr || attacked_building->life <= 0)) {
+				attacked_unit == nullptr;
+				attacked_building == nullptr;
+				state = entity_idle;
+			}
+			else if (attacked_building == nullptr)
+			{
+				if (IsInRange(attacked_unit)) {
+					att_state = attack_unit;
+				}
+				else {
+					state = entity_state::entity_move_to_enemy;
+					att_state = attack_null;
+					break;
+				}
+			}
+			else
+			{
+				if (IsInRange(attacked_building)) {
+					att_state = attack_building;
+				}
+				else {
+					state = entity_state::entity_move_to_building;
+					att_state = attack_null;
+					break;
+				}
+			}
+
+			switch (att_state) {
+			case attack_unit:
+				UnitAttack();
+				break;
+			case attack_building:
+				BuildingAttack();
+				break;
+			}
+			break;
+
+		case entity_state::entity_death:
+			CheckDeathDirection();
+			if (collision != nullptr) {
+				App->collisions->EraseCollider(collision);
+				collision = nullptr;
+			}
+			if (!current_animation->Finished())
+				death_timer.Start();
+			else if (death_timer.ReadSec() > 2)
+			{
+				state = entity_state::entity_decompose;
+				if (type == entity_type::enemy) {
+					App->scene->scene_test->IncreaseGold(gold_drop);
+					if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
+						App->questmanager->GetCurrentQuest()->progress++;
+				}
+			}
+			break;
+
+		case entity_state::entity_decompose:
+			CheckDecomposeDirection();
+			if (current_animation->Finished()) {
+				to_delete = true;
+			}
+			break;
+
+
+		case entity_state::entity_pick_object:
+			if (IsInRange(to_pick_object)) {
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				state = entity_state::entity_attack;
+				state = entity_state::entity_idle;
+				if (to_pick_object->pickable == true)
+					PickObject();
 				has_moved = false;
 			}
 			else if (!has_moved) {
 				has_moved = true;
 				App->pathfinding->DeletePath(path_id);
 				path.clear();
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(attacked_building->position));
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(to_pick_object->position));
 			}
 			else {
-				if (path.size() > 0) {
+				if (path.size() > 0)
 					FollowPath(dt);
-				}
 			}
 		}
-	}
-	break;
 
-	case entity_state::entity_attack:
-		if ((attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) && (attacked_building == nullptr || attacked_building->life <= 0)) {
-			attacked_unit == nullptr;
-			attacked_building == nullptr;
-			state = entity_idle;
-		}
-		else if (attacked_building == nullptr)
+		if (damaged_by_whirlwind == true && timer_whirlwind_start == true)
 		{
-			if (IsInRange(attacked_unit)) {
-				att_state = attack_unit;
-			}
-			else {
-				state = entity_state::entity_move_to_enemy;
-				att_state = attack_null;
-				break;
-			}
+			whirlwind_damage.Start();
+			timer_whirlwind_start = false;
 		}
-		else
+
+		if (whirlwind_damage.ReadSec() >= 4 && damaged_by_whirlwind == true)
 		{
-			if (IsInRange(attacked_building)) {
-				att_state = attack_building;
-			}
-			else {
-				state = entity_state::entity_move_to_building;
-				att_state = attack_null;
-				break;
-			}
+			damaged_by_whirlwind = false;
+			timer_whirlwind_start = true;
 		}
-		
-		switch (att_state) {
-		case attack_unit:
-			UnitAttack();
-			break;
-		case attack_building:
-			BuildingAttack();
-			break;
-		}
-		break;
 
-	case entity_state::entity_death:
-		CheckDeathDirection();
-		if(collision != nullptr)
-			App->collisions->EraseCollider(collision);
-		if (!current_animation->Finished())
-			death_timer.Start();
-		else if (death_timer.ReadSec() > 2)
-		{
-			state = entity_state::entity_decompose;
-			if (type == entity_type::enemy) {
-				App->scene->scene_test->IncreaseGold(gold_drop);
-				if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
-					App->questmanager->GetCurrentQuest()->progress++;
-			}
-		}
-		break;
-
-	case entity_state::entity_decompose:
-		CheckDecomposeDirection();
-			if (current_animation->Finished()) {
-				to_delete = true;
-		}
-		break;
-
-	case entity_state::entity_pick_object:
-		if (IsInRange(to_pick_object)) {
-			App->pathfinding->DeletePath(path_id);
-			path.clear();
-			state = entity_state::entity_idle;
-			if (to_pick_object->pickable == true)
-				PickObject();
-			has_moved = false;
-		}
-		else if (!has_moved) {
-			has_moved = true;
-			App->pathfinding->DeletePath(path_id);
-			path.clear();
-			path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), App->map->WorldToMapPoint(to_pick_object->position));
-		}
-		else {
-			if (path.size() > 0)
-				FollowPath(dt);
-		}
-		break;
 	}
-
-	if (damaged_by_whirlwind == true && timer_whirlwind_start == true)
-	{
-		whirlwind_damage.Start();
-		timer_whirlwind_start = false;
-	}
-
-	if (whirlwind_damage.ReadSec() >= 4 && damaged_by_whirlwind == true)
-	{
-		damaged_by_whirlwind = false;
-		timer_whirlwind_start = true;
-	}
-	
 	return true;
 }
 
@@ -274,14 +282,16 @@ bool Unit::Draw(float dt)
 	{
 	case entity_idle:
 		offset = i_offset;
-		if(flip)
+
+		if (flip)
 			App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x - flip_i_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	case entity_move:
 		offset = m_offset;
-		if(flip)
+
+		if (flip)
 			App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
 			App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
@@ -324,9 +334,9 @@ bool Unit::Draw(float dt)
 	case entity_pick_object:
 		offset = m_offset;
 		if (flip)
-			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
+			App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x - flip_m_offset, position.y - offset.y }, current_animation->GetAnimationFrame(dt), -1.0, SDL_FLIP_HORIZONTAL);
 		else
-			App->scene->LayerBlit(5, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
+			App->scene->LayerBlit(layer, entity_texture, { position.x - offset.x, position.y - offset.y }, current_animation->GetAnimationFrame(dt));
 		break;
 	}
 

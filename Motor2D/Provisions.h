@@ -9,7 +9,7 @@ public:
 	Provisions(entity_type _type);
 	~Provisions();
 
-	bool LoadEntity(iPoint pos);
+	bool LoadEntity(iPoint pos, entity_name name);
 
 };
 
