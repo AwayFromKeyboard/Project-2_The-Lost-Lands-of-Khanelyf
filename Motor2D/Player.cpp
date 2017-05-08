@@ -416,6 +416,29 @@ bool Player::CleanUp()
 	return ret;
 }
 
+bool Player::Load(pugi::xml_node &)
+{
+	return true;
+}
+
+bool Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node _hero = data.append_child("hero");
+	pugi::xml_node stats = _hero.append_child("Stats");
+	stats.append_attribute("current_hp") = hero->life;
+	stats.append_attribute("max_hp") = hero->max_life;
+	stats.append_attribute("damage") = hero->damage;
+	stats.append_attribute("armor") = hero->armor;
+	stats.append_attribute("pierce_armor") = hero->pierce_armor;
+	pugi::xml_node misc = _hero.append_child("Misc");
+	misc.append_attribute("level_up_Points") = hero->levelup_points;
+	misc.append_attribute("gold") = App->scene->scene_test->gold;
+	misc.append_attribute("human_resources") = App->scene->scene_test->current_human_resources;
+	misc.append_attribute("max_human_resources") = App->scene->scene_test->human_resources_max;
+
+	return true;
+}
+
 void Player::MoveToTile(iPoint tile) {
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->position), tile);

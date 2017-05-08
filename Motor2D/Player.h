@@ -40,6 +40,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+private:
 	void Battlecry();
 	void BattlecryModifier(int damage_buff);
 	void CheckAbilityRange(int range);
