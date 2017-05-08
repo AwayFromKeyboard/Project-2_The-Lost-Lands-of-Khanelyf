@@ -44,6 +44,9 @@ bool Unit::Start()
 	AI_timer.Start();
 	life_up_timer.Start();
 	max_life = life;
+	
+	position_map = App->map->WorldToMapPoint(position);
+
 	App->fow->AddPlayer(this);
 
 	entityID = nextID++;
