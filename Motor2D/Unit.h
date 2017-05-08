@@ -83,7 +83,6 @@ public:
 	void DropObject();
   
 public:
-	entity_name name;
 	bool flip = false;
   
 	bool can_hold_object = false;
