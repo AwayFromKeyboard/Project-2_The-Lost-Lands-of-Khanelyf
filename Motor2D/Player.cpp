@@ -22,7 +22,7 @@
 
 Player::Player()
 {
-	name = "Player";
+	name = "";
 }
 
 Player::~Player()
@@ -423,6 +423,8 @@ bool Player::Load(pugi::xml_node& data)
 	pugi::xml_node stats = data.child("Hero").child("Stats");
 	pugi::xml_node misc = data.child("Hero").child("Misc");
 	pugi::xml_node allies = data.child("Allies");
+
+	hero = (Hero*)App->entity->CreateEntity(entity_name::hero, entity_type::player, { 0, 0 });
 
 	hero->position.create(pos.attribute("x").as_int(), pos.attribute("y").as_int());
 
