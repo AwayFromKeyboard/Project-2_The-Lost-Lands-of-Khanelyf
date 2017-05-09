@@ -202,6 +202,7 @@ bool Player::PreUpdate()
 	}
 	if (options->MouseClickEnterLeft()) {
 		options->SetImage("clicked");
+		App->entity->loaded = false;
 		App->LoadGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
