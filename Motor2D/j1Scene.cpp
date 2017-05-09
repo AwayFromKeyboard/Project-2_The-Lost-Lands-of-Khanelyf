@@ -116,7 +116,7 @@ void j1Scene::ChangeScene(Scene * new_scene)
 	current_scene->CleanUp();
 	current_scene = new_scene;
 
-	App->ActivateScene();
+	//App->ActivateScene();
 
 	current_scene->Start();
 }

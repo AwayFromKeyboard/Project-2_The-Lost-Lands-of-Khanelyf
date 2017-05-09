@@ -21,6 +21,8 @@
 #include "BasicBuilding.h"
 #include "Building.h"
 #include "Object.h"
+#include "Player.h"
+#include "DialogueManager.h"
 
 SceneTest::SceneTest()
 {
@@ -32,6 +34,13 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
+	App->player->Enable();
+	App->collisions->Enable();
+	App->pathfinding->Enable();
+	App->entity->Enable();
+	App->questmanager->Enable();
+	App->dialogs->Enable();
+
 	if (App->map->Load("map.tmx") == true)
 	{
 		int w, h;
