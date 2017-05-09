@@ -23,6 +23,7 @@
 #include "Minimap.h"
 #include "Object.h"
 #include "Player.h"
+#include "BrokenBuilding.h"
 
 SceneTest::SceneTest()
 {
@@ -188,6 +189,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
 		App->questmanager->create_provision = false;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_N) == key_down)
+	{
+		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 }
 

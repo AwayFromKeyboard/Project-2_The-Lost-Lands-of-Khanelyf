@@ -442,10 +442,17 @@ bool Player::Update(float dt)
 					}
 				}
 				if ((*it)->GetSelected()) {
-					if ((*it)->GetType() == building) {
+					if ((*it)->GetType() == building && (*it)->name == barracks) {
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 						barracks_ui_window->SetEnabledAndChilds(true);
+						break;
+					}
+					else if ((*it)->GetType() == building && (*it)->name == broken_building)
+					{
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+						//brokenbuilding_ui_window->SetEnabledAndChilds(true);
 						break;
 					}
 					else {

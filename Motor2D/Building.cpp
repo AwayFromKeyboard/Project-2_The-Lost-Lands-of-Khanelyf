@@ -38,15 +38,13 @@ bool Building::PreUpdate()
 {
 	bool ret = true;
 
-	if (state == entity_state::entity_idle) {
+	if (state == entity_state::entity_idle && name != entity_name::broken_building) {
 		if (type == entity_type::building)
 			LifeBar({ 185, 5 }, { -100, -100 });
 		else
 			LifeBar({ 125, 5 }, { -65, -60 });
 	}
 	
-
-
 	return ret;
 }
 
@@ -64,7 +62,9 @@ bool Building::Update(float dt)
 				App->questmanager->GetCurrentQuest()->progress++;
 			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
 		}
-
+		if (type == entity_type::ally_building || type == entity_type::building) {
+			App->entity->CreateEntity(broken_building, building, position);
+		}
 		break;
 	}
 

@@ -107,6 +107,7 @@ public:
 	std::list<Unit*> buffed_list;
 public:
 	UI_Window* barracks_ui_window = nullptr;
+	UI_Window* brokenbuilding_ui_window = nullptr;
 	UI_Window* player_abilities = false;
 	UI_Window* inventory = nullptr;
 	iPoint barracks_position;

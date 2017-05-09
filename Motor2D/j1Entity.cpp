@@ -11,6 +11,7 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "BrokenBuilding.h"
 
 j1Entity::j1Entity()
 {
@@ -299,6 +300,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case provisions:
 		ret = new Provisions(type);
 		break;
+	case broken_building:
+		ret = new BrokenBuilding(type);
 	default:
 		break;
 	}
@@ -374,7 +377,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
-				if ((*it)->GetType() == building) {
+				if ((*it)->GetType() == building && (*it)->name == barracks) {
 					App->entity->UnselectEverything();
 					App->player->barracks_ui_window->SetEnabledAndChilds(true);
 					(*it)->SetSelected(true);
