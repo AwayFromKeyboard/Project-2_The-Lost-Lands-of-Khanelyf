@@ -610,37 +610,40 @@ bool Unit::CheckSurroundings() {
 				frontier.pop_front();
 
 				for (int k = 0; k < 4; k++) {
-					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-					if (found != nullptr && found->life > 0) {
-						switch (type) {
-						case player:
-						case ally:
-							if (found->type == enemy) {
-								attacked_unit = found;
-								state = entity_move_to_enemy;
-								return true;
-							}
-							break;
-						case enemy:
-							if (found->type == player || found->type == ally) {
-								attacked_unit = found;
-								state = entity_move_to_enemy;
-								return true;
-							}
-						}
-					}
-					else {
-						if (App->pathfinding->IsWalkable(neighbors[k])) {
-							bool is_visited = false;
-							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-								if (neighbors[k] == *it) {
-									is_visited = true;
-									break;
+					if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+					{
+						Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+						if (found != nullptr && found->life > 0) {
+							switch (type) {
+							case player:
+							case ally:
+								if (found->type == enemy) {
+									attacked_unit = found;
+									state = entity_move_to_enemy;
+									return true;
+								}
+								break;
+							case enemy:
+								if (found->type == player || found->type == ally) {
+									attacked_unit = found;
+									state = entity_move_to_enemy;
+									return true;
 								}
 							}
-							if (!is_visited) {
-								frontier.push_back(neighbors[k]);
-								visited.push_back(neighbors[k]);
+						}
+						else {
+							if (App->pathfinding->IsWalkable(neighbors[k])) {
+								bool is_visited = false;
+								for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+									if (neighbors[k] == *it) {
+										is_visited = true;
+										break;
+									}
+								}
+								if (!is_visited) {
+									frontier.push_back(neighbors[k]);
+									visited.push_back(neighbors[k]);
+								}
 							}
 						}
 					}
