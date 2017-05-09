@@ -703,6 +703,7 @@ void Player::UpdateAttributes() {
 			if (life_button->MouseClickEnterLeft()) {
 				hero->levelup_points -= 1;
 				hero->life += 20;
+				hero->max_life += 20;
 			}
 			else if (damage_button->MouseClickEnterLeft()) {
 				hero->levelup_points -= 1;
