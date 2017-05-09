@@ -596,7 +596,6 @@ bool Unit::CheckSurroundings() {
 		std::list<iPoint> frontier;
 		std::list<iPoint> visited;
 
-
 		visited.push_back(App->map->WorldToMapPoint(position));
 		frontier.push_back(App->map->WorldToMapPoint(position));
 

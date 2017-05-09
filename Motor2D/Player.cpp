@@ -189,7 +189,10 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
-	
+
+	if (hero->life <= 0) {
+		App->stop_exe = true;
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down) {
 		pause_status = !pause_status;
@@ -198,7 +201,7 @@ bool Player::PreUpdate()
 	if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
 		button_clicked.Start();
-		button_on_clicked = true;	
+		button_on_clicked = true;
 	}
 	if (options->MouseClickEnterLeft()) {
 		options->SetImage("clicked");
@@ -216,9 +219,9 @@ bool Player::PreUpdate()
 	if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
 		pause_status = !pause_status;
 		button_on_clicked = false;
-		back->SetImage("standard");			
+		back->SetImage("standard");
 	}
-	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked")|| options->CompareState("clicked"))) {
+	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || options->CompareState("clicked"))) {
 		button_on_clicked = false;
 		save->SetImage("standard");
 		options->SetImage("standard");
@@ -227,7 +230,7 @@ bool Player::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
 
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
 		App->gui->debug = !App->gui->debug;
 	else if (!App->debug_mode)
@@ -243,41 +246,41 @@ bool Player::PreUpdate()
 
 	//pause
 	if (pause_status && !pause_window->enabled) {
-
 		pause_window->SetEnabledAndChilds(true);
-				
 	}
-	else if((!pause_status && pause_window->enabled)){
+	else if ((!pause_status && pause_window->enabled)) {
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
+
 	//backbutton
 	if (back->MouseEnter())
 		back->SetImage("hovered");
-	else if(back->MouseOut() && back->CompareState("hovered"))
+	else if (back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
-	
+
 	//savebutton
 	if (save->MouseEnter())
 		save->SetImage("hovered");
 	else if (save->MouseOut() && save->CompareState("hovered"))
 		save->SetImage("standard");
-	
+
 	//optionsbutton
 	if (options->MouseEnter())
 		options->SetImage("hovered");
 	else if (options->MouseOut() && options->CompareState("hovered"))
 		options->SetImage("standard");
-	
+
 
 	//quitbutton
 	if (quit_game->MouseEnter())
 		quit_game->SetImage("hovered");
 	else if (quit_game->MouseOut())
 		quit_game->SetImage("standard");
-	
-	if (quit_game->MouseClickEnterLeft()) 
+
+	if (quit_game->MouseClickEnterLeft()) {
 		quit_game->SetImage("clicked");
+		App->stop_exe = true;
+	}
 	
 	if (!pause_status) {
 		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
