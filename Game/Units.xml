@@ -2408,9 +2408,9 @@
     <pierce_armor value="5"/>
     <range value="1"/>
     <life value="100"/>
-    <collision_box w="33" h="45" offset_x="0" offset_y="0"/>
+    <collision_box w="33" h="45" offset_x="-17" offset_y="-25"/>
     <animations>
-      <idle speed="10" w="48" h="53" offset_x="" offset_y="">
+      <idle speed="10" w="48" h="53" offset_x="24" offset_y="26">
         <south>
           <rect x="0" y="0"/>
           <rect x="49" y="0"/>
@@ -2424,16 +2424,52 @@
           <rect x="441" y="0"/>
         </south>
         <south_west>
-          <rect x="" y=""/>
+          <rect x="0" y="54"/>
+          <rect x="49" y="54"/>
+          <rect x="98" y="54"/>
+          <rect x="147" y="54"/>
+          <rect x="196" y="54"/>
+          <rect x="245" y="54"/>
+          <rect x="294" y="54"/>
+          <rect x="343" y="54"/>
+          <rect x="392" y="54"/>
+          <rect x="441" y="54"/>
         </south_west>
         <west>
-          <rect x="" y=""/>
+          <rect x="0" y="108"/>
+          <rect x="49" y="108"/>
+          <rect x="98" y="108"/>
+          <rect x="147" y="108"/>
+          <rect x="196" y="108"/>
+          <rect x="245" y="108"/>
+          <rect x="294" y="108"/>
+          <rect x="343" y="108"/>
+          <rect x="392" y="108"/>
+          <rect x="441" y="108"/>
         </west>
         <north_west>
-          <rect x="" y=""/>
+          <rect x="0" y="162"/>
+          <rect x="49" y="162"/>
+          <rect x="98" y="162"/>
+          <rect x="147" y="162"/>
+          <rect x="196" y="162"/>
+          <rect x="245" y="162"/>
+          <rect x="294" y="162"/>
+          <rect x="343" y="162"/>
+          <rect x="392" y="162"/>
+          <rect x="441" y="162"/>
         </north_west>
         <north>
-          <rect x="" y=""/>
+          <rect x="0" y="216"/>
+          <rect x="49" y="216"/>
+          <rect x="98" y="216"/>
+          <rect x="147" y="216"/>
+          <rect x="196" y="216"/>
+          <rect x="245" y="216"/>
+          <rect x="294" y="216"/>
+          <rect x="343" y="216"/>
+          <rect x="392" y="216"/>
+          <rect x="441" y="216"/>
         </north>
       </idle>
       <walk speed="" w="" h="" offset_x="" offset_y="">

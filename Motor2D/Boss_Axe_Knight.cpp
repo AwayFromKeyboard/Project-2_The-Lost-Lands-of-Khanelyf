@@ -25,7 +25,7 @@ bool BossAxeKnight::LoadEntity(iPoint pos, entity_name name)
 	App->LoadXML("Units.xml", doc);
 	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
 	{
-		if (TextCmp(unit.attribute("type").as_string(), "Axe_Knight_Boss") && type == entity_type::enemy_boss)
+		if (TextCmp(unit.attribute("type").as_string(), "Axe_Knight_Boss"))
 		{
 			node = unit;
 			break;
