@@ -46,6 +46,10 @@ bool Building::PreUpdate()
 		else
 			LifeBar({ 125, 5 }, { -65, -60 });
 	}
+	if (life > 0) {
+		iPoint position_map = App->map->WorldToMapPoint(position);
+		App->map->entity_matrix[position_map.x][position_map.y] = this;
+	}
 	
 	return ret;
 }

@@ -133,10 +133,6 @@ bool Unit::Update(float dt)
 								state = entity_idle;
 								attacked_unit = nullptr;
 							}
-							else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
-								state = entity_death;
-								attacked_unit = nullptr;
-							}
 						}
 					}
 				}
@@ -171,9 +167,9 @@ bool Unit::Update(float dt)
 		break;
 
 		case entity_state::entity_attack:
-			if ((attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) && (attacked_building == nullptr || attacked_building->life <= 0)) {
-				attacked_unit == nullptr;
-				attacked_building == nullptr;
+			if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0) || is_holding_object) {
+				attacked_unit = nullptr;
+				attacked_building = nullptr;
 				state = entity_idle;
 			}
 			else if (attacked_building == nullptr)
@@ -610,21 +606,31 @@ bool Unit::CheckSurroundings() {
 				frontier.pop_front();
 
 				for (int k = 0; k < 4; k++) {
-					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 					if (found != nullptr && found->life > 0) {
 						switch (type) {
 						case player:
 						case ally:
 							if (found->type == enemy) {
-								attacked_unit = found;
+								attacked_unit = (Unit*)found;
 								state = entity_move_to_enemy;
+								return true;
+							}
+							if (found->type == entity_type::enemy_building) {
+								attacked_building = (Building*)found;
+								state = entity_move_to_building;
 								return true;
 							}
 							break;
 						case enemy:
-							if (found->type == player || found->type == ally) {
-								attacked_unit = found;
+							if (found->type == player || found->type == ally ) {
+								attacked_unit = (Unit*)found;
 								state = entity_move_to_enemy;
+								return true;
+							}
+							if (found->type == entity_type::ally_building || (found->type == entity_type::building && found->name == entity_name::barracks)) {
+								attacked_building = (Building*)found;
+								state = entity_move_to_building;
 								return true;
 							}
 						}
@@ -743,50 +749,57 @@ void Unit::LookAtAttack()
 
 void Unit::UnitAttack()
 {
-	LookAtAttack();
+	if (attacked_unit != nullptr) {
+		LookAtAttack();
 
-	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
-		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
-		shout_fx = false;
-	}
-
-	if (current_animation->Finished())
-	{
-		attacked_unit->life -= damage;
-		current_animation->Reset();
-		if (attacked_unit->life <= 0)
-		{
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
-			state = entity_idle;
-			attacked_unit->state = entity_death;
-			attacked_unit = nullptr;
+		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+			shout_fx = false;
 		}
-		shout_fx = true;
+
+		if (current_animation->Finished())
+		{
+			attacked_unit->life -= damage;
+			current_animation->Reset();
+			if (attacked_unit->life <= 0)
+			{
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
+				state = entity_idle;
+				attacked_unit->state = entity_death;
+				attacked_unit = nullptr;
+			}
+			shout_fx = true;
+		}
 	}
+	else state = entity_idle;
 }
 
 void Unit::BuildingAttack()
 {
-	LookAtAttack();
-	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
-		shout_fx = false;
-	}
+	if (attacked_building != nullptr) {
+		LookAtAttack();
 
-	if (current_animation->Finished())
-	{
-		attacked_building->life -= damage;
-		current_animation->Reset();
-		if (attacked_building->life <= 0)
-		{
-			//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
-			state = entity_idle;
-			attacked_building->state = entity_death;
-			attacked_building = nullptr;
+		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+			shout_fx = false;
 		}
-		shout_fx = true;
+
+		if (current_animation->Finished())
+		{
+			attacked_building->life -= damage;
+			current_animation->Reset();
+			if (attacked_building->life <= 0)
+			{
+				//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
+				state = entity_idle;
+				attacked_building->state = entity_death;
+				attacked_building = nullptr;
+			}
+			shout_fx = true;
+		}
 	}
+	else state = entity_idle;
 }
 
 void Unit::SetAttackingUnit(Unit * att_unit)
