@@ -1,4 +1,4 @@
-#include "Barbarian.h"
+#include "Boss_Axe_Knight.h"
 #include "CollisionFilters.h"
 #include "j1Scene.h"
 #include "Functions.h"
@@ -7,16 +7,16 @@
 #include "Log.h"
 #include "j1Collisions.h"
 
-Barbarian::Barbarian(entity_type _type)
+BossAxeKnight::BossAxeKnight(entity_type _type)
 {
 	type = _type;
 }
 
-Barbarian::~Barbarian()
+BossAxeKnight::~BossAxeKnight()
 {
 }
 
-bool Barbarian::LoadEntity(iPoint pos, entity_name name)
+bool BossAxeKnight::LoadEntity(iPoint pos, entity_name name)
 {
 	bool ret = true;
 
@@ -25,17 +25,7 @@ bool Barbarian::LoadEntity(iPoint pos, entity_name name)
 	App->LoadXML("Units.xml", doc);
 	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
 	{
-		if (TextCmp(unit.attribute("type").as_string(), "Barbarian_enemy") && type == entity_type::enemy)
-		{
-			node = unit;
-			break;
-		}
-		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_ally") && type == entity_type::ally)
-		{
-			node = unit;
-			break;
-		}
-		else if (TextCmp(unit.attribute("type").as_string(), "Barbarian_npc") && type == entity_type::npc)
+		if (TextCmp(unit.attribute("type").as_string(), "Axe_Knight_Boss") && type == entity_type::enemy_boss)
 		{
 			node = unit;
 			break;

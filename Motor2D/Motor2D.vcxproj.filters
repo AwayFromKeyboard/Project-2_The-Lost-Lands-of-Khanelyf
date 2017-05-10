@@ -111,7 +111,7 @@
     </ClCompile>
     <ClCompile Include="Minimap.cpp">
       <Filter>Engine\1. Modules</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="DialogueManager.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
@@ -126,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="BasicBuilding.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss_Axe_Knight.cpp">
+      <Filter>Engine\4. Entities\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,12 +261,15 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Engine\4. Entities\Objects</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Minimap.h">
       <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_Axe_Knight.h">
+      <Filter>Engine\4. Entities\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +328,9 @@
     </Filter>
     <Filter Include="Engine\4. Entities\Objects">
       <UniqueIdentifier>{765f7eb1-3ccd-4a83-bdf3-1a8962346497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. Entities\Boss">
+      <UniqueIdentifier>{e00d541d-af41-4edd-9c31-5f78d9dba744}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
