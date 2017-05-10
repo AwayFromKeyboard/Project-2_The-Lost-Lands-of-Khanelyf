@@ -12,3 +12,5 @@ public:
 
 	bool LoadEntity(iPoint pos); // rect_number 1,2 or 3
 };
+
+#endif
