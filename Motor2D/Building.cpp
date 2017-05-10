@@ -33,6 +33,10 @@ bool Building::Start()
 	layer = 5;
 	max_life = life;
 
+	if (name == entity_name::basic_building && type == entity_type::ally_building) {
+		App->scene->scene_test->human_resources_max++;
+	}
+
 	return ret;
 }
 
@@ -60,6 +64,11 @@ bool Building::Update(float dt)
 
 	switch (state) {
 	case entity_death:
+
+		if (name == entity_name::basic_building && type == entity_type::ally_building) {
+			App->scene->scene_test->human_resources_max--;
+		}
+
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
