@@ -25,7 +25,7 @@ Tower::~Tower()
 {
 }
 
-bool Tower::LoadEntity(iPoint pos)
+bool Tower::LoadEntity(iPoint pos, entity_name name)
 {
 	bool ret = true;
 	
@@ -47,6 +47,8 @@ bool Tower::LoadEntity(iPoint pos)
 	}
 	if (node)
 	{
+		this->name = name;
+
 		position = { pos.x, pos.y };
 		cost = node.child("cost").attribute("value").as_int();
 

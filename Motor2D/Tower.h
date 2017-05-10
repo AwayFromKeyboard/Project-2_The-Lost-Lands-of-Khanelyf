@@ -10,7 +10,7 @@ public:
 	Tower(entity_type _type);
 	~Tower();
 
-	bool LoadEntity(iPoint pos); // rect_number 1,2 or 3
+	bool LoadEntity(iPoint pos, entity_name name); // rect_number 1,2 or 3
 };
 
 #endif

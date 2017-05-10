@@ -52,7 +52,8 @@ bool Building::PreUpdate()
 
 bool Building::Update(float dt)
 {
-	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+	if (collision != nullptr)
+		collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
 	switch (state) {
 	case entity_death:

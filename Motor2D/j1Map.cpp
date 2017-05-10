@@ -769,7 +769,6 @@ void j1Map::GetEntitiesSpawn() const
 
 						case 34: //Towers
 						{
-
 							Entity* tower_enemy = App->entity->CreateEntity(towers, enemy_building, App->map->MapToWorld(x, y - 1));
 						}
 						break;
