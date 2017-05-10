@@ -377,9 +377,15 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
+			{
 				if ((*it)->GetType() == building && (*it)->name == barracks) {
 					App->entity->UnselectEverything();
 					App->player->barracks_ui_window->SetEnabledAndChilds(true);
+					(*it)->SetSelected(true);
+				}
+				else if ((*it)->GetType() == building && (*it)->name == broken_building) {
+					App->entity->UnselectEverything();
+					//App->player->brokenbuilding_ui_window->SetEnabledAndChilds(true);
 					(*it)->SetSelected(true);
 				}
 				else {
@@ -387,6 +393,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 						App->player->barracks_ui_window->SetEnabledAndChilds(false);
 					selected.push_back((Unit*)*it);
 				}
+			}
 		}
 	}
 }
