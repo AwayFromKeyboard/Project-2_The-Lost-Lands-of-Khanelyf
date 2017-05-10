@@ -862,7 +862,7 @@ void Player::Charge()
 
 			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 
-			if (found != nullptr && found->life > 0 && found->type == enemy && found->type == enemy_boss && App->map->WorldToMapPoint(mouse) == found->position_map)
+			if (found != nullptr && found->life > 0 && (found->type == enemy || found->type == enemy_boss) && App->map->WorldToMapPoint(mouse) == found->position_map)
 			{
 				GetHero()->speed += CHARGE_SPEED;
 				GetHero()->damage += CHARGE_DAMAGE;
