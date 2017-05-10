@@ -345,8 +345,11 @@ bool Player::PreUpdate()
 		}
 
 		//Brokenbuilding create building buttons
-		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard")) {
+		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode)) {
 			create_building_button->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 90;	//Barracks cost
 
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
 			{
@@ -368,8 +371,11 @@ bool Player::PreUpdate()
 			create_building_button->SetImage("standard");
 		}
 
-		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard")) {
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode)) {
 			create_building_button2->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 30;	//Basic Building cost
 
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
 			{
