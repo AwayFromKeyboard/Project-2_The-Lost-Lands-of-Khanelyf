@@ -90,16 +90,17 @@ bool Unit::Update(float dt)
 		if (collision != nullptr)
 			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
-		CheckPhase();
-
 		if (is_boss) {
-			if (phase == phase_1 && life < life * 75 / 100)
+			CheckPhase();
+			if (phase == phase_1 && life < max_life * 75 / 100)
 				phase = phase_2;
-			else if (phase == phase_2 && life < life * 50 / 100)
+			else if (phase == phase_2 && life < max_life * 50 / 100)
 				phase = phase_3;
-			else if (phase == phase_3 && life < life * 25 / 100)
+			else if (phase == phase_3 && life < max_life * 25 / 100)
 				phase = last_phase;
 		}
+
+
 
 		switch (state) {
 		case entity_state::entity_idle:
@@ -378,19 +379,15 @@ void Unit::CheckPhase()
 {
 	switch (phase)
 	{
-	case phase_1:
+	case boss_phase::phase_1:
 		break;
-	case phase_2:
-		speed = 3;
-		damage = 40;
+	case boss_phase::phase_2:
 		break;
-	case phase_3:
-		speed = 2;
-		damage = 30;
+	case boss_phase::phase_3:
 		break;
-	case last_phase:
+	case boss_phase::last_phase:
 		break;
-	case asleep:
+	case boss_phase::asleep:
 		/*state = entity_idle;*/
 		break;
 	}
