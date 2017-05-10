@@ -90,6 +90,15 @@ bool Unit::Update(float dt)
 		if (collision != nullptr)
 			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
+		CheckPhase();
+
+		if (is_boss) {
+			if (phase == phase_1 && life < life * 75 / 100)
+				phase = phase_2;
+			else if (phase == phase_2 && life < life * 50 / 100)
+				phase = phase_3;
+			else if (phase == phase_3 && life < life * 25 / 100)
+				phase = last_phase;
 		}
 
 		switch (state) {
@@ -382,6 +391,7 @@ void Unit::CheckPhase()
 	case last_phase:
 		break;
 	case asleep:
+		/*state = entity_idle;*/
 		break;
 	}
 }
