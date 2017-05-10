@@ -14,6 +14,7 @@
 #include "BrokenBuilding.h"
 #include "SceneTest.h"
 #include "j1Scene.h"
+#include "QuestManager.h"
 
 j1Entity::j1Entity()
 {
@@ -394,19 +395,21 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 				}
 				else if ((*it)->GetType() == building && (*it)->name == broken_building) {
 					App->entity->UnselectEverything();
-					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(true);
 					(*it)->SetSelected(true);
-					if (App->player->barracks_ui_window->enabled)
-						App->player->barracks_ui_window->SetEnabledAndChilds(false);
-					if (App->scene->scene_test->create_barrack == true)
-					{
-						App->player->create_building_button2->SetImage("clicked");
-						App->player->create_building_button->SetImage("standard");
-					}
-					else
-					{
-						App->player->create_building_button->SetImage("clicked");
-						App->player->create_building_button2->SetImage("standard");
+					if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
+						App->player->brokenbuilding_ui_window->SetEnabledAndChilds(true);
+						if (App->player->barracks_ui_window->enabled)
+							App->player->barracks_ui_window->SetEnabledAndChilds(false);
+						if (App->scene->scene_test->create_barrack == true)
+						{
+							App->player->create_building_button2->SetImage("clicked");
+							App->player->create_building_button->SetImage("standard");
+						}
+						else
+						{
+							App->player->create_building_button->SetImage("clicked");
+							App->player->create_building_button2->SetImage("standard");
+						}
 					}
 				}
 				else {

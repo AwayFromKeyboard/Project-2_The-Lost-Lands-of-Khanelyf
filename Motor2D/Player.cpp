@@ -533,7 +533,9 @@ bool Player::Update(float dt)
 					{
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
-						brokenbuilding_ui_window->SetEnabledAndChilds(true);
+						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
+							brokenbuilding_ui_window->SetEnabledAndChilds(true);
+						}
 						break;
 					}
 					else {
