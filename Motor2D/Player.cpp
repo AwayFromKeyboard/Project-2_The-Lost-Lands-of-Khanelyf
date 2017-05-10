@@ -149,12 +149,12 @@ bool Player::Start()
 	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
 
 	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(497, 510), 37, 36);
-	barrack_img->AddImage("standard", { 765, 0, 37, 36 });
+	barrack_img->AddImage("standard", { 808, 48, 39, 38 });
 	barrack_img->SetImage("standard");
 	barrack_img->click_through = true;
 
-	house_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(595, 510), 37, 36);
-	house_img->AddImage("standard", { 765, 36, 37, 36 });
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(595, 515), 37, 36);
+	house_img->AddImage("standard", { 847, 52, 37, 33 });
 	house_img->SetImage("standard");
 	house_img->click_through = true;
 
