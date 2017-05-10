@@ -347,7 +347,7 @@ bool Player::PreUpdate()
 				if ((*it)->GetSelected())
 				{
 					iPoint pos = (*it)->position;
-					(*it)->to_delete = true;
+					(*it)->state = entity_death;
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
@@ -366,7 +366,7 @@ bool Player::PreUpdate()
 				if ((*it)->GetSelected())
 				{
 					iPoint pos = (*it)->position;
-					(*it)->to_delete = true;
+					(*it)->state = entity_death;
 					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, 2);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}

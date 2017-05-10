@@ -8,6 +8,8 @@
 #include "Barracks.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "j1App.h"
+#include "Player.h"
 
 Building::Building()
 {
@@ -62,8 +64,12 @@ bool Building::Update(float dt)
 				App->questmanager->GetCurrentQuest()->progress++;
 			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
 		}
-		if (type == entity_type::ally_building || type == entity_type::building) {
+		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building) {
 			App->entity->CreateEntity(broken_building, building, position);
+		}
+		if (type == entity_type::building || name == entity_name::barracks) {
+			if (App->player->barracks_ui_window->enabled)
+				App->player->barracks_ui_window->SetEnabledAndChilds(false);
 		}
 		break;
 	}
