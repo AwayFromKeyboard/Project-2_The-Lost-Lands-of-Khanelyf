@@ -664,11 +664,15 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	direction.x = attacked_pos.x - pos.x;
 	direction.y = attacked_pos.y - pos.y;
 
-	if (attacked_entity->type != entity_type::object) {
+	if (attacked_entity->type == entity_type::enemy_building || attacked_entity->type == entity_type::ally_building || attacked_entity->type == entity_type::building)
+	{
+		if (std::abs(direction.x) > range + 2 || std::abs(direction.y) > range + 2) ret = false;
+	}
+	else if (attacked_entity->type != entity_type::object) {
 		if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
 	}
 	else {
-		if (std::abs(direction.x) > range|| std::abs(direction.y) > range) ret = false;
+		if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
 	}
 	return ret;
 }
