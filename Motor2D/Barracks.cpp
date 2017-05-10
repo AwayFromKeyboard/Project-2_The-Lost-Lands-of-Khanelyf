@@ -25,7 +25,7 @@ Barracks::~Barracks()
 {
 }
 
-bool Barracks::LoadEntity(iPoint pos)
+bool Barracks::LoadEntity(iPoint pos, entity_name name)
 {
 	bool ret = true;
 
@@ -42,11 +42,14 @@ bool Barracks::LoadEntity(iPoint pos)
 	}
 	if (node)
 	{
+		this->name = name;
+
 		position = {pos.x, pos.y};
 		App->player->barracks_position = position;
-		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
+		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_BUILDING, App->entity);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
+		collision->parent = this;
 
 		cost = node.child("cost").attribute("value").as_int();
 		tex_rect = { 0, 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };

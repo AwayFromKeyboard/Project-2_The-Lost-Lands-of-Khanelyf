@@ -47,6 +47,9 @@ public:
 	bool PostUpdate();
 	bool BlitDialog(uint id, uint state);
 
+	bool LoadGame(pugi::xml_node&);
+	bool SaveGame(pugi::xml_node&) const;
+
 private:
 
 	 //Allows to order the conversarion correctly

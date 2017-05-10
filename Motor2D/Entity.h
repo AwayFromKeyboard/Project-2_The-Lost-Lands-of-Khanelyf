@@ -25,9 +25,6 @@ enum entity_state {
 	entity_null
 };
 
-class b2Fixture;
-class PhysBody;
-
 class Entity
 {
 public:
@@ -35,7 +32,7 @@ public:
 
 	virtual ~Entity() {};
 
-	virtual bool LoadEntity(iPoint pos) { return true; };
+	virtual bool LoadEntity(iPoint pos, entity_name name) { return true; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update(float dt) { return true; };
@@ -53,7 +50,7 @@ public:
 		return true;
 	}
 
-	virtual void OnColl(Collider* col1, Collider* col2) {};
+	virtual void OnColl(Entity* en1, Entity* en2) {};
 
 	virtual Collider* GetCollider() {
 		return nullptr;
@@ -80,6 +77,7 @@ public:
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
+	entity_name name = entity_name::test;
 	bool to_delete = false;
 
 	int life = 0;
@@ -92,6 +90,8 @@ public:
 	Animator* animator;
 
 	bool show_life_bar = true;
+
+	int layer = 0;
 protected:
 	bool selected = false;
 };
