@@ -81,7 +81,8 @@ bool j1Entity::PostUpdate()
 		}
 	}
 
-	App->collisions->DebugDraw();
+	if (loaded && !App->player->pause_status)
+		App->collisions->DebugDraw();
 
 	return ret;
 }
@@ -114,7 +115,8 @@ bool j1Entity::CleanUp()
 
 void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
-	col2->parent->OnColl(col2->parent, col1->parent);
+	if (col1 != nullptr && col2 != nullptr)
+		col2->parent->OnColl(col2->parent, col1->parent);
 }
 
 bool j1Entity::Load(pugi::xml_node& data)
@@ -122,6 +124,7 @@ bool j1Entity::Load(pugi::xml_node& data)
 	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 		(*it)->to_delete = true;
 	}
+	App->collisions->colliders.clear();
 
 	pugi::xml_node enemies = data.child("Enemies");
 	pugi::xml_node npcs = data.child("NPCs");
@@ -218,6 +221,8 @@ bool j1Entity::Load(pugi::xml_node& data)
 	}
 
 	App->player->Load(player);
+
+	loaded = true;
 
 	return true;
 }

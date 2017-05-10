@@ -71,9 +71,12 @@ public:
 	bool EraseCollider(Collider* collider);
 	void DebugDraw();
 
-private:
+public:
 
 	std::list<Collider*> colliders;
+
+private:
+
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 
 	int quadTreeChecks;

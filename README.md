@@ -30,15 +30,27 @@ Controls:
 
 * Click left mouse button and drag to select multiple units
 
+* Click left mouse button on the minimap to change view
+
 * Use the right mouse button to:
 
   * Attack enemy units
  
   * Attack enemy buildings
  
-  * Move the selected troops
+  * Move the selected troops (can also be used in the minimap)
 
   * Pick objects
+
+* ESC to open pause menu:
+
+  * Left click on Save Game to save the current game
+
+  * Left click on Load Game to load the last saved game
+
+  * Left click on Quit to exit game
+
+  * Left click on Resume Game or ESC to exit pause menu
 
 * F1 to debug mode
 
@@ -55,7 +67,6 @@ Controls:
 Goal:
 
 Follow and complete the quests without getting your hero killed. 
-
 
 Quests:
 
