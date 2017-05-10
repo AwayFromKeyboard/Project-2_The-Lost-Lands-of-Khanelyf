@@ -441,7 +441,7 @@ bool Player::Update(float dt)
 
 				if (unit != nullptr)
 				{
-					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building || (*it)->GetType() == entity_type::enemy_boss)) {
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
 						(*it)->SetSelected(true);
 					}
 				}
@@ -862,11 +862,7 @@ void Player::Charge()
 
 			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 
-			//if (found != nullptr)
-			//	col = found->GetCollider();
-			//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
-
-			if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
+			if (found != nullptr && found->life > 0 && found->type == enemy && found->type == enemy_boss && App->map->WorldToMapPoint(mouse) == found->position_map)
 			{
 				GetHero()->speed += CHARGE_SPEED;
 				GetHero()->damage += CHARGE_DAMAGE;

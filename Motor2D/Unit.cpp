@@ -277,7 +277,6 @@ bool Unit::Draw(float dt)
 {
 	bool ret = true;
 
-
 	switch (state)
 	{
 	case entity_idle:
@@ -616,13 +615,14 @@ bool Unit::CheckSurroundings() {
 							switch (type) {
 							case player:
 							case ally:
-								if (found->type == enemy) {
+								if (found->type == enemy || found->type == enemy_boss) {
 									attacked_unit = found;
 									state = entity_move_to_enemy;
 									return true;
 								}
 								break;
 							case enemy:
+							case enemy_boss:
 								if (found->type == player || found->type == ally) {
 									attacked_unit = found;
 									state = entity_move_to_enemy;
