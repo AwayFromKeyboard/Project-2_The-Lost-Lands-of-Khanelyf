@@ -67,9 +67,10 @@ bool Building::Update(float dt)
 		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building) {
 			App->entity->CreateEntity(broken_building, building, position);
 		}
-		if (type == entity_type::building || name == entity_name::barracks) {
+		if (type == entity_type::building && name == entity_name::barracks) {
 			if (App->player->barracks_ui_window->enabled)
 				App->player->barracks_ui_window->SetEnabledAndChilds(false);
+			App->scene->scene_test->create_barrack = true;
 		}
 		break;
 	}

@@ -12,6 +12,8 @@
 #include "Player.h"
 #include "Provisions.h"
 #include "BrokenBuilding.h"
+#include "SceneTest.h"
+#include "j1Scene.h"
 
 j1Entity::j1Entity()
 {
@@ -391,6 +393,16 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 					(*it)->SetSelected(true);
 					if (App->player->barracks_ui_window->enabled)
 						App->player->barracks_ui_window->SetEnabledAndChilds(false);
+					if (App->scene->scene_test->create_barrack == true)
+					{
+						App->player->create_building_button2->SetImage("clicked");
+						App->player->create_building_button->SetImage("standard");
+					}
+					else
+					{
+						App->player->create_building_button->SetImage("clicked");
+						App->player->create_building_button2->SetImage("standard");
+					}
 				}
 				else {
 					if (App->player->barracks_ui_window->enabled)

@@ -115,6 +115,10 @@ public:
 
 	UI_Button* item_drop = nullptr;
 
+	//buttons for brokenbuilding
+	UI_Button* create_building_button = nullptr;
+	UI_Button* create_building_button2 = nullptr;
+
 private:
 	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
@@ -125,8 +129,6 @@ private:
 	//buttons for brokenbuilding
 	UI_Button* barrack_img = nullptr;
 	UI_Button* house_img = nullptr;
-	UI_Button* create_building_button = nullptr;
-	UI_Button* create_building_button2 = nullptr;
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;

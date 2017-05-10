@@ -339,7 +339,7 @@ bool Player::PreUpdate()
 		}
 
 		//Brokenbuilding create building buttons
-		if (create_building_button->MouseClickEnterLeft()) {
+		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard")) {
 			create_building_button->SetImage("clicked");
 
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
@@ -350,6 +350,7 @@ bool Player::PreUpdate()
 					(*it)->state = entity_death;
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
+					App->scene->scene_test->create_barrack = false;
 				}
 			}
 			
@@ -358,7 +359,7 @@ bool Player::PreUpdate()
 			create_building_button->SetImage("standard");
 		}
 
-		if (create_building_button2->MouseClickEnterLeft()) {
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard")) {
 			create_building_button2->SetImage("clicked");
 
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
