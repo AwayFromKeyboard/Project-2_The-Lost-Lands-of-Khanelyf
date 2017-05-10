@@ -2559,36 +2559,96 @@
           <rect x="728" y="494"/>
         </north>
       </move>
-      <attack speed="10" w="79" h="140" offset_x="" offset_y="">
+      <attack speed="10" w="78" h="140" offset_x="39" offset_y="100">
         <south>
           <rect x="0" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
-          <rect x="" y="550"/>
+          <rect x="80" y="550"/>
+          <rect x="160" y="550"/>
+          <rect x="240" y="550"/>
+          <rect x="320" y="550"/>
+          <rect x="400" y="550"/>
+          <rect x="480" y="550"/>
+          <rect x="560" y="550"/>
+          <rect x="640" y="550"/>
+          <rect x="720" y="550"/>
+          <rect x="800" y="550"/>
+          <rect x="880" y="550"/>
+          <rect x="960" y="550"/>
+          <rect x="1040" y="550"/>
+          <rect x="1120" y="550"/>
+          <rect x="1200" y="550"/>
         </south>
         <south_west>
-          <rect x="" y=""/>
+          <rect x="0" y="691"/>
+          <rect x="80" y="691"/>
+          <rect x="160" y="691"/>
+          <rect x="240" y="691"/>
+          <rect x="320" y="691"/>
+          <rect x="400" y="691"/>
+          <rect x="480" y="691"/>
+          <rect x="560" y="691"/>
+          <rect x="640" y="691"/>
+          <rect x="720" y="691"/>
+          <rect x="800" y="691"/>
+          <rect x="880" y="691"/>
+          <rect x="960" y="691"/>
+          <rect x="1040" y="691"/>
+          <rect x="1120" y="691"/>
+          <rect x="1200" y="691"/>
         </south_west>
         <west>
-          <rect x="" y=""/>
+          <rect x="0" y="832"/>
+          <rect x="80" y="832"/>
+          <rect x="160" y="832"/>
+          <rect x="240" y="832"/>
+          <rect x="320" y="832"/>
+          <rect x="400" y="832"/>
+          <rect x="480" y="832"/>
+          <rect x="560" y="832"/>
+          <rect x="640" y="832"/>
+          <rect x="720" y="832"/>
+          <rect x="800" y="832"/>
+          <rect x="880" y="832"/>
+          <rect x="960" y="832"/>
+          <rect x="1040" y="832"/>
+          <rect x="1120" y="832"/>
+          <rect x="1200" y="832"/>
         </west>
         <north_west>
-          <rect x="" y=""/>
+          <rect x="0" y="973"/>
+          <rect x="80" y="973"/>
+          <rect x="160" y="973"/>
+          <rect x="240" y="973"/>
+          <rect x="320" y="973"/>
+          <rect x="400" y="973"/>
+          <rect x="480" y="973"/>
+          <rect x="560" y="973"/>
+          <rect x="640" y="973"/>
+          <rect x="720" y="973"/>
+          <rect x="800" y="973"/>
+          <rect x="880" y="973"/>
+          <rect x="960" y="973"/>
+          <rect x="1040" y="973"/>
+          <rect x="1120" y="973"/>
+          <rect x="1200" y="973"/>
         </north_west>
         <north>
-          <rect x="" y=""/>
+          <rect x="0" y="1114"/>
+          <rect x="80" y="1114"/>
+          <rect x="160" y="1114"/>
+          <rect x="240" y="1114"/>
+          <rect x="320" y="1114"/>
+          <rect x="400" y="1114"/>
+          <rect x="480" y="1114"/>
+          <rect x="560" y="1114"/>
+          <rect x="640" y="1114"/>
+          <rect x="720" y="1114"/>
+          <rect x="800" y="1114"/>
+          <rect x="880" y="1114"/>
+          <rect x="960" y="1114"/>
+          <rect x="1040" y="1114"/>
+          <rect x="1120" y="1114"/>
+          <rect x="1200" y="1114"/>
         </north>
       </attack>
       <death speed="" w="" h="" offset_x="" offset_y="">
