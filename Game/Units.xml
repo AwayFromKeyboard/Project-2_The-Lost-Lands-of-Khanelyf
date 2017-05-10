@@ -2651,21 +2651,81 @@
           <rect x="1200" y="1114"/>
         </north>
       </attack>
-      <death speed="" w="" h="" offset_x="" offset_y="">
+      <death speed="10" w="66" h="64" offset_x="33" offset_y="32">
         <south>
-          <rect x="" y=""/>
+          <rect x="0" y="1255"/>
+          <rect x="67" y="1255"/>
+          <rect x="134" y="1255"/>
+          <rect x="201" y="1255"/>
+          <rect x="268" y="1255"/>
+          <rect x="335" y="1255"/>
+          <rect x="402" y="1255"/>
+          <rect x="469" y="1255"/>
+          <rect x="536" y="1255"/>
+          <rect x="603" y="1255"/>
+          <rect x="670" y="1255"/>
+          <rect x="737" y="1255"/>
+          <rect x="804" y="1255"/>
         </south>
         <south_west>
-          <rect x="" y=""/>
+          <rect x="0" y="1320"/>
+          <rect x="67" y="1320"/>
+          <rect x="134" y="1320"/>
+          <rect x="201" y="1320"/>
+          <rect x="268" y="1320"/>
+          <rect x="335" y="1320"/>
+          <rect x="402" y="1320"/>
+          <rect x="469" y="1320"/>
+          <rect x="536" y="1320"/>
+          <rect x="603" y="1320"/>
+          <rect x="670" y="1320"/>
+          <rect x="737" y="1320"/>
+          <rect x="804" y="1320"/>
         </south_west>
         <west>
-          <rect x="" y=""/>
+          <rect x="0" y="1385"/>
+          <rect x="67" y="1385"/>
+          <rect x="134" y="1385"/>
+          <rect x="201" y="1385"/>
+          <rect x="268" y="1385"/>
+          <rect x="335" y="1385"/>
+          <rect x="402" y="1385"/>
+          <rect x="469" y="1385"/>
+          <rect x="536" y="1385"/>
+          <rect x="603" y="1385"/>
+          <rect x="670" y="1385"/>
+          <rect x="737" y="1385"/>
+          <rect x="804" y="1385"/>
         </west>
         <north_west>
-          <rect x="" y=""/>
+          <rect x="0" y="1450"/>
+          <rect x="67" y="1450"/>
+          <rect x="134" y="1450"/>
+          <rect x="201" y="1450"/>
+          <rect x="268" y="1450"/>
+          <rect x="335" y="1450"/>
+          <rect x="402" y="1450"/>
+          <rect x="469" y="1450"/>
+          <rect x="536" y="1450"/>
+          <rect x="603" y="1450"/>
+          <rect x="670" y="1450"/>
+          <rect x="737" y="1450"/>
+          <rect x="804" y="1450"/>
         </north_west>
         <north>
-          <rect x="" y=""/>
+          <rect x="0" y="1515"/>
+          <rect x="67" y="1515"/>
+          <rect x="134" y="1515"/>
+          <rect x="201" y="1515"/>
+          <rect x="268" y="1515"/>
+          <rect x="335" y="1515"/>
+          <rect x="402" y="1515"/>
+          <rect x="469" y="1515"/>
+          <rect x="536" y="1515"/>
+          <rect x="603" y="1515"/>
+          <rect x="670" y="1515"/>
+          <rect x="737" y="1515"/>
+          <rect x="804" y="1515"/>
         </north>
       </death>
       <decompose speed="" w="" h="" offset_x="" offset_y="">
