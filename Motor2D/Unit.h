@@ -23,6 +23,16 @@ enum unit_direction {
 	south_east
 };
 
+enum boss_phase {
+	phase_1, // normal attacks
+	phase_2, // move to diferent entities fast and attack (sort of a charge ability)
+	phase_3, // area attack
+
+	last_phase,
+
+	asleep
+};
+
 enum entity_name;
 enum entity_type;
 
@@ -45,6 +55,8 @@ public:
 	bool Draw(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+
+	void CheckPhase();
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -172,6 +184,10 @@ public:
 public:
 	// attacked audio
 	bool shout_fx = true;
+
+public:
+	bool is_boss = false;
+	boss_phase phase = asleep;
 };
 
 #endif

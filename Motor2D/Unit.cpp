@@ -18,6 +18,7 @@
 #include "Object.h"
 #include "Player.h"
 #include "Building.h"
+#include "Boss_Axe_Knight.h"
 
 Unit::Unit()
 {
@@ -89,9 +90,10 @@ bool Unit::Update(float dt)
 		if (collision != nullptr)
 			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
+		}
+
 		switch (state) {
 		case entity_state::entity_idle:
-
 			if (life < max_life) {
 				if (life_up_timer.ReadSec() >= 1) {
 					life += 1;
@@ -109,6 +111,9 @@ bool Unit::Update(float dt)
 
 		case entity_state::entity_move_to_enemy:
 		{
+			if (is_boss && phase == asleep)
+				phase = phase_1;
+
 			if (attacked_unit == nullptr || attacked_unit->life <= 0)
 				state = entity_idle;
 			else {
@@ -171,6 +176,7 @@ bool Unit::Update(float dt)
 		break;
 
 		case entity_state::entity_attack:
+			
 			if ((attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) && (attacked_building == nullptr || attacked_building->life <= 0)) {
 				attacked_unit == nullptr;
 				attacked_building == nullptr;
@@ -235,7 +241,6 @@ bool Unit::Update(float dt)
 			}
 			break;
 
-
 		case entity_state::entity_pick_object:
 			if (IsInRange(to_pick_object)) {
 				App->pathfinding->DeletePath(path_id);
@@ -268,7 +273,6 @@ bool Unit::Update(float dt)
 			damaged_by_whirlwind = false;
 			timer_whirlwind_start = true;
 		}
-
 	}
 	return true;
 }
@@ -359,6 +363,27 @@ bool Unit::CleanUp()
 	bool ret = true;
 
 	return ret;
+}
+
+void Unit::CheckPhase()
+{
+	switch (phase)
+	{
+	case phase_1:
+		break;
+	case phase_2:
+		speed = 3;
+		damage = 40;
+		break;
+	case phase_3:
+		speed = 2;
+		damage = 30;
+		break;
+	case last_phase:
+		break;
+	case asleep:
+		break;
+	}
 }
 
 bool Unit::Load(pugi::xml_node &)

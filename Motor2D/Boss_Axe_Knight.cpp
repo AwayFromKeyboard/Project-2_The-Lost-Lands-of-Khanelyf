@@ -72,6 +72,9 @@ bool BossAxeKnight::LoadEntity(iPoint pos, entity_name name)
 		direction = { 0, 1 };
 
 		state = entity_state::entity_idle;
+		phase = boss_phase::asleep;
+		is_boss = true;
+
 	}
 	else LOG("\nERROR, no node found\n");
 
