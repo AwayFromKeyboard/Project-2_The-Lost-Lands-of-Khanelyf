@@ -21,6 +21,7 @@
 #include "Minimap.h"
 #include "Barracks.h"
 #include "BasicBuilding.h"
+#include "Functions.h"
 
 Player::Player()
 {
@@ -368,7 +369,7 @@ bool Player::PreUpdate()
 				{
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
-					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, 2);
+					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
