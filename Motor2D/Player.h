@@ -108,6 +108,7 @@ public:
 public:
 	UI_Window* barracks_ui_window = nullptr;
 	UI_Window* brokenbuilding_ui_window = nullptr;
+
 	UI_Window* player_abilities = false;
 	UI_Window* inventory = nullptr;
 	iPoint barracks_position;
@@ -115,10 +116,17 @@ public:
 	UI_Button* item_drop = nullptr;
 
 private:
+	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
 	UI_Button* swordsman_img = nullptr;
 	UI_Button* create_unit_button = nullptr;
 	UI_Button* create_unit_button2 = nullptr;
+
+	//buttons for brokenbuilding
+	UI_Button* barrack_img = nullptr;
+	UI_Button* house_img = nullptr;
+	UI_Button* create_building_button = nullptr;
+	UI_Button* create_building_button2 = nullptr;
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;

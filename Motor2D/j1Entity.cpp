@@ -382,15 +382,21 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 					App->entity->UnselectEverything();
 					App->player->barracks_ui_window->SetEnabledAndChilds(true);
 					(*it)->SetSelected(true);
+					if (App->player->brokenbuilding_ui_window->enabled)
+						App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 				else if ((*it)->GetType() == building && (*it)->name == broken_building) {
 					App->entity->UnselectEverything();
-					//App->player->brokenbuilding_ui_window->SetEnabledAndChilds(true);
+					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(true);
 					(*it)->SetSelected(true);
+					if (App->player->barracks_ui_window->enabled)
+						App->player->barracks_ui_window->SetEnabledAndChilds(false);
 				}
 				else {
 					if (App->player->barracks_ui_window->enabled)
 						App->player->barracks_ui_window->SetEnabledAndChilds(false);
+					if (App->player->brokenbuilding_ui_window->enabled)
+						App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					selected.push_back((Unit*)*it);
 				}
 			}
@@ -413,6 +419,8 @@ void j1Entity::UnselectEverything()
 	}
 	if (App->player->barracks_ui_window->enabled)
 		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+	if (App->player->brokenbuilding_ui_window->enabled)
+		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	selected.clear();
 }
