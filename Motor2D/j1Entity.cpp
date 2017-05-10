@@ -11,6 +11,7 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "Boss_Axe_Knight.h"
 
 j1Entity::j1Entity()
 {
@@ -303,6 +304,9 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case provisions:
 		ret = new Provisions(type);
+		break;
+	case boss:
+		ret = new BossAxeKnight(type);
 		break;
 	default:
 		break;
