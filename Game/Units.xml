@@ -2728,21 +2728,41 @@
           <rect x="804" y="1515"/>
         </north>
       </death>
-      <decompose speed="" w="" h="" offset_x="" offset_y="">
+      <decompose speed="3" w="59" h="48" offset_x="33" offset_y="18">
         <south>
-          <rect x="" y=""/>
+          <rect x="0" y="1580"/>
+          <rect x="60" y="1580"/>
+          <rect x="120" y="1580"/>
+          <rect x="180" y="1580"/>
+          <rect x="240" y="1580"/>
         </south>
         <south_west>
-          <rect x="" y=""/>
+          <rect x="0" y="1629"/>
+          <rect x="60" y="1629"/>
+          <rect x="120" y="1629"/>
+          <rect x="180" y="1629"/>
+          <rect x="240" y="1629"/>
         </south_west>
         <west>
-          <rect x="" y=""/>
+          <rect x="0" y="1678"/>
+          <rect x="60" y="1678"/>
+          <rect x="120" y="1678"/>
+          <rect x="180" y="1678"/>
+          <rect x="240" y="1678"/>
         </west>
         <north_west>
-          <rect x="" y=""/>
+          <rect x="0" y="1727"/>
+          <rect x="60" y="1727"/>
+          <rect x="120" y="1727"/>
+          <rect x="180" y="1727"/>
+          <rect x="240" y="1727"/>
         </north_west>
         <north>
-          <rect x="" y=""/>
+          <rect x="0" y="1776"/>
+          <rect x="60" y="1776"/>
+          <rect x="120" y="1776"/>
+          <rect x="180" y="1776"/>
+          <rect x="240" y="1776"/>
         </north>
       </decompose>
     </animations>
