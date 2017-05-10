@@ -22,6 +22,7 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Functions.h"
+#include "QuestManager.h"
 
 Player::Player()
 {
@@ -352,6 +353,9 @@ bool Player::PreUpdate()
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
+					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+						App->questmanager->GetCurrentQuest()->progress++;
+					}
 				}
 			}
 			

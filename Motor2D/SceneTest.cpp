@@ -164,10 +164,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_B) == key_down)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= barrack->cost;
+
 		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
