@@ -39,7 +39,47 @@ bool Player::Start()
 	
 	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
 	
-	quit_game = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
+
+	UI_Button* audio = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
+	audio->AddImage("standard", { 25, 2695, 186, 31 });
+	audio->SetImage("standard");
+	audio->AddImage("clicked", { 25, 2768, 186, 31 });
+	audio->AddImage("hovered", { 26, 2732, 186, 31 });
+	audio->SetEnabled(false);
+
+	UI_Button* controls = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
+	controls->AddImage("standard", { 25, 2695, 186, 31 });
+	controls->SetImage("standard");
+	controls->AddImage("clicked", { 25, 2768, 186, 31 });
+	controls->AddImage("hovered", { 26, 2732, 186, 31 });
+	controls->SetEnabled(false);
+
+	UI_Button* backpause = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	backpause->AddImage("standard", { 25, 2695, 186, 31 });
+	backpause->SetImage("standard");
+	backpause->AddImage("clicked", { 25, 2768, 186, 31 });
+	backpause->AddImage("hovered", { 26, 2732, 186, 31 });
+	backpause->SetEnabled(false);
+
+	backpause_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	backpause_txt->SetText("Back");
+	backpause_txt->click_through = true;
+
+	controls_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
+	controls_txt->SetText("Controls");
+	controls_txt->click_through = true;
+
+	audio_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	audio_txt->SetText("Audio");
+	audio_txt->click_through = true;
+
+	options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
+	options->AddImage("standard", { 25, 2695, 186, 31 });
+	options->SetImage("standard");
+	options->AddImage("clicked", { 25, 2768, 186, 31 });
+	options->AddImage("hovered", { 26, 2732, 186, 31 });
+
+	quit_game = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) }, 186, 31);
 	quit_game->AddImage("standard", { 25, 2695, 186, 31 });
 	quit_game->SetImage("standard");
 	quit_game->AddImage("clicked", { 25, 2768, 186, 31 });
@@ -57,16 +97,16 @@ bool Player::Start()
 	save->AddImage("clicked", { 25, 2768, 186, 31 });
 	save->AddImage("hovered", { 26, 2732, 186, 31 });
 	
-	options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
-	options->AddImage("standard", { 25, 2695, 186, 31 });
-	options->SetImage("standard");
-	options->AddImage("clicked", { 25, 2768, 186, 31 });
-	options->AddImage("hovered", { 26, 2732, 186, 31 });
+	load = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
+	load->AddImage("standard", { 25, 2695, 186, 31 });
+	load->SetImage("standard");
+	load->AddImage("clicked", { 25, 2768, 186, 31 });
+	load->AddImage("hovered", { 26, 2732, 186, 31 });
 
 	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
 	pause_menu_txt->SetText("PAUSE");
 	
-	quit_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	quit_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
 	quit_txt->SetText("Quit");
 	quit_txt->click_through = true;
 	
@@ -78,11 +118,24 @@ bool Player::Start()
 	save_txt->SetText("Save");
 	save_txt->click_through = true;
 
-	options_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
-	options_txt->SetText("Load");
-	options_txt->click_through = true;
+	load_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
+	load_txt->SetText("Load");
+	load_txt->click_through = true;
 
+	options_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	options_txt->SetText("Options");
+	options_txt->click_through = true;
 	pause_window->SetEnabledAndChilds(false);
+
+	//options 
+
+	
+
+	//options_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, 240, 386, 13);
+	//options_window->click_through = true;
+	//options_bg = (UI_Image*)options_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, { 0,2300,240,386 });
+
+	//options_window->SetEnabledAndChilds(false);
 
 	//stats
 
@@ -200,12 +253,40 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;	
 	}
-	if (options->MouseClickEnterLeft()) {
-		options->SetImage("clicked");
+	if (load->MouseClickEnterLeft()) {
+		load->SetImage("clicked");
 		App->LoadGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
+
+	if (options->MouseClickEnterLeft() && pause_status) {
+		options->SetImage("clicked");
+		//options_window->SetEnabled(true);
+		save->SetEnabled(false);
+		load->SetEnabled(false);
+		quit_game->SetEnabled(false);
+		back->SetEnabled(false);
+		options->SetEnabled(false);
+		save_txt->SetEnabled(false);
+		load_txt->SetEnabled(false);
+		options_txt->SetEnabled(false);
+		quit_txt->SetEnabled(false);
+		back_txt->SetEnabled(false);
+		audio->SetEnabled(true); 
+		controls->SetEnabled(true); 
+		backpause->SetEnabled(true);
+		controls_txt->SetEnabled(true);
+		backpause_txt->SetEnabled(true);
+		audio_txt->SetEnabled(true);
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (!pause_status && (pause_window->enabled)) {
+		pause_window->SetEnabledAndChilds(false);
+		//options_window->SetEnabledAndChilds(false);
+	}
+	
 	if (save->MouseClickEnterLeft()) {
 		save->SetImage("clicked");
 		App->SaveGame("Save_File.xml");
@@ -217,9 +298,10 @@ bool Player::PreUpdate()
 		button_on_clicked = false;
 		back->SetImage("standard");			
 	}
-	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked")|| options->CompareState("clicked"))) {
+	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked")|| load->CompareState("clicked") || options->CompareState("clicked"))) {
 		button_on_clicked = false;
 		save->SetImage("standard");
+		load->SetImage("standard");
 		options->SetImage("standard");
 	}
 
@@ -250,6 +332,7 @@ bool Player::PreUpdate()
 		pause_window->SetEnabledAndChilds(false);
 	}
 	
+
 	//backbutton
 	if (back->MouseEnter())
 		back->SetImage("hovered");
@@ -262,12 +345,18 @@ bool Player::PreUpdate()
 	else if (save->MouseOut() && save->CompareState("hovered"))
 		save->SetImage("standard");
 	
-	//optionsbutton
+	//load button
+	if (load->MouseEnter())
+		load->SetImage("hovered");
+	else if (load->MouseOut() && load->CompareState("hovered"))
+		load->SetImage("standard");
+	
+	// options button
+
 	if (options->MouseEnter())
 		options->SetImage("hovered");
 	else if (options->MouseOut() && options->CompareState("hovered"))
 		options->SetImage("standard");
-	
 
 	//quitbutton
 	if (quit_game->MouseEnter())
