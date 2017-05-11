@@ -38,6 +38,26 @@ bool Fire::LoadEntity(iPoint pos)
 		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("value").as_string());
 		node = node.child("animations");
 		animator->LoadFireAnimationsFromParticlesXML(node, this);
+
+		switch (set)
+		{
+		case 0:
+			current_animation = &set_0;
+			break;
+		case 1:
+			current_animation = &set_1;
+			break;
+		case 2:
+			current_animation = &set_2;
+			break;
+		case 3:
+			current_animation = &set_3;
+			break;
+		case 4:
+			current_animation = &set_4;
+			break;
+		}
+
 	}
 	
 	return ret;
