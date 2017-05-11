@@ -9,6 +9,6 @@ Fire::~Fire()
 {
 }
 
-void Fire::LoadEntity(iPoint pos)
+bool Fire::LoadEntity(iPoint pos)
 {
 }

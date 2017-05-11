@@ -8,7 +8,7 @@ public:
 	Fire(int set);
 	~Fire();
 
-	void LoadEntity(iPoint pos);
+	bool LoadEntity(iPoint pos);
 
 private:
 	int set = 0;

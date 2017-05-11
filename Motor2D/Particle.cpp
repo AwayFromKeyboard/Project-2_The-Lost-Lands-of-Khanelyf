@@ -39,6 +39,9 @@ bool Particle::CleanUp()
 	return true;
 }
 
-void Particle::LoadParticle(iPoint pos)
+bool Particle::LoadParticle(iPoint pos)
 {
+	bool ret = true;
+
+	return ret;
 }
