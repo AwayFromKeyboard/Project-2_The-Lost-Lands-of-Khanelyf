@@ -142,7 +142,9 @@
     <ClCompile Include="Particle.cpp">
       <Filter>Engine\6. Particles</Filter>
     </ClCompile>
-    <ClCompile Include="Fire.cpp" />
+    <ClCompile Include="Fire.cpp">
+      <Filter>Engine\6. Particles\Fire</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

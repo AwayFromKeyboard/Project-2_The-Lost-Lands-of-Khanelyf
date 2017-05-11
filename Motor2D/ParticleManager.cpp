@@ -16,7 +16,7 @@ bool ParticleManager::Start()
 	bool ret = true;
 
 	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
-		(*it)->Start();
+		ret = (*it)->Start();
 	}
 
 	return ret;
@@ -27,7 +27,7 @@ bool ParticleManager::PreUpdate()
 	bool ret = true;
 
 	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
-		(*it)->PreUpdate();
+		ret = (*it)->PreUpdate();
 	}
 
 	return ret;
@@ -38,7 +38,8 @@ bool ParticleManager::Update(float dt)
 	bool ret = true;
 
 	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
-		(*it)->Update(dt);
+		ret = (*it)->Update(dt);
+		(*it)->Draw(dt);
 	}
 
 	return ret;
@@ -49,7 +50,7 @@ bool ParticleManager::PostUpdate()
 	bool ret = true;
 
 	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
-		(*it)->PostUpdate();
+		ret = (*it)->PostUpdate();
 	}
 
 	return ret;

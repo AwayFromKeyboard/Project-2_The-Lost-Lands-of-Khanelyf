@@ -21,6 +21,8 @@ bool Particle::PreUpdate()
 
 bool Particle::Update(float dt)
 {
+	Draw(dt);
+
 	return true;
 }
 
