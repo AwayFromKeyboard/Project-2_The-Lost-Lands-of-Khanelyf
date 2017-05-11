@@ -606,12 +606,12 @@ bool Unit::CheckSurroundings() {
 				frontier.pop_front();
 
 				for (int k = 0; k < 4; k++) {
-					if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+					if (neighbors[k].x >= 0 && neighbors[k].y >= 0 && neighbors[k].x < App->map->data.width && neighbors[k].y < App->map->data.height)
 					{
-						if ((!App->pathfinding->IsWalkable(neighbors[k]) && (type == entity_type::enemy || type == entity_type::ally || type == entity_type::player)) || (App->pathfinding->IsWalkable(neighbors[k]) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
-						{
-							Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-							if (found != nullptr && found->life > 0) {
+						Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+						if (found != nullptr && found->life > 0) {
+							if ((App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::enemy || found->type == entity_type::ally || found->type == entity_type::player)) || (!App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::building || found->type == entity_type::ally_building || found->type == entity_type::enemy_building))) {
+
 								switch (type) {
 								case player:
 								case ally:
@@ -639,18 +639,18 @@ bool Unit::CheckSurroundings() {
 									}
 								}
 							}
-							else {
-								bool is_visited = false;
-								for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-									if (neighbors[k] == *it) {
-										is_visited = true;
-										break;
-									}
+						}
+						else {
+							bool is_visited = false;
+							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+								if (neighbors[k] == *it) {
+									is_visited = true;
+									break;
 								}
-								if (!is_visited) {
-									frontier.push_back(neighbors[k]);
-									visited.push_back(neighbors[k]);
-								}
+							}
+							if (!is_visited) {
+								frontier.push_back(neighbors[k]);
+								visited.push_back(neighbors[k]);
 							}
 						}
 					}
