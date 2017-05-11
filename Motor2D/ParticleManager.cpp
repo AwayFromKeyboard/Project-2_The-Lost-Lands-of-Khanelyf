@@ -1,6 +1,7 @@
 #include "ParticleManager.h"
 #include "Particle.h"
 #include "Fire.h"
+#include "Log.h"
 
 ParticleManager::ParticleManager()
 {
@@ -42,10 +43,18 @@ Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint po
 	switch (type)
 	{
 	case particle_type::fire:
-		Fire(set);
+		ret = new Fire(set);
 		break;
 	}
 
+	if (ret != nullptr)
+	{
+		ret->LoadParticle(pos);
+		ret->Start();
+		particle_list.push_back(ret);
+	}
+	else
+		LOG("Particle creation returned nullptr");
 
 	return ret;
 }
