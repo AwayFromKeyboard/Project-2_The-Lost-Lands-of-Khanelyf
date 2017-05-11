@@ -93,7 +93,7 @@ void BossAxeKnight::Draw_Phase2()
 			range_visited.clear();
 			range_visited.push_back(position_map);
 			frontier.push_back(position_map);
-			for (int i = 0; i < WHIRLWIND_RANGE; ++i) {
+			for (int i = 0; i < PHASE2_RANGE; ++i) {
 				for (int j = frontier.size(); j > 0; j--) {
 					iPoint neighbors[4];
 					neighbors[0] = frontier.front() + iPoint(1, 0);
@@ -131,20 +131,21 @@ void BossAxeKnight::Phase2_Attack()
 	visited.push_back(position_map);
 	frontier.push_back(position_map);
 
-	for (int i = 0; i < WHIRLWIND_RANGE; ++i) {
+	for (int i = 0; i < PHASE2_RANGE; ++i) {
 		for (int j = frontier.size(); j > 0; j--) {
 			iPoint neighbors[4];
 			neighbors[0] = frontier.front() + iPoint(1, 0);
 			neighbors[1] = frontier.front() + iPoint(-1, 0);
 			neighbors[2] = frontier.front() + iPoint(0, 1);
 			neighbors[3] = frontier.front() + iPoint(0, -1);
+
 			frontier.pop_front();
 
 			for (int k = 0; k < 4; k++) {
 				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
 					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 					if (found != nullptr && found->life > 0 && (found->type == ally || found->type == player)) {
-						found->life -= WHIRLWIND_DAMAGE;
+						found->life -= PHASE2_DAMAGE;
 						if (found->life <= 0)
 							found->state = entity_death;
 					}
@@ -165,4 +166,49 @@ void BossAxeKnight::Phase2_Attack()
 			}
 		}
 	}
+}
+
+void BossAxeKnight::Draw_Phase3()
+{
+	std::list<iPoint> visited;
+
+	visited.push_back(position);
+
+	for (int i = 0; i < PHASE3_RANGE; ++i) {
+		iPoint neighbors[12];
+		neighbors[0] = position_map + iPoint(1 + i, 0);
+		neighbors[1] = position_map + iPoint(-1 - i, 0);
+		neighbors[2] = position_map + iPoint(0, 1 + i);
+		neighbors[3] = position_map + iPoint(0, -1 - i);
+
+		neighbors[4] = position_map + iPoint(1 + i, i);
+		neighbors[5] = position_map + iPoint(-1 - i, i);
+		neighbors[6] = position_map + iPoint(i, 1 + i);
+		neighbors[7] = position_map + iPoint(i, -1 - i);
+
+		neighbors[8] = position_map + iPoint(1 + i, -i);
+		neighbors[9] = position_map + iPoint(-1 - i, -i);
+		neighbors[10] = position_map + iPoint(-i, 1 + i);
+		neighbors[11] = position_map + iPoint(-i, -1 - i);
+
+		for (int k = 0; k < 12; k++) {
+			bool is_visited = false;
+			for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+				if (neighbors[k] == *it) {
+					is_visited = true;
+					break;
+				}
+			}
+			if (!is_visited) {
+				visited.push_back(neighbors[k]);
+			}
+		}
+	}
+	for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+		App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+	}
+}
+
+void BossAxeKnight::Phase3_Attack()
+{
 }

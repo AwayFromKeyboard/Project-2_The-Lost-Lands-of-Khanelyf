@@ -4,8 +4,12 @@
 #include "Unit.h"
 #include "j1Timer.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
-#define WHIRLWIND_DAMAGE 100
-#define WHIRLWIND_RANGE 3
+
+#define PHASE2_DAMAGE 100
+#define PHASE2_RANGE 3
+
+#define PHASE3_DAMAGE 40
+#define PHASE3_RANGE 7
 
 enum entity_type;
 
@@ -25,6 +29,12 @@ public:
 	bool starter_ability_phase2_timer = false;
 	void Draw_Phase2();
 	void Phase2_Attack();
+
+	j1Timer ability_phase3;
+	bool starter_ability_phase3_timer = false;
+	void Draw_Phase3();
+	void Phase3_Attack();
+
 
 	std::list<iPoint> range_visited;
 };

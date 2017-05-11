@@ -93,6 +93,8 @@ bool Unit::Update(float dt)
 		if (is_boss && life > 0) {
 			CheckPhase();
 
+			boss->Draw_Phase3();
+
 			if (phase == phase_1 && life < max_life * 75 / 100)
 				phase = phase_2;
 			else if (phase == phase_2 && life < max_life * 50 / 100)
