@@ -12,6 +12,7 @@
 #define PHASE3_RANGE 7
 
 enum entity_type;
+class Particle;
 
 class BossAxeKnight : public Unit
 {
@@ -32,9 +33,12 @@ public:
 
 	j1Timer ability_phase3;
 	bool starter_ability_phase3_timer = false;
+	bool fireballs_created = false;
 	void Draw_Phase3();
 	void Phase3_Attack();
-
+	void Phase3_Damage();
+	std::list<iPoint> fireball_points;
+	std::list<Particle*> fireballs;
 
 	std::list<iPoint> range_visited;
 };

@@ -1,0 +1,118 @@
+<particles>
+  <particle type="Little_Fire">
+    <texture path="Fire.png"/>
+    <offset x="-22" y="-48"/>
+    <animations>
+      <set_0 speed="5" w="44" h="96" set="0">
+        <rect x="0" y="0"/>
+        <rect x="45" y="0"/>
+        <rect x="90" y="0"/>
+        <rect x="135" y="0"/>
+        <rect x="180" y="0"/>
+        <rect x="225" y="0"/>
+        <rect x="270" y="0"/>
+        <rect x="315" y="0"/>
+        <rect x="360" y="0"/>
+        <rect x="405" y="0"/>
+        <rect x="450" y="0"/>
+        <rect x="495" y="0"/>
+        <rect x="540" y="0"/>
+        <rect x="585" y="0"/>
+        <rect x="630" y="0"/>
+        <rect x="675" y="0"/>
+        <rect x="720" y="0"/>
+        <rect x="765" y="0"/>
+        <rect x="810" y="0"/>
+        <rect x="855" y="0"/>
+      </set_0>
+      <set_1 speed="5" w="44" h="96" set="1">
+        <rect x="0" y="97"/>
+        <rect x="45" y="97"/>
+        <rect x="90" y="97"/>
+        <rect x="135" y="97"/>
+        <rect x="180" y="97"/>
+        <rect x="225" y="97"/>
+        <rect x="270" y="97"/>
+        <rect x="315" y="97"/>
+        <rect x="360" y="97"/>
+        <rect x="405" y="97"/>
+        <rect x="450" y="97"/>
+        <rect x="495" y="97"/>
+        <rect x="540" y="97"/>
+        <rect x="585" y="97"/>
+        <rect x="630" y="97"/>
+        <rect x="675" y="97"/>
+        <rect x="720" y="97"/>
+        <rect x="765" y="97"/>
+        <rect x="810" y="97"/>
+        <rect x="855" y="97"/>
+      </set_1>
+      <set_2 speed="5" w="44" h="96" set="2">
+        <rect x="0" y="194"/>
+        <rect x="45" y="194"/>
+        <rect x="90" y="194"/>
+        <rect x="135" y="194"/>
+        <rect x="180" y="194"/>
+        <rect x="225" y="194"/>
+        <rect x="270" y="194"/>
+        <rect x="315" y="194"/>
+        <rect x="360" y="194"/>
+        <rect x="405" y="194"/>
+        <rect x="450" y="194"/>
+        <rect x="495" y="194"/>
+        <rect x="540" y="194"/>
+        <rect x="585" y="194"/>
+        <rect x="630" y="194"/>
+        <rect x="675" y="194"/>
+        <rect x="720" y="194"/>
+        <rect x="765" y="194"/>
+        <rect x="810" y="194"/>
+        <rect x="855" y="194"/>
+      </set_2>
+      <set_3 speed="5" w="44" h="96" set="3">
+        <rect x="0" y="291"/>
+        <rect x="45" y="291"/>
+        <rect x="90" y="291"/>
+        <rect x="135" y="291"/>
+        <rect x="180" y="291"/>
+        <rect x="225" y="291"/>
+        <rect x="270" y="291"/>
+        <rect x="315" y="291"/>
+        <rect x="360" y="291"/>
+        <rect x="405" y="291"/>
+        <rect x="450" y="291"/>
+        <rect x="495" y="291"/>
+        <rect x="540" y="291"/>
+        <rect x="585" y="291"/>
+        <rect x="630" y="291"/>
+        <rect x="675" y="291"/>
+        <rect x="720" y="291"/>
+        <rect x="765" y="291"/>
+        <rect x="810" y="291"/>
+        <rect x="855" y="291"/>
+      </set_3>
+      <set_4 speed="5" w="44" h="96" set="4">
+        <rect x="0" y="388"/>
+        <rect x="45" y="388"/>
+        <rect x="90" y="388"/>
+        <rect x="135" y="388"/>
+        <rect x="180" y="388"/>
+        <rect x="225" y="388"/>
+        <rect x="270" y="388"/>
+        <rect x="315" y="388"/>
+        <rect x="360" y="388"/>
+        <rect x="405" y="388"/>
+        <rect x="450" y="388"/>
+        <rect x="495" y="388"/>
+        <rect x="540" y="388"/>
+        <rect x="585" y="388"/>
+        <rect x="630" y="388"/>
+        <rect x="675" y="388"/>
+        <rect x="720" y="388"/>
+        <rect x="765" y="388"/>
+        <rect x="810" y="388"/>
+        <rect x="855" y="388"/>
+      </set_4>  
+  </animations>
+  </particle>
+</particles>
