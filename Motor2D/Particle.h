@@ -9,7 +9,7 @@ class Animator;
 enum particle_type {
 	fire,
 
-	null
+	particle_null
 };
 
 class Particle {
@@ -27,11 +27,13 @@ public:
 	bool LoadParticle(iPoint pos);
 
 public:
-	particle_type type = particle_type::null;
+	particle_type type = particle_type::particle_null;
 	iPoint position = NULLPOINT;
 	SDL_Texture* entity_texture = nullptr;
 	Animator* animator = nullptr;
 
+public:
+	
 };
 
 

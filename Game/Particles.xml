@@ -1,120 +1,117 @@
-<Particles>
-  <Particle type="Little_Fire">
+<particles>
+  <particle type="Little_Fire">
     <texture path="Fire.png"/>
-    <animation speed="5" w="44" h="97" set="0">
-      <rect x="0" y="0"/>
-      <rect x="45" y="0"/>
-      <rect x="90" y="0"/>
-      <rect x="135" y="0"/>
-      <rect x="180" y="0"/>
-      <rect x="225" y="0"/>
-      <rect x="270" y="0"/>
-      <rect x="315" y="0"/>
-      <rect x="360" y="0"/>
-      <rect x="405" y="0"/>
-      <rect x="450" y="0"/>
-      <rect x="495" y="0"/>
-      <rect x="540" y="0"/>
-      <rect x="585" y="0"/>
-      <rect x="630" y="0"/>
-      <rect x="675" y="0"/>
-      <rect x="720" y="0"/>
-      <rect x="765" y="0"/>
-      <rect x="810" y="0"/>
-      <rect x="855" y="0"/>
-    </animation>
-    <animation speed="5" w="44" h="97" set="1">
-      <rect x="0" y="98"/>
-      <rect x="45" y="98"/>
-      <rect x="90" y="98"/>
-      <rect x="135" y="98"/>
-      <rect x="180" y="98"/>
-      <rect x="225" y="98"/>
-      <rect x="270" y="98"/>
-      <rect x="315" y="98"/>
-      <rect x="360" y="98"/>
-      <rect x="405" y="98"/>
-      <rect x="450" y="98"/>
-      <rect x="495" y="98"/>
-      <rect x="540" y="98"/>
-      <rect x="585" y="98"/>
-      <rect x="630" y="98"/>
-      <rect x="675" y="98"/>
-      <rect x="720" y="98"/>
-      <rect x="765" y="98"/>
-      <rect x="810" y="98"/>
-      <rect x="855" y="98"/>
-    </animation>
-    <animation speed="5" w="44" h="97" set="2">
-      <rect x="0" y="196"/>
-      <rect x="45" y="196"/>
-      <rect x="90" y="196"/>
-      <rect x="135" y="196"/>
-      <rect x="180" y="196"/>
-      <rect x="225" y="196"/>
-      <rect x="270" y="196"/>
-      <rect x="315" y="196"/>
-      <rect x="360" y="196"/>
-      <rect x="405" y="196"/>
-      <rect x="450" y="196"/>
-      <rect x="495" y="196"/>
-      <rect x="540" y="196"/>
-      <rect x="585" y="196"/>
-      <rect x="630" y="196"/>
-      <rect x="675" y="196"/>
-      <rect x="720" y="196"/>
-      <rect x="765" y="196"/>
-      <rect x="810" y="196"/>
-      <rect x="855" y="196"/>
-    </animation>
-    <animation speed="5" w="44" h="97" set="3">
-      <rect x="0" y="294"/>
-      <rect x="45" y="294"/>
-      <rect x="90" y="294"/>
-      <rect x="135" y="294"/>
-      <rect x="180" y="294"/>
-      <rect x="225" y="294"/>
-      <rect x="270" y="294"/>
-      <rect x="315" y="294"/>
-      <rect x="360" y="294"/>
-      <rect x="405" y="294"/>
-      <rect x="450" y="294"/>
-      <rect x="495" y="294"/>
-      <rect x="540" y="294"/>
-      <rect x="585" y="294"/>
-      <rect x="630" y="294"/>
-      <rect x="675" y="294"/>
-      <rect x="720" y="294"/>
-      <rect x="765" y="294"/>
-      <rect x="810" y="294"/>
-      <rect x="855" y="294"/>
-    </animation>
-    <animation speed="5" w="44" h="97" set="4">
-      <rect x="0" y="392"/>
-      <rect x="45" y="392"/>
-      <rect x="90" y="392"/>
-      <rect x="135" y="392"/>
-      <rect x="180" y="392"/>
-      <rect x="225" y="392"/>
-      <rect x="270" y="392"/>
-      <rect x="315" y="392"/>
-      <rect x="360" y="392"/>
-      <rect x="405" y="392"/>
-      <rect x="450" y="392"/>
-      <rect x="495" y="392"/>
-      <rect x="540" y="392"/>
-      <rect x="585" y="392"/>
-      <rect x="630" y="392"/>
-      <rect x="675" y="392"/>
-      <rect x="720" y="392"/>
-      <rect x="765" y="392"/>
-      <rect x="810" y="392"/>
-      <rect x="855" y="392"/>
-    </animation>
-  </Particle>
-  
-  
-  
-  
-  
-</Particles>
+    <animations>
+      <set_0 speed="5" w="44" h="97" set="0">
+        <rect x="0" y="0"/>
+        <rect x="45" y="0"/>
+        <rect x="90" y="0"/>
+        <rect x="135" y="0"/>
+        <rect x="180" y="0"/>
+        <rect x="225" y="0"/>
+        <rect x="270" y="0"/>
+        <rect x="315" y="0"/>
+        <rect x="360" y="0"/>
+        <rect x="405" y="0"/>
+        <rect x="450" y="0"/>
+        <rect x="495" y="0"/>
+        <rect x="540" y="0"/>
+        <rect x="585" y="0"/>
+        <rect x="630" y="0"/>
+        <rect x="675" y="0"/>
+        <rect x="720" y="0"/>
+        <rect x="765" y="0"/>
+        <rect x="810" y="0"/>
+        <rect x="855" y="0"/>
+      </set_0>
+      <animation speed="5" w="44" h="97" set="1">
+        <rect x="0" y="98"/>
+        <rect x="45" y="98"/>
+        <rect x="90" y="98"/>
+        <rect x="135" y="98"/>
+        <rect x="180" y="98"/>
+        <rect x="225" y="98"/>
+        <rect x="270" y="98"/>
+        <rect x="315" y="98"/>
+        <rect x="360" y="98"/>
+        <rect x="405" y="98"/>
+        <rect x="450" y="98"/>
+        <rect x="495" y="98"/>
+        <rect x="540" y="98"/>
+        <rect x="585" y="98"/>
+        <rect x="630" y="98"/>
+        <rect x="675" y="98"/>
+        <rect x="720" y="98"/>
+        <rect x="765" y="98"/>
+        <rect x="810" y="98"/>
+        <rect x="855" y="98"/>
+      </animation>
+      <animation speed="5" w="44" h="97" set="2">
+        <rect x="0" y="196"/>
+        <rect x="45" y="196"/>
+        <rect x="90" y="196"/>
+        <rect x="135" y="196"/>
+        <rect x="180" y="196"/>
+        <rect x="225" y="196"/>
+        <rect x="270" y="196"/>
+        <rect x="315" y="196"/>
+        <rect x="360" y="196"/>
+        <rect x="405" y="196"/>
+        <rect x="450" y="196"/>
+        <rect x="495" y="196"/>
+        <rect x="540" y="196"/>
+        <rect x="585" y="196"/>
+        <rect x="630" y="196"/>
+        <rect x="675" y="196"/>
+        <rect x="720" y="196"/>
+        <rect x="765" y="196"/>
+        <rect x="810" y="196"/>
+        <rect x="855" y="196"/>
+      </animation>
+      <animation speed="5" w="44" h="97" set="3">
+        <rect x="0" y="294"/>
+        <rect x="45" y="294"/>
+        <rect x="90" y="294"/>
+        <rect x="135" y="294"/>
+        <rect x="180" y="294"/>
+        <rect x="225" y="294"/>
+        <rect x="270" y="294"/>
+        <rect x="315" y="294"/>
+        <rect x="360" y="294"/>
+        <rect x="405" y="294"/>
+        <rect x="450" y="294"/>
+        <rect x="495" y="294"/>
+        <rect x="540" y="294"/>
+        <rect x="585" y="294"/>
+        <rect x="630" y="294"/>
+        <rect x="675" y="294"/>
+        <rect x="720" y="294"/>
+        <rect x="765" y="294"/>
+        <rect x="810" y="294"/>
+        <rect x="855" y="294"/>
+      </animation>
+      <animation speed="5" w="44" h="97" set="4">
+        <rect x="0" y="392"/>
+        <rect x="45" y="392"/>
+        <rect x="90" y="392"/>
+        <rect x="135" y="392"/>
+        <rect x="180" y="392"/>
+        <rect x="225" y="392"/>
+        <rect x="270" y="392"/>
+        <rect x="315" y="392"/>
+        <rect x="360" y="392"/>
+        <rect x="405" y="392"/>
+        <rect x="450" y="392"/>
+        <rect x="495" y="392"/>
+        <rect x="540" y="392"/>
+        <rect x="585" y="392"/>
+        <rect x="630" y="392"/>
+        <rect x="675" y="392"/>
+        <rect x="720" y="392"/>
+        <rect x="765" y="392"/>
+        <rect x="810" y="392"/>
+        <rect x="855" y="392"/>
+      </animation>
+    </animations>
+  </particle>
+</particles>

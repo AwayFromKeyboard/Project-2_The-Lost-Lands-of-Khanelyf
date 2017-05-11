@@ -42,7 +42,7 @@ public:
 
 	// Load Animations from XML
 	void LoadAnimationsFromXML(pugi::xml_node &node);
-	void LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire * unit);
+	void LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire * fire);
 	void LoadAnimationsFromUnitsXML(pugi::xml_node &node, Unit* unit);
 
 	// Set a current animation
