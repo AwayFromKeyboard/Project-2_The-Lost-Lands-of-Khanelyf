@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Provisions.h"
 #include "Boss_Axe_Knight.h"
+#include "Tower.h"
 
 j1Entity::j1Entity()
 {
@@ -307,6 +308,9 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case boss:
 		ret = new BossAxeKnight(type);
+		break;
+	case towers:
+		ret = new Tower(type);
 		break;
 	default:
 		break;

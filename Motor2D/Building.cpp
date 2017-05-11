@@ -41,8 +41,13 @@ bool Building::PreUpdate()
 	if (state == entity_state::entity_idle) {
 		if (type == entity_type::building)
 			LifeBar({ 185, 5 }, { -100, -100 });
-		else
-			LifeBar({ 125, 5 }, { -65, -60 });
+		else {
+			if (name == entity_name::towers)
+				LifeBar({ 125, 5 }, { -60, -85 });
+			else
+				LifeBar({ 125, 5 }, { -65, -60 });
+		}
+
 	}
 
 	return ret;
@@ -50,7 +55,8 @@ bool Building::PreUpdate()
 
 bool Building::Update(float dt)
 {
-	collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+	if (collision != nullptr)
+		collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
 
 	switch (state) {
 	case entity_death:
@@ -60,7 +66,10 @@ bool Building::Update(float dt)
 		if (type == entity_type::enemy_building) {
 			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
 				App->questmanager->GetCurrentQuest()->progress++;
-			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
+			if (name == basic_building)
+				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
+			if (name == towers)
+				App->entity->CreateEntity(towers, ally_building, position);
 		}
 
 		break;

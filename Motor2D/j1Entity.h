@@ -16,6 +16,7 @@ enum entity_name
 	provisions,
 	basic_building,
 	boss,
+	towers,
 	test
 };
 

@@ -116,6 +116,7 @@
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Swordsman.cpp" />
+    <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Swordsman.h" />
+    <ClInclude Include="Tower.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>

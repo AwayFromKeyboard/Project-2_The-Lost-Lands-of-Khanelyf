@@ -130,6 +130,9 @@
     <ClCompile Include="Boss_Axe_Knight.cpp">
       <Filter>Engine\4. Entities\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="Boss_Axe_Knight.h">
       <Filter>Engine\4. Entities\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
