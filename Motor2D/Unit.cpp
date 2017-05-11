@@ -90,20 +90,15 @@ bool Unit::Update(float dt)
 		if (collision != nullptr)
 			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
-		if (is_boss) {
-			if (phase == asleep && state != entity_idle)
-				phase = phase_1;
-			else
-			{
-				CheckPhase();
+		if (is_boss && life > 0) {
+			CheckPhase();
 
-				if (phase == phase_1 && life < max_life * 75 / 100)
-					phase = phase_2;
-				else if (phase == phase_2 && life < max_life * 50 / 100)
-					phase = phase_3;
-				else if (phase == phase_3 && life < max_life * 25 / 100)
-					phase = last_phase;
-			}
+			if (phase == phase_1 && life < max_life * 75 / 100)
+				phase = phase_2;
+			else if (phase == phase_2 && life < max_life * 50 / 100)
+				phase = phase_3;
+			else if (phase == phase_3 && life < max_life * 25 / 100)
+				phase = last_phase;
 		}
 		
 
@@ -375,30 +370,35 @@ bool Unit::CleanUp()
 
 void Unit::CheckPhase()
 {
-	//if (!CheckSurroundings())
-	//	phase = asleep;
-
 	switch (phase)
 	{
 	case boss_phase::phase_1:
 		break;
 	case boss_phase::phase_2:
-		speed = 3;
-		damage = 35;
 		if (!boss->starter_ability_phase2_timer) {
 			boss->ability_phase2.Start();
 			boss->starter_ability_phase2_timer = true;
 		}
-		else if (boss->ability_phase2.ReadSec() >= 5) {
+		else if (boss->ability_phase2.ReadSec() >= 4) {
 			// Charge to random enemy
+			boss->Phase2_Attack();
 			boss->starter_ability_phase2_timer = false;
 		}
+		else if (boss->ability_phase2.ReadSec() >= 2) {
+			boss->Draw_Phase2();
+		}
+
 		break;
 	case boss_phase::phase_3:
+		
 		break;
 	case boss_phase::last_phase:
+		
 		break;
 	case boss_phase::asleep:
+		if (attacked_unit != nullptr) {
+			phase = phase_1;
+		}
 		if (life == max_life)
 			state = entity_idle;
 		break;

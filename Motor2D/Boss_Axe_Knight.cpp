@@ -6,6 +6,8 @@
 #include "j1Map.h"
 #include "Log.h"
 #include "j1Collisions.h"
+#include "j1Scene.h"
+#include "SceneTest.h"
 
 BossAxeKnight::BossAxeKnight(entity_type _type)
 {
@@ -80,4 +82,87 @@ bool BossAxeKnight::LoadEntity(iPoint pos, entity_name name)
 	else LOG("\nERROR, no node found\n");
 
 	return ret;
+}
+
+void BossAxeKnight::Draw_Phase2()
+{
+	std::list<iPoint> frontier;
+
+		if (position_map != range_visited.front())
+		{
+			range_visited.clear();
+			range_visited.push_back(position_map);
+			frontier.push_back(position_map);
+			for (int i = 0; i < WHIRLWIND_RANGE; ++i) {
+				for (int j = frontier.size(); j > 0; j--) {
+					iPoint neighbors[4];
+					neighbors[0] = frontier.front() + iPoint(1, 0);
+					neighbors[1] = frontier.front() + iPoint(-1, 0);
+					neighbors[2] = frontier.front() + iPoint(0, 1);
+					neighbors[3] = frontier.front() + iPoint(0, -1);
+					frontier.pop_front();
+
+					for (int k = 0; k < 4; k++) {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							range_visited.push_back(neighbors[k]);
+						}
+					}
+				}
+			}
+		}
+		for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
+			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+		}
+}
+
+void BossAxeKnight::Phase2_Attack()
+{
+	std::list<iPoint> frontier;
+	std::list<iPoint> visited;
+
+	visited.push_back(position_map);
+	frontier.push_back(position_map);
+
+	for (int i = 0; i < WHIRLWIND_RANGE; ++i) {
+		for (int j = frontier.size(); j > 0; j--) {
+			iPoint neighbors[4];
+			neighbors[0] = frontier.front() + iPoint(1, 0);
+			neighbors[1] = frontier.front() + iPoint(-1, 0);
+			neighbors[2] = frontier.front() + iPoint(0, 1);
+			neighbors[3] = frontier.front() + iPoint(0, -1);
+			frontier.pop_front();
+
+			for (int k = 0; k < 4; k++) {
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0 && (found->type == ally || found->type == player)) {
+						found->life -= WHIRLWIND_DAMAGE;
+						if (found->life <= 0)
+							found->state = entity_death;
+					}
+					else {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							visited.push_back(neighbors[k]);
+						}
+					}
+				}
+			}
+		}
+	}
 }
