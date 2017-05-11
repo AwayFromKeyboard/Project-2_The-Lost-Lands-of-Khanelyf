@@ -68,7 +68,10 @@ bool Building::Update(float dt)
 		if (type == entity_type::enemy_building) {
 			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
 				App->questmanager->GetCurrentQuest()->progress++;
-			App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
+			if (name == basic_building)
+				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
+			if (name == towers)
+				App->entity->CreateEntity(towers, ally_building, position);
 		}
 
 		break;
