@@ -17,14 +17,14 @@ public:
 	Particle();
 	~Particle();
 
-	bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
-	bool Draw(float dt);
-	bool CleanUp();
+	virtual bool Start();
+	virtual bool PreUpdate();
+	virtual bool Update(float dt);
+	virtual bool PostUpdate();
+	virtual bool Draw(float dt);
+	virtual bool CleanUp();
 
-	bool LoadParticle(iPoint pos);
+	virtual bool LoadParticle(iPoint pos);
 
 public:
 	particle_type type = particle_type::particle_null;

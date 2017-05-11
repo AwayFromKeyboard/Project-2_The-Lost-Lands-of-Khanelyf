@@ -10,7 +10,9 @@ public:
 	Fire(int set);
 	~Fire();
 
-	bool LoadEntity(iPoint pos);
+	bool Draw(float dt);
+
+	bool LoadParticle(iPoint pos);
 
 private:
 

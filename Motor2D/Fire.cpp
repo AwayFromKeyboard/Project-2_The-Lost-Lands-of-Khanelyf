@@ -5,6 +5,7 @@
 #include "Functions.h"
 #include "Log.h"
 #include "j1Textures.h"
+#include "j1Scene.h"
 
 Fire::Fire(int set)
 {
@@ -16,7 +17,14 @@ Fire::~Fire()
 {
 }
 
-bool Fire::LoadEntity(iPoint pos)
+bool Fire::Draw(float dt)
+{
+	App->scene->LayerBlit(10, entity_texture, { position.x, position.y }, current_animation->GetAnimationFrame(dt), -1.0);
+
+	return true;
+}
+
+bool Fire::LoadParticle(iPoint pos)
 {
 	bool ret = true;
 
@@ -35,7 +43,7 @@ bool Fire::LoadEntity(iPoint pos)
 	if (node)
 	{
 		position = { pos.x, pos.y };
-		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("value").as_string());
+		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("path").as_string());
 		node = node.child("animations");
 		animator->LoadFireAnimationsFromParticlesXML(node, this);
 

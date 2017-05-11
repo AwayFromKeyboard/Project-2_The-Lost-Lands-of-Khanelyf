@@ -25,6 +25,8 @@
 #include "Player.h"
 #include "Boss_Axe_Knight.h"
 #include "BrokenBuilding.h"
+#include "ParticleManager.h"
+#include "Fire.h"
 
 SceneTest::SceneTest()
 {
@@ -193,9 +195,13 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-	if (App->input->GetKey(SDL_SCANCODE_N) == key_down)
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_N) == key_down)
 	{
 		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_F) == key_down)
+	{
+		Fire* brokenbuilding = (Fire*)App->particle->CreateParticle(particle_type::fire, 0, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 }
 
