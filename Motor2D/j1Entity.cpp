@@ -370,7 +370,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 
 		iPoint unit = (*it)->position;
 
-		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
 			{
@@ -391,39 +391,11 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 
 			if ((*it)->GetSelected())
 			{
-				if ((*it)->GetType() == building && (*it)->name == barracks) {
-					App->entity->UnselectEverything();
-					App->player->barracks_ui_window->SetEnabledAndChilds(true);
-					(*it)->SetSelected(true);
-					if (App->player->brokenbuilding_ui_window->enabled)
-						App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
-				}
-				else if ((*it)->GetType() == building && (*it)->name == broken_building) {
-					App->entity->UnselectEverything();
-					(*it)->SetSelected(true);
-					if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
-						App->player->brokenbuilding_ui_window->SetEnabledAndChilds(true);
-						if (App->player->barracks_ui_window->enabled)
-							App->player->barracks_ui_window->SetEnabledAndChilds(false);
-						if (App->scene->scene_test->create_barrack == true)
-						{
-							App->player->create_building_button2->SetImage("clicked");
-							App->player->create_building_button->SetImage("standard");
-						}
-						else
-						{
-							App->player->create_building_button->SetImage("clicked");
-							App->player->create_building_button2->SetImage("standard");
-						}
-					}
-				}
-				else {
-					if (App->player->barracks_ui_window->enabled)
-						App->player->barracks_ui_window->SetEnabledAndChilds(false);
-					if (App->player->brokenbuilding_ui_window->enabled)
-						App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
-					selected.push_back((Unit*)*it);
-				}
+				if (App->player->barracks_ui_window->enabled)
+					App->player->barracks_ui_window->SetEnabledAndChilds(false);
+				if (App->player->brokenbuilding_ui_window->enabled)
+					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				selected.push_back((Unit*)*it);
 			}
 		}
 	}
