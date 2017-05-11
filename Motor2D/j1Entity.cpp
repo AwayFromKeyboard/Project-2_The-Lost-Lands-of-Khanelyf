@@ -11,6 +11,10 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "BrokenBuilding.h"
+#include "SceneTest.h"
+#include "j1Scene.h"
+#include "QuestManager.h"
 #include "Tower.h"
 
 j1Entity::j1Entity()
@@ -305,8 +309,12 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case provisions:
 		ret = new Provisions(type);
 		break;
+	case broken_building:
+		ret = new BrokenBuilding(type);
+		break;
 	case towers:
 		ret = new Tower(type);
+		break;
 	default:
 		break;
 	}
@@ -362,7 +370,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 
 		iPoint unit = (*it)->position;
 
-		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
 			{
@@ -382,16 +390,13 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
-				if ((*it)->GetType() == building) {
-					App->entity->UnselectEverything();
-					App->player->barracks_ui_window->SetEnabledAndChilds(true);
-					(*it)->SetSelected(true);
-				}
-				else {
-					if (App->player->barracks_ui_window->enabled)
-						App->player->barracks_ui_window->SetEnabledAndChilds(false);
-					selected.push_back((Unit*)*it);
-				}
+			{
+				if (App->player->barracks_ui_window->enabled)
+					App->player->barracks_ui_window->SetEnabledAndChilds(false);
+				if (App->player->brokenbuilding_ui_window->enabled)
+					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				selected.push_back((Unit*)*it);
+			}
 		}
 	}
 }
@@ -411,6 +416,8 @@ void j1Entity::UnselectEverything()
 	}
 	if (App->player->barracks_ui_window->enabled)
 		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+	if (App->player->brokenbuilding_ui_window->enabled)
+		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	selected.clear();
 }

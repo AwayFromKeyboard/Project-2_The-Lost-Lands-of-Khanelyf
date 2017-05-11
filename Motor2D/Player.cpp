@@ -19,6 +19,10 @@
 #include "Object.h"
 #include "Building.h"
 #include "Minimap.h"
+#include "Barracks.h"
+#include "BasicBuilding.h"
+#include "Functions.h"
+#include "QuestManager.h"
 
 Player::Player()
 {
@@ -109,7 +113,9 @@ bool Player::Start()
 	levelup_window->SetEnabledAndChilds(false);
 
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
+	brokenbuilding_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(480, 200), 225, 144, 11);
 
+	//Buttons for barracks
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
@@ -131,6 +137,30 @@ bool Player::Start()
 	swordsman_img->click_through = true;
 
 	barracks_ui_window->SetEnabledAndChilds(false);
+
+	//Buttons for brokenbuilding
+
+	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(485, 500), 60, 60);
+	create_building_button->AddImage("standard", { 705, 0, 60, 60 });
+	create_building_button->SetImage("standard");
+	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
+
+	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(584, 500), 60, 60);
+	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
+	create_building_button2->SetImage("standard");
+	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
+
+	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(497, 510), 37, 36);
+	barrack_img->AddImage("standard", { 808, 48, 39, 38 });
+	barrack_img->SetImage("standard");
+	barrack_img->click_through = true;
+
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(595, 515), 37, 36);
+	house_img->AddImage("standard", { 847, 52, 37, 33 });
+	house_img->SetImage("standard");
+	house_img->click_through = true;
+
+	brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	//player abilities
 
@@ -286,6 +316,7 @@ bool Player::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
 			hero->levelup_points += 5;
 
+		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 			create_unit_button->SetImage("clicked");
 
@@ -308,6 +339,61 @@ bool Player::PreUpdate()
 				App->scene->scene_test->current_human_resources += sword->human_cost;
 			}
 		}
+
+		if (create_unit_button2->MouseClickOutLeft()) {
+			create_unit_button2->SetImage("standard");
+		}
+
+		//Brokenbuilding create building buttons
+		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode)) {
+			create_building_button->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 90;	//Barracks cost
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				if ((*it)->GetSelected())
+				{
+					iPoint pos = (*it)->position;
+					(*it)->state = entity_death;
+					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
+					brokenbuilding_ui_window->SetEnabledAndChilds(false);
+					App->scene->scene_test->create_barrack = false;
+					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+						App->questmanager->GetCurrentQuest()->progress++;
+					}
+				}
+			}
+			
+		}
+		if (create_building_button->MouseClickOutLeft()) {
+			create_building_button->SetImage("standard");
+		}
+
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode)) {
+			create_building_button2->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 30;	//Basic Building cost
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				if ((*it)->GetSelected())
+				{
+					iPoint pos = (*it)->position;
+					(*it)->state = entity_death;
+					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
+					brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				}
+			}
+
+		}
+
+		if (create_building_button2->MouseClickOutLeft()) {
+			create_building_button2->SetImage("standard");
+		}
+
 		//player abilities
 		if (!hero->is_holding_object)
 		{
@@ -331,9 +417,6 @@ bool Player::PreUpdate()
 			if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
 				draw_whirlwind_range = false;
 				range_visited.clear();
-			}
-			if (create_unit_button2->MouseClickOutLeft()) {
-				create_unit_button2->SetImage("standard");
 			}
 
 			//player abilities
@@ -446,10 +529,19 @@ bool Player::Update(float dt)
 					}
 				}
 				if ((*it)->GetSelected()) {
-					if ((*it)->GetType() == building) {
+					if ((*it)->GetType() == building && (*it)->name == barracks) {
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 						barracks_ui_window->SetEnabledAndChilds(true);
+						break;
+					}
+					else if ((*it)->GetType() == building && (*it)->name == broken_building)
+					{
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
+							brokenbuilding_ui_window->SetEnabledAndChilds(true);
+						}
 						break;
 					}
 					else {

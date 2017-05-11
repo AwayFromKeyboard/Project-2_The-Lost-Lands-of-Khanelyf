@@ -127,6 +127,9 @@
     <ClCompile Include="BasicBuilding.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="BrokenBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
     <ClCompile Include="Tower.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
@@ -267,6 +270,9 @@
     </ClInclude>
     <ClInclude Include="Minimap.h">
       <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenBuilding.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Tower.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
