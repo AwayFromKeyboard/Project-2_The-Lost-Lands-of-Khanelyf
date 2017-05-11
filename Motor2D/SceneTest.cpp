@@ -185,10 +185,9 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
-	if ((App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down) || (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true))
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down)
 	{
-		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
-		App->questmanager->create_provision = false;
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 	if (App->input->GetKey(SDL_SCANCODE_N) == key_down)
 	{

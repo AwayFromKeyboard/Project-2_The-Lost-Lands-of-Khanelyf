@@ -498,12 +498,12 @@ bool Player::PreUpdate()
 					charge_ability->SetImage("standard");
 				}
 			}
-			//Object interface
+		}
 
-			if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-			{
-				GetHero()->DropObject();
-			}
+		//Object interface
+		if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+		{
+			GetHero()->DropObject();
 		}
 	}
 	return ret;
@@ -853,22 +853,25 @@ void Player::Battlecry() {
 			frontier.pop_front();
 
 			for (int k = 0; k < 4; k++) {
-				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
-					buffed_list.push_back(found);
-					found->buffed = true;
-				}
-				else {
-					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
-							is_visited = true;
-							break;
-						}
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+				{
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
+						buffed_list.push_back(found);
+						found->buffed = true;
 					}
-					if (!is_visited) {
-						frontier.push_back(neighbors[k]);
-						visited.push_back(neighbors[k]);
+					else {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							visited.push_back(neighbors[k]);
+						}
 					}
 				}
 			}
@@ -905,24 +908,26 @@ void Player::Whirlwind()
 			frontier.pop_front();
 
 			for (int k = 0; k < 4; k++) {
-				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
-					found->life -= WHIRLWIND_DAMAGE;
-					if (found->life <= 0)
-						found->state = entity_death;
-					found->damaged_by_whirlwind = true;
-				}
-				else {
-					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
-							is_visited = true;
-							break;
-						}
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
+						found->life -= WHIRLWIND_DAMAGE;
+						if (found->life <= 0)
+							found->state = entity_death;
+						found->damaged_by_whirlwind = true;
 					}
-					if (!is_visited) {
-						frontier.push_back(neighbors[k]);
-						visited.push_back(neighbors[k]);
+					else {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							visited.push_back(neighbors[k]);
+						}
 					}
 				}
 			}
@@ -951,63 +956,64 @@ void Player::Charge()
 		neighbors[7] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, -1 - i);
 
 		for (int k = 0; k < 8; k++) {
+			if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 
-			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+				//if (found != nullptr)
+				//	col = found->GetCollider();
+				//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
 
-			//if (found != nullptr)
-			//	col = found->GetCollider();
-			//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
+				if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
+				{
+					GetHero()->speed += CHARGE_SPEED;
+					GetHero()->damage += CHARGE_DAMAGE;
+					charge_speed_buff = true;
+					charge_damage_buff = true;
 
-			if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
-			{
-				GetHero()->speed += CHARGE_SPEED;
-				GetHero()->damage += CHARGE_DAMAGE;
-				charge_speed_buff = true;
-				charge_damage_buff = true;
-
-				switch (k) {
-				case 0:
-					MoveToTile(found->position_map + iPoint(-1, 0));
-					break;
-				case 1:
-					MoveToTile(found->position_map + iPoint(1, 0));
-					break;
-				case 2:
-					MoveToTile(found->position_map + iPoint(0, -1));
-					break;
-				case 3:
-					MoveToTile(found->position_map + iPoint(0, 1));
-					break;
-				case 4:
-					MoveToTile(found->position_map + iPoint(-1, -1));
-					break;
-				case 5:
-					MoveToTile(found->position_map + iPoint(-1, 1));
-					break;
-				case 6:
-					MoveToTile(found->position_map + iPoint(1, -1));
-					break;
-				case 7:
-					MoveToTile(found->position_map + iPoint(1, 1));
-					break;
-				}
-
-				charge_ability->SetImage("clicked");
-				charge_cd->SetEnabled(true);
-				charge_timer.Start();
-
-			}
-			else
-			{
-				bool is_visited = false;
-				for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-					if (neighbors[k] == *it) {
-						is_visited = true;
+					switch (k) {
+					case 0:
+						MoveToTile(found->position_map + iPoint(-1, 0));
+						break;
+					case 1:
+						MoveToTile(found->position_map + iPoint(1, 0));
+						break;
+					case 2:
+						MoveToTile(found->position_map + iPoint(0, -1));
+						break;
+					case 3:
+						MoveToTile(found->position_map + iPoint(0, 1));
+						break;
+					case 4:
+						MoveToTile(found->position_map + iPoint(-1, -1));
+						break;
+					case 5:
+						MoveToTile(found->position_map + iPoint(-1, 1));
+						break;
+					case 6:
+						MoveToTile(found->position_map + iPoint(1, -1));
+						break;
+					case 7:
+						MoveToTile(found->position_map + iPoint(1, 1));
 						break;
 					}
+
+					charge_ability->SetImage("clicked");
+					charge_cd->SetEnabled(true);
+					charge_timer.Start();
+
 				}
-				if (!is_visited) {
-					visited.push_back(neighbors[k]);
+				else
+				{
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						visited.push_back(neighbors[k]);
+					}
 				}
 			}
 		}
