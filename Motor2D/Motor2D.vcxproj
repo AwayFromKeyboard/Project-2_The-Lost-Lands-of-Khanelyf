@@ -85,6 +85,7 @@
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Parallax.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Provisions.cpp" />
@@ -154,6 +156,7 @@
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="Minimap.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
@@ -181,6 +184,7 @@
     </Xml>
     <Xml Include="..\Game\Dialogues.xml" />
     <Xml Include="..\Game\Objects.xml" />
+    <Xml Include="..\Game\Particles.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>

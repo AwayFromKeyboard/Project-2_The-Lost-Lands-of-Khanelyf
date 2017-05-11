@@ -1,4 +1,6 @@
 #include "ParticleManager.h"
+#include "Particle.h"
+#include "Fire.h"
 
 ParticleManager::ParticleManager()
 {
@@ -31,4 +33,19 @@ bool ParticleManager::PostUpdate()
 bool ParticleManager::CleanUp()
 {
 	return false;
+}
+
+Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint pos)
+{
+	Particle* ret = nullptr;
+
+	switch (type)
+	{
+	case particle_type::fire:
+		Fire(set);
+		break;
+	}
+
+
+	return ret;
 }

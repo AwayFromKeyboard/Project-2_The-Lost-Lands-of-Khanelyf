@@ -3,6 +3,12 @@
 
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
+#include "Point.h"
+
+class Particle;
+enum particle_type;
+
+
 
 class ParticleManager : public j1Module {
 public:
@@ -15,7 +21,10 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	Particle * CreateParticle(particle_type type, int set, iPoint pos);
 
+public:
+	std::list<Particle*> particle_list;
 
 
 

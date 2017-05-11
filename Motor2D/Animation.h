@@ -8,6 +8,7 @@
 struct SDL_Texture;
 class Animation;
 class Unit;
+class Fire;
 // -----------------------------------------
 // -----------------------------------------
 
@@ -41,6 +42,7 @@ public:
 
 	// Load Animations from XML
 	void LoadAnimationsFromXML(pugi::xml_node &node);
+	void LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire * unit);
 	void LoadAnimationsFromUnitsXML(pugi::xml_node &node, Unit* unit);
 
 	// Set a current animation

@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "Unit.h"
 #include "Player.h"
+#include "Fire.h"
 
 Animation::Animation() : frames(5), speed(1.0f), curr_frame(0), loop(true), loops(0)
 {
@@ -166,6 +167,11 @@ void Animator::LoadAnimationsFromXML(pugi::xml_node & node)
 		Animation* animation = new Animation(name.c_str(), anim_rects, speed, loop);
 		AddAnimation(animation);
 	}
+}
+
+void Animator::LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire* unit)
+{
+
 }
 
 void Animator::LoadAnimationsFromUnitsXML(pugi::xml_node & node, Unit* unit)

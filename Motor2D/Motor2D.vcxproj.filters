@@ -139,6 +139,10 @@
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Engine\6. Particles</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Engine\6. Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Fire.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -292,6 +296,9 @@
     <ClInclude Include="Fire.h">
       <Filter>Engine\6. Particles\Fire</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Engine\6. Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -306,11 +313,14 @@
     <Xml Include="..\Game\Dialogues.xml">
       <Filter>Engine\5. Tools</Filter>
     </Xml>
+    <Xml Include="..\Game\Objects.xml">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </Xml>
     <Xml Include="..\Game\Units.xml">
       <Filter>Engine\4. Entities\Troops</Filter>
     </Xml>
-    <Xml Include="..\Game\Objects.xml">
-      <Filter>Engine\4. Entities\Objects</Filter>
+    <Xml Include="..\Game\Particles.xml">
+      <Filter>Engine\6. Particles</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>
