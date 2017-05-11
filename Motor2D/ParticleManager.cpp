@@ -13,27 +13,61 @@ ParticleManager::~ParticleManager()
 
 bool ParticleManager::Start()
 {
-	return false;
+	bool ret = true;
+
+	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
+		(*it)->Start();
+	}
+
+	return ret;
 }
 
 bool ParticleManager::PreUpdate()
 {
-	return false;
+	bool ret = true;
+
+	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
+		(*it)->PreUpdate();
+	}
+
+	return ret;
 }
 
 bool ParticleManager::Update(float dt)
 {
-	return false;
+	bool ret = true;
+
+	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
+		(*it)->Update(dt);
+	}
+
+	return ret;
 }
 
 bool ParticleManager::PostUpdate()
 {
-	return false;
+	bool ret = true;
+
+	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
+		(*it)->PostUpdate();
+	}
+
+	return ret;
 }
 
 bool ParticleManager::CleanUp()
 {
-	return false;
+	bool ret = true;
+
+	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end();)
+	{
+		list<Particle*>::iterator it_next = ++it;
+		--it;
+		DeleteParticle(*it);
+		it = it_next;
+	}
+
+	return ret;
 }
 
 Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint pos)
@@ -57,4 +91,11 @@ Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint po
 		LOG("Particle creation returned nullptr");
 
 	return ret;
+}
+
+void ParticleManager::DeleteParticle(Particle* particle)
+{
+	particle->CleanUp();
+	particle_list.remove(particle);
+	RELEASE(particle);
 }

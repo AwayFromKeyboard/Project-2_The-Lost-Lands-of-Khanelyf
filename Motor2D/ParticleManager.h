@@ -22,6 +22,7 @@ public:
 	bool CleanUp();
 
 	Particle * CreateParticle(particle_type type, int set, iPoint pos);
+	void DeleteParticle(Particle* particle);
 
 public:
 	std::list<Particle*> particle_list;
