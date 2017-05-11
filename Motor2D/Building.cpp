@@ -44,8 +44,6 @@ bool Building::PreUpdate()
 		else
 			LifeBar({ 125, 5 }, { -65, -60 });
 	}
-	
-
 
 	return ret;
 }

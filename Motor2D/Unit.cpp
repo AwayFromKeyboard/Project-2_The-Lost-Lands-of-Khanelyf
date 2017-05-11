@@ -92,21 +92,22 @@ bool Unit::Update(float dt)
 
 		if (is_boss) {
 			CheckPhase();
-			if (phase == phase_1 && life < max_life * 75 / 100)
-				phase = phase_2;
-			else if (phase == phase_2 && life < max_life * 50 / 100)
-				phase = phase_3;
-			else if (phase == phase_3 && life < max_life * 25 / 100)
-				phase = last_phase;
+			if (phase != asleep)
+			{
+				if (phase == phase_1 && life < max_life * 75 / 100)
+					phase = phase_2;
+				else if (phase == phase_2 && life < max_life * 50 / 100)
+					phase = phase_3;
+				else if (phase == phase_3 && life < max_life * 25 / 100)
+					phase = last_phase;
+			}
 		}
-
-
 
 		switch (state) {
 		case entity_state::entity_idle:
 			if (life < max_life) {
 				if (life_up_timer.ReadSec() >= 1) {
-					life += 1;
+					life += max_life * 2 / 100;
 					life_up_timer.Start();
 				}
 			}
@@ -377,18 +378,24 @@ bool Unit::CleanUp()
 
 void Unit::CheckPhase()
 {
+	if (attacked_unit == nullptr)
+		phase = asleep;
+
 	switch (phase)
 	{
 	case boss_phase::phase_1:
 		break;
 	case boss_phase::phase_2:
+		speed = 3;
+		damage = 35;
 		break;
 	case boss_phase::phase_3:
 		break;
 	case boss_phase::last_phase:
 		break;
 	case boss_phase::asleep:
-		/*state = entity_idle;*/
+		if (state != entity_idle)
+			state = entity_idle;
 		break;
 	}
 }
