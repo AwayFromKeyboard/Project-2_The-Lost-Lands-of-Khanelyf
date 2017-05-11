@@ -24,7 +24,7 @@
         <rect x="810" y="0"/>
         <rect x="855" y="0"/>
       </set_0>
-      <animation speed="5" w="44" h="97" set="1">
+      <set_1 speed="5" w="44" h="97" set="1">
         <rect x="0" y="98"/>
         <rect x="45" y="98"/>
         <rect x="90" y="98"/>
@@ -45,8 +45,8 @@
         <rect x="765" y="98"/>
         <rect x="810" y="98"/>
         <rect x="855" y="98"/>
-      </animation>
-      <animation speed="5" w="44" h="97" set="2">
+      </set_1>
+      <set_2 speed="5" w="44" h="97" set="2">
         <rect x="0" y="196"/>
         <rect x="45" y="196"/>
         <rect x="90" y="196"/>
@@ -67,8 +67,8 @@
         <rect x="765" y="196"/>
         <rect x="810" y="196"/>
         <rect x="855" y="196"/>
-      </animation>
-      <animation speed="5" w="44" h="97" set="3">
+      </set_2>
+      <set_3 speed="5" w="44" h="97" set="3">
         <rect x="0" y="294"/>
         <rect x="45" y="294"/>
         <rect x="90" y="294"/>
@@ -89,8 +89,8 @@
         <rect x="765" y="294"/>
         <rect x="810" y="294"/>
         <rect x="855" y="294"/>
-      </animation>
-      <animation speed="5" w="44" h="97" set="4">
+      </set_3>
+      <set_4 speed="5" w="44" h="97" set="4">
         <rect x="0" y="392"/>
         <rect x="45" y="392"/>
         <rect x="90" y="392"/>
@@ -111,7 +111,7 @@
         <rect x="765" y="392"/>
         <rect x="810" y="392"/>
         <rect x="855" y="392"/>
-      </animation>
-    </animations>
+      </set_4>  
+  </animations>
   </particle>
 </particles>
