@@ -161,16 +161,16 @@ void SceneTest::CheckUnitCreation(iPoint p)
 
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down)
 	{
-		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, p);
 	}
 
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
 	{
-		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, p);
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_B) == key_down)
 	{
-		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, p);
 
 		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
 			App->questmanager->GetCurrentQuest()->progress++;
@@ -179,23 +179,23 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
-		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, p, 1);
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_I) == key_down)
 	{
-		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, p, 2);
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_O) == key_down)
 	{
-		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
+		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, p, 3);
 	}
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down)
 	{
-		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, p);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_N) == key_down)
 	{
-		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, p);
 	}
 }
 

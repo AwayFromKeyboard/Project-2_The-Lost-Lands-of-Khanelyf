@@ -610,6 +610,11 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+
+	iPoint mouse_debug;
+	App->input->GetMouseWorld(mouse_debug.x, mouse_debug.y);
+	App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(App->map->WorldToMapPoint(mouse_debug)), { 0, 0, 64, 32 });
+
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down) {
 
 		iPoint mouse;

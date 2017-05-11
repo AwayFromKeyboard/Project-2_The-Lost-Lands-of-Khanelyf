@@ -676,7 +676,7 @@ void Unit::LookAtMovement()
 		}
 		else
 		{
-			direction = { +1,+1 };
+			direction = { +1,0.5 };
 			current_animation = &m_south_west;
 			destination = south_east;
 			flip = true;
@@ -712,22 +712,22 @@ void Unit::LookAtMovement()
 	{
 		if (w_direction.y > 0)
 		{
-			direction = { -1,1 };
+			direction = { -1,0.5 };
 			current_animation = &m_south_west;
 			destination = south_west;
 			flip = false;
 		}
 		else if (w_direction.y < 0)
 		{
-			direction = { 1,-1 };
+			direction = { 1,-0.5 };
 			current_animation = &m_north_west;
 			destination = north_east;
 			flip = true;
 		}
 	}
 	//direction.Normalize();
-	iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
-	direction = { (float)direction_i.x, (float)direction_i.y };
+	//iPoint direction_i = App->map->MapToWorldPoint(path.front()) - App->map->MapToWorldPoint(position_map);
+	//direction = { (float)direction_i.x, (float)direction_i.y };
 	direction.Normalize();
 }
 
