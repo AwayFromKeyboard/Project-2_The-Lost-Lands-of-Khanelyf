@@ -13,6 +13,7 @@ enum entity_name
 	barbarian,
 	swordsman,
 	barracks,
+	broken_building,
 	provisions,
 	basic_building,
 	boss,

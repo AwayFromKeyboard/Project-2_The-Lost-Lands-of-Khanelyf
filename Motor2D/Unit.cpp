@@ -71,7 +71,7 @@ bool Unit::PreUpdate()
 
 		aux_pos = position;
 		position_map = App->map->WorldToMapPoint(aux_pos);
-		if (life > 0) {
+		if (life > 0 && position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building))) {
 			App->map->entity_matrix[position_map.x][position_map.y] = this;
 		}
 		else if (selected) {
@@ -150,10 +150,6 @@ bool Unit::Update(float dt)
 								state = entity_idle;
 								attacked_unit = nullptr;
 							}
-							else if (path.at(path.size() - 1) != App->map->WorldToMapPoint(attacked_unit->position)) {
-								state = entity_death;
-								attacked_unit = nullptr;
-							}
 						}
 					}
 				}
@@ -188,10 +184,9 @@ bool Unit::Update(float dt)
 		break;
 
 		case entity_state::entity_attack:
-			
-			if ((attacked_unit == nullptr || attacked_unit->life <= 0 || is_holding_object) && (attacked_building == nullptr || attacked_building->life <= 0)) {
-				attacked_unit == nullptr;
-				attacked_building == nullptr;
+			if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0) || is_holding_object) {
+				attacked_unit = nullptr;
+				attacked_building = nullptr;
 				state = entity_idle;
 			}
 			else if (attacked_building == nullptr)
@@ -362,7 +357,8 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
-	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
+	if (position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
+		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
 		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
@@ -656,41 +652,52 @@ bool Unit::CheckSurroundings() {
 				frontier.pop_front();
 
 				for (int k = 0; k < 4; k++) {
-					if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+					if (neighbors[k].x >= 0 && neighbors[k].y >= 0 && neighbors[k].x < App->map->data.width && neighbors[k].y < App->map->data.height)
 					{
-						Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+						Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 						if (found != nullptr && found->life > 0) {
-							switch (type) {
-							case player:
-							case ally:
-								if (found->type == enemy || found->type == enemy_boss) {
-									attacked_unit = found;
-									state = entity_move_to_enemy;
-									return true;
-								}
-								break;
-							case enemy:
-							case enemy_boss:
-								if (found->type == player || found->type == ally) {
-									attacked_unit = found;
-									state = entity_move_to_enemy;
-									return true;
+							if ((App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::enemy || found->type == entity_type::ally || found->type == entity_type::player)) || (!App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::building || found->type == entity_type::ally_building || found->type == entity_type::enemy_building))) {
+
+								switch (type) {
+								case player:
+								case ally:
+									if (found->type == enemy) {
+										attacked_unit = (Unit*)found;
+										state = entity_move_to_enemy;
+										return true;
+									}
+									if (found->type == entity_type::enemy_building) {
+										attacked_building = (Building*)found;
+										state = entity_move_to_building;
+										return true;
+									}
+									break;
+								case enemy:
+								case enemy_boss:
+									if (found->type == player || found->type == ally) {
+										attacked_unit = (Unit*)found;
+										state = entity_move_to_enemy;
+										return true;
+									}
+									if (found->type == entity_type::ally_building || (found->type == entity_type::building && found->name == entity_name::barracks)) {
+										attacked_building = (Building*)found;
+										state = entity_move_to_building;
+										return true;
+									}
 								}
 							}
 						}
 						else {
-							if (App->pathfinding->IsWalkable(neighbors[k])) {
-								bool is_visited = false;
-								for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-									if (neighbors[k] == *it) {
-										is_visited = true;
-										break;
-									}
+							bool is_visited = false;
+							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+								if (neighbors[k] == *it) {
+									is_visited = true;
+									break;
 								}
-								if (!is_visited) {
-									frontier.push_back(neighbors[k]);
-									visited.push_back(neighbors[k]);
-								}
+							}
+							if (!is_visited) {
+								frontier.push_back(neighbors[k]);
+								visited.push_back(neighbors[k]);
 							}
 						}
 					}
@@ -716,11 +723,15 @@ bool Unit::IsInRange(Entity* attacked_entity)
 	direction.x = attacked_pos.x - pos.x;
 	direction.y = attacked_pos.y - pos.y;
 
-	if (attacked_entity->type != entity_type::object) {
+	if (attacked_entity->type == entity_type::enemy_building || attacked_entity->type == entity_type::ally_building || attacked_entity->type == entity_type::building)
+	{
+		if (std::abs(direction.x) > range + 2 || std::abs(direction.y) > range + 2) ret = false;
+	}
+	else if (attacked_entity->type != entity_type::object) {
 		if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
 	}
 	else {
-		if (std::abs(direction.x) > range|| std::abs(direction.y) > range) ret = false;
+		if (std::abs(direction.x) > range || std::abs(direction.y) > range) ret = false;
 	}
 	return ret;
 }
@@ -791,50 +802,57 @@ void Unit::LookAtAttack()
 
 void Unit::UnitAttack()
 {
-	LookAtAttack();
+	if (attacked_unit != nullptr) {
+		LookAtAttack();
 
-	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
-		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
-		shout_fx = false;
-	}
-
-	if (current_animation->Finished())
-	{
-		attacked_unit->life -= damage;
-		current_animation->Reset();
-		if (attacked_unit->life <= 0)
-		{
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
-			state = entity_idle;
-			attacked_unit->state = entity_death;
-			attacked_unit = nullptr;
+		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+			shout_fx = false;
 		}
-		shout_fx = true;
+
+		if (current_animation->Finished())
+		{
+			attacked_unit->life -= damage;
+			current_animation->Reset();
+			if (attacked_unit->life <= 0)
+			{
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
+				state = entity_idle;
+				attacked_unit->state = entity_death;
+				attacked_unit = nullptr;
+			}
+			shout_fx = true;
+		}
 	}
+	else state = entity_idle;
 }
 
 void Unit::BuildingAttack()
 {
-	LookAtAttack();
-	if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-		App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
-		shout_fx = false;
-	}
+	if (attacked_building != nullptr) {
+		LookAtAttack();
 
-	if (current_animation->Finished())
-	{
-		attacked_building->life -= damage;
-		current_animation->Reset();
-		if (attacked_building->life <= 0)
-		{
-			//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
-			state = entity_idle;
-			attacked_building->state = entity_death;
-			attacked_building = nullptr;
+		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+			shout_fx = false;
 		}
-		shout_fx = true;
+
+		if (current_animation->Finished())
+		{
+			attacked_building->life -= damage;
+			current_animation->Reset();
+			if (attacked_building->life <= 0)
+			{
+				//App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id)); need an audio for destroying a building
+				state = entity_idle;
+				attacked_building->state = entity_death;
+				attacked_building = nullptr;
+			}
+			shout_fx = true;
+		}
 	}
+	else state = entity_idle;
 }
 
 void Unit::SetAttackingUnit(Unit * att_unit)

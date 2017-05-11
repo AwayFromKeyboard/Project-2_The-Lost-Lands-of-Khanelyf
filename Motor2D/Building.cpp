@@ -8,6 +8,8 @@
 #include "Barracks.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "j1App.h"
+#include "Player.h"
 
 Building::Building()
 {
@@ -31,6 +33,10 @@ bool Building::Start()
 	layer = 5;
 	max_life = life;
 
+	if (name == entity_name::basic_building && type == entity_type::ally_building) {
+		App->scene->scene_test->human_resources_max++;
+	}
+
 	return ret;
 }
 
@@ -38,7 +44,7 @@ bool Building::PreUpdate()
 {
 	bool ret = true;
 
-	if (state == entity_state::entity_idle) {
+	if (state == entity_state::entity_idle && name != entity_name::broken_building) {
 		if (type == entity_type::building)
 			LifeBar({ 185, 5 }, { -100, -100 });
 		else {
@@ -50,6 +56,11 @@ bool Building::PreUpdate()
 
 	}
 
+	if (life > 0) {
+		iPoint position_map = App->map->WorldToMapPoint(position);
+		App->map->entity_matrix[position_map.x][position_map.y] = this;
+	}
+	
 	return ret;
 }
 
@@ -60,6 +71,11 @@ bool Building::Update(float dt)
 
 	switch (state) {
 	case entity_death:
+
+		if (name == entity_name::basic_building && type == entity_type::ally_building) {
+			App->scene->scene_test->human_resources_max--;
+		}
+
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
@@ -68,10 +84,17 @@ bool Building::Update(float dt)
 				App->questmanager->GetCurrentQuest()->progress++;
 			if (name == basic_building)
 				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
-			if (name == towers)
+			else if (name == towers)
 				App->entity->CreateEntity(towers, ally_building, position);
 		}
-
+		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building) {
+			App->entity->CreateEntity(broken_building, building, position);
+		}
+		if (type == entity_type::building && name == entity_name::barracks) {
+			if (App->player->barracks_ui_window->enabled)
+				App->player->barracks_ui_window->SetEnabledAndChilds(false);
+			App->scene->scene_test->create_barrack = true;
+		}
 		break;
 	}
 
