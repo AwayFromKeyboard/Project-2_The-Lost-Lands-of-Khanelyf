@@ -16,6 +16,7 @@ enum entity_name
 	broken_building,
 	provisions,
 	basic_building,
+	towers,
 	test
 };
 

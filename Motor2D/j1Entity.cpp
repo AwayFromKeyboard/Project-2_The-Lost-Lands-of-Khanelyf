@@ -15,6 +15,7 @@
 #include "SceneTest.h"
 #include "j1Scene.h"
 #include "QuestManager.h"
+#include "Tower.h"
 
 j1Entity::j1Entity()
 {
@@ -310,6 +311,10 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case broken_building:
 		ret = new BrokenBuilding(type);
+		break;
+	case towers:
+		ret = new Tower(type);
+		break;
 	default:
 		break;
 	}
