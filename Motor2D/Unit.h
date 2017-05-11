@@ -38,6 +38,7 @@ enum entity_type;
 
 class Building;
 class Object;
+class BossAxeKnight;
 
 class Unit : public Entity
 {
@@ -188,6 +189,7 @@ public:
 public:
 	bool is_boss = false;
 	boss_phase phase = asleep;
+	BossAxeKnight* boss = nullptr;
 };
 
 #endif

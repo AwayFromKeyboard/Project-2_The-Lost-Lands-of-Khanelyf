@@ -91,9 +91,12 @@ bool Unit::Update(float dt)
 			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
 		if (is_boss) {
-			CheckPhase();
-			if (phase != asleep)
+			if (phase == asleep && state != entity_idle)
+				phase = phase_1;
+			else
 			{
+				CheckPhase();
+
 				if (phase == phase_1 && life < max_life * 75 / 100)
 					phase = phase_2;
 				else if (phase == phase_2 && life < max_life * 50 / 100)
@@ -102,6 +105,7 @@ bool Unit::Update(float dt)
 					phase = last_phase;
 			}
 		}
+		
 
 		switch (state) {
 		case entity_state::entity_idle:
@@ -122,9 +126,6 @@ bool Unit::Update(float dt)
 
 		case entity_state::entity_move_to_enemy:
 		{
-			if (is_boss && phase == asleep)
-				phase = phase_1;
-
 			if (attacked_unit == nullptr || attacked_unit->life <= 0)
 				state = entity_idle;
 			else {
@@ -388,13 +389,21 @@ void Unit::CheckPhase()
 	case boss_phase::phase_2:
 		speed = 3;
 		damage = 35;
+		if (!boss->starter_ability_phase2_timer) {
+			boss->ability_phase2.Start();
+			boss->starter_ability_phase2_timer = true;
+		}
+		else if (boss->ability_phase2.ReadSec() >= 5) {
+			// Charge to random enemy
+			boss->starter_ability_phase2_timer = false;
+		}
 		break;
 	case boss_phase::phase_3:
 		break;
 	case boss_phase::last_phase:
 		break;
 	case boss_phase::asleep:
-		if (state != entity_idle)
+		if (life == max_life)
 			state = entity_idle;
 		break;
 	}

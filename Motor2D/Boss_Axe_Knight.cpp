@@ -73,6 +73,7 @@ bool BossAxeKnight::LoadEntity(iPoint pos, entity_name name)
 
 		state = entity_state::entity_idle;
 		phase = boss_phase::asleep;
+		this->boss = this;
 		is_boss = true;
 
 	}
