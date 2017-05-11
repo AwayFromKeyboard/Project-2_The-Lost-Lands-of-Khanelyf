@@ -70,7 +70,7 @@ bool Unit::PreUpdate()
 
 		aux_pos = position;
 		position_map = App->map->WorldToMapPoint(aux_pos);
-		if (life > 0) {
+		if (life > 0 && position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building))) {
 			App->map->entity_matrix[position_map.x][position_map.y] = this;
 		}
 		else if (selected) {
@@ -343,7 +343,8 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
-	App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
+	if (position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
+		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
 	if (GetSelected())
 		App->render->DrawCircle(position.x + App->render->camera.x, position.y + App->render->camera.y, 2, 255, 255, 255);
@@ -607,47 +608,49 @@ bool Unit::CheckSurroundings() {
 				for (int k = 0; k < 4; k++) {
 					if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
 					{
-						Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-						
-						if (found != nullptr && found->life > 0) {
-							switch (type) {
-							case player:
-							case ally:
-								if (found->type == enemy) {
-									attacked_unit = found;
-									state = entity_move_to_enemy;
-									return true;
-								}
-								if (found->type == entity_type::enemy_building) {
-									attacked_building = (Building*)found;
-									state = entity_move_to_building;
-									return true;
-								}
-								break;
-							case enemy:
-								if (found->type == player || found->type == ally) {
-									attacked_unit = found;
-									state = entity_move_to_enemy;
-									return true;
-								}
-								if (found->type == entity_type::ally_building || (found->type == entity_type::building && found->name == entity_name::barracks)) {
-									attacked_building = (Building*)found;
-									state = entity_move_to_building;
-									return true;
-								}
-							}
-						}
-						else {
-							bool is_visited = false;
-							for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-								if (neighbors[k] == *it) {
-									is_visited = true;
+						if ((!App->pathfinding->IsWalkable(neighbors[k]) && (type == entity_type::enemy || type == entity_type::ally || type == entity_type::player)) || (App->pathfinding->IsWalkable(neighbors[k]) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
+						{
+							Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+							if (found != nullptr && found->life > 0) {
+								switch (type) {
+								case player:
+								case ally:
+									if (found->type == enemy) {
+										attacked_unit = (Unit*)found;
+										state = entity_move_to_enemy;
+										return true;
+									}
+									if (found->type == entity_type::enemy_building) {
+										attacked_building = (Building*)found;
+										state = entity_move_to_building;
+										return true;
+									}
 									break;
+								case enemy:
+									if (found->type == player || found->type == ally) {
+										attacked_unit = (Unit*)found;
+										state = entity_move_to_enemy;
+										return true;
+									}
+									if (found->type == entity_type::ally_building || (found->type == entity_type::building && found->name == entity_name::barracks)) {
+										attacked_building = (Building*)found;
+										state = entity_move_to_building;
+										return true;
+									}
 								}
 							}
-							if (!is_visited) {
-								frontier.push_back(neighbors[k]);
-								visited.push_back(neighbors[k]);
+							else {
+								bool is_visited = false;
+								for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+									if (neighbors[k] == *it) {
+										is_visited = true;
+										break;
+									}
+								}
+								if (!is_visited) {
+									frontier.push_back(neighbors[k]);
+									visited.push_back(neighbors[k]);
+								}
 							}
 						}
 					}
