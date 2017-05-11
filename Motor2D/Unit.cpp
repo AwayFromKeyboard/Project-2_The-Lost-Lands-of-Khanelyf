@@ -378,7 +378,7 @@ bool Unit::CleanUp()
 
 void Unit::CheckPhase()
 {
-	if (attacked_unit == nullptr)
+	if (!CheckSurroundings())
 		phase = asleep;
 
 	switch (phase)
@@ -689,6 +689,8 @@ bool Unit::CheckSurroundings() {
 			}
 		}
 	}
+
+	return false;
 }
 
 bool Unit::IsInRange(Entity* attacked_entity)
