@@ -108,6 +108,7 @@
     <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Parallax.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Provisions.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="DialogueManager.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
@@ -152,6 +154,7 @@
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="Minimap.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="j1Render.h" />
