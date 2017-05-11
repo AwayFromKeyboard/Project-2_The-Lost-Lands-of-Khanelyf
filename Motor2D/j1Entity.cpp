@@ -424,7 +424,7 @@ void j1Entity::UnselectEverything()
 
 void j1Entity::AddGroup()
 {
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == key_repeat) {
+	if (App->input->controls[CREATE_GROUP] == key_repeat) {
 		SelectedList new_group;
 		new_group.key_id = NULL;
 

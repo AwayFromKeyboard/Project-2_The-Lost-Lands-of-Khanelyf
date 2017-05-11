@@ -189,9 +189,13 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-	if (App->input->GetKey(SDL_SCANCODE_N) == key_down)
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_N) == key_down)
 	{
 		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
+	{
+		App->player->GetHero()->levelup_points += 5;
 	}
 }
 

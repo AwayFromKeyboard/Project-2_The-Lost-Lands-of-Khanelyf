@@ -313,8 +313,6 @@ bool Player::PreUpdate()
 	}
 	
 	if (!pause_status) {
-		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
-			hero->levelup_points += 5;
 
 		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
@@ -397,24 +395,24 @@ bool Player::PreUpdate()
 		//player abilities
 		if (!hero->is_holding_object)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat && battlecry_ability->CompareState("standard")) {
+			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && battlecry_ability->CompareState("standard")) {
 				draw_battlecry_range = true;
 				CheckAbilityRange(BATTLECRY_RANGE);
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat && whirlwind_ability->CompareState("standard")) {
+			else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && whirlwind_ability->CompareState("standard")) {
 				draw_whirlwind_range = true;
 				CheckAbilityRange(WHIRLWIND_RANGE);
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat && charge_ability->CompareState("standard")) {
+			else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && charge_ability->CompareState("standard")) {
 				draw_charge_range = true;
 				CheckStraightAbilityRange(CHARGE_RANGE);
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up) {
 				draw_battlecry_range = false;
 				range_visited.clear();
 			}
-			if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+			if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up) {
 				draw_whirlwind_range = false;
 				range_visited.clear();
 			}
@@ -422,33 +420,33 @@ bool Player::PreUpdate()
 			//player abilities
 			if (!hero->is_holding_object)
 			{
-				if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat) {
 					draw_battlecry_range = true;
 					CheckAbilityRange(BATTLECRY_RANGE);
 				}
-				else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+				else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat) {
 					draw_whirlwind_range = true;
 					CheckAbilityRange(WHIRLWIND_RANGE);
 				}
-				else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+				else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat) {
 					draw_charge_range = true;
 					CheckStraightAbilityRange(CHARGE_RANGE);
 				}
 
-				if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up) {
 					draw_battlecry_range = false;
 				}
-				if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+				if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up) {
 					draw_whirlwind_range = false;
 				}
-				if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
+				if (App->input->GetKey(App->input->controls[CHARGE]) == key_up) {
 					draw_charge_range = false;
 				}
 
 				//Battlecry
 
 
-				if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
 					battlecry_ability->SetImage("clicked");
 					Battlecry();
 					battlecry_cd->SetEnabled(true);
@@ -464,7 +462,7 @@ bool Player::PreUpdate()
 
 				// Whirlwind
 
-				if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
 					whirlwind_ability->SetImage("clicked");
 					Whirlwind();
 					whirlwind_cd->SetEnabled(true);
@@ -477,7 +475,7 @@ bool Player::PreUpdate()
 
 				//Charge
 
-				if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
 					Charge();
 				}
 
@@ -515,7 +513,7 @@ bool Player::Update(float dt)
 	
 	if (!App->minimap->IsMouseOver())
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat) {
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
 			App->entity->UnselectEverything();
