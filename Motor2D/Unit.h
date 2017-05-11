@@ -85,7 +85,6 @@ public:
 	void DropObject();
   
 public:
-	entity_name name;
 	bool flip = false;
   
 	bool can_hold_object = false;
@@ -168,9 +167,11 @@ public:
 private:
 	j1Timer death_timer;
 	j1Timer AI_timer;
+	j1Timer whirlwind_damage;
+	bool timer_whirlwind_start = true;
 public:
 	bool IsInsideCircle(int x, int y);
-
+	bool damaged_by_whirlwind = false;
 public:
 	// attacked audio
 	bool shout_fx = true;

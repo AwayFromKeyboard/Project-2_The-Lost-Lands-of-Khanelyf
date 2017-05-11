@@ -2,6 +2,7 @@
 #include "Functions.h"
 #include "Log.h"
 #include "Unit.h"
+#include "Player.h"
 
 Animation::Animation() : frames(5), speed(1.0f), curr_frame(0), loop(true), loops(0)
 {
@@ -22,27 +23,28 @@ Animation::~Animation()
 
 SDL_Rect& Animation::GetAnimationFrame(float dt)
 {
-	curr_frame += (speed * dt);
+	if (App->player->pause_status == false) {
+		curr_frame += (speed * dt);
 
-	if (curr_frame >= frames.size())
-	{
-		if (!loop)
-			curr_frame = frames.size() - 1;
-		else
-			curr_frame = 0.0f;
-
-		loops++;
-	}
-
-	int counter = 0;
-	for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
-	{
-		if (counter == (int)(curr_frame))
+		if (curr_frame >= frames.size())
 		{
-			return (*it);
+			if (!loop)
+				curr_frame = frames.size() - 1;
+			else
+				curr_frame = 0.0f;
+
+			loops++;
 		}
 	}
-
+		int counter = 0;
+		for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
+		{
+			if (counter == (int)(curr_frame))
+			{
+				return (*it);
+			}
+		}
+	
 	SDL_Rect ret = NULLRECT;
 	return ret;
 }
@@ -50,6 +52,7 @@ SDL_Rect& Animation::GetAnimationFrame(float dt)
 SDL_Rect& Animation::GetCurrentFrame()
 {
 	int counter = 0;
+	
 	for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
 	{
 		if (counter == (int)curr_frame)
@@ -70,15 +73,18 @@ float Animation::GetFrameIndex() const
 SDL_Rect & Animation::GetFrame(int frame)
 {
 	int counter = 0;
-	for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
-	{
-		if (counter == frame)
-		{
-			return (*it);
-		}
-	}
 
-	SDL_Rect ret = NULLRECT;
+	
+		for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
+		{
+			if (counter == frame)
+			{
+				return (*it);
+			}
+		}
+	
+		SDL_Rect ret = NULLRECT;
+	
 	return ret;
 }
 
@@ -90,6 +96,12 @@ void Animation::SetCurrFrame(int frame)
 void Animation::SetSpeed(float _speed)
 {
 	speed = _speed;
+}
+
+void Animation::Pause() {
+
+	//if (App->player->pause_status)
+	
 }
 
 void Animation::SetLoop(bool _loop)

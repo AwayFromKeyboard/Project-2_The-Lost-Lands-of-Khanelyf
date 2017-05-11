@@ -2,6 +2,7 @@
 #define _OBJECT_H_
 
 #include "Entity.h"
+#include "j1Timer.h"
 
 struct Collider;
 
@@ -25,15 +26,10 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void OnColl(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
+	void OnColl(Entity* en1, Entity* en2);
 	Collider* GetCollider();
 	entity_type GetType();
 	entity_name GetName();
-
-public:
-
-	entity_name name;
-	bool to_delete = false;
 
 public:
 
@@ -42,10 +38,11 @@ public:
 
 public:
 	bool is_carried = false;
-	bool pickable = false;
+	bool pickable = true;
 
 private:
 	SDL_Rect aux_collision_rect = NULLRECT;
+	j1Timer death_timer;
 };
 
 #endif
