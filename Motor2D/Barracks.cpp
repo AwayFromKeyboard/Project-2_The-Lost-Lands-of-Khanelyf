@@ -57,7 +57,7 @@ bool Barracks::LoadEntity(iPoint pos, entity_name name)
 		collision->parent = this;
 
 		cost = node.child("cost").attribute("value").as_int();
-		tex_rect = { 0, 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
+		tex_rect = { node.child("rect").attribute("x").as_int(), 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
 
 		offset = iPoint(node.child("offset").attribute("offset_x").as_int(), node.child("offset").attribute("offset_y").as_int());
 
