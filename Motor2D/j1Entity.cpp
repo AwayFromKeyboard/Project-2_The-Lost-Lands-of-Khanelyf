@@ -348,7 +348,8 @@ Entity * j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoi
 
 	if (ret != nullptr)
 	{
-		ret->LoadEntity(pos, name);
+		iPoint world_pos = App->map->MapToWorldPoint(pos) + iPoint(App->map->data.tile_width / 2, App->map->data.tile_height / 2);
+		ret->LoadEntity(world_pos, name);
 		ret->Start();
 		entity_list.push_back(ret);
 	}
