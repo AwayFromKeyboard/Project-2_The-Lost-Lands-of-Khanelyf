@@ -775,7 +775,7 @@ void j1Map::GetEntitiesSpawn() const
 
 						case 36: // Broken Building
 						{
-							Entity* brokenbuilding = App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(x + 1, y));
+							Entity* brokenbuilding = App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(x, y - 1));
 						}
 						break;
 
