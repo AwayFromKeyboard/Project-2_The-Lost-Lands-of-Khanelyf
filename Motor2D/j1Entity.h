@@ -15,6 +15,7 @@ enum entity_name
 	barracks,
 	provisions,
 	basic_building,
+	towers,
 	test
 };
 
