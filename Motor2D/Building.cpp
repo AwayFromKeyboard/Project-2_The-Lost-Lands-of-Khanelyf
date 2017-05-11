@@ -41,8 +41,13 @@ bool Building::PreUpdate()
 	if (state == entity_state::entity_idle) {
 		if (type == entity_type::building)
 			LifeBar({ 185, 5 }, { -100, -100 });
-		else
-			LifeBar({ 125, 5 }, { -65, -60 });
+		else {
+			if (name == entity_name::towers)
+				LifeBar({ 125, 5 }, { -60, -85 });
+			else
+				LifeBar({ 125, 5 }, { -65, -60 });
+		}
+
 	}
 	
 
