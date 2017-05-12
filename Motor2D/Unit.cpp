@@ -347,14 +347,32 @@ bool Unit::PostUpdate()
 
 		if (life == max_life)
 			phase = asleep;
-		else if (life >= max_life * 80 / 100 && life < max_life)
+		else if (life >= max_life * 80 / 100 && life < max_life) {
 			phase = phase_1;
-		else if (life >= max_life * 50 / 100 && life < max_life * 80 / 100)
+			boss->starter_ability_phase2_timer = false;
+			boss->starter_ability_phase3_timer = false;
+			boss->starter_ability_last_phase_timer = false;
+			boss->range_visited.clear();
+			boss->range_visited2.clear();
+		}
+		else if (life >= max_life * 50 / 100 && life < max_life * 80 / 100) {
 			phase = phase_2;
-		else if (life >= max_life * 25 / 100 && life < max_life * 50 / 100)
+			boss->starter_ability_phase3_timer = false;
+			boss->starter_ability_last_phase_timer = false;
+			boss->fireballs.clear();
+			boss->range_visited2.clear();
+		}
+		else if (life >= max_life * 25 / 100 && life < max_life * 50 / 100) {
 			phase = phase_3;
-		else if (phase != last_phase)
+			boss->starter_ability_phase2_timer = false;
+			boss->starter_ability_last_phase_timer = false;
+			boss->range_visited.clear();
+		}
+		else if (phase != last_phase) {
 			phase = last_phase;
+			boss->starter_ability_phase2_timer = false;
+			boss->starter_ability_phase3_timer = false;
+		}
 	}
 
 	if (position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
@@ -375,13 +393,13 @@ bool Unit::CleanUp()
 
 void Unit::CheckPhase()
 {
-	phase = phase_3;
 	switch (phase)
 	{
 	case boss_phase::phase_1:
 		break;
 	case boss_phase::phase_2:
 			if (!boss->starter_ability_phase2_timer) {
+				boss->modifier = 0;
 				boss->ability_phase2.Start();
 				boss->starter_ability_phase2_timer = true;
 			}
@@ -397,6 +415,7 @@ void Unit::CheckPhase()
 		break;
 	case boss_phase::phase_3:
 			if (!boss->starter_ability_phase3_timer) {
+				boss->modifier = 0;
 				boss->ability_phase3.Start();
 				boss->starter_ability_phase3_timer = true;
 			}
@@ -435,7 +454,46 @@ void Unit::CheckPhase()
 			}
 		break;
 	case boss_phase::last_phase:
-		
+		if (!boss->starter_ability_last_phase_timer) {
+			boss->modifier = 5;
+			boss->ability_last_phase.Start();
+			boss->starter_ability_last_phase_timer = true;
+		}
+		else if (boss->ability_last_phase.ReadSec() >= 1 && boss->ability_last_phase.ReadSec() < 3) {
+			boss->Draw_LastPhase();
+		}
+		else if (boss->ability_last_phase.ReadSec() >= 3 && boss->ability_last_phase.ReadSec() < 5) {
+			if (!boss->fireballs_created)
+			{
+				boss->fireball_points.clear();
+				boss->Phase2_Attack();
+				boss->Phase3_Attack();
+				boss->fireballs_created = true;
+				boss->tick_started = false;
+			}
+			else {
+				if (!boss->tick_started) {
+					boss->Phase3_Damage();
+					boss->damage_ticks.Start();
+					boss->tick_started = true;
+				}
+				else {
+					if (boss->damage_ticks.ReadSec() >= 0.75) {
+						boss->Phase3_Damage();
+						boss->damage_ticks.Start();
+					}
+				}
+			}
+		}
+		else if (boss->ability_last_phase.ReadSec() >= 5) {
+			for (std::list<Particle*>::iterator it = boss->fireballs.begin(); it != boss->fireballs.end(); it++) {
+				(*it)->to_delete = true;
+			}
+			boss->fireballs.clear();
+			boss->fireballs_created = false;
+			boss->starter_ability_last_phase_timer = false;
+			boss->modifier = 0;
+		}
 		break;
 	case boss_phase::asleep:
 		break;

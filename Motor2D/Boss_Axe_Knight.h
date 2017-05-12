@@ -9,7 +9,7 @@
 #define PHASE2_RANGE 3
 
 #define PHASE3_DAMAGE 5
-#define PHASE3_RANGE 7
+#define PHASE3_RANGE 4
 
 enum entity_type;
 class Particle;
@@ -42,8 +42,13 @@ public:
 	std::list<iPoint> fireball_points;
 	std::list<Particle*> fireballs;
 
+	j1Timer ability_last_phase;
+	bool starter_ability_last_phase_timer = false;
+	void Draw_LastPhase();
+	int modifier = 0;
 
 	std::list<iPoint> range_visited;
+	std::list<iPoint> range_visited2;
 };
 
 #endif
