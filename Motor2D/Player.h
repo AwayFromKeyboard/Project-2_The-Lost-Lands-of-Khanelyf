@@ -66,8 +66,8 @@ private:
 	UI_Button* options = nullptr;
 	UI_Button* save = nullptr;
 	UI_Button* load = nullptr;
-	UI_Button* audio = nullptr;
-	UI_Button* controls = nullptr;
+	UI_Button* audio_button = nullptr;
+	UI_Button* controls_button = nullptr;
 	UI_Button* backpause = nullptr;
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;

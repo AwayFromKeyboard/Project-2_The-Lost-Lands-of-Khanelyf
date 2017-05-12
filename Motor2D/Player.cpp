@@ -40,21 +40,21 @@ bool Player::Start()
 	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
 	
 
-	UI_Button* audio = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
-	audio->AddImage("standard", { 25, 2695, 186, 31 });
-	audio->SetImage("standard");
-	audio->AddImage("clicked", { 25, 2768, 186, 31 });
-	audio->AddImage("hovered", { 26, 2732, 186, 31 });
-	audio->SetEnabled(false);
+	audio_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
+	audio_button->AddImage("standard", { 25, 2695, 186, 31 });
+	audio_button->SetImage("standard");
+	audio_button->AddImage("clicked", { 25, 2768, 186, 31 });
+	audio_button->AddImage("hovered", { 26, 2732, 186, 31 });
+	audio_button->SetEnabled(false);
 
-	UI_Button* controls = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
-	controls->AddImage("standard", { 25, 2695, 186, 31 });
-	controls->SetImage("standard");
-	controls->AddImage("clicked", { 25, 2768, 186, 31 });
-	controls->AddImage("hovered", { 26, 2732, 186, 31 });
-	controls->SetEnabled(false);
+	controls_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
+	controls_button->AddImage("standard", { 25, 2695, 186, 31 });
+	controls_button->SetImage("standard");
+	controls_button->AddImage("clicked", { 25, 2768, 186, 31 });
+	controls_button->AddImage("hovered", { 26, 2732, 186, 31 });
+	controls_button->SetEnabled(false);
 
-	UI_Button* backpause = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	backpause = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
 	backpause->AddImage("standard", { 25, 2695, 186, 31 });
 	backpause->SetImage("standard");
 	backpause->AddImage("clicked", { 25, 2768, 186, 31 });
@@ -113,7 +113,7 @@ bool Player::Start()
 	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
 	back_txt->SetText("Resume Game");
 	back_txt->click_through = true;
-	//
+	
 	save_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
 	save_txt->SetText("Save");
 	save_txt->click_through = true;
@@ -128,14 +128,6 @@ bool Player::Start()
 	pause_window->SetEnabledAndChilds(false);
 
 	//options 
-
-	
-
-	//options_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, 240, 386, 13);
-	//options_window->click_through = true;
-	//options_bg = (UI_Image*)options_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, { 0,2300,240,386 });
-
-	//options_window->SetEnabledAndChilds(false);
 
 	//stats
 
@@ -248,39 +240,39 @@ bool Player::PreUpdate()
 		pause_status = !pause_status;
 	}
 
-	if (audio->MouseClickEnterLeft()) {
-		audio->SetImage("clicked");
+	if (audio_button->MouseClickEnterLeft()) {
+		audio_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	if (controls->MouseClickEnterLeft()) {
-		controls->SetImage("clicked");
+	else if (controls_button->MouseClickEnterLeft()) {
+		controls_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	if (backpause->MouseClickEnterLeft()) {
+	else if (backpause->MouseClickEnterLeft()) {
 		backpause->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 
-	if (back->MouseClickEnterLeft()) {
+	else if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;	
 	}
-	if (load->MouseClickEnterLeft()) {
+
+	else if (load->MouseClickEnterLeft()) {
 		load->SetImage("clicked");
 		App->LoadGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 
-	if (options->MouseClickEnterLeft() && pause_status) {
+	else if (options->MouseClickEnterLeft() && pause_status) {
 
 		options_status = true;
 		options->SetImage("clicked");
-		//options_window->SetEnabled(true);
 		save->SetEnabled(false);
 		load->SetEnabled(false);
 		quit_game->SetEnabled(false);
@@ -291,19 +283,18 @@ bool Player::PreUpdate()
 		options_txt->SetEnabled(false);
 		quit_txt->SetEnabled(false);
 		back_txt->SetEnabled(false);
-		audio->SetEnabled(true); 
-		controls->SetEnabled(true); 
+		audio_button->SetEnabled(true); 
+		controls_button->SetEnabled(true); 
 		backpause->SetEnabled(true);
-		/*controls_txt->SetEnabled(true);
+		controls_txt->SetEnabled(true);
 		backpause_txt->SetEnabled(true);
-		audio_txt->SetEnabled(true);*/
+		audio_txt->SetEnabled(true);
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 	else if (!pause_status && (pause_window->enabled)) {
 		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
-		//options_window->SetEnabledAndChilds(false);
 	}
 	
 	if (save->MouseClickEnterLeft()) {
@@ -356,15 +347,15 @@ bool Player::PreUpdate()
 	else if (backpause->MouseOut() && backpause->CompareState("hovered") && options_status)
 		backpause->SetImage("standard");
 	
-	if (controls->MouseEnter() && options_status)
-		controls->SetImage("hovered");
-	else if (controls->MouseOut() && controls->CompareState("hovered") && options_status)
-		controls->SetImage("standard");
+	if (controls_button->MouseEnter() && options_status)
+		controls_button->SetImage("hovered");
+	else if (controls_button->MouseOut() && controls_button->CompareState("hovered") && options_status)
+		controls_button->SetImage("standard");
 	
-	if (audio->MouseEnter() && options_status)
-		audio->SetImage("hovered");
-	else if (audio->MouseOut() && audio->CompareState("hovered") && options_status)
-		audio->SetImage("standard");
+	if (audio_button->MouseEnter() && options_status)
+		audio_button->SetImage("hovered");
+	else if (audio_button->MouseOut() && audio_button->CompareState("hovered") && options_status)
+		audio_button->SetImage("standard");
 
 	//backbutton
 	if (back->MouseEnter())
