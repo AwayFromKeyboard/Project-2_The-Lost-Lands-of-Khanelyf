@@ -248,6 +248,22 @@ bool Player::PreUpdate()
 		pause_status = !pause_status;
 	}
 
+	if (audio->MouseClickEnterLeft()) {
+		audio->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	if (controls->MouseClickEnterLeft()) {
+		controls->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	if (backpause->MouseClickEnterLeft()) {
+		backpause->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+
 	if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
 		button_clicked.Start();
@@ -261,6 +277,8 @@ bool Player::PreUpdate()
 	}
 
 	if (options->MouseClickEnterLeft() && pause_status) {
+
+		options_status = true;
 		options->SetImage("clicked");
 		//options_window->SetEnabled(true);
 		save->SetEnabled(false);
@@ -276,13 +294,14 @@ bool Player::PreUpdate()
 		audio->SetEnabled(true); 
 		controls->SetEnabled(true); 
 		backpause->SetEnabled(true);
-		controls_txt->SetEnabled(true);
+		/*controls_txt->SetEnabled(true);
 		backpause_txt->SetEnabled(true);
-		audio_txt->SetEnabled(true);
+		audio_txt->SetEnabled(true);*/
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 	else if (!pause_status && (pause_window->enabled)) {
+		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
 		//options_window->SetEnabledAndChilds(false);
 	}
@@ -332,6 +351,20 @@ bool Player::PreUpdate()
 		pause_window->SetEnabledAndChilds(false);
 	}
 	
+	if (backpause->MouseEnter() && options_status)
+		backpause->SetImage("hovered");
+	else if (backpause->MouseOut() && backpause->CompareState("hovered") && options_status)
+		backpause->SetImage("standard");
+	
+	if (controls->MouseEnter() && options_status)
+		controls->SetImage("hovered");
+	else if (controls->MouseOut() && controls->CompareState("hovered") && options_status)
+		controls->SetImage("standard");
+	
+	if (audio->MouseEnter() && options_status)
+		audio->SetImage("hovered");
+	else if (audio->MouseOut() && audio->CompareState("hovered") && options_status)
+		audio->SetImage("standard");
 
 	//backbutton
 	if (back->MouseEnter())
