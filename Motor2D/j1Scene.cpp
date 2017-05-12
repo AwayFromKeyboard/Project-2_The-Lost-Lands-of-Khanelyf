@@ -49,6 +49,8 @@ bool j1Scene::Start()
 	// -------------
 
 	// Starting scene
+	current_scene = scene_test;
+	//current_scene->Pause();
 	current_scene = main_menu;
 
 	if(current_scene != nullptr)
