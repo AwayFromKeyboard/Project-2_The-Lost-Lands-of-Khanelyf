@@ -784,7 +784,13 @@ void j1Map::GetEntitiesSpawn() const
 							Entity* enemy_barrack = App->entity->CreateEntity(barracks, enemy_building, App->map->MapToWorld(x + 1, y));
 						}
 						break;
+
+						case 37: {
+							Entity* enemy_blacksmith = App->entity->CreateEntity(blacksmiths, enemy_building, App->map->MapToWorld(x + 1, y));
 						}
+								 break;
+						}
+					
 					}
 				}
 			}

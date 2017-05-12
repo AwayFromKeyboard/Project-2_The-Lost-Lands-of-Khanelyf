@@ -16,6 +16,7 @@
 #include "j1Scene.h"
 #include "QuestManager.h"
 #include "Tower.h"
+#include "Blacksmith.h"
 
 j1Entity::j1Entity()
 {

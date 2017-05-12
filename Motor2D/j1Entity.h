@@ -17,6 +17,7 @@ enum entity_name
 	provisions,
 	basic_building,
 	towers,
+	blacksmiths,
 	test
 };
 
