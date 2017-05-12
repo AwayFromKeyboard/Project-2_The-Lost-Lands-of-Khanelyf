@@ -104,6 +104,15 @@ private:
 	UI_Text* move_map_right_txt = nullptr;
 	UI_Text* create_group_txt = nullptr;
 
+	UI_Text* battlecry_txt2 = nullptr;
+	UI_Text* whirlwind_txt2 = nullptr;
+	UI_Text* charge_txt2 = nullptr;
+	UI_Text* move_map_up_txt2 = nullptr;
+	UI_Text* move_map_down_txt2 = nullptr;
+	UI_Text* move_map_left_txt2 = nullptr;
+	UI_Text* move_map_right_txt2 = nullptr;
+	UI_Text* create_group_txt2 = nullptr;
+
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;

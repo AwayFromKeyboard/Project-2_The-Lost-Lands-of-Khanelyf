@@ -76,6 +76,8 @@ public:
 
 	void DefaultControls();
 
+	const char * GetKeyString(SDL_Scancode scan) const;
+
 	SDL_Scancode ReturnKey();
 
 	j1_key_state GetMouseButtonDown(int id) const

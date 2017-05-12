@@ -147,36 +147,76 @@ bool Player::Start()
 	load->AddImage("hovered", { 26, 2732, 186, 31 });
 
 	create_group_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
-	create_group_txt->SetText("Create unit group - Left Shift");
+	create_group_txt->SetText("Create unit group -");
 	create_group_txt->click_through = true;
 
+	create_group_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 60), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
+	create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+	create_group_txt2->SetText(create_group_txt2->str);
+	create_group_txt2->click_through = true;
+
 	move_map_right_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) }, App->font->default_15);
-	move_map_right_txt->SetText("Move screen right - Right Arr.");
+	move_map_right_txt->SetText("Move screen right -");
 	move_map_right_txt->click_through = true;
 
+	move_map_right_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 50), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) }, App->font->default_15);
+	move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+	move_map_right_txt2->SetText(move_map_right_txt2->str);
+	move_map_right_txt2->click_through = true;
+
 	move_map_left_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) + (App->win->_GetWindowSize().y / 95) }, App->font->default_15);
-	move_map_left_txt->SetText("Move screen left - Left Arrow");
+	move_map_left_txt->SetText("Move screen left -");
 	move_map_left_txt->click_through = true;
 
+	move_map_left_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 75), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) + (App->win->_GetWindowSize().y / 95) }, App->font->default_15);
+	move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+	move_map_left_txt2->SetText(move_map_left_txt2->str);
+	move_map_left_txt2->click_through = true;
+
 	move_map_down_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
-	move_map_down_txt->SetText("Move screen down - Down A.");
+	move_map_down_txt->SetText("Move screen down -");
 	move_map_down_txt->click_through = true;
 
+	move_map_down_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
+	move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+	move_map_down_txt2->SetText(move_map_down_txt2->str);
+	move_map_down_txt2->click_through = true;
+
 	move_map_up_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
-	move_map_up_txt->SetText("Move screen up - Up Arrow");
+	move_map_up_txt->SetText("Move screen up -");
 	move_map_up_txt->click_through = true;
 
+	move_map_up_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 80), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
+	move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+	move_map_up_txt2->SetText(move_map_up_txt2->str);
+	move_map_up_txt2->click_through = true;
+
 	battlecry_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, App->font->default_15);
-	battlecry_txt->SetText("Battlecry ---------------------- X");
+	battlecry_txt->SetText("Battlecry -");
 	battlecry_txt->click_through = true;
 
+	battlecry_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 55), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, App->font->default_15);
+	battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+	battlecry_txt2->SetText(battlecry_txt2->str);
+	battlecry_txt2->click_through = true;
+
 	whirlwind_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) + (App->win->_GetWindowSize().y / 40) }, App->font->default_15);
-	whirlwind_txt->SetText("Whirlwind -------------------- C");
+	whirlwind_txt->SetText("Whirlwind -");
 	whirlwind_txt->click_through = true;
 
+	whirlwind_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 80), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) + (App->win->_GetWindowSize().y / 40) }, App->font->default_15);
+	whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+	whirlwind_txt2->SetText(whirlwind_txt2->str);
+	whirlwind_txt2->click_through = true;
+
 	charge_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, App->font->default_15);
-	charge_txt->SetText("Charge ------------------------ V");
+	charge_txt->SetText("Charge -");
 	charge_txt->click_through = true;
+
+	charge_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 37), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, App->font->default_15);
+	charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+	charge_txt2->SetText(charge_txt2->str);
+	charge_txt2->click_through = true;
 
 	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 70), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 18) }, App->font->default_15);
 	backoptions_txt->SetText("Back");
@@ -398,6 +438,15 @@ bool Player::PreUpdate()
 			move_map_left_txt->SetEnabled(false);
 			move_map_right_txt->SetEnabled(false);
 			create_group_txt->SetEnabled(false);
+			battlecry_txt2->SetEnabled(false);
+			whirlwind_txt2->SetEnabled(false);
+			charge_txt2->SetEnabled(false);
+			move_map_up_txt2->SetEnabled(false);
+			move_map_down_txt2->SetEnabled(false);
+			move_map_left_txt2->SetEnabled(false);
+			move_map_right_txt2->SetEnabled(false);
+			create_group_txt2->SetEnabled(false);
+
 		}
 		else if (audio_status)
 		{
@@ -670,6 +719,14 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(true);
 		move_map_right_txt->SetEnabled(true);
 		create_group_txt->SetEnabled(true);
+		battlecry_txt2->SetEnabled(true);
+		whirlwind_txt2->SetEnabled(true);
+		charge_txt2->SetEnabled(true);
+		move_map_up_txt2->SetEnabled(true);
+		move_map_down_txt2->SetEnabled(true);
+		move_map_left_txt2->SetEnabled(true);
+		move_map_right_txt2->SetEnabled(true);
+		create_group_txt2->SetEnabled(true);
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
 	{
@@ -711,6 +768,14 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(false);
 		move_map_right_txt->SetEnabled(false);
 		create_group_txt->SetEnabled(false);
+		battlecry_txt2->SetEnabled(false);
+		whirlwind_txt2->SetEnabled(false);
+		charge_txt2->SetEnabled(false);
+		move_map_up_txt2->SetEnabled(false);
+		move_map_down_txt2->SetEnabled(false);
+		move_map_left_txt2->SetEnabled(false);
+		move_map_right_txt2->SetEnabled(false);
+		create_group_txt2->SetEnabled(false);
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && battlecry_button_options->CompareState("clicked"))
 	{
@@ -802,6 +867,14 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(false);
 		move_map_right_txt->SetEnabled(false);
 		create_group_txt->SetEnabled(false);
+		battlecry_txt2->SetEnabled(false);
+		whirlwind_txt2->SetEnabled(false);
+		charge_txt2->SetEnabled(false);
+		move_map_up_txt2->SetEnabled(false);
+		move_map_down_txt2->SetEnabled(false);
+		move_map_left_txt2->SetEnabled(false);
+		move_map_right_txt2->SetEnabled(false);
+		create_group_txt2->SetEnabled(false);
 				
 	}
 
@@ -1216,6 +1289,15 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+
+	battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+	whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+	charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+	move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+	move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+	move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+	move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+	create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
 
 	return ret;
 }

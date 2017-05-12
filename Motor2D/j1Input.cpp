@@ -185,6 +185,11 @@ void j1Input::SetMouseWorld(int& x, int& y)
 	mouse_y = y;
 }
 
+const char * j1Input::GetKeyString(SDL_Scancode scan) const
+{
+	return SDL_GetKeyName(SDL_GetKeyFromScancode(scan));
+}
+
 void j1Input::DefaultControls()
 {
 	for (int i = 0; i < NULL_CONTROL; i++)
