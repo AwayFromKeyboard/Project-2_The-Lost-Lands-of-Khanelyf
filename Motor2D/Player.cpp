@@ -147,36 +147,76 @@ bool Player::Start()
 	load->AddImage("hovered", { 26, 2732, 186, 31 });
 
 	create_group_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
-	create_group_txt->SetText("Create unit group - Left Shift");
+	create_group_txt->SetText("Create unit group -");
 	create_group_txt->click_through = true;
 
+	create_group_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 60), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
+	create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+	create_group_txt2->SetText(create_group_txt2->str);
+	create_group_txt2->click_through = true;
+
 	move_map_right_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) }, App->font->default_15);
-	move_map_right_txt->SetText("Move screen right - Right Arr.");
+	move_map_right_txt->SetText("Move screen right -");
 	move_map_right_txt->click_through = true;
 
+	move_map_right_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 50), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) }, App->font->default_15);
+	move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+	move_map_right_txt2->SetText(move_map_right_txt2->str);
+	move_map_right_txt2->click_through = true;
+
 	move_map_left_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) + (App->win->_GetWindowSize().y / 95) }, App->font->default_15);
-	move_map_left_txt->SetText("Move screen left - Left Arrow");
+	move_map_left_txt->SetText("Move screen left -");
 	move_map_left_txt->click_through = true;
 
+	move_map_left_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 75), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) + (App->win->_GetWindowSize().y / 95) }, App->font->default_15);
+	move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+	move_map_left_txt2->SetText(move_map_left_txt2->str);
+	move_map_left_txt2->click_through = true;
+
 	move_map_down_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
-	move_map_down_txt->SetText("Move screen down - Down A.");
+	move_map_down_txt->SetText("Move screen down -");
 	move_map_down_txt->click_through = true;
 
+	move_map_down_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
+	move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+	move_map_down_txt2->SetText(move_map_down_txt2->str);
+	move_map_down_txt2->click_through = true;
+
 	move_map_up_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
-	move_map_up_txt->SetText("Move screen up - Up Arrow");
+	move_map_up_txt->SetText("Move screen up -");
 	move_map_up_txt->click_through = true;
 
+	move_map_up_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 80), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
+	move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+	move_map_up_txt2->SetText(move_map_up_txt2->str);
+	move_map_up_txt2->click_through = true;
+
 	battlecry_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, App->font->default_15);
-	battlecry_txt->SetText("Battlecry ---------------------- X");
+	battlecry_txt->SetText("Battlecry -");
 	battlecry_txt->click_through = true;
 
+	battlecry_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 55), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, App->font->default_15);
+	battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+	battlecry_txt2->SetText(battlecry_txt2->str);
+	battlecry_txt2->click_through = true;
+
 	whirlwind_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) + (App->win->_GetWindowSize().y / 40) }, App->font->default_15);
-	whirlwind_txt->SetText("Whirlwind -------------------- C");
+	whirlwind_txt->SetText("Whirlwind -");
 	whirlwind_txt->click_through = true;
 
+	whirlwind_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 80), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) + (App->win->_GetWindowSize().y / 40) }, App->font->default_15);
+	whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+	whirlwind_txt2->SetText(whirlwind_txt2->str);
+	whirlwind_txt2->click_through = true;
+
 	charge_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, App->font->default_15);
-	charge_txt->SetText("Charge ------------------------ V");
+	charge_txt->SetText("Charge -");
 	charge_txt->click_through = true;
+
+	charge_txt2 = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 37), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, App->font->default_15);
+	charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+	charge_txt2->SetText(charge_txt2->str);
+	charge_txt2->click_through = true;
 
 	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 70), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 18) }, App->font->default_15);
 	backoptions_txt->SetText("Back");
@@ -398,6 +438,15 @@ bool Player::PreUpdate()
 			move_map_left_txt->SetEnabled(false);
 			move_map_right_txt->SetEnabled(false);
 			create_group_txt->SetEnabled(false);
+			battlecry_txt2->SetEnabled(false);
+			whirlwind_txt2->SetEnabled(false);
+			charge_txt2->SetEnabled(false);
+			move_map_up_txt2->SetEnabled(false);
+			move_map_down_txt2->SetEnabled(false);
+			move_map_left_txt2->SetEnabled(false);
+			move_map_right_txt2->SetEnabled(false);
+			create_group_txt2->SetEnabled(false);
+
 		}
 		else if (audio_status)
 		{
@@ -502,50 +551,106 @@ bool Player::PreUpdate()
 	else if (battlecry_button_options->MouseClickEnterLeft())
 	{
 		battlecry_button_options->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (whirlwind_button_options->MouseClickEnterLeft())
 	{
 		whirlwind_button_options->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (charge_button_options->MouseClickEnterLeft())
 	{
 		charge_button_options->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_up_button->MouseClickEnterLeft())
 	{
 		move_map_up_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_down_button->MouseClickEnterLeft())
 	{
 		move_map_down_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_left_button->MouseClickEnterLeft())
 	{
 		move_map_left_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_right_button->MouseClickEnterLeft())
 	{
 		move_map_right_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (create_group_button->MouseClickEnterLeft())
 	{
 		create_group_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
 	}
 
 	if (!pause_status && (pause_window->enabled))
@@ -670,6 +775,14 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(true);
 		move_map_right_txt->SetEnabled(true);
 		create_group_txt->SetEnabled(true);
+		battlecry_txt2->SetEnabled(true);
+		whirlwind_txt2->SetEnabled(true);
+		charge_txt2->SetEnabled(true);
+		move_map_up_txt2->SetEnabled(true);
+		move_map_down_txt2->SetEnabled(true);
+		move_map_left_txt2->SetEnabled(true);
+		move_map_right_txt2->SetEnabled(true);
+		create_group_txt2->SetEnabled(true);
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
 	{
@@ -711,47 +824,17 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(false);
 		move_map_right_txt->SetEnabled(false);
 		create_group_txt->SetEnabled(false);
+		battlecry_txt2->SetEnabled(false);
+		whirlwind_txt2->SetEnabled(false);
+		charge_txt2->SetEnabled(false);
+		move_map_up_txt2->SetEnabled(false);
+		move_map_down_txt2->SetEnabled(false);
+		move_map_left_txt2->SetEnabled(false);
+		move_map_right_txt2->SetEnabled(false);
+		create_group_txt2->SetEnabled(false);
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && battlecry_button_options->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		battlecry_button_options->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && whirlwind_button_options->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		whirlwind_button_options->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && charge_button_options->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		charge_button_options->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_up_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_up_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_down_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_down_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_left_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_left_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_right_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_right_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && create_group_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		create_group_button->SetImage("standard");
-	}
+	
+
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
@@ -802,6 +885,14 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(false);
 		move_map_right_txt->SetEnabled(false);
 		create_group_txt->SetEnabled(false);
+		battlecry_txt2->SetEnabled(false);
+		whirlwind_txt2->SetEnabled(false);
+		charge_txt2->SetEnabled(false);
+		move_map_up_txt2->SetEnabled(false);
+		move_map_down_txt2->SetEnabled(false);
+		move_map_left_txt2->SetEnabled(false);
+		move_map_right_txt2->SetEnabled(false);
+		create_group_txt2->SetEnabled(false);
 				
 	}
 
@@ -906,8 +997,6 @@ bool Player::PreUpdate()
 	}
 	
 	if (!pause_status) {
-		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
-			hero->levelup_points += 5;
 
 		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
@@ -990,24 +1079,24 @@ bool Player::PreUpdate()
 		//player abilities
 		if (!hero->is_holding_object)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat && battlecry_ability->CompareState("standard")) {
+			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && battlecry_ability->CompareState("standard")) {
 				draw_battlecry_range = true;
 				CheckAbilityRange(BATTLECRY_RANGE);
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat && whirlwind_ability->CompareState("standard")) {
+			else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && whirlwind_ability->CompareState("standard")) {
 				draw_whirlwind_range = true;
 				CheckAbilityRange(WHIRLWIND_RANGE);
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat && charge_ability->CompareState("standard")) {
+			else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && charge_ability->CompareState("standard")) {
 				draw_charge_range = true;
 				CheckStraightAbilityRange(CHARGE_RANGE);
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up) {
 				draw_battlecry_range = false;
 				range_visited.clear();
 			}
-			if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+			if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up) {
 				draw_whirlwind_range = false;
 				range_visited.clear();
 			}
@@ -1015,33 +1104,33 @@ bool Player::PreUpdate()
 			//player abilities
 			if (!hero->is_holding_object)
 			{
-				if (App->input->GetKey(SDL_SCANCODE_X) == key_repeat) {
+				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat) {
 					draw_battlecry_range = true;
 					CheckAbilityRange(BATTLECRY_RANGE);
 				}
-				else if (App->input->GetKey(SDL_SCANCODE_C) == key_repeat) {
+				else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat) {
 					draw_whirlwind_range = true;
 					CheckAbilityRange(WHIRLWIND_RANGE);
 				}
-				else if (App->input->GetKey(SDL_SCANCODE_V) == key_repeat) {
+				else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat) {
 					draw_charge_range = true;
 					CheckStraightAbilityRange(CHARGE_RANGE);
 				}
 
-				if (App->input->GetKey(SDL_SCANCODE_X) == key_up) {
+				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up) {
 					draw_battlecry_range = false;
 				}
-				if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
+				if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up) {
 					draw_whirlwind_range = false;
 				}
-				if (App->input->GetKey(SDL_SCANCODE_V) == key_up) {
+				if (App->input->GetKey(App->input->controls[CHARGE]) == key_up) {
 					draw_charge_range = false;
 				}
 
 				//Battlecry
 
 
-				if ((App->input->GetKey(SDL_SCANCODE_X) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
 					battlecry_ability->SetImage("clicked");
 					Battlecry();
 					battlecry_cd->SetEnabled(true);
@@ -1057,7 +1146,7 @@ bool Player::PreUpdate()
 
 				// Whirlwind
 
-				if ((App->input->GetKey(SDL_SCANCODE_C) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
 					whirlwind_ability->SetImage("clicked");
 					Whirlwind();
 					whirlwind_cd->SetEnabled(true);
@@ -1070,7 +1159,7 @@ bool Player::PreUpdate()
 
 				//Charge
 
-				if ((App->input->GetKey(SDL_SCANCODE_V) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
 					Charge();
 				}
 
@@ -1108,7 +1197,7 @@ bool Player::Update(float dt)
 	
 	if (!App->minimap->IsMouseOver())
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(SDL_SCANCODE_X) != key_repeat && App->input->GetKey(SDL_SCANCODE_C) != key_repeat && App->input->GetKey(SDL_SCANCODE_V) != key_repeat) {
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat) {
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
 			App->entity->UnselectEverything();
@@ -1215,6 +1304,96 @@ bool Player::Update(float dt)
 			{
 				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
 					if ((*it)->life > 0) (*it)->KillEntity();
+			}
+		}
+	}
+
+	if (change_button_config)
+	{
+		SDL_Scancode code = App->input->ReturnKey();
+		if (code != SDL_SCANCODE_0)
+		{
+			bool key_repeated = false;
+			for (int i = 0; i < CONTROLS_SIZE; i++)
+			{
+				if (App->input->controls[i] == code)
+				{
+					key_repeated = true;
+					continue;
+				}
+			}
+
+			if (battlecry_button_options->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[BATTLECRY] = code;
+				battlecry_button_options->SetImage("standard");
+				change_button_config = false;
+
+				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+				battlecry_txt2->SetText(battlecry_txt2->str);
+			}
+			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[WHIRLWIND] = code;
+				whirlwind_button_options->SetImage("standard");
+				change_button_config = false;
+
+				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+				whirlwind_txt2->SetText(whirlwind_txt2->str);
+			}
+			else if (charge_button_options->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[CHARGE] = code;
+				charge_button_options->SetImage("standard");
+				change_button_config = false;
+
+				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+				charge_txt2->SetText(charge_txt2->str);
+			}
+			else if (move_map_up_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_UP] = code;
+				move_map_up_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+				move_map_up_txt2->SetText(move_map_up_txt2->str);
+			}
+			else if (move_map_down_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_DOWN] = code;
+				move_map_down_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+				move_map_down_txt2->SetText(move_map_down_txt2->str);
+			}
+			else if (move_map_left_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_LEFT] = code;
+				move_map_left_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+				move_map_left_txt2->SetText(move_map_left_txt2->str);
+			}
+			else if (move_map_right_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_RIGHT] = code;
+				move_map_right_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+				move_map_right_txt2->SetText(move_map_right_txt2->str);
+			}
+			else if (create_group_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[CREATE_GROUP] = code;
+				create_group_button->SetImage("standard");
+				change_button_config = false;
+
+				create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+				create_group_txt2->SetText(create_group_txt2->str);
 			}
 		}
 	}

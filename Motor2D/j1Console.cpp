@@ -475,7 +475,7 @@ void j1Console::FastCommands()
 			}
 
 			// Get first command from list more similar to actual input text 
-			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == key_down)
+			if (App->input->GetKey(App->input->controls[MOVE_MAP_RIGHT]) == key_down)
 			{
 				bool found = false;
 				for (std::list<Command*>::iterator command = commands.begin(); command != commands.end(); command++)
@@ -502,7 +502,7 @@ void j1Console::FastCommands()
 		}
 
 		// Get last command from the commands used
-		if (App->input->GetKey(SDL_SCANCODE_UP) == key_down)
+		if (App->input->GetKey(App->input->controls[MOVE_MAP_UP]) == key_down)
 		{
 			if (currentLabel == -1)
 				currentLabel = labels.size()-1;
@@ -534,7 +534,7 @@ void j1Console::FastCommands()
 		}
 
 		// Get first command from the commands used
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == key_down)
+		if (App->input->GetKey(App->input->controls[MOVE_MAP_DOWN]) == key_down)
 		{
 			if (currentLabel == -1)
 				currentLabel = 0;
