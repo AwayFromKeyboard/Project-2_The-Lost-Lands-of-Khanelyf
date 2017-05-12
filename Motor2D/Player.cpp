@@ -143,35 +143,35 @@ bool Player::Start()
 	load->AddImage("hovered", { 26, 2732, 186, 31 });
 
 	create_group_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
-	create_group_txt->SetText("Create unit group -> Left Shift");
+	create_group_txt->SetText("Create unit group - Left Shift");
 	create_group_txt->click_through = true;
 
 	move_map_right_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) }, App->font->default_15);
-	move_map_right_txt->SetText("Move screen right -> Right Arr.");
+	move_map_right_txt->SetText("Move screen right - Right Arr.");
 	move_map_right_txt->click_through = true;
 
 	move_map_left_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) + (App->win->_GetWindowSize().y / 95) }, App->font->default_15);
-	move_map_left_txt->SetText("Move screen left -> Left Arrow");
+	move_map_left_txt->SetText("Move screen left - Left Arrow");
 	move_map_left_txt->click_through = true;
 
 	move_map_down_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
-	move_map_down_txt->SetText("Move screen down -> Down A.");
+	move_map_down_txt->SetText("Move screen down - Down A.");
 	move_map_down_txt->click_through = true;
 
 	move_map_up_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
-	move_map_up_txt->SetText("Move screen up -> Up Arrow");
+	move_map_up_txt->SetText("Move screen up - Up Arrow");
 	move_map_up_txt->click_through = true;
 
 	battlecry_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, App->font->default_15);
-	battlecry_txt->SetText("Battlecry ----------------------> X");
+	battlecry_txt->SetText("Battlecry ---------------------- X");
 	battlecry_txt->click_through = true;
 
 	whirlwind_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) + (App->win->_GetWindowSize().y / 40) }, App->font->default_15);
-	whirlwind_txt->SetText("Whirlwind --------------------> C");
+	whirlwind_txt->SetText("Whirlwind -------------------- C");
 	whirlwind_txt->click_through = true;
 
 	charge_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, App->font->default_15);
-	charge_txt->SetText("Charge ------------------------> V");
+	charge_txt->SetText("Charge ------------------------ V");
 	charge_txt->click_through = true;
 
 	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 70), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 18) }, App->font->default_15);
@@ -594,9 +594,45 @@ bool Player::PreUpdate()
 		move_map_right_txt->SetEnabled(false);
 		create_group_txt->SetEnabled(false);
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && battlecry_button_options->CompareState("clicked"))
 	{
-		
+		button_on_clicked = false;
+		battlecry_button_options->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && whirlwind_button_options->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		whirlwind_button_options->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && charge_button_options->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		charge_button_options->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_up_button->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		move_map_up_button->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_down_button->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		move_map_down_button->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_left_button->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		move_map_left_button->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_right_button->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		move_map_right_button->SetImage("standard");
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && create_group_button->CompareState("clicked"))
+	{
+		button_on_clicked = false;
+		create_group_button->SetImage("standard");
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
