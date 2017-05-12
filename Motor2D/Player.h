@@ -187,6 +187,8 @@ public:
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
+	bool change_button_config;
+
 	//player abilities
 	bool draw_battlecry_range = false;
 	bool draw_whirlwind_range = false;

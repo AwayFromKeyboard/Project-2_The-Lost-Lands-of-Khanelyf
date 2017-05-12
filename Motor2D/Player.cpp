@@ -551,50 +551,106 @@ bool Player::PreUpdate()
 	else if (battlecry_button_options->MouseClickEnterLeft())
 	{
 		battlecry_button_options->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (whirlwind_button_options->MouseClickEnterLeft())
 	{
 		whirlwind_button_options->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (charge_button_options->MouseClickEnterLeft())
 	{
 		charge_button_options->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_up_button->MouseClickEnterLeft())
 	{
 		move_map_up_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_down_button->MouseClickEnterLeft())
 	{
 		move_map_down_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_left_button->MouseClickEnterLeft())
 	{
 		move_map_left_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (move_map_right_button->MouseClickEnterLeft())
 	{
 		move_map_right_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		create_group_button->SetImage("standard");
 	}
 	else if (create_group_button->MouseClickEnterLeft())
 	{
 		create_group_button->SetImage("clicked");
-		button_clicked.Start();
-		button_on_clicked = true;
+		change_button_config = true;
+
+		battlecry_button_options->SetImage("standard");
+		whirlwind_button_options->SetImage("standard");
+		charge_button_options->SetImage("standard");
+		move_map_up_button->SetImage("standard");
+		move_map_down_button->SetImage("standard");
+		move_map_left_button->SetImage("standard");
+		move_map_right_button->SetImage("standard");
 	}
 
 	if (!pause_status && (pause_window->enabled))
@@ -777,46 +833,8 @@ bool Player::PreUpdate()
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && battlecry_button_options->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		battlecry_button_options->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && whirlwind_button_options->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		whirlwind_button_options->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && charge_button_options->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		charge_button_options->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_up_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_up_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_down_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_down_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_left_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_left_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && move_map_right_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		move_map_right_button->SetImage("standard");
-	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && create_group_button->CompareState("clicked"))
-	{
-		button_on_clicked = false;
-		create_group_button->SetImage("standard");
-	}
+	
+
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
@@ -1290,14 +1308,95 @@ bool Player::Update(float dt)
 		}
 	}
 
-	battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
-	whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
-	charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
-	move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
-	move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
-	move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
-	move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
-	create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+	if (change_button_config)
+	{
+		SDL_Scancode code = App->input->ReturnKey();
+		if (code != SDL_SCANCODE_0)
+		{
+			bool key_repeated = false;
+			for (int i = 0; i < CONTROLS_SIZE; i++)
+			{
+				if (App->input->controls[i] == code)
+				{
+					key_repeated = true;
+					continue;
+				}
+			}
+
+			if (battlecry_button_options->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[BATTLECRY] = code;
+				battlecry_button_options->SetImage("standard");
+				change_button_config = false;
+
+				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+				battlecry_txt2->SetText(battlecry_txt2->str);
+			}
+			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[WHIRLWIND] = code;
+				whirlwind_button_options->SetImage("standard");
+				change_button_config = false;
+
+				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+				whirlwind_txt2->SetText(whirlwind_txt2->str);
+			}
+			else if (charge_button_options->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[CHARGE] = code;
+				charge_button_options->SetImage("standard");
+				change_button_config = false;
+
+				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+				charge_txt2->SetText(charge_txt2->str);
+			}
+			else if (move_map_up_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_UP] = code;
+				move_map_up_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+				move_map_up_txt2->SetText(move_map_up_txt2->str);
+			}
+			else if (move_map_down_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_DOWN] = code;
+				move_map_down_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+				move_map_down_txt2->SetText(move_map_down_txt2->str);
+			}
+			else if (move_map_left_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_LEFT] = code;
+				move_map_left_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+				move_map_left_txt2->SetText(move_map_left_txt2->str);
+			}
+			else if (move_map_right_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[MOVE_MAP_RIGHT] = code;
+				move_map_right_button->SetImage("standard");
+				change_button_config = false;
+
+				move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+				move_map_right_txt2->SetText(move_map_right_txt2->str);
+			}
+			else if (create_group_button->CompareState("clicked") && !key_repeated)
+			{
+				App->input->controls[CREATE_GROUP] = code;
+				create_group_button->SetImage("standard");
+				change_button_config = false;
+
+				create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+				create_group_txt2->SetText(create_group_txt2->str);
+			}
+		}
+	}
 
 	return ret;
 }
