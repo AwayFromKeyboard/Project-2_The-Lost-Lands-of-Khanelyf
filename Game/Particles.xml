@@ -1,7 +1,7 @@
 <particles>
   <particle type="Little_Fire">
     <texture path="Fire.png"/>
-    <offset x="-22" y="-48"/>
+    <offset x="11" y="-48"/>
     <animations>
       <set_0 speed="5" w="44" h="96" set="0">
         <rect x="0" y="0"/>

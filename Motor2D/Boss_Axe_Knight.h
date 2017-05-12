@@ -40,6 +40,7 @@ public:
 	std::list<iPoint> fireball_points;
 	std::list<Particle*> fireballs;
 
+
 	std::list<iPoint> range_visited;
 };
 

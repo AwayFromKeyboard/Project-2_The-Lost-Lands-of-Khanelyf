@@ -92,20 +92,6 @@ bool Unit::Update(float dt)
 		if (collision != nullptr)
 			collision->SetPos(aux_pos.x + collision->offset_x, aux_pos.y + collision->offset_y);
 
-		if (is_boss && life > 0) {
-			CheckPhase();
-
-			if (phase != phase_1 && life >= max_life * 80 / 100 && life < max_life)
-				phase = phase_1;
-			else if (phase != phase_2 && life >= max_life * 50 / 100 && life < max_life * 80 / 100)
-				phase = phase_2;
-			else if (phase != phase_3 && life >= max_life * 25 / 100 && life < max_life * 50 / 100)
-				phase = phase_3;
-			else if (phase != last_phase)
-				phase = last_phase;
-		}
-		
-
 		switch (state) {
 		case entity_state::entity_idle:
 			if (life < max_life) {
@@ -356,6 +342,21 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
+	if (is_boss && life > 0) {
+		CheckPhase();
+
+		if (life == max_life)
+			phase = asleep;
+		else if (life >= max_life * 80 / 100 && life < max_life)
+			phase = phase_1;
+		else if (life >= max_life * 50 / 100 && life < max_life * 80 / 100)
+			phase = phase_2;
+		else if (life >= max_life * 25 / 100 && life < max_life * 50 / 100)
+			phase = phase_3;
+		else if (phase != last_phase)
+			phase = last_phase;
+	}
+
 	if (position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
 		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
@@ -374,6 +375,7 @@ bool Unit::CleanUp()
 
 void Unit::CheckPhase()
 {
+	phase = phase_3;
 	switch (phase)
 	{
 	case boss_phase::phase_1:
@@ -398,7 +400,7 @@ void Unit::CheckPhase()
 				boss->ability_phase3.Start();
 				boss->starter_ability_phase3_timer = true;
 			}
-			if (boss->ability_phase2.ReadSec() >= 0 && boss->ability_phase2.ReadSec() < 3) {
+			else if (boss->ability_phase3.ReadSec() >= 1 && boss->ability_phase3.ReadSec() < 3) {
 				boss->Draw_Phase3();
 			}
 			else if (boss->ability_phase3.ReadSec() >= 3 && boss->ability_phase3.ReadSec() < 5) {
@@ -408,13 +410,15 @@ void Unit::CheckPhase()
 					boss->Phase3_Attack();
 					boss->fireballs_created = true;
 				}
-				else 
+				else if ((boss->ability_phase3.Read() > 3000 && boss->ability_phase3.Read() <= 3100)) {
 					boss->Phase3_Damage();
+				}
 			}
-			else {
+			else if (boss->ability_phase3.ReadSec() >= 5) {
 				for (std::list<Particle*>::iterator it = boss->fireballs.begin(); it != boss->fireballs.end(); it++) {
 					(*it)->to_delete = true;
 				}
+				boss->fireballs.clear();
 				boss->fireballs_created = false;
 				boss->starter_ability_phase3_timer = false;
 			}
@@ -423,8 +427,6 @@ void Unit::CheckPhase()
 		
 		break;
 	case boss_phase::asleep:
-		if (life == max_life)
-			state = entity_idle;
 		break;
 	}
 }

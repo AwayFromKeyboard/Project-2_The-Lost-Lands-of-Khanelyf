@@ -172,118 +172,73 @@ void BossAxeKnight::Phase2_Attack()
 
 void BossAxeKnight::Draw_Phase3()
 {
-	std::list<iPoint> visited;
+	std::list<iPoint> frontier;
 
-	visited.push_back(position);
+	if (position_map != range_visited.front())
+	{
+		range_visited.clear();
+		range_visited.push_back(position_map);
+		frontier.push_back(position_map);
+		for (int i = 0; i < PHASE3_RANGE; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[12];
+				if (LooksDiagonal()) {
+					neighbors[0] = position_map + iPoint(1 + i, 0);
+					neighbors[1] = position_map + iPoint(-1 - i, 0);
+					neighbors[2] = position_map + iPoint(0, 1 + i);
+					neighbors[3] = position_map + iPoint(0, -1 - i);
 
-	for (int i = 0; i < PHASE3_RANGE; ++i) {
-		iPoint neighbors[12];
-		if (LooksDiagonal()) {
-			neighbors[0] = position_map + iPoint(1 + i, 0);
-			neighbors[1] = position_map + iPoint(-1 - i, 0);
-			neighbors[2] = position_map + iPoint(0, 1 + i);
-			neighbors[3] = position_map + iPoint(0, -1 - i);
+					neighbors[4] = position_map + iPoint(1 + i, 1);
+					neighbors[5] = position_map + iPoint(-1 - i, 1);;
+					neighbors[6] = position_map + iPoint(1, 1 + i);
+					neighbors[7] = position_map + iPoint(1, -1 - i);
 
-			neighbors[4] = position_map + iPoint(1 + i, 1);
-			neighbors[5] = position_map + iPoint(-1 - i, 1);;
-			neighbors[6] = position_map + iPoint(1, 1 + i);
-			neighbors[7] = position_map + iPoint(1, -1 - i);
-
-			neighbors[8] = position_map + iPoint(1 + i, -1);
-			neighbors[9] = position_map + iPoint(-1 - i, -1);
-			neighbors[10] = position_map + iPoint(-1, 1 + i);
-			neighbors[11] = position_map + iPoint(-1, -1 - i);
-		}
-		else {
-			neighbors[0] = position_map + iPoint(1 + i, i);
-			neighbors[1] = position_map + iPoint(-1 - i, i);
-			neighbors[2] = position_map + iPoint(i, 1 + i);
-			neighbors[3] = position_map + iPoint(i, -1 - i);
-
-			neighbors[4] = position_map + iPoint(1 + i, -i);
-			neighbors[5] = position_map + iPoint(-1 - i, -i);
-			neighbors[6] = position_map + iPoint(-i, 1 + i);
-			neighbors[7] = position_map + iPoint(-i, -1 - i);
-
-			neighbors[8] = position_map + iPoint(i, i);
-			neighbors[9] = position_map + iPoint(-i, i);
-			neighbors[10] = position_map + iPoint(i, -i);
-			neighbors[11] = position_map + iPoint(-i, -i);
-		}
-
-		for (int k = 0; k < 12; k++) {
-			bool is_visited = false;
-			for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-				if (neighbors[k] == *it) {
-					is_visited = true;
-					break;
+					neighbors[8] = position_map + iPoint(1 + i, -1);
+					neighbors[9] = position_map + iPoint(-1 - i, -1);
+					neighbors[10] = position_map + iPoint(-1, 1 + i);
+					neighbors[11] = position_map + iPoint(-1, -1 - i);
 				}
-			}
-			if (!is_visited) {
-				visited.push_back(neighbors[k]);
+				else {
+					neighbors[0] = position_map + iPoint(1 + i, i);
+					neighbors[1] = position_map + iPoint(-1 - i, i);
+					neighbors[2] = position_map + iPoint(i, 1 + i);
+					neighbors[3] = position_map + iPoint(i, -1 - i);
+
+					neighbors[4] = position_map + iPoint(1 + i, -i);
+					neighbors[5] = position_map + iPoint(-1 - i, -i);
+					neighbors[6] = position_map + iPoint(-i, 1 + i);
+					neighbors[7] = position_map + iPoint(-i, -1 - i);
+
+					neighbors[8] = position_map + iPoint(i, i);
+					neighbors[9] = position_map + iPoint(-i, i);
+					neighbors[10] = position_map + iPoint(i, -i);
+					neighbors[11] = position_map + iPoint(-i, -i);
+				}
+
+				for (int k = 0; k < 12; k++) {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						range_visited.push_back(neighbors[k]);
+					}
+				}
 			}
 		}
 	}
-	for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+	for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
 		App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 	}
 }
 
 void BossAxeKnight::Phase3_Attack()
 {
-	std::list<iPoint> visited;
-
-	visited.push_back(position);
-
-	for (int i = 0; i < PHASE3_RANGE; ++i) {
-		iPoint neighbors[12];
-		if (LooksDiagonal()) {
-			neighbors[0] = position_map + iPoint(1 + i, 0);
-			neighbors[1] = position_map + iPoint(-1 - i, 0);
-			neighbors[2] = position_map + iPoint(0, 1 + i);
-			neighbors[3] = position_map + iPoint(0, -1 - i);
-
-			neighbors[4] = position_map + iPoint(1 + i, 1);
-			neighbors[5] = position_map + iPoint(-1 - i, 1);;
-			neighbors[6] = position_map + iPoint(1, 1 + i);
-			neighbors[7] = position_map + iPoint(1, -1 - i);
-
-			neighbors[8] = position_map + iPoint(1 + i, -1);
-			neighbors[9] = position_map + iPoint(-1 - i, -1);
-			neighbors[10] = position_map + iPoint(-1, 1 + i);
-			neighbors[11] = position_map + iPoint(-1, -1 - i);
-		}
-		else {
-			neighbors[0] = position_map + iPoint(1 + i, i);
-			neighbors[1] = position_map + iPoint(-1 - i, i);
-			neighbors[2] = position_map + iPoint(i, 1 + i);
-			neighbors[3] = position_map + iPoint(i, -1 - i);
-
-			neighbors[4] = position_map + iPoint(1 + i, -i);
-			neighbors[5] = position_map + iPoint(-1 - i, -i);
-			neighbors[6] = position_map + iPoint(-i, 1 + i);
-			neighbors[7] = position_map + iPoint(-i, -1 - i);
-
-			neighbors[8] = position_map + iPoint(i, i);
-			neighbors[9] = position_map + iPoint(-i, i);
-			neighbors[10] = position_map + iPoint(i, -i);
-			neighbors[11] = position_map + iPoint(-i, -i);
-		}
-
-		for (int k = 0; k < 12; k++) {
-			bool is_visited = false;
-			for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-				if (neighbors[k] == *it) {
-					is_visited = true;
-					break;
-				}
-			}
-			if (!is_visited) {
-				visited.push_back(neighbors[k]);
-			}
-		}
-	}
-	for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+	for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
 		Particle* part = App->particle->CreateParticle(particle_type::fire, RandomGenerate(0, 4), App->map->MapToWorldPoint(*it));
 		fireballs.push_back(part);
 		fireball_points.push_back(*it);
