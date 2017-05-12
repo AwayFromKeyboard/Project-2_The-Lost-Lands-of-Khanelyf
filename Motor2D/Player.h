@@ -133,6 +133,7 @@ private:
 	UI_Button* charge_ability = nullptr;
 
 public:
+	bool options_status = false;
 	bool pause_status = false;
 	bool button_on_clicked = false;
 
