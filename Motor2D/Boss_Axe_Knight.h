@@ -37,6 +37,8 @@ public:
 	void Draw_Phase3();
 	void Phase3_Attack();
 	void Phase3_Damage();
+	j1Timer damage_ticks;
+	bool tick_started = false;
 	std::list<iPoint> fireball_points;
 	std::list<Particle*> fireballs;
 

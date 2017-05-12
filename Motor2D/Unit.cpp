@@ -409,9 +409,20 @@ void Unit::CheckPhase()
 					boss->fireball_points.clear();
 					boss->Phase3_Attack();
 					boss->fireballs_created = true;
+					boss->tick_started = false;
 				}
-				else if ((boss->ability_phase3.Read() > 3000 && boss->ability_phase3.Read() <= 3100)) {
-					boss->Phase3_Damage();
+				else {
+					if (!boss->tick_started) {
+						boss->Phase3_Damage();
+						boss->damage_ticks.Start();
+						boss->tick_started = true;
+					}
+					else {
+						if (boss->damage_ticks.ReadSec() >= 0.75) {
+							boss->Phase3_Damage();
+							boss->damage_ticks.Start();
+						}
+					}
 				}
 			}
 			else if (boss->ability_phase3.ReadSec() >= 5) {
@@ -1027,9 +1038,46 @@ bool Unit::IsInsideCircle(int x, int y)
 
 bool Unit::LooksDiagonal()
 {
-	if (destination == south_east || destination == south_west || destination == north_east || destination == north_west)
-		return true;
-
-	return false;
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			return false;
+		}
+		else if (direction.y == 0.5)
+		{
+			return true;
+		}
+		else if (direction.y == -0.5)
+		{
+			return true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			return false;
+		}
+		else if (direction.y == -1)
+		{
+			return false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			return false;
+		}
+		else if (direction.y == 0.5)
+		{
+			return true;
+		}
+		else if (direction.y == -0.5)
+		{
+			return true;
+		}
+	}
 }
 
