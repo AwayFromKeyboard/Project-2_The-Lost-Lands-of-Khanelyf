@@ -62,6 +62,7 @@ public:
 private:
 	
 	UI_Image* pause_bg = nullptr;
+
 	UI_Button* back = nullptr;
 	UI_Button* options = nullptr;
 	UI_Button* save = nullptr;
@@ -69,7 +70,7 @@ private:
 	UI_Button* audio_button = nullptr;
 	UI_Button* controls_button = nullptr;
 	UI_Button* backpause = nullptr;
-	UI_Button* backoptions = nullptr;
+
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
 	UI_Text* save_txt = nullptr;
@@ -79,7 +80,29 @@ private:
 	UI_Text* controls_txt = nullptr;
 	UI_Text* audio_txt = nullptr;
 	UI_Text* backpause_txt = nullptr;
+
+	//Controls buttons and texts
+	UI_Image* controls_bg = nullptr;
+
+	UI_Button* backoptions = nullptr;;
+	UI_Button* battlecry_button_options = nullptr;
+	UI_Button* whirlwind_button_options = nullptr;
+	UI_Button* charge_button_options = nullptr;
+	UI_Button* move_map_up_button = nullptr;
+	UI_Button* move_map_down_button = nullptr;
+	UI_Button* move_map_left_button = nullptr;
+	UI_Button* move_map_right_button = nullptr;
+	UI_Button* create_group_button = nullptr;
+
 	UI_Text* backoptions_txt = nullptr;
+	UI_Text* battlecry_txt = nullptr;
+	UI_Text* whirlwind_txt = nullptr;
+	UI_Text* charge_txt = nullptr;
+	UI_Text* move_map_up_txt = nullptr;
+	UI_Text* move_map_down_txt = nullptr;
+	UI_Text* move_map_left_txt = nullptr;
+	UI_Text* move_map_right_txt = nullptr;
+	UI_Text* create_group_txt = nullptr;
 
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;

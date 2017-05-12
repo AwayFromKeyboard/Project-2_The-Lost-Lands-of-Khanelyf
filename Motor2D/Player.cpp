@@ -37,13 +37,14 @@ bool Player::Start()
 
 	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
 	
+	controls_bg = (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 3) + (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, { 271,2300,310,499 });
 	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
-	
-	backoptions = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
-	backoptions->AddImage("standard", { 25, 2695, 186, 31 });
+
+	backoptions = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	backoptions->AddImage("standard", { 592, 2722, 228, 21 });
 	backoptions->SetImage("standard");
-	backoptions->AddImage("clicked", { 25, 2768, 186, 31 });
-	backoptions->AddImage("hovered", { 26, 2732, 186, 31 });
+	backoptions->AddImage("clicked", { 592, 2746, 228, 21 });
+	backoptions->AddImage("hovered", { 592, 2770, 228, 21 });
 
 	audio_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
 	audio_button->AddImage("standard", { 25, 2695, 186, 31 });
@@ -67,7 +68,7 @@ bool Player::Start()
 	backpause_txt->SetText("Back");
 	backpause_txt->click_through = true;
 
-	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 70), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 18) }, App->font->default_15);
 	backoptions_txt->SetText("Back");
 	backoptions_txt->click_through = true;
 
@@ -132,7 +133,6 @@ bool Player::Start()
 	options_txt->SetText("Options");
 	options_txt->click_through = true;
 	pause_window->SetEnabledAndChilds(false);
-
 	//options 
 
 	//stats
@@ -399,6 +399,7 @@ bool Player::PreUpdate()
 		controls_button->SetImage("standard");
 
 		//quit options menu
+		pause_bg->SetEnabled(false);
 		audio_button->SetEnabled(false);
 		audio_button->click_through = true;
 		controls_button->SetEnabled(false);
@@ -410,6 +411,7 @@ bool Player::PreUpdate()
 		audio_txt->SetEnabled(false);
 
 		//active controls menu
+		controls_bg->SetEnabled(true);
 		backoptions->SetEnabled(true);
 		backoptions_txt->SetEnabled(true);
 	}
@@ -419,6 +421,7 @@ bool Player::PreUpdate()
 		backoptions->SetImage("standard");
 
 		//active options menu
+		pause_bg->SetEnabled(true);
 		audio_button->SetEnabled(true);
 		audio_button->click_through = false;
 		controls_button->SetEnabled(true);
@@ -430,6 +433,7 @@ bool Player::PreUpdate()
 		audio_txt->SetEnabled(true);
 
 		//quit controls menu
+		controls_bg->SetEnabled(false);
 		backoptions->SetEnabled(false);
 		backoptions_txt->SetEnabled(false);
 	}
@@ -455,6 +459,16 @@ bool Player::PreUpdate()
 	if (pause_status && !pause_window->enabled) {
 
 		pause_window->SetEnabledAndChilds(true);
+
+		controls_bg->SetEnabled(false);
+		audio_button->SetEnabled(false);
+		controls_button->SetEnabled(false);
+		backpause->SetEnabled(false);
+		controls_txt->SetEnabled(false);
+		backpause_txt->SetEnabled(false);
+		audio_txt->SetEnabled(false);
+		backoptions->SetEnabled(false);
+		backoptions_txt->SetEnabled(false);
 				
 	}
 	else if((!pause_status && pause_window->enabled)){
