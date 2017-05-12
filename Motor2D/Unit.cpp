@@ -19,6 +19,8 @@
 #include "Player.h"
 #include "Building.h"
 #include "Boss_Axe_Knight.h"
+#include "Particle.h"
+#include "ParticleManager.h"
 
 Unit::Unit()
 {
@@ -93,14 +95,12 @@ bool Unit::Update(float dt)
 		if (is_boss && life > 0) {
 			CheckPhase();
 
-			boss->Draw_Phase3();
-
 			if (phase == phase_1 && life < max_life * 75 / 100)
-				phase = phase_2;
-			else if (phase == phase_2 && life < max_life * 50 / 100)
+				phase = phase_3;
+			else if (phase == phase_3 && life < max_life * 50 / 100)
 				phase = phase_3;
 			else if (phase == phase_3 && life < max_life * 25 / 100)
-				phase = last_phase;
+				phase = phase_3;
 		}
 		
 
@@ -377,22 +377,52 @@ void Unit::CheckPhase()
 	case boss_phase::phase_1:
 		break;
 	case boss_phase::phase_2:
-		if (!boss->starter_ability_phase2_timer) {
-			boss->ability_phase2.Start();
-			boss->starter_ability_phase2_timer = true;
+		if (attacked_unit != nullptr) {
+			if (!boss->starter_ability_phase2_timer) {
+				boss->ability_phase2.Start();
+				boss->starter_ability_phase2_timer = true;
+			}
+			else if (boss->ability_phase2.ReadSec() >= 4) {
+				// Charge to random enemy
+				boss->Phase2_Attack();
+				boss->starter_ability_phase2_timer = false;
+			}
+			else if (boss->ability_phase2.ReadSec() >= 2) {
+				boss->Draw_Phase2();
+			}
 		}
-		else if (boss->ability_phase2.ReadSec() >= 4) {
-			// Charge to random enemy
-			boss->Phase2_Attack();
-			boss->starter_ability_phase2_timer = false;
+		else {
+			phase = asleep;
 		}
-		else if (boss->ability_phase2.ReadSec() >= 2) {
-			boss->Draw_Phase2();
-		}
-
 		break;
 	case boss_phase::phase_3:
-		
+		if (attacked_unit != nullptr) {
+			if (!boss->starter_ability_phase3_timer) {
+				boss->ability_phase3.Start();
+				boss->starter_ability_phase3_timer = true;
+			}
+			if (boss->ability_phase2.ReadSec() >= 2 && boss->ability_phase2.ReadSec() < 4) {
+				boss->Draw_Phase3();
+			}
+			if (!boss->fireballs_created && boss->ability_phase3.ReadSec() >= 4 && boss->ability_phase3.ReadSec() < 6) {
+				boss->fireball_points.clear();
+				boss->Phase3_Attack();
+				boss->fireballs_created = true;
+			}
+			else if (boss->fireballs_created) {
+				boss->Phase3_Damage();
+			}
+			if (boss->ability_phase3.ReadSec() >= 6) {
+				for (std::list<Particle*>::iterator it = boss->fireballs.begin(); it != boss->fireballs.end(); it++) {
+					App->particle->DeleteParticle(*it);
+				}
+				boss->fireballs_created = false;
+				boss->starter_ability_phase3_timer = false;
+			}
+		}
+		else {
+			phase = asleep;
+		}
 		break;
 	case boss_phase::last_phase:
 		

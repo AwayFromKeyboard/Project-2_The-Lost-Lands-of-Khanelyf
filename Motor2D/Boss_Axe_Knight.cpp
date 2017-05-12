@@ -8,6 +8,8 @@
 #include "j1Collisions.h"
 #include "j1Scene.h"
 #include "SceneTest.h"
+#include "ParticleManager.h"
+#include "Particle.h"
 
 BossAxeKnight::BossAxeKnight(entity_type _type)
 {
@@ -211,4 +213,60 @@ void BossAxeKnight::Draw_Phase3()
 
 void BossAxeKnight::Phase3_Attack()
 {
+	std::list<iPoint> visited;
+
+	visited.push_back(position);
+
+	for (int i = 0; i < PHASE3_RANGE; ++i) {
+		iPoint neighbors[12];
+		neighbors[0] = position_map + iPoint(1 + i, 0);
+		neighbors[1] = position_map + iPoint(-1 - i, 0);
+		neighbors[2] = position_map + iPoint(0, 1 + i);
+		neighbors[3] = position_map + iPoint(0, -1 - i);
+
+		neighbors[4] = position_map + iPoint(1 + i, i);
+		neighbors[5] = position_map + iPoint(-1 - i, i);
+		neighbors[6] = position_map + iPoint(i, 1 + i);
+		neighbors[7] = position_map + iPoint(i, -1 - i);
+
+		neighbors[8] = position_map + iPoint(1 + i, -i);
+		neighbors[9] = position_map + iPoint(-1 - i, -i);
+		neighbors[10] = position_map + iPoint(-i, 1 + i);
+		neighbors[11] = position_map + iPoint(-i, -1 - i);
+
+		for (int k = 0; k < 12; k++) {
+			bool is_visited = false;
+			for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+				if (neighbors[k] == *it) {
+					is_visited = true;
+					break;
+				}
+			}
+			if (!is_visited) {
+				visited.push_back(neighbors[k]);
+			}
+		}
+	}
+	for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+		Particle* part = App->particle->CreateParticle(particle_type::fire, RandomGenerate(0, 4), App->map->MapToWorldPoint(*it));
+		fireballs.push_back(part);
+		fireball_points.push_back(*it);
+	}
+
+}
+
+void BossAxeKnight::Phase3_Damage()
+{
+	for (std::list<iPoint>::iterator it = fireball_points.begin(); it != fireball_points.end(); it++) {
+		for (std::list<Entity*>::iterator it2 = App->entity->entity_list.begin(); it2 != App->entity->entity_list.end(); it2++) {
+			if ((*it2)->type == entity_type::ally || (*it2)->type == entity_type::player) {
+				if (App->map->WorldToMapPoint((*it2)->position) == *it) {
+					(*it2)->life -= PHASE3_DAMAGE;
+					if ((*it2)->life <= 0)
+						(*it2)->state = entity_state::entity_death;
+				}
+			}
+		}
+	}
+
 }

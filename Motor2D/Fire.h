@@ -19,6 +19,7 @@ private:
 
 public:
 	int set = 0;
+	iPoint offset = NULLPOINT;
 
 	Animation* current_animation;
 	// Idle

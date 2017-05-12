@@ -199,26 +199,6 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_1) == key_down)
-	{
-		Fire* brokenbuilding = (Fire*)App->particle->CreateParticle(particle_type::fire, 0, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_2) == key_down)
-	{
-		Fire* brokenbuilding = (Fire*)App->particle->CreateParticle(particle_type::fire, 1, App->map->MapToWorld(p.x, p.y));
-	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_3) == key_down)
-	{
-		Fire* brokenbuilding = (Fire*)App->particle->CreateParticle(particle_type::fire, 2, App->map->MapToWorld(p.x, p.y));
-	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_4) == key_down)
-	{
-		Fire* brokenbuilding = (Fire*)App->particle->CreateParticle(particle_type::fire, 3, App->map->MapToWorld(p.x, p.y));
-	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_5) == key_down)
-	{
-		Fire* brokenbuilding = (Fire*)App->particle->CreateParticle(particle_type::fire, 4, App->map->MapToWorld(p.x, p.y));
-	}
 }
 
 void SceneTest::IncreaseGold(int gold)

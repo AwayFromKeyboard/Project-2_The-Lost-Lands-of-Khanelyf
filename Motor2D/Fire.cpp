@@ -19,7 +19,7 @@ Fire::~Fire()
 
 bool Fire::Draw(float dt)
 {
-	App->scene->LayerBlit(10, entity_texture, { position.x, position.y }, current_animation->GetAnimationFrame(dt), -1.0);
+	App->scene->LayerBlit(10, entity_texture, { position.x + offset.x, position.y + offset.y }, current_animation->GetAnimationFrame(dt), -1.0);
 
 	return true;
 }
@@ -43,6 +43,7 @@ bool Fire::LoadParticle(iPoint pos)
 	if (node)
 	{
 		position = { pos.x, pos.y };
+		offset = { node.child("offset").attribute("x").as_int(), node.child("offset").attribute("y").as_int() };
 		entity_texture = App->tex->LoadTexture(node.child("texture").attribute("path").as_string());
 		node = node.child("animations");
 		animator->LoadFireAnimationsFromParticlesXML(node, this);
