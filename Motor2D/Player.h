@@ -69,6 +69,7 @@ private:
 	UI_Button* audio_button = nullptr;
 	UI_Button* controls_button = nullptr;
 	UI_Button* backpause = nullptr;
+	UI_Button* backoptions = nullptr;
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
 	UI_Text* save_txt = nullptr;
@@ -78,6 +79,7 @@ private:
 	UI_Text* controls_txt = nullptr;
 	UI_Text* audio_txt = nullptr;
 	UI_Text* backpause_txt = nullptr;
+	UI_Text* backoptions_txt = nullptr;
 
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;

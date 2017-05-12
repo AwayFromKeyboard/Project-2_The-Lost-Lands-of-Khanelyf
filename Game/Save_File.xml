@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<game_state>
+	<file_system />
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<map />
+	<pathfinding />
+	<fonts />
+	<console />
+	<entities>
+		<Enemies>
+			<Enemy name="2">
+				<Position x="2976" y="1808" />
+			</Enemy>
+			<Enemy name="2">
+				<Position x="1184" y="944" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-64" y="608" />
+			</Enemy>
+			<Enemy name="2">
+				<Position x="2560" y="1984" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-416" y="528" />
+			</Enemy>
+			<Enemy name="2">
+				<Position x="-160" y="656" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-384" y="608" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-288" y="656" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="480" y="1840" />
+			</Enemy>
+			<Enemy name="2">
+				<Position x="320" y="1920" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-1120" y="1392" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-1568" y="1424" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-1408" y="1536" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-1152" y="1696" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="-1760" y="1520" />
+			</Enemy>
+			<Enemy name="2">
+				<Position x="352" y="2864" />
+			</Enemy>
+			<Enemy name="1">
+				<Position x="384" y="3072" />
+			</Enemy>
+		</Enemies>
+		<NPCs>
+			<NPC name="1">
+				<Position x="-1664" y="2016" />
+			</NPC>
+		</NPCs>
+		<Ally_Buildings>
+			<Ally_Building name="5">
+				<Position x="-1376" y="1360" />
+				<Rect number="2" />
+			</Ally_Building>
+			<Ally_Building name="5">
+				<Position x="-1728" y="1376" />
+				<Rect number="3" />
+			</Ally_Building>
+			<Ally_Building name="5">
+				<Position x="-1600" y="1600" />
+				<Rect number="2" />
+			</Ally_Building>
+		</Ally_Buildings>
+		<Enemy_Buildings>
+			<Enemy_Building name="5">
+				<Position x="1856" y="1024" />
+				<Rect number="3" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="1920" y="1280" />
+				<Rect number="3" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="2432" y="1568" />
+				<Rect number="2" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="1568" y="1168" />
+				<Rect number="1" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="2080" y="1456" />
+				<Rect number="1" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="1824" y="1424" />
+				<Rect number="2" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="-288" y="496" />
+				<Rect number="3" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="-160" y="560" />
+				<Rect number="1" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="2112" y="1696" />
+				<Rect number="1" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="352" y="1776" />
+				<Rect number="1" />
+			</Enemy_Building>
+			<Enemy_Building name="5">
+				<Position x="256" y="2976" />
+				<Rect number="2" />
+			</Enemy_Building>
+		</Enemy_Buildings>
+		<Objects />
+	</entities>
+	<player>
+		<Hero>
+			<Position x="-1664" y="2208" />
+			<Stats current_hp="100" max_hp="100" damage="20" armor="10" pierce_armor="0" />
+			<Misc level_up_Points="0" gold="0" human_resources="0" max_human_resources="15" />
+		</Hero>
+		<Allies />
+	</player>
+	<scene />
+	<Questmanager>
+		<Current_Quest ID="0" Progress="0" />
+		<Dialogues>
+			<id value="0" />
+			<NPCstate value="0" />
+			<DialogueStep value="0" />
+		</Dialogues>
+	</Questmanager>
+	<Minimap />
+	<gui />
+	<renderer>
+		<camera x="2200" y="-1850" />
+	</renderer>
+</game_state>
