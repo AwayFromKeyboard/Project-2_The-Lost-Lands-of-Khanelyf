@@ -11,6 +11,11 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "BrokenBuilding.h"
+#include "SceneTest.h"
+#include "j1Scene.h"
+#include "QuestManager.h"
+#include "Tower.h"
 
 j1Entity::j1Entity()
 {
@@ -78,7 +83,8 @@ bool j1Entity::PostUpdate()
 		}
 	}
 
-	App->collisions->DebugDraw();
+	if (loaded && !App->player->pause_status)
+		App->collisions->DebugDraw();
 
 	return ret;
 }
@@ -111,8 +117,8 @@ bool j1Entity::CleanUp()
 
 void j1Entity::OnCollision(Collider* col1, Collider* col2)
 {
-	for (list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
-		(*it)->OnColl(col1, col2);
+	if (col1 != nullptr && col2 != nullptr)
+		col2->parent->OnColl(col2->parent, col1->parent);
 }
 
 bool j1Entity::Load(pugi::xml_node& data)
@@ -120,6 +126,7 @@ bool j1Entity::Load(pugi::xml_node& data)
 	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 		(*it)->to_delete = true;
 	}
+	App->collisions->colliders.clear();
 
 	pugi::xml_node enemies = data.child("Enemies");
 	pugi::xml_node npcs = data.child("NPCs");
@@ -217,6 +224,8 @@ bool j1Entity::Load(pugi::xml_node& data)
 
 	App->player->Load(player);
 
+	loaded = true;
+
 	return true;
 }
 
@@ -300,6 +309,12 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case provisions:
 		ret = new Provisions(type);
 		break;
+	case broken_building:
+		ret = new BrokenBuilding(type);
+		break;
+	case towers:
+		ret = new Tower(type);
+		break;
 	default:
 		break;
 	}
@@ -316,7 +331,7 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	return ret;
 }
 
-Entity* j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
+Entity * j1Entity::CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number)
 {
 	Entity* ret = nullptr;
 
@@ -355,7 +370,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 
 		iPoint unit = (*it)->position;
 
-		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
 			{
@@ -375,16 +390,13 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
-				if ((*it)->GetType() == building) {
-					App->entity->UnselectEverything();
-					App->player->barracks_ui_window->SetEnabledAndChilds(true);
-					(*it)->SetSelected(true);
-				}
-				else {
-					if (App->player->barracks_ui_window->enabled)
-						App->player->barracks_ui_window->SetEnabledAndChilds(false);
-					selected.push_back((Unit*)*it);
-				}
+			{
+				if (App->player->barracks_ui_window->enabled)
+					App->player->barracks_ui_window->SetEnabledAndChilds(false);
+				if (App->player->brokenbuilding_ui_window->enabled)
+					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				selected.push_back((Unit*)*it);
+			}
 		}
 	}
 }
@@ -404,6 +416,8 @@ void j1Entity::UnselectEverything()
 	}
 	if (App->player->barracks_ui_window->enabled)
 		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+	if (App->player->brokenbuilding_ui_window->enabled)
+		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	selected.clear();
 }

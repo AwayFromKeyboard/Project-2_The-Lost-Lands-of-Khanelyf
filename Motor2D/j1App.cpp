@@ -165,10 +165,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (App->player->quit_game->MouseClickEnterLeft())
-		ret = false;
-
-	if(input->GetWindowEvent(we_quit) == true || end_program)
+	if(input->GetWindowEvent(we_quit) == true || end_program || stop_exe)
 		ret = false;
 
 	if(ret == true)

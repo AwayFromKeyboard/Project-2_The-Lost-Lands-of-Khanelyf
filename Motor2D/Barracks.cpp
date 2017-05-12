@@ -34,7 +34,12 @@ bool Barracks::LoadEntity(iPoint pos, entity_name name)
 	App->LoadXML("Buildings.xml", doc);
 	for (pugi::xml_node building = doc.child("buildings").child("building"); building; building = building.next_sibling("building"))
 	{
-		if (TextCmp(building.attribute("type").as_string(), "Barracks"))
+		if (TextCmp(building.attribute("type").as_string(), "Barracks") && type == entity_type::building)
+		{
+			node = building;
+			break;
+		}
+		if (TextCmp(building.attribute("type").as_string(), "enemy_Barracks") && type == entity_type::enemy_building)
 		{
 			node = building;
 			break;
@@ -46,12 +51,13 @@ bool Barracks::LoadEntity(iPoint pos, entity_name name)
 
 		position = {pos.x, pos.y};
 		App->player->barracks_position = position;
-		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_UNIT, App->collisions);
+		collision = App->collisions->AddCollider({ position.x, position.y, node.child("collision_box").attribute("w").as_int(), node.child("collision_box").attribute("h").as_int() }, COLLIDER_BUILDING, App->entity);
 		collision->offset_x = node.child("collision_box").attribute("offset_x").as_int();
 		collision->offset_y = node.child("collision_box").attribute("offset_y").as_int();
+		collision->parent = this;
 
 		cost = node.child("cost").attribute("value").as_int();
-		tex_rect = { 0, 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
+		tex_rect = { node.child("rect").attribute("x").as_int(), 0, node.child("rect").attribute("w").as_int(), node.child("rect").attribute("h").as_int() };
 
 		offset = iPoint(node.child("offset").attribute("offset_x").as_int(), node.child("offset").attribute("offset_y").as_int());
 

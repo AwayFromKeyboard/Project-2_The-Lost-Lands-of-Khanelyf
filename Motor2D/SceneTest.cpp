@@ -23,6 +23,7 @@
 #include "Minimap.h"
 #include "Object.h"
 #include "Player.h"
+#include "BrokenBuilding.h"
 
 SceneTest::SceneTest()
 {
@@ -163,10 +164,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_B) == key_down)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= barrack->cost;
+
 		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
@@ -184,10 +185,13 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
-	if ((App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down) || (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true))
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down)
 	{
-		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
-		App->questmanager->create_provision = false;
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	if (App->input->GetKey(SDL_SCANCODE_N) == key_down)
+	{
+		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 }
 

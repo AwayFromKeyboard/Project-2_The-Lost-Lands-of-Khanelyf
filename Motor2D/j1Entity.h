@@ -6,7 +6,6 @@
 #include "Point.h"
 
 class b2Fixture;
-class PhysBody;
 
 enum entity_name
 {
@@ -14,8 +13,10 @@ enum entity_name
 	barbarian,
 	swordsman,
 	barracks,
+	broken_building,
 	provisions,
 	basic_building,
+	towers,
 	test
 };
 
@@ -96,6 +97,7 @@ public:
 	std::list<SelectedList> lists_selected;
 	std::list<Unit*> selected;
 	//std::list<Props*> props;
+	bool loaded = true;
 };
 
 #endif // __j1ENTITY_H__

@@ -80,6 +80,7 @@
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="BasicBuilding.cpp" />
+    <ClCompile Include="BrokenBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -115,6 +116,7 @@
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Swordsman.cpp" />
+    <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +124,7 @@
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
     <ClInclude Include="BasicBuilding.h" />
+    <ClInclude Include="BrokenBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="DialogueManager.h" />
@@ -163,6 +166,7 @@
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Swordsman.h" />
+    <ClInclude Include="Tower.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>

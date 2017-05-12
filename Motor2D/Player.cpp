@@ -19,6 +19,10 @@
 #include "Object.h"
 #include "Building.h"
 #include "Minimap.h"
+#include "Barracks.h"
+#include "BasicBuilding.h"
+#include "Functions.h"
+#include "QuestManager.h"
 
 Player::Player()
 {
@@ -240,7 +244,9 @@ bool Player::Start()
 	levelup_window->SetEnabledAndChilds(false);
 
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
+	brokenbuilding_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(480, 200), 225, 144, 11);
 
+	//Buttons for barracks
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
@@ -262,6 +268,30 @@ bool Player::Start()
 	swordsman_img->click_through = true;
 
 	barracks_ui_window->SetEnabledAndChilds(false);
+
+	//Buttons for brokenbuilding
+
+	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(485, 500), 60, 60);
+	create_building_button->AddImage("standard", { 705, 0, 60, 60 });
+	create_building_button->SetImage("standard");
+	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
+
+	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(584, 500), 60, 60);
+	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
+	create_building_button2->SetImage("standard");
+	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
+
+	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(497, 510), 37, 36);
+	barrack_img->AddImage("standard", { 808, 48, 39, 38 });
+	barrack_img->SetImage("standard");
+	barrack_img->click_through = true;
+
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(595, 515), 37, 36);
+	house_img->AddImage("standard", { 847, 52, 37, 33 });
+	house_img->SetImage("standard");
+	house_img->click_through = true;
+
+	brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	//player abilities
 
@@ -320,11 +350,94 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
-	
+
+	if (hero->life <= 0) {
+		App->stop_exe = true;
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 	{
-		pause_status = !pause_status;
+		
+		if (change_controls_status)
+		{
+			change_controls_status = false;
+
+			button_on_clicked = false;
+			backoptions->SetImage("standard");
+
+			//active options menu
+			pause_bg->SetEnabled(true);
+			audio_button->SetEnabled(true);
+			audio_button->click_through = false;
+			controls_button->SetEnabled(true);
+			controls_button->click_through = false;
+			backpause->SetEnabled(true);
+			backpause->click_through = false;
+			controls_txt->SetEnabled(true);
+			backpause_txt->SetEnabled(true);
+			audio_txt->SetEnabled(true);
+
+			//quit controls menu
+			controls_bg->SetEnabled(false);
+			backoptions->SetEnabled(false);
+			battlecry_button_options->SetEnabled(false);
+			whirlwind_button_options->SetEnabled(false);
+			charge_button_options->SetEnabled(false);
+			move_map_up_button->SetEnabled(false);
+			move_map_down_button->SetEnabled(false);
+			move_map_left_button->SetEnabled(false);
+			move_map_right_button->SetEnabled(false);
+			create_group_button->SetEnabled(false);
+
+			backoptions_txt->SetEnabled(false);
+			battlecry_txt->SetEnabled(false);
+			whirlwind_txt->SetEnabled(false);
+			charge_txt->SetEnabled(false);
+			move_map_up_txt->SetEnabled(false);
+			move_map_down_txt->SetEnabled(false);
+			move_map_left_txt->SetEnabled(false);
+			move_map_right_txt->SetEnabled(false);
+			create_group_txt->SetEnabled(false);
+		}
+		else if (audio_status)
+		{
+
+		}
+		else if (options_status)
+		{
+			options_status = false;
+
+			button_on_clicked = false;
+			backpause->SetImage("standard");
+
+			//active initial pause menu
+			save->SetEnabled(true);
+			save->click_through = false;
+			load->SetEnabled(true);
+			load->click_through = false;
+			quit_game->SetEnabled(true);
+			quit_game->click_through = false;
+			back->SetEnabled(true);
+			back->click_through = false;
+			options->SetEnabled(true);
+			options->click_through = false;
+			save_txt->SetEnabled(true);
+			load_txt->SetEnabled(true);
+			options_txt->SetEnabled(true);
+			quit_txt->SetEnabled(true);
+			back_txt->SetEnabled(true);
+
+			//quit options menu
+			audio_button->SetEnabled(false);
+			controls_button->SetEnabled(false);
+			backpause->SetEnabled(false);
+
+			controls_txt->SetEnabled(false);
+			backpause_txt->SetEnabled(false);
+			audio_txt->SetEnabled(false);
+		}
+		else
+			pause_status = !pause_status;
 	}
 
 	if (audio_button->MouseClickEnterLeft())
@@ -335,6 +448,7 @@ bool Player::PreUpdate()
 	}
 	else if (controls_button->MouseClickEnterLeft())
 	{
+		change_controls_status = true;
 		controls_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
@@ -349,18 +463,18 @@ bool Player::PreUpdate()
 	{
 		back->SetImage("clicked");
 		button_clicked.Start();
-		button_on_clicked = true;	
+		button_on_clicked = true;
 	}
 	else if (load->MouseClickEnterLeft())
 	{
 		load->SetImage("clicked");
+		App->entity->loaded = false;
 		App->LoadGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
 	else if (options->MouseClickEnterLeft() && pause_status)
 	{
-
 		options_status = true;
 		options->SetImage("clicked");
 		button_clicked.Start();
@@ -450,10 +564,10 @@ bool Player::PreUpdate()
 	{
 		pause_status = !pause_status;
 		button_on_clicked = false;
-		back->SetImage("standard");			
+		back->SetImage("standard");
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && options->CompareState("clicked"))
-	{
+
+	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || options->CompareState("clicked"))) {
 		button_on_clicked = false;
 		options->SetImage("standard");
 
@@ -485,6 +599,8 @@ bool Player::PreUpdate()
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backpause->CompareState("clicked"))
 	{
+		options_status = false;
+
 		button_on_clicked = false;
 		backpause->SetImage("standard");
 
@@ -557,6 +673,8 @@ bool Player::PreUpdate()
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
 	{
+		change_controls_status = false;
+
 		button_on_clicked = false;
 		backoptions->SetImage("standard");
 
@@ -638,7 +756,7 @@ bool Player::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
 		App->debug_mode = !App->debug_mode;
 
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_F2) == key_down && App->debug_mode)
 		App->gui->debug = !App->gui->debug;
 	else if (!App->debug_mode)
@@ -654,7 +772,6 @@ bool Player::PreUpdate()
 
 	//pause
 	if (pause_status && !pause_window->enabled) {
-
 		pause_window->SetEnabledAndChilds(true);
 
 		controls_bg->SetEnabled(false);
@@ -685,10 +802,10 @@ bool Player::PreUpdate()
 		move_map_left_txt->SetEnabled(false);
 		move_map_right_txt->SetEnabled(false);
 		create_group_txt->SetEnabled(false);
-
 				
 	}
-	else if((!pause_status && pause_window->enabled)){
+
+	else if ((!pause_status && pause_window->enabled)) {
 		pause_window->SetEnabledAndChilds(false);
 	}
 	
@@ -755,9 +872,9 @@ bool Player::PreUpdate()
 	//backbutton
 	if (back->MouseEnter())
 		back->SetImage("hovered");
-	else if(back->MouseOut() && back->CompareState("hovered"))
+	else if (back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
-	
+
 	//savebutton
 	if (save->MouseEnter())
 		save->SetImage("hovered");
@@ -782,14 +899,17 @@ bool Player::PreUpdate()
 		quit_game->SetImage("hovered");
 	else if (quit_game->MouseOut())
 		quit_game->SetImage("standard");
-	
-	if (quit_game->MouseClickEnterLeft()) 
+
+	if (quit_game->MouseClickEnterLeft()) {
 		quit_game->SetImage("clicked");
+		App->stop_exe = true;
+	}
 	
 	if (!pause_status) {
 		if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
 			hero->levelup_points += 5;
 
+		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 			create_unit_button->SetImage("clicked");
 
@@ -812,6 +932,61 @@ bool Player::PreUpdate()
 				App->scene->scene_test->current_human_resources += sword->human_cost;
 			}
 		}
+
+		if (create_unit_button2->MouseClickOutLeft()) {
+			create_unit_button2->SetImage("standard");
+		}
+
+		//Brokenbuilding create building buttons
+		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode)) {
+			create_building_button->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 90;	//Barracks cost
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				if ((*it)->GetSelected())
+				{
+					iPoint pos = (*it)->position;
+					(*it)->state = entity_death;
+					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
+					brokenbuilding_ui_window->SetEnabledAndChilds(false);
+					App->scene->scene_test->create_barrack = false;
+					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+						App->questmanager->GetCurrentQuest()->progress++;
+					}
+				}
+			}
+			
+		}
+		if (create_building_button->MouseClickOutLeft()) {
+			create_building_button->SetImage("standard");
+		}
+
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode)) {
+			create_building_button2->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 30;	//Basic Building cost
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				if ((*it)->GetSelected())
+				{
+					iPoint pos = (*it)->position;
+					(*it)->state = entity_death;
+					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
+					brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				}
+			}
+
+		}
+
+		if (create_building_button2->MouseClickOutLeft()) {
+			create_building_button2->SetImage("standard");
+		}
+
 		//player abilities
 		if (!hero->is_holding_object)
 		{
@@ -835,9 +1010,6 @@ bool Player::PreUpdate()
 			if (App->input->GetKey(SDL_SCANCODE_C) == key_up) {
 				draw_whirlwind_range = false;
 				range_visited.clear();
-			}
-			if (create_unit_button2->MouseClickOutLeft()) {
-				create_unit_button2->SetImage("standard");
 			}
 
 			//player abilities
@@ -919,12 +1091,12 @@ bool Player::PreUpdate()
 					charge_ability->SetImage("standard");
 				}
 			}
-			//Object interface
+		}
 
-			if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-			{
-				GetHero()->DropObject();
-			}
+		//Object interface
+		if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+		{
+			GetHero()->DropObject();
 		}
 	}
 	return ret;
@@ -943,14 +1115,26 @@ bool Player::Update(float dt)
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 				Collider* unit = (*it)->GetCollider();
 
-				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
-					(*it)->SetSelected(true);
+				if (unit != nullptr)
+				{
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
+						(*it)->SetSelected(true);
+					}
 				}
 				if ((*it)->GetSelected()) {
-					if ((*it)->GetType() == building) {
+					if ((*it)->GetType() == building && (*it)->name == barracks) {
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 						barracks_ui_window->SetEnabledAndChilds(true);
+						break;
+					}
+					else if ((*it)->GetType() == building && (*it)->name == broken_building)
+					{
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
+							brokenbuilding_ui_window->SetEnabledAndChilds(true);
+						}
 						break;
 					}
 					else {
@@ -972,38 +1156,41 @@ bool Player::Update(float dt)
 			{
 				Collider* unit = (*it)->GetCollider();
 
-				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-					switch ((*it)->GetType())
-					{
-					case entity_type::ally:
-						MoveToTile(p);
-						mouse_over_entity = true;
-						break;
-					case entity_type::enemy:
-						SetAttackingEnemy((Unit*)*it);
-						mouse_over_entity = true;
-						break;
-					case entity_type::npc:
-						MoveToTile(p);
-						mouse_over_entity = true;
-						break;
-					case entity_type::player:
-						MoveToTile(p);
-						mouse_over_entity = true;
-						break;
-					case entity_type::building:
-						mouse_over_entity = true;
-						break;
-					case entity_type::object:
-						SetPickingObject((Object*)*it);
-						mouse_over_entity = true;
-						break;
-					case entity_type::enemy_building:
-						SetAttackingBuilding((Building*)*it);
-						mouse_over_entity = true;
-						break;
-					default:
-						break;
+				if (unit != nullptr)
+				{
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
+						switch ((*it)->GetType())
+						{
+						case entity_type::ally:
+							MoveToTile(p);
+							mouse_over_entity = true;
+							break;
+						case entity_type::enemy:
+							SetAttackingEnemy((Unit*)*it);
+							mouse_over_entity = true;
+							break;
+						case entity_type::npc:
+							MoveToTile(p);
+							mouse_over_entity = true;
+							break;
+						case entity_type::player:
+							MoveToTile(p);
+							mouse_over_entity = true;
+							break;
+						case entity_type::building:
+							mouse_over_entity = true;
+							break;
+						case entity_type::object:
+							SetPickingObject((Object*)*it);
+							mouse_over_entity = true;
+							break;
+						case entity_type::enemy_building:
+							SetAttackingBuilding((Building*)*it);
+							mouse_over_entity = true;
+							break;
+						default:
+							break;
+						}
 					}
 				}
 
@@ -1205,6 +1392,7 @@ void Player::UpdateAttributes() {
 			if (life_button->MouseClickEnterLeft()) {
 				hero->levelup_points -= 1;
 				hero->life += 20;
+				hero->max_life += 20;
 			}
 			else if (damage_button->MouseClickEnterLeft()) {
 				hero->levelup_points -= 1;
@@ -1258,22 +1446,25 @@ void Player::Battlecry() {
 			frontier.pop_front();
 
 			for (int k = 0; k < 4; k++) {
-				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
-					buffed_list.push_back(found);
-					found->buffed = true;
-				}
-				else {
-					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
-							is_visited = true;
-							break;
-						}
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+				{
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
+						buffed_list.push_back(found);
+						found->buffed = true;
 					}
-					if (!is_visited) {
-						frontier.push_back(neighbors[k]);
-						visited.push_back(neighbors[k]);
+					else {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							visited.push_back(neighbors[k]);
+						}
 					}
 				}
 			}
@@ -1310,24 +1501,26 @@ void Player::Whirlwind()
 			frontier.pop_front();
 
 			for (int k = 0; k < 4; k++) {
-				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-				if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
-					found->life -= WHIRLWIND_DAMAGE;
-					if (found->life <= 0)
-						found->state = entity_death;
-					found->damaged_by_whirlwind = true;
-				}
-				else {
-					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
-							is_visited = true;
-							break;
-						}
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+					if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
+						found->life -= WHIRLWIND_DAMAGE;
+						if (found->life <= 0)
+							found->state = entity_death;
+						found->damaged_by_whirlwind = true;
 					}
-					if (!is_visited) {
-						frontier.push_back(neighbors[k]);
-						visited.push_back(neighbors[k]);
+					else {
+						bool is_visited = false;
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+							if (neighbors[k] == *it) {
+								is_visited = true;
+								break;
+							}
+						}
+						if (!is_visited) {
+							frontier.push_back(neighbors[k]);
+							visited.push_back(neighbors[k]);
+						}
 					}
 				}
 			}
@@ -1356,63 +1549,64 @@ void Player::Charge()
 		neighbors[7] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, -1 - i);
 
 		for (int k = 0; k < 8; k++) {
+			if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 
-			Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
+				//if (found != nullptr)
+				//	col = found->GetCollider();
+				//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
 
-			//if (found != nullptr)
-			//	col = found->GetCollider();
-			//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
+				if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
+				{
+					GetHero()->speed += CHARGE_SPEED;
+					GetHero()->damage += CHARGE_DAMAGE;
+					charge_speed_buff = true;
+					charge_damage_buff = true;
 
-			if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
-			{
-				GetHero()->speed += CHARGE_SPEED;
-				GetHero()->damage += CHARGE_DAMAGE;
-				charge_speed_buff = true;
-				charge_damage_buff = true;
-
-				switch (k) {
-				case 0:
-					MoveToTile(found->position_map + iPoint(-1, 0));
-					break;
-				case 1:
-					MoveToTile(found->position_map + iPoint(1, 0));
-					break;
-				case 2:
-					MoveToTile(found->position_map + iPoint(0, -1));
-					break;
-				case 3:
-					MoveToTile(found->position_map + iPoint(0, 1));
-					break;
-				case 4:
-					MoveToTile(found->position_map + iPoint(-1, -1));
-					break;
-				case 5:
-					MoveToTile(found->position_map + iPoint(-1, 1));
-					break;
-				case 6:
-					MoveToTile(found->position_map + iPoint(1, -1));
-					break;
-				case 7:
-					MoveToTile(found->position_map + iPoint(1, 1));
-					break;
-				}
-
-				charge_ability->SetImage("clicked");
-				charge_cd->SetEnabled(true);
-				charge_timer.Start();
-
-			}
-			else
-			{
-				bool is_visited = false;
-				for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-					if (neighbors[k] == *it) {
-						is_visited = true;
+					switch (k) {
+					case 0:
+						MoveToTile(found->position_map + iPoint(-1, 0));
+						break;
+					case 1:
+						MoveToTile(found->position_map + iPoint(1, 0));
+						break;
+					case 2:
+						MoveToTile(found->position_map + iPoint(0, -1));
+						break;
+					case 3:
+						MoveToTile(found->position_map + iPoint(0, 1));
+						break;
+					case 4:
+						MoveToTile(found->position_map + iPoint(-1, -1));
+						break;
+					case 5:
+						MoveToTile(found->position_map + iPoint(-1, 1));
+						break;
+					case 6:
+						MoveToTile(found->position_map + iPoint(1, -1));
+						break;
+					case 7:
+						MoveToTile(found->position_map + iPoint(1, 1));
 						break;
 					}
+
+					charge_ability->SetImage("clicked");
+					charge_cd->SetEnabled(true);
+					charge_timer.Start();
+
 				}
-				if (!is_visited) {
-					visited.push_back(neighbors[k]);
+				else
+				{
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						visited.push_back(neighbors[k]);
+					}
 				}
 			}
 		}
