@@ -223,6 +223,9 @@ bool Unit::Update(float dt)
 					if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
 						App->questmanager->GetCurrentQuest()->progress++;
 				}
+				else if (type == entity_type::enemy_boss && App->questmanager->GetCurrentQuest()->id == quest_id::quest_boss) {
+					App->questmanager->GetCurrentQuest()->progress++;
+				}
 			}
 			break;
 

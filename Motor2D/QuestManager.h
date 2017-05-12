@@ -9,7 +9,7 @@
 #include "SDL/include/SDL.h"
 
 enum titles {
-	beggar, leader, mayor, titles_null
+	beggar, leader, mayor, king, titles_null
 
 };
 
@@ -24,6 +24,7 @@ enum quest_id {
 	quest_mayor2,
 	quest_conquer,
 	quest_provisions,
+	quest_boss,
 	quest_null
 };
 
