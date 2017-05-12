@@ -40,11 +40,59 @@ bool Player::Start()
 	controls_bg = (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 3) + (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, { 271,2300,310,499 });
 	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
 
+	create_group_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 300) }, 186, 31);
+	create_group_button->AddImage("standard", { 592, 2722, 228, 21 });
+	create_group_button->SetImage("standard");
+	create_group_button->AddImage("clicked", { 592, 2770, 228, 21 });
+	create_group_button->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	move_map_right_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) + (App->win->_GetWindowSize().y / 500) }, 186, 31);
+	move_map_right_button->AddImage("standard", { 592, 2722, 228, 21 });
+	move_map_right_button->SetImage("standard");
+	move_map_right_button->AddImage("clicked", { 592, 2770, 228, 21 });
+	move_map_right_button->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	move_map_left_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) - (App->win->_GetWindowSize().y / 200) }, 186, 31);
+	move_map_left_button->AddImage("standard", { 592, 2722, 228, 21 });
+	move_map_left_button->SetImage("standard");
+	move_map_left_button->AddImage("clicked", { 592, 2770, 228, 21 });
+	move_map_left_button->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	move_map_down_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) + (App->win->_GetWindowSize().y / 70) }, 186, 31);
+	move_map_down_button->AddImage("standard", { 592, 2722, 228, 21 });
+	move_map_down_button->SetImage("standard");
+	move_map_down_button->AddImage("clicked", { 592, 2770, 228, 21 });
+	move_map_down_button->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	move_map_up_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 100) }, 186, 31);
+	move_map_up_button->AddImage("standard", { 592, 2722, 228, 21 });
+	move_map_up_button->SetImage("standard");
+	move_map_up_button->AddImage("clicked", { 592, 2770, 228, 21 });
+	move_map_up_button->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	charge_button_options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, 186, 31);
+	charge_button_options->AddImage("standard", { 592, 2722, 228, 21 });
+	charge_button_options->SetImage("standard");
+	charge_button_options->AddImage("clicked", { 592, 2770, 228, 21 });
+	charge_button_options->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	whirlwind_button_options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 40) }, 186, 31);
+	whirlwind_button_options->AddImage("standard", { 592, 2722, 228, 21 });
+	whirlwind_button_options->SetImage("standard");
+	whirlwind_button_options->AddImage("clicked", { 592, 2770, 228, 21 });
+	whirlwind_button_options->AddImage("hovered", { 592, 2746, 228, 21 });
+
+	battlecry_button_options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
+	battlecry_button_options->AddImage("standard", { 592, 2722, 228, 21 });
+	battlecry_button_options->SetImage("standard");
+	battlecry_button_options->AddImage("clicked", { 592, 2770, 228, 21 });
+	battlecry_button_options->AddImage("hovered", { 592, 2746, 228, 21 });
+
 	backoptions = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 17) }, 186, 31);
 	backoptions->AddImage("standard", { 592, 2722, 228, 21 });
 	backoptions->SetImage("standard");
-	backoptions->AddImage("clicked", { 592, 2746, 228, 21 });
-	backoptions->AddImage("hovered", { 592, 2770, 228, 21 });
+	backoptions->AddImage("clicked", { 592, 2770, 228, 21 });
+	backoptions->AddImage("hovered", { 592, 2746, 228, 21 });
 
 	audio_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
 	audio_button->AddImage("standard", { 25, 2695, 186, 31 });
@@ -63,22 +111,6 @@ bool Player::Start()
 	backpause->SetImage("standard");
 	backpause->AddImage("clicked", { 25, 2768, 186, 31 });
 	backpause->AddImage("hovered", { 26, 2732, 186, 31 });
-
-	backpause_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
-	backpause_txt->SetText("Back");
-	backpause_txt->click_through = true;
-
-	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 70), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 18) }, App->font->default_15);
-	backoptions_txt->SetText("Back");
-	backoptions_txt->click_through = true;
-
-	controls_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
-	controls_txt->SetText("Controls");
-	controls_txt->click_through = true;
-
-	audio_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
-	audio_txt->SetText("Audio");
-	audio_txt->click_through = true;
 
 	options = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
 	options->AddImage("standard", { 25, 2695, 186, 31 });
@@ -109,6 +141,54 @@ bool Player::Start()
 	load->SetImage("standard");
 	load->AddImage("clicked", { 25, 2768, 186, 31 });
 	load->AddImage("hovered", { 26, 2732, 186, 31 });
+
+	create_group_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
+	create_group_txt->SetText("Create unit group -> Left Shift");
+	create_group_txt->click_through = true;
+
+	move_map_right_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 9) }, App->font->default_15);
+	move_map_right_txt->SetText("Move screen right -> Right Arr.");
+	move_map_right_txt->click_through = true;
+
+	move_map_left_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) + (App->win->_GetWindowSize().y / 95) }, App->font->default_15);
+	move_map_left_txt->SetText("Move screen left -> Left Arrow");
+	move_map_left_txt->click_through = true;
+
+	move_map_down_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 7) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
+	move_map_down_txt->SetText("Move screen down -> Down A.");
+	move_map_down_txt->click_through = true;
+
+	move_map_up_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) - (App->win->_GetWindowSize().y / 90) }, App->font->default_15);
+	move_map_up_txt->SetText("Move screen up -> Up Arrow");
+	move_map_up_txt->click_through = true;
+
+	battlecry_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, App->font->default_15);
+	battlecry_txt->SetText("Battlecry ----------------------> X");
+	battlecry_txt->click_through = true;
+
+	whirlwind_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) + (App->win->_GetWindowSize().y / 40) }, App->font->default_15);
+	whirlwind_txt->SetText("Whirlwind --------------------> C");
+	whirlwind_txt->click_through = true;
+
+	charge_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) }, App->font->default_15);
+	charge_txt->SetText("Charge ------------------------> V");
+	charge_txt->click_through = true;
+
+	backoptions_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 70), (App->win->_GetWindowSize().y / 2) + (App->win->_GetWindowSize().y / 18) }, App->font->default_15);
+	backoptions_txt->SetText("Back");
+	backoptions_txt->click_through = true;
+
+	backpause_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	backpause_txt->SetText("Back");
+	backpause_txt->click_through = true;
+
+	controls_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 80) }, App->font->default);
+	controls_txt->SetText("Controls");
+	controls_txt->click_through = true;
+
+	audio_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	audio_txt->SetText("Audio");
+	audio_txt->click_through = true;
 
 	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
 	pause_menu_txt->SetText("PAUSE");
@@ -265,14 +345,12 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-
 	else if (back->MouseClickEnterLeft())
 	{
 		back->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;	
 	}
-
 	else if (load->MouseClickEnterLeft())
 	{
 		load->SetImage("clicked");
@@ -280,7 +358,6 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-
 	else if (options->MouseClickEnterLeft() && pause_status)
 	{
 
@@ -289,7 +366,6 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-
 	else if (save->MouseClickEnterLeft())
 	{
 		save->SetImage("clicked");
@@ -297,17 +373,63 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-
 	else if (backpause->MouseClickEnterLeft())
 	{
 		backpause->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-
 	else if (backoptions->MouseClickEnterLeft())
 	{
 		backoptions->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (battlecry_button_options->MouseClickEnterLeft())
+	{
+		battlecry_button_options->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (whirlwind_button_options->MouseClickEnterLeft())
+	{
+		whirlwind_button_options->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (charge_button_options->MouseClickEnterLeft())
+	{
+		charge_button_options->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (move_map_up_button->MouseClickEnterLeft())
+	{
+		move_map_up_button->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (move_map_down_button->MouseClickEnterLeft())
+	{
+		move_map_down_button->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (move_map_left_button->MouseClickEnterLeft())
+	{
+		move_map_left_button->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (move_map_right_button->MouseClickEnterLeft())
+	{
+		move_map_right_button->SetImage("clicked");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (create_group_button->MouseClickEnterLeft())
+	{
+		create_group_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
@@ -406,6 +528,7 @@ bool Player::PreUpdate()
 		controls_button->click_through = true;
 		backpause->SetEnabled(false);
 		backpause->click_through = true;
+
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
@@ -413,7 +536,24 @@ bool Player::PreUpdate()
 		//active controls menu
 		controls_bg->SetEnabled(true);
 		backoptions->SetEnabled(true);
+		battlecry_button_options->SetEnabled(true);
+		whirlwind_button_options->SetEnabled(true);
+		charge_button_options->SetEnabled(true);
+		move_map_up_button->SetEnabled(true);
+		move_map_down_button->SetEnabled(true);
+		move_map_left_button->SetEnabled(true);
+		move_map_right_button->SetEnabled(true);
+		create_group_button->SetEnabled(true);
+
 		backoptions_txt->SetEnabled(true);
+		battlecry_txt->SetEnabled(true);
+		whirlwind_txt->SetEnabled(true);
+		charge_txt->SetEnabled(true);
+		move_map_up_txt->SetEnabled(true);
+		move_map_down_txt->SetEnabled(true);
+		move_map_left_txt->SetEnabled(true);
+		move_map_right_txt->SetEnabled(true);
+		create_group_txt->SetEnabled(true);
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
 	{
@@ -435,7 +575,28 @@ bool Player::PreUpdate()
 		//quit controls menu
 		controls_bg->SetEnabled(false);
 		backoptions->SetEnabled(false);
+		battlecry_button_options->SetEnabled(false);
+		whirlwind_button_options->SetEnabled(false);
+		charge_button_options->SetEnabled(false);
+		move_map_up_button->SetEnabled(false);
+		move_map_down_button->SetEnabled(false);
+		move_map_left_button->SetEnabled(false);
+		move_map_right_button->SetEnabled(false);
+		create_group_button->SetEnabled(false);
+
 		backoptions_txt->SetEnabled(false);
+		battlecry_txt->SetEnabled(false);
+		whirlwind_txt->SetEnabled(false);
+		charge_txt->SetEnabled(false);
+		move_map_up_txt->SetEnabled(false);
+		move_map_down_txt->SetEnabled(false);
+		move_map_left_txt->SetEnabled(false);
+		move_map_right_txt->SetEnabled(false);
+		create_group_txt->SetEnabled(false);
+	}
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
+	{
+		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
@@ -464,11 +625,31 @@ bool Player::PreUpdate()
 		audio_button->SetEnabled(false);
 		controls_button->SetEnabled(false);
 		backpause->SetEnabled(false);
+		controls_bg->SetEnabled(false);
+		backoptions->SetEnabled(false);
+		battlecry_button_options->SetEnabled(false);
+		whirlwind_button_options->SetEnabled(false);
+		charge_button_options->SetEnabled(false);
+		move_map_up_button->SetEnabled(false);
+		move_map_down_button->SetEnabled(false);
+		move_map_left_button->SetEnabled(false);
+		move_map_right_button->SetEnabled(false);
+		create_group_button->SetEnabled(false);
+
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
 		backoptions->SetEnabled(false);
 		backoptions_txt->SetEnabled(false);
+		battlecry_txt->SetEnabled(false);
+		whirlwind_txt->SetEnabled(false);
+		charge_txt->SetEnabled(false);
+		move_map_up_txt->SetEnabled(false);
+		move_map_down_txt->SetEnabled(false);
+		move_map_left_txt->SetEnabled(false);
+		move_map_right_txt->SetEnabled(false);
+		create_group_txt->SetEnabled(false);
+
 				
 	}
 	else if((!pause_status && pause_window->enabled)){
@@ -494,6 +675,46 @@ bool Player::PreUpdate()
 		backoptions->SetImage("hovered");
 	else if (backoptions->MouseOut() && backoptions->CompareState("hovered"))
 		backoptions->SetImage("standard");
+
+	if (battlecry_button_options->MouseEnter())
+		battlecry_button_options->SetImage("hovered");
+	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered"))
+		battlecry_button_options->SetImage("standard");
+
+	if (whirlwind_button_options->MouseEnter())
+		whirlwind_button_options->SetImage("hovered");
+	else if (whirlwind_button_options->MouseOut() && whirlwind_button_options->CompareState("hovered"))
+		whirlwind_button_options->SetImage("standard");
+
+	if (charge_button_options->MouseEnter())
+		charge_button_options->SetImage("hovered");
+	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered"))
+		charge_button_options->SetImage("standard");
+
+	if (move_map_up_button->MouseEnter())
+		move_map_up_button->SetImage("hovered");
+	else if (move_map_up_button->MouseOut() && move_map_up_button->CompareState("hovered"))
+		move_map_up_button->SetImage("standard");
+
+	if (move_map_down_button->MouseEnter())
+		move_map_down_button->SetImage("hovered");
+	else if (move_map_down_button->MouseOut() && move_map_down_button->CompareState("hovered"))
+		move_map_down_button->SetImage("standard");
+
+	if (move_map_left_button->MouseEnter())
+		move_map_left_button->SetImage("hovered");
+	else if (move_map_left_button->MouseOut() && move_map_left_button->CompareState("hovered"))
+		move_map_left_button->SetImage("standard");
+
+	if (move_map_right_button->MouseEnter())
+		move_map_right_button->SetImage("hovered");
+	else if (move_map_right_button->MouseOut() && move_map_right_button->CompareState("hovered"))
+		move_map_right_button->SetImage("standard");
+
+	if (create_group_button->MouseEnter())
+		create_group_button->SetImage("hovered");
+	else if (create_group_button->MouseOut() && create_group_button->CompareState("hovered"))
+		create_group_button->SetImage("standard");
 
 	//backbutton
 	if (back->MouseEnter())
