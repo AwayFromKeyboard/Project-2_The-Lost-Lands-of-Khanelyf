@@ -8,7 +8,7 @@
 #define PHASE2_DAMAGE 100
 #define PHASE2_RANGE 3
 
-#define PHASE3_DAMAGE 40
+#define PHASE3_DAMAGE 5
 #define PHASE3_RANGE 7
 
 enum entity_type;

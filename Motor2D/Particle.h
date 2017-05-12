@@ -29,8 +29,9 @@ public:
 public:
 	particle_type type = particle_type::particle_null;
 	iPoint position = NULLPOINT;
-	SDL_Texture* entity_texture = nullptr;
+	SDL_Texture* particle_texture = nullptr;
 	Animator* animator = nullptr;
+	bool to_delete = false;
 
 public:
 	

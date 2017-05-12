@@ -50,7 +50,15 @@ bool ParticleManager::PostUpdate()
 	bool ret = true;
 
 	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end(); it++) {
-		ret = (*it)->PostUpdate();
+		if ((*it)->to_delete == true) {
+			list<Particle*>::iterator it_next = std::next(it);
+			DeleteParticle(*it);
+			it = it_next;
+		}
+		else {
+			ret = (*it)->PostUpdate();
+			++it;
+		}
 	}
 
 	return ret;

@@ -190,6 +190,8 @@ public:
 	bool is_boss = false;
 	boss_phase phase = asleep;
 	BossAxeKnight* boss = nullptr;
+
+	bool LooksDiagonal();
 };
 
 #endif

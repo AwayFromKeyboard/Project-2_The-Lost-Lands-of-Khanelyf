@@ -95,12 +95,14 @@ bool Unit::Update(float dt)
 		if (is_boss && life > 0) {
 			CheckPhase();
 
-			if (phase == phase_1 && life < max_life * 75 / 100)
+			if (phase != phase_1 && life >= max_life * 80 / 100 && life < max_life)
+				phase = phase_1;
+			else if (phase != phase_2 && life >= max_life * 50 / 100 && life < max_life * 80 / 100)
+				phase = phase_2;
+			else if (phase != phase_3 && life >= max_life * 25 / 100 && life < max_life * 50 / 100)
 				phase = phase_3;
-			else if (phase == phase_3 && life < max_life * 50 / 100)
-				phase = phase_3;
-			else if (phase == phase_3 && life < max_life * 25 / 100)
-				phase = phase_3;
+			else if (phase != last_phase)
+				phase = last_phase;
 		}
 		
 
@@ -377,7 +379,6 @@ void Unit::CheckPhase()
 	case boss_phase::phase_1:
 		break;
 	case boss_phase::phase_2:
-		if (attacked_unit != nullptr) {
 			if (!boss->starter_ability_phase2_timer) {
 				boss->ability_phase2.Start();
 				boss->starter_ability_phase2_timer = true;
@@ -390,47 +391,38 @@ void Unit::CheckPhase()
 			else if (boss->ability_phase2.ReadSec() >= 2) {
 				boss->Draw_Phase2();
 			}
-		}
-		else {
-			phase = asleep;
-		}
+
 		break;
 	case boss_phase::phase_3:
-		if (attacked_unit != nullptr) {
 			if (!boss->starter_ability_phase3_timer) {
 				boss->ability_phase3.Start();
 				boss->starter_ability_phase3_timer = true;
 			}
-			if (boss->ability_phase2.ReadSec() >= 2 && boss->ability_phase2.ReadSec() < 4) {
+			if (boss->ability_phase2.ReadSec() >= 0 && boss->ability_phase2.ReadSec() < 3) {
 				boss->Draw_Phase3();
 			}
-			if (!boss->fireballs_created && boss->ability_phase3.ReadSec() >= 4 && boss->ability_phase3.ReadSec() < 6) {
-				boss->fireball_points.clear();
-				boss->Phase3_Attack();
-				boss->fireballs_created = true;
+			else if (boss->ability_phase3.ReadSec() >= 3 && boss->ability_phase3.ReadSec() < 5) {
+				if (!boss->fireballs_created)
+				{
+					boss->fireball_points.clear();
+					boss->Phase3_Attack();
+					boss->fireballs_created = true;
+				}
+				else 
+					boss->Phase3_Damage();
 			}
-			else if (boss->fireballs_created) {
-				boss->Phase3_Damage();
-			}
-			if (boss->ability_phase3.ReadSec() >= 6) {
+			else {
 				for (std::list<Particle*>::iterator it = boss->fireballs.begin(); it != boss->fireballs.end(); it++) {
-					App->particle->DeleteParticle(*it);
+					(*it)->to_delete = true;
 				}
 				boss->fireballs_created = false;
 				boss->starter_ability_phase3_timer = false;
 			}
-		}
-		else {
-			phase = asleep;
-		}
 		break;
 	case boss_phase::last_phase:
 		
 		break;
 	case boss_phase::asleep:
-		if (attacked_unit != nullptr) {
-			phase = phase_1;
-		}
 		if (life == max_life)
 			state = entity_idle;
 		break;
@@ -1029,5 +1021,13 @@ bool Unit::IsInsideCircle(int x, int y)
 {
 	iPoint center = position;
 	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
+}
+
+bool Unit::LooksDiagonal()
+{
+	if (destination == south_east || destination == south_west || destination == north_east || destination == north_west)
+		return true;
+
+	return false;
 }
 

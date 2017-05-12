@@ -178,20 +178,38 @@ void BossAxeKnight::Draw_Phase3()
 
 	for (int i = 0; i < PHASE3_RANGE; ++i) {
 		iPoint neighbors[12];
-		neighbors[0] = position_map + iPoint(1 + i, 0);
-		neighbors[1] = position_map + iPoint(-1 - i, 0);
-		neighbors[2] = position_map + iPoint(0, 1 + i);
-		neighbors[3] = position_map + iPoint(0, -1 - i);
+		if (LooksDiagonal()) {
+			neighbors[0] = position_map + iPoint(1 + i, 0);
+			neighbors[1] = position_map + iPoint(-1 - i, 0);
+			neighbors[2] = position_map + iPoint(0, 1 + i);
+			neighbors[3] = position_map + iPoint(0, -1 - i);
 
-		neighbors[4] = position_map + iPoint(1 + i, i);
-		neighbors[5] = position_map + iPoint(-1 - i, i);
-		neighbors[6] = position_map + iPoint(i, 1 + i);
-		neighbors[7] = position_map + iPoint(i, -1 - i);
+			neighbors[4] = position_map + iPoint(1 + i, 1);
+			neighbors[5] = position_map + iPoint(-1 - i, 1);;
+			neighbors[6] = position_map + iPoint(1, 1 + i);
+			neighbors[7] = position_map + iPoint(1, -1 - i);
 
-		neighbors[8] = position_map + iPoint(1 + i, -i);
-		neighbors[9] = position_map + iPoint(-1 - i, -i);
-		neighbors[10] = position_map + iPoint(-i, 1 + i);
-		neighbors[11] = position_map + iPoint(-i, -1 - i);
+			neighbors[8] = position_map + iPoint(1 + i, -1);
+			neighbors[9] = position_map + iPoint(-1 - i, -1);
+			neighbors[10] = position_map + iPoint(-1, 1 + i);
+			neighbors[11] = position_map + iPoint(-1, -1 - i);
+		}
+		else {
+			neighbors[0] = position_map + iPoint(1 + i, i);
+			neighbors[1] = position_map + iPoint(-1 - i, i);
+			neighbors[2] = position_map + iPoint(i, 1 + i);
+			neighbors[3] = position_map + iPoint(i, -1 - i);
+
+			neighbors[4] = position_map + iPoint(1 + i, -i);
+			neighbors[5] = position_map + iPoint(-1 - i, -i);
+			neighbors[6] = position_map + iPoint(-i, 1 + i);
+			neighbors[7] = position_map + iPoint(-i, -1 - i);
+
+			neighbors[8] = position_map + iPoint(i, i);
+			neighbors[9] = position_map + iPoint(-i, i);
+			neighbors[10] = position_map + iPoint(i, -i);
+			neighbors[11] = position_map + iPoint(-i, -i);
+		}
 
 		for (int k = 0; k < 12; k++) {
 			bool is_visited = false;
@@ -219,20 +237,38 @@ void BossAxeKnight::Phase3_Attack()
 
 	for (int i = 0; i < PHASE3_RANGE; ++i) {
 		iPoint neighbors[12];
-		neighbors[0] = position_map + iPoint(1 + i, 0);
-		neighbors[1] = position_map + iPoint(-1 - i, 0);
-		neighbors[2] = position_map + iPoint(0, 1 + i);
-		neighbors[3] = position_map + iPoint(0, -1 - i);
+		if (LooksDiagonal()) {
+			neighbors[0] = position_map + iPoint(1 + i, 0);
+			neighbors[1] = position_map + iPoint(-1 - i, 0);
+			neighbors[2] = position_map + iPoint(0, 1 + i);
+			neighbors[3] = position_map + iPoint(0, -1 - i);
 
-		neighbors[4] = position_map + iPoint(1 + i, i);
-		neighbors[5] = position_map + iPoint(-1 - i, i);
-		neighbors[6] = position_map + iPoint(i, 1 + i);
-		neighbors[7] = position_map + iPoint(i, -1 - i);
+			neighbors[4] = position_map + iPoint(1 + i, 1);
+			neighbors[5] = position_map + iPoint(-1 - i, 1);;
+			neighbors[6] = position_map + iPoint(1, 1 + i);
+			neighbors[7] = position_map + iPoint(1, -1 - i);
 
-		neighbors[8] = position_map + iPoint(1 + i, -i);
-		neighbors[9] = position_map + iPoint(-1 - i, -i);
-		neighbors[10] = position_map + iPoint(-i, 1 + i);
-		neighbors[11] = position_map + iPoint(-i, -1 - i);
+			neighbors[8] = position_map + iPoint(1 + i, -1);
+			neighbors[9] = position_map + iPoint(-1 - i, -1);
+			neighbors[10] = position_map + iPoint(-1, 1 + i);
+			neighbors[11] = position_map + iPoint(-1, -1 - i);
+		}
+		else {
+			neighbors[0] = position_map + iPoint(1 + i, i);
+			neighbors[1] = position_map + iPoint(-1 - i, i);
+			neighbors[2] = position_map + iPoint(i, 1 + i);
+			neighbors[3] = position_map + iPoint(i, -1 - i);
+
+			neighbors[4] = position_map + iPoint(1 + i, -i);
+			neighbors[5] = position_map + iPoint(-1 - i, -i);
+			neighbors[6] = position_map + iPoint(-i, 1 + i);
+			neighbors[7] = position_map + iPoint(-i, -1 - i);
+
+			neighbors[8] = position_map + iPoint(i, i);
+			neighbors[9] = position_map + iPoint(-i, i);
+			neighbors[10] = position_map + iPoint(i, -i);
+			neighbors[11] = position_map + iPoint(-i, -i);
+		}
 
 		for (int k = 0; k < 12; k++) {
 			bool is_visited = false;
