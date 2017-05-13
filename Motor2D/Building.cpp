@@ -50,6 +50,10 @@ bool Building::PreUpdate()
 		else {
 			if (name == entity_name::towers)
 				LifeBar({ 125, 5 }, { -60, -85 });
+			else if (name == entity_name::blacksmiths)
+				LifeBar({ 145,5 }, { -80,-115 });
+			else if (name == entity_name::barracks)
+				LifeBar({ 195,5 }, { -90,-170 });
 			else
 				LifeBar({ 125, 5 }, { -65, -60 });
 		}
