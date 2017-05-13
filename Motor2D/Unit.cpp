@@ -348,12 +348,13 @@ bool Unit::PostUpdate()
 
 	if (life > 0)
 	{
-		if (is_escortednpc) {
+		if (is_escortednpc && App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort) {
 			if (!npc_quest->is_path_created && npc_quest->CheckEscortRadius()) {
 				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), { 80, 10 });
 				state = entity_state::entity_move;
 				npc_quest->is_path_created = true;
 			}
+			if (npc_quest->CheckEscortRadius())
 
 		}
 
