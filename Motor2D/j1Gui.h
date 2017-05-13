@@ -61,7 +61,7 @@ public:
 	bool CleanUp();
 
 	// Gets the atlas texture
-	const void GetAtlas() const;
+	const void GetAtlas();
 
 	UI_Element* UI_CreateWin(iPoint pos, int w, int h, int blit = 0, bool dinamic = false, bool is_ui = true);
 
@@ -199,7 +199,7 @@ public:
 
 	UI_Element* CreateButton(iPoint _pos, int w, int h, bool dinamic = false);
 	UI_Element* CreateText(iPoint pos, _TTF_Font* font, int spacing = 0, bool dinamic = false, uint r = 255, uint g = 255, uint b = 255);
-	UI_Element* CreateImage(iPoint pos, SDL_Rect image, bool dinamic = false);
+	UI_Element* CreateImage(iPoint pos, SDL_Rect image, bool dinamic = false, string tag = "");
 	UI_Element* CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool dinamic = false, uint r = 255, uint g = 255, uint b = 255);
 	UI_Element* CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size = 11, bool dinamic = false);
 	UI_Element* CreateColoredRect(iPoint pos, int view_w, int view_h, SDL_Color color, bool filled = true, bool dinamic = false);
@@ -316,6 +316,8 @@ public:
 
 class UI_Image : public UI_Element
 {
+public:
+	string tag;
 public:
 	UI_Image();
 	~UI_Image();

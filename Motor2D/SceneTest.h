@@ -48,6 +48,7 @@ public:
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
+	SDL_Texture* atlas = nullptr;
 
 	int human_resources_max = 15;
 	int current_human_resources = 0;

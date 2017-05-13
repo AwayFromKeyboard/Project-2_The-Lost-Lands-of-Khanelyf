@@ -62,11 +62,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(questmanager);
 	AddModule(dialogs);
-	// Scene
-	AddModule(scene);
 
 	// Gui
 	AddModule(gui);
+
+	// Scene
+	AddModule(scene);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -75,12 +76,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	console->AddCommand("save", console, 0, 0, "Save data");
 	console->AddCommand("cap_fps", console, 0, 1, "Cap fps. Min_args: 0 Max_args: 1 Args: num > 0");
 
-	/*player->Disable();
+	player->Disable();
 	collisions->Disable();
 	pathfinding->Disable();
 	entity->Disable();
 	questmanager->Disable();
-	dialogs->Disable();*/
+	dialogs->Disable();
 
 	cf = new collision_filters();
 	PERF_PEEK(ptimer);

@@ -121,6 +121,7 @@ public:
 	// Scenes
 	SceneTest*		    scene_test = nullptr;
 	MainMenu*			main_menu = nullptr;
+	SDL_Texture*        debug_tex = nullptr;
 private:
 	// Layer Blit list
 	std::priority_queue<layer_blit, std::vector<layer_blit>, compare_layer> layer_list;

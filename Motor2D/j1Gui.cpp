@@ -66,7 +66,7 @@ bool j1Gui::Update(float dt)
 {
 	// Start -------------------------------------------------
 
-	if (start)
+	if (1)
 	{
 		// Set variables that inherit from window to childs
 		for (unsigned int i = 0; i < elements_list.size(); i++)
@@ -173,9 +173,9 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-const void j1Gui::GetAtlas() const
+const void j1Gui::GetAtlas()
 {
-	App->gui->atlas = App->tex->LoadTexture(atlas_file_name.c_str());
+	atlas = App->tex->LoadTexture(atlas_file_name.c_str());
 }
 
 // ---------------------------------------------------------------------
@@ -276,7 +276,7 @@ void j1Gui::ReorderElements()
 	list<UI_Element*> copy;
 
 	// Copy all elements of PQ and clean it
-	while (App->gui->elements_list.size() != 0)
+	while (elements_list.size() != 0)
 	{
 		UI_Element* tmp = elements_list[0].data;
 		elements_list.pop_front();
@@ -328,7 +328,7 @@ bool j1Gui::Move_Elements()
 
 		// Get childs 
 		list<UI_Element*> visited;
-		App->gui->GetChilds(to_move, visited);
+		GetChilds(to_move, visited);
 
 		// Move all childs ------
 		for (list<UI_Element*>::iterator it = visited.begin(); it != visited.end(); it++)
@@ -426,7 +426,7 @@ UI_Element* j1Gui::CheckClickMove(int x, int y)
 		if (!higher_element->dinamic)
 		{
 			list<UI_Element*> parents_list;
-			App->gui->GetParentElements(higher_element, parents_list);
+			GetParentElements(higher_element, parents_list);
 
 			higher_element = nullptr;
 
@@ -453,7 +453,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 		return;
 
 	list<UI_Element*> childs;
-	App->gui->GetChilds(element, childs);
+	GetChilds(element, childs);
 
 	// Delete element and it's childs
 	for (list<UI_Element*>::iterator ch = childs.begin(); ch != childs.end(); ch++)
@@ -516,16 +516,19 @@ void PushElements(std::deque<ElementItem>& pqueue, UI_Element * item, double pri
 {
 	std::deque<ElementItem>::iterator it;
 	it = pqueue.begin();
-	for (unsigned int i = 0; i < pqueue.size(); ++i)
+	for (; it != pqueue.end(); ++it)
 	{
-		if (pqueue[i].priority > priority)
+		if ((*it).priority > priority)
 			break;
-		++it;
 	}
 	ElementItem tmp;
 	tmp.data = item;
 	tmp.priority = priority;
-	pqueue.insert(it,tmp);
+	if (it != pqueue.end()
+		)
+		pqueue.insert(it, tmp);
+	else
+		pqueue.push_back(tmp);
 }
 
 // -----------------------------------
@@ -804,13 +807,14 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 // ---------------------------------------------------------------------
 // Create an image linked to the current window
 // ---------------------------------------------------------------------
-UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic)
+UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic, string tag)
 {
 	UI_Image* ret = nullptr;
 	ret = new UI_Image();
 	
 	if (ret != nullptr)
 	{
+		ret->tag = tag;
 		ret->type = ui_image;
 		ret->Set(pos, image);
 		ret->parent = this;
@@ -1346,8 +1350,10 @@ bool UI_Image::update()
 	if (App->gui->debug)
 		App->render->DrawQuad(rect, color.r, color.g, color.b, color.a, false);
 	
-	if(print)
+	if (print) {
+		LOG("Printing image at %d, %d, image is %d x, %d y, %d w, %d h", rect.x, rect.y, image.x, image.y, image.w, image.h);
 		App->render->Blit(App->gui->atlas, rect.x, rect.y, &image);
+	}
 
 	return true;
 }

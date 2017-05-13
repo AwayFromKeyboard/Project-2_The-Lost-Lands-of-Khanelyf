@@ -66,16 +66,17 @@ bool SceneTest::Start()
 	swords_clash5_id = App->audio->LoadFx("audio/fx/Sword5.wav");
 
 	debug_tex = App->tex->LoadTexture("maps/path2.png");
+	atlas = App->tex->LoadTexture("gui/ui.png");
 
 	App->collisions->UpdateQuadtree();
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 7, 37, 40 };
-	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
+	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true, "cursor");
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
 	ui_r = { 0, 88, 1680, 1050 };
-	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
+	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r, false, "general_ui_image");
 
 	InitCameraMovement();
 
@@ -85,7 +86,7 @@ bool SceneTest::Start()
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
-
+	
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
 	SDL_ShowCursor(0);
