@@ -23,7 +23,10 @@
 #include "Minimap.h"
 #include "Object.h"
 #include "Player.h"
+#include "Boss_Axe_Knight.h"
 #include "BrokenBuilding.h"
+#include "ParticleManager.h"
+#include "Fire.h"
 
 SceneTest::SceneTest()
 {
@@ -159,7 +162,6 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
@@ -172,6 +174,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
 		create_barrack = false;
+	}
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_W) == key_down)
+	{
+		BossAxeKnight* boss_axe_knight = (BossAxeKnight*)App->entity->CreateEntity(boss, enemy_boss, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{

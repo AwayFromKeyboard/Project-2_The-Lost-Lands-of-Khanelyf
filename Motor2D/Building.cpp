@@ -55,6 +55,7 @@ bool Building::PreUpdate()
 		}
 
 	}
+
 	if (life > 0) {
 		iPoint position_map = App->map->WorldToMapPoint(position);
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
