@@ -345,18 +345,11 @@ bool Player::Start()
 	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
 	battlecry_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
-	battlecry_key->SetText("X");
+	battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+	battlecry_key->SetText(battlecry_key->str);
 
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 	battlecry_cd->SetEnabled(false);
-
-	//drop object interface
-
-	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
-	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
-	item_drop->AddImage("standard", { 645, 60, 25, 25 });
-	item_drop->SetImage("standard");
-	item_drop->SetEnabled(false);
 
 	//Whirlwind
 
@@ -366,7 +359,8 @@ bool Player::Start()
 	whirlwind_ability->AddImage("clicked", { 720, 60, 25, 25 });
 
 	whirlwind_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
-	whirlwind_key->SetText("C");
+	whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+	whirlwind_key->SetText(whirlwind_key->str);
 
 	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 	whirlwind_cd->SetEnabled(false);
@@ -379,10 +373,19 @@ bool Player::Start()
 	charge_ability->AddImage("clicked", { 827, 60, 25, 25 });
 
 	charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
-	charge_key->SetText("V");
+	charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+	charge_key->SetText(charge_key->str);
 
 	charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	charge_cd->SetEnabled(false);
+
+	//drop object interface
+
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
+	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	item_drop->SetImage("standard");
+	item_drop->SetEnabled(false);
 
 	return ret;
 }
@@ -1331,6 +1334,9 @@ bool Player::Update(float dt)
 
 				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
 				battlecry_txt2->SetText(battlecry_txt2->str);
+				
+				battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+				battlecry_key->SetText(battlecry_key->str);
 			}
 			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
 			{
@@ -1340,6 +1346,9 @@ bool Player::Update(float dt)
 
 				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
 				whirlwind_txt2->SetText(whirlwind_txt2->str);
+
+				whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+				whirlwind_key->SetText(whirlwind_key->str);
 			}
 			else if (charge_button_options->CompareState("clicked") && !key_repeated)
 			{
@@ -1349,6 +1358,9 @@ bool Player::Update(float dt)
 
 				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
 				charge_txt2->SetText(charge_txt2->str);
+
+				charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+				charge_key->SetText(charge_key->str);
 			}
 			else if (move_map_up_button->CompareState("clicked") && !key_repeated)
 			{
