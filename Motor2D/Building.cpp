@@ -86,9 +86,15 @@ bool Building::Update(float dt)
 				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
 			else if (name == towers)
 				App->entity->CreateEntity(towers, ally_building, position);
+			else if (name == blacksmiths)
+				App->entity->CreateEntity(blacksmiths, building, position);
 		}
-		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building) {
+		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building && name != entity_name::blacksmiths) {
 			App->entity->CreateEntity(broken_building, building, position);
+		}
+		if (type == entity_type::building && name == entity_name::blacksmiths)
+		{
+			App->entity->CreateEntity(broken_building, building, iPoint(position.x - 40, position.y - 50));
 		}
 		if (type == entity_type::building && name == entity_name::barracks) {
 			if (App->player->barracks_ui_window->enabled)

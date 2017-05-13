@@ -39,7 +39,7 @@ bool Blacksmith::LoadEntity(iPoint pos, entity_name name)
 			node = building;
 			break;
 		}
-		else if (TextCmp(building.attribute("type").as_string(), "Blacksmith_ally") && type == entity_type::ally_building)
+		else if (TextCmp(building.attribute("type").as_string(), "Blacksmith_ally") && type == entity_type::building)
 		{
 			node = building;
 			break;
