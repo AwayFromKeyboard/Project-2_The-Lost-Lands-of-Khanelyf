@@ -20,9 +20,11 @@
 #include "Barracks.h"
 #include "BasicBuilding.h"
 #include "Building.h"
+#include "Minimap.h"
 #include "Object.h"
 #include "Player.h"
 #include "DialogueManager.h"
+#include "BrokenBuilding.h"
 
 SceneTest::SceneTest()
 {
@@ -113,7 +115,15 @@ bool SceneTest::Update(float dt)
 	
 	UpdateCameraMovement();
 
+	if (App->player->pause_status) {
+		
+		App->audio->PauseMusic();
+	}else
+		App->audio->ResumeMusic();
+	
+	
 	App->map->Draw();
+
 	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
 
 	return true;
@@ -154,39 +164,47 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	oss2 << current_human_resources << "/" << human_resources_max;
 	human_resources_txt->SetText(oss2.str());
 
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down && gold >= 5 && current_human_resources <= human_resources_max - 1)
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= barb->cost;
-		current_human_resources += barb->human_cost;
 	}
 
-	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down && gold >= 10 && current_human_resources <= human_resources_max - 2)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= sword->cost;
-		current_human_resources += sword->human_cost;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_B) == key_down)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= barrack->cost;
+
 		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
 		create_barrack = false;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_U) == key_down)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 1);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_I) == key_down)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_I) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 2);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_O) == key_down)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_O) == key_down)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
+	}
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down)
+	{
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_N) == key_down)
+	{
+		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
+	{
+		App->player->GetHero()->levelup_points += 5;
 	}
 }
 

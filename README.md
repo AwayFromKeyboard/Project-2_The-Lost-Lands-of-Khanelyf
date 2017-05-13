@@ -24,15 +24,33 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 
 Controls:
 
-* Use the arrow keys to move the camera
+* Use the arrow keys or the mouse to move the camera
 
 * Use the left mouse button to select your units
+
+* Click left mouse button and drag to select multiple units
+
+* Click left mouse button on the minimap to change view
 
 * Use the right mouse button to:
 
   * Attack enemy units
  
-  * Move the selected troops
+  * Attack enemy buildings
+ 
+  * Move the selected troops (can also be used in the minimap)
+
+  * Pick objects
+
+* ESC to open pause menu:
+
+  * Left click on Save Game to save the current game
+
+  * Left click on Load Game to load the last saved game
+
+  * Left click on Quit to exit game
+
+  * Left click on Resume Game or ESC to exit pause menu
 
 * F1 to debug mode
 
@@ -40,14 +58,21 @@ Controls:
 
 * B to constuct barrack(then you can create 2 types of units with left click)
 
+* X + left click to use Battlecry ability (attack buff to allies)
+
+* C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
+
+* V + left click on enemy at range to use Charge (heavy damage to one enemy)
+
 Goal:
 
 Follow and complete the quests without getting your hero killed. 
-
 
 Quests:
 
 1st: Kill 5 enemies(there's two hidden on your right and three more in the town going north), you will receive some gold.
 2nd: Create a barrack and create troops in it.
-3rd: Go east and kill 4 enemies that protect the towers.
-4rd: Go north and conquer the enemy fortress.
+3rd: Go east and kill the 4 enemies that protect the towers.
+4rd: Go north and kill the 5 enemies that protect the village.
+5th: Conquer the village at the north (destroy the two enemy buildings).
+6th: Move the provisions from the first village to the village you just conquered.

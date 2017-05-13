@@ -33,15 +33,15 @@ bool j1FileSystem::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	// Add all paths in configuration in order
-	for(pugi::xml_node path = config.child("path"); path; path = path.next_sibling("path"))
+	for (pugi::xml_node path = config.child("path"); path; path = path.next_sibling("path"))
 	{
 		AddPath(path.child_value());
 	}
 
 	// Ask SDL for a write dir
-	write_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
+	char* write_path = ".";
 
-	if(PHYSFS_setWriteDir(write_path) == 0)
+	if (PHYSFS_setWriteDir(write_path) == 0)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 	else
 	{
@@ -49,6 +49,8 @@ bool j1FileSystem::Awake(pugi::xml_node& config)
 		LOG("Writing directory is %s\n", write_path);
 		AddPath(write_path, GetSaveDirectory());
 	}
+
+	SDL_free(write_path);
 
 	return ret;
 }

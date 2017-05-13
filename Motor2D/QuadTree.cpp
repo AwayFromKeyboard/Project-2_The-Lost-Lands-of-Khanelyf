@@ -14,7 +14,8 @@ QuadTree::~QuadTree()
 
 void QuadTree::ClearTree()
 {
-	colllidersList.clear();
+	if (colllidersList.size())
+		colllidersList.clear();
 
 	for (int i = 0; i < NODE_COUNT; i++) {
 		if (node[0] != nullptr) {

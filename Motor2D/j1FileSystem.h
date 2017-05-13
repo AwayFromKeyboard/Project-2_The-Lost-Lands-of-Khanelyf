@@ -29,7 +29,7 @@ public:
 	bool ChangeWriteDir(const char* file) const;
 	const char* GetSaveDirectory() const
 	{
-		return "save/";
+		return "";
 	}
 
 	// Open for Read/Write

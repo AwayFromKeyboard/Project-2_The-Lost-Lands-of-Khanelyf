@@ -112,26 +112,31 @@ void j1Collisions::DebugDraw()
 				}
 			}
 		}
-
-		for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); it++) {
-			potentialCollisionList.clear();
-			quadTree->Retrieve(potentialCollisionList, *it);
-			if (potentialCollisionList.size() > 0) {
-				for (list<Collider*>::iterator it2 = potentialCollisionList.begin(); it2 != potentialCollisionList.end(); it2++) {
-					if ((*it)->CheckCollision((*it2)->rect)) {
-						if (matrix[(*it)->type][(*it2)->type] && (*it)->callback)
-							(*it)->callback->OnCollision((*it), (*it2));
-
-						if (matrix[(*it2)->type][(*it)->type] && (*it2)->callback)
-							(*it2)->callback->OnCollision((*it2), (*it));
-					}
-					quadTreeChecks++;
+	}
+	for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); it++) {
+		potentialCollisionList.clear();
+		quadTree->Retrieve(potentialCollisionList, *it);
+		if (potentialCollisionList.size() > 0) {
+			for (list<Collider*>::iterator it2 = potentialCollisionList.begin(); it2 != potentialCollisionList.end(); it2++) {
+				if ((*it)->CheckCollision((*it2)->rect)) {
+					if (matrix[(*it)->type][(*it2)->type] && (*it)->callback)
+						(*it)->callback->OnCollision((*it), (*it2));
+					if (matrix[(*it2)->type][(*it)->type] && (*it2)->callback)
+						(*it2)->callback->OnCollision((*it2), (*it));
+				}
+				quadTreeChecks++;
+				if (debug == true)
+				{
 					App->render->DrawQuad((*it2)->rect, 0, 255, 0, 255, false);
 					App->render->DrawLine((*it)->rect.x + (*it)->rect.w / 2, (*it)->rect.y + (*it)->rect.h / 2, (*it2)->rect.x + (*it2)->rect.w / 2, (*it2)->rect.y + (*it2)->rect.h / 2, 255, 255, 255, 255);
+
 				}
 			}
 		}
+	}
 
+	if (debug == true)
+	{
 		for (int i = 0; i < nodeList.size(); i++) {
 			if (nodeList[i] != nullptr) {
 				App->render->DrawQuad(nodeList[i]->nodeRect, 255, 255, 255, 255, false);

@@ -730,19 +730,19 @@ void j1Map::GetEntitiesSpawn() const
 							App->player->SetHero((Hero*)player_unit);
 						}
 						break;
-						
+
 						case 28: // Barbarian Enemy
 						{
 							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 1, y));
 						}
 						break;
-						
+
 						case 29: // NPC
 						{
 							Entity* barb_npc = App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
 						}
 						break;
-						
+
 						case 30: // Object
 						{
 							Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(x + 1, y));
@@ -751,13 +751,13 @@ void j1Map::GetEntitiesSpawn() const
 
 						case 31: // Basic Building Ally
 						{
-							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
+							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x, y - 1), RandomGenerate(1, 3));
 						}
 						break;
 
 						case 32: // Basic Building Enemy
 						{
-							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x + 1, y), RandomGenerate(1, 3));
+							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x, y - 1), RandomGenerate(1, 3));
 						}
 						break;
 
@@ -766,9 +766,27 @@ void j1Map::GetEntitiesSpawn() const
 							Entity* swordsman_enemy = App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(x + 1, y));
 						}
 						break;
+
+						case 34: //Towers
+						{
+							Entity* tower_enemy = App->entity->CreateEntity(towers, enemy_building, App->map->MapToWorld(x, y - 1));
+						}
+						break;
+
+						case 36: // Broken Building
+						{
+							Entity* brokenbuilding = App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(x, y - 1));
+						}
+						break;
+
+						case 35: // Broken Building
+						{
+							Entity* enemy_barrack = App->entity->CreateEntity(barracks, enemy_building, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+						}
 					}
-					}
-				}		
+				}
 			}
 		}
 	}

@@ -50,7 +50,7 @@ public:
 	SDL_Texture* debug_tex = nullptr;
 	SDL_Texture* atlas = nullptr;
 
-	int human_resources_max = 15;
+	int human_resources_max = 5;
 	int current_human_resources = 0;
 	UI_Text* human_resources_txt = nullptr;
 

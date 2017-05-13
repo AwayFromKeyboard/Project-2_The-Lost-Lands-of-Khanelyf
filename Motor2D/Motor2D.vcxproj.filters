@@ -103,6 +103,15 @@
     <ClCompile Include="Barracks.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\4. Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Minimap.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
     <ClCompile Include="DialogueManager.cpp">
       <Filter>Engine\1. Modules</Filter>
     </ClCompile>
@@ -120,6 +129,12 @@
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>Engine\3. Scene\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="BrokenBuilding.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +273,15 @@
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>Engine\3. Scene\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Minimap.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenBuilding.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

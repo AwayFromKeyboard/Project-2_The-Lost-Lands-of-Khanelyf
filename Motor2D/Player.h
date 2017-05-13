@@ -25,6 +25,7 @@ class Unit;
 class Building;
 class UI_Window;
 class UI_Text;
+class UI_Image;
 class UI_Button;
 class Hero;
 class Object;
@@ -40,6 +41,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+private:
 	void Battlecry();
 	void BattlecryModifier(int damage_buff);
 	void CheckAbilityRange(int range);
@@ -52,8 +56,63 @@ public:
 	void Charge();
 
 	void DrawCD(int ability_number);
-
+public:
+	UI_Window* pause_window = nullptr;
+	UI_Button* quit_game = nullptr;
 private:
+	
+	UI_Image* pause_bg = nullptr;
+
+	UI_Button* back = nullptr;
+	UI_Button* options = nullptr;
+	UI_Button* save = nullptr;
+	UI_Button* load = nullptr;
+	UI_Button* audio_button = nullptr;
+	UI_Button* controls_button = nullptr;
+	UI_Button* backpause = nullptr;
+
+	UI_Text* pause_menu_txt = nullptr;
+	UI_Text* quit_txt = nullptr;
+	UI_Text* save_txt = nullptr;
+	UI_Text* options_txt = nullptr;
+	UI_Text* back_txt = nullptr;
+	UI_Text* load_txt = nullptr;
+	UI_Text* controls_txt = nullptr;
+	UI_Text* audio_txt = nullptr;
+	UI_Text* backpause_txt = nullptr;
+
+	//Controls buttons and texts
+	UI_Image* controls_bg = nullptr;
+
+	UI_Button* backoptions = nullptr;;
+	UI_Button* battlecry_button_options = nullptr;
+	UI_Button* whirlwind_button_options = nullptr;
+	UI_Button* charge_button_options = nullptr;
+	UI_Button* move_map_up_button = nullptr;
+	UI_Button* move_map_down_button = nullptr;
+	UI_Button* move_map_left_button = nullptr;
+	UI_Button* move_map_right_button = nullptr;
+	UI_Button* create_group_button = nullptr;
+
+	UI_Text* backoptions_txt = nullptr;
+	UI_Text* battlecry_txt = nullptr;
+	UI_Text* whirlwind_txt = nullptr;
+	UI_Text* charge_txt = nullptr;
+	UI_Text* move_map_up_txt = nullptr;
+	UI_Text* move_map_down_txt = nullptr;
+	UI_Text* move_map_left_txt = nullptr;
+	UI_Text* move_map_right_txt = nullptr;
+	UI_Text* create_group_txt = nullptr;
+
+	UI_Text* battlecry_txt2 = nullptr;
+	UI_Text* whirlwind_txt2 = nullptr;
+	UI_Text* charge_txt2 = nullptr;
+	UI_Text* move_map_up_txt2 = nullptr;
+	UI_Text* move_map_down_txt2 = nullptr;
+	UI_Text* move_map_left_txt2 = nullptr;
+	UI_Text* move_map_right_txt2 = nullptr;
+	UI_Text* create_group_txt2 = nullptr;
+
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;
@@ -76,8 +135,9 @@ private:
 	UI_Text* level_points_txt = nullptr;
 
 	Hero* hero = nullptr;
-private:
+public:
 	void MoveToTile(iPoint tile);
+private:
 	void SetAttackingEnemy(Unit* enemy);
 	void SetAttackingBuilding(Building* building);
 	void UpdateAttributes();
@@ -89,17 +149,28 @@ public:
 	std::list<Unit*> buffed_list;
 public:
 	UI_Window* barracks_ui_window = nullptr;
+	UI_Window* brokenbuilding_ui_window = nullptr;
+
 	UI_Window* player_abilities = false;
 	UI_Window* inventory = nullptr;
 	iPoint barracks_position;
 
 	UI_Button* item_drop = nullptr;
 
+	//buttons for brokenbuilding
+	UI_Button* create_building_button = nullptr;
+	UI_Button* create_building_button2 = nullptr;
+
 private:
+	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
 	UI_Button* swordsman_img = nullptr;
 	UI_Button* create_unit_button = nullptr;
 	UI_Button* create_unit_button2 = nullptr;
+
+	//buttons for brokenbuilding
+	UI_Button* barrack_img = nullptr;
+	UI_Button* house_img = nullptr;
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;
@@ -107,8 +178,16 @@ private:
 	UI_Button* charge_ability = nullptr;
 
 public:
+	bool audio_status = false;
+	bool change_controls_status = false;
+	bool options_status = false;
+	bool pause_status = false;
+	bool button_on_clicked = false;
+
 	bool create_barbarian = true;
 	bool create_swordsman = false;
+
+	bool change_button_config;
 
 	//player abilities
 	bool draw_battlecry_range = false;
@@ -118,10 +197,13 @@ public:
 	bool charge_speed_buff = false;
 	bool charge_damage_buff = false;
 
+	std::list<iPoint> range_visited;
+
 private:
 	j1Timer battlecry_timer;
 	j1Timer whirlwind_timer;
 	j1Timer charge_timer;
+	j1Timer button_clicked;
 };
 
 

@@ -94,9 +94,6 @@ bool j1Scene::PostUpdate()
 	if (current_scene != nullptr)
 		ret = current_scene->PostUpdate();
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
-		ret = false;
-
 	return ret;
 }
 
