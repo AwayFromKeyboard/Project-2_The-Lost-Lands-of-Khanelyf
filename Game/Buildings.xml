@@ -75,4 +75,12 @@
     <collision_box w="210" h="165" offset_x="-150" offset_y="-125"/>
     <offset offset_x="120" offset_y="140"/>
   </building>
+  <building type="Blacksmith_ally">
+    <texture value="textures/BigHouse.png"/>
+    <life value="200"/>
+    <cost value="90"/>
+    <rect x="211" w=" 211" h="167"/>
+    <collision_box w="210" h="165" offset_x="-150" offset_y="-125"/>
+    <offset offset_x="120" offset_y="140"/>
+  </building>
 </buildings>
