@@ -136,6 +136,9 @@
     <ClCompile Include="Tower.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Blacksmith.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Engine\6. Particles</Filter>
     </ClCompile>
@@ -290,6 +293,9 @@
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Tower.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Blacksmith.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="ParticleManager.h">

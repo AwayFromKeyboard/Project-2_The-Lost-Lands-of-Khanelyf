@@ -17,6 +17,7 @@
 #include "j1Scene.h"
 #include "QuestManager.h"
 #include "Tower.h"
+#include "Blacksmith.h"
 
 j1Entity::j1Entity()
 {
@@ -319,6 +320,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case towers:
 		ret = new Tower(type);
 		break;
+	case blacksmiths:
+		ret = new Blacksmith(type);
 	default:
 		break;
 	}

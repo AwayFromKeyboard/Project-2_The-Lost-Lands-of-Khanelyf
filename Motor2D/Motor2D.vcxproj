@@ -80,6 +80,7 @@
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="BasicBuilding.cpp" />
+    <ClCompile Include="Blacksmith.cpp" />
     <ClCompile Include="Boss_Axe_Knight.cpp" />
     <ClCompile Include="BrokenBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
     <ClInclude Include="BasicBuilding.h" />
+    <ClInclude Include="Blacksmith.h" />
     <ClInclude Include="Boss_Axe_Knight.h" />
     <ClInclude Include="BrokenBuilding.h" />
     <ClInclude Include="Building.h" />

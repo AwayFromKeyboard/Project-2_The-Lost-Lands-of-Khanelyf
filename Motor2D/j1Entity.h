@@ -18,6 +18,7 @@ enum entity_name
 	basic_building,
 	boss,
 	towers,
+	blacksmiths,
 	test
 };
 
