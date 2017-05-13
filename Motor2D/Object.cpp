@@ -8,6 +8,7 @@
 #include "Functions.h"
 #include "Player.h"
 #include "Hero.h"
+#include "QuestManager.h"
 
 Object::Object()
 {
@@ -45,6 +46,9 @@ bool Object::Update(float dt)
 
 	case entity_idle:
 		collision->SetPos(position.x + collision->offset_x, position.y + collision->offset_y);
+		if (death_timer.ReadSec() > 10 && pickable == false) {
+			state = object_destroyed;
+		}
 		break;
 
 	case object_picked:
@@ -59,7 +63,20 @@ bool Object::Update(float dt)
 		aux_collision_rect = NULLRECT;
 		position = App->player->GetHero()->position;
 		state = entity_idle;
+		if (App->questmanager->GetCurrentQuest()->type == quest_type::move_object && App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions &&  position.PointInRect(App->questmanager->provision_quest_rect.x, App->questmanager->provision_quest_rect.y, App->questmanager->provision_quest_rect.w, App->questmanager->provision_quest_rect.h))
+		{
+			pickable = false;
+			App->questmanager->GetCurrentQuest()->progress++;
+			death_timer.Start();
+		}
 		break;
+
+	case object_destroyed:
+		if (collision != nullptr)
+			App->collisions->EraseCollider(collision);
+		to_delete = true;
+		break;
+
 	}
 
 	return true;
@@ -100,7 +117,7 @@ bool Object::Save(pugi::xml_node &) const
 	return true;
 }
 
-void Object::OnColl(PhysBody * bodyA, PhysBody * bodyB, b2Fixture * fixtureA, b2Fixture * fixtureB)
+void Object::OnColl(Entity * en1, Entity * en2)
 {
 }
 

@@ -31,7 +31,9 @@ class j1Entity;
 class j1Collisions;
 class Player;
 class QuestManager;
+class Minimap;
 class DialogueManager;
+class ParticleManager;
 
 class j1App
 {
@@ -121,12 +123,15 @@ public:
 	j1Collisions*		collisions = nullptr;
 	Player*				player = nullptr;
 	QuestManager*		questmanager = nullptr;
+	Minimap*			minimap = nullptr;
 	DialogueManager*	dialogs = nullptr;
+	ParticleManager*	particle = nullptr;
 
 	// Console logs
 	list<string>        logs;
 
 	bool			    debug_mode = false;
+	bool				stop_exe = false;
 
 	collision_filters* cf;
 

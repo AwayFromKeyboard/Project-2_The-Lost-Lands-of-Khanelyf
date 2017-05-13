@@ -8,6 +8,7 @@
 struct SDL_Texture;
 class Animation;
 class Unit;
+class Fire;
 // -----------------------------------------
 // -----------------------------------------
 
@@ -41,6 +42,7 @@ public:
 
 	// Load Animations from XML
 	void LoadAnimationsFromXML(pugi::xml_node &node);
+	void LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire * fire);
 	void LoadAnimationsFromUnitsXML(pugi::xml_node &node, Unit* unit);
 
 	// Set a current animation
@@ -86,6 +88,8 @@ public:
 
 	// Set the frame speed
 	void SetSpeed(float speed);
+
+	void Pause();
 
 	// Set if the animation loops
 	void SetLoop(bool loop);

@@ -2,6 +2,8 @@
 #include "Functions.h"
 #include "Log.h"
 #include "Unit.h"
+#include "Player.h"
+#include "Fire.h"
 
 Animation::Animation() : frames(5), speed(1.0f), curr_frame(0), loop(true), loops(0)
 {
@@ -22,27 +24,28 @@ Animation::~Animation()
 
 SDL_Rect& Animation::GetAnimationFrame(float dt)
 {
-	curr_frame += (speed * dt);
+	if (App->player->pause_status == false) {
+		curr_frame += (speed * dt);
 
-	if (curr_frame >= frames.size())
-	{
-		if (!loop)
-			curr_frame = frames.size() - 1;
-		else
-			curr_frame = 0.0f;
-
-		loops++;
-	}
-
-	int counter = 0;
-	for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
-	{
-		if (counter == (int)(curr_frame))
+		if (curr_frame >= frames.size())
 		{
-			return (*it);
+			if (!loop)
+				curr_frame = frames.size() - 1;
+			else
+				curr_frame = 0.0f;
+
+			loops++;
 		}
 	}
-
+		int counter = 0;
+		for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
+		{
+			if (counter == (int)(curr_frame))
+			{
+				return (*it);
+			}
+		}
+	
 	SDL_Rect ret = NULLRECT;
 	return ret;
 }
@@ -50,6 +53,7 @@ SDL_Rect& Animation::GetAnimationFrame(float dt)
 SDL_Rect& Animation::GetCurrentFrame()
 {
 	int counter = 0;
+	
 	for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
 	{
 		if (counter == (int)curr_frame)
@@ -70,15 +74,18 @@ float Animation::GetFrameIndex() const
 SDL_Rect & Animation::GetFrame(int frame)
 {
 	int counter = 0;
-	for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
-	{
-		if (counter == frame)
-		{
-			return (*it);
-		}
-	}
 
-	SDL_Rect ret = NULLRECT;
+	
+		for (list<SDL_Rect>::iterator it = frames.begin(); it != frames.end(); it++, counter++)
+		{
+			if (counter == frame)
+			{
+				return (*it);
+			}
+		}
+	
+		SDL_Rect ret = NULLRECT;
+	
 	return ret;
 }
 
@@ -90,6 +97,12 @@ void Animation::SetCurrFrame(int frame)
 void Animation::SetSpeed(float _speed)
 {
 	speed = _speed;
+}
+
+void Animation::Pause() {
+
+	//if (App->player->pause_status)
+	
 }
 
 void Animation::SetLoop(bool _loop)
@@ -153,6 +166,37 @@ void Animator::LoadAnimationsFromXML(pugi::xml_node & node)
 
 		Animation* animation = new Animation(name.c_str(), anim_rects, speed, loop);
 		AddAnimation(animation);
+	}
+}
+
+void Animator::LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire* fire)
+{
+	pugi::xml_node _node;
+	fire->set_0.frames.clear();
+	fire->set_1.frames.clear();
+	fire->set_2.frames.clear();
+	fire->set_3.frames.clear();
+	fire->set_4.frames.clear();
+
+	for (pugi::xml_node rect = node.child("set_0").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		fire->set_0.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("set_0").attribute("w").as_int(), node.child("set_0").attribute("h").as_int() });
+		fire->set_0.SetSpeed(node.child("set_0").attribute("speed").as_float());
+	}
+	for (pugi::xml_node rect = node.child("set_1").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		fire->set_1.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("set_1").attribute("w").as_int(), node.child("set_1").attribute("h").as_int() });
+		fire->set_1.SetSpeed(node.child("set_1").attribute("speed").as_float());
+	}
+	for (pugi::xml_node rect = node.child("set_2").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		fire->set_2.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("set_2").attribute("w").as_int(), node.child("set_2").attribute("h").as_int() });
+		fire->set_2.SetSpeed(node.child("set_2").attribute("speed").as_float());
+	}
+	for (pugi::xml_node rect = node.child("set_3").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		fire->set_3.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("set_3").attribute("w").as_int(), node.child("set_3").attribute("h").as_int() });
+		fire->set_3.SetSpeed(node.child("set_3").attribute("speed").as_float());
+	}
+	for (pugi::xml_node rect = node.child("set_4").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		fire->set_4.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("set_4").attribute("w").as_int(), node.child("set_4").attribute("h").as_int() });
+		fire->set_4.SetSpeed(node.child("set_4").attribute("speed").as_float());
 	}
 }
 

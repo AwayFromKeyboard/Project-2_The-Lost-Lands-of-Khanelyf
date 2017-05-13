@@ -80,9 +80,13 @@
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="BasicBuilding.cpp" />
+    <ClCompile Include="Blacksmith.cpp" />
+    <ClCompile Include="Boss_Axe_Knight.cpp" />
+    <ClCompile Include="BrokenBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -103,8 +107,11 @@
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
+    <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Parallax.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Provisions.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
@@ -114,6 +121,7 @@
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Swordsman.cpp" />
+    <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -121,9 +129,13 @@
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
     <ClInclude Include="BasicBuilding.h" />
+    <ClInclude Include="Blacksmith.h" />
+    <ClInclude Include="Boss_Axe_Knight.h" />
+    <ClInclude Include="BrokenBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="DialogueManager.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
@@ -144,7 +156,10 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="j1Module.h" />
     <ClInclude Include="MemLeaks.h" />
+    <ClInclude Include="Minimap.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="j1Render.h" />
@@ -161,6 +176,7 @@
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Swordsman.h" />
+    <ClInclude Include="Tower.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +186,7 @@
     </Xml>
     <Xml Include="..\Game\Dialogues.xml" />
     <Xml Include="..\Game\Objects.xml" />
+    <Xml Include="..\Game\Particles.xml" />
     <Xml Include="..\Game\Units.xml">
       <SubType>Designer</SubType>
     </Xml>

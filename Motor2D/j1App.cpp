@@ -21,7 +21,9 @@
 #include "j1Collisions.h"
 #include "Player.h"
 #include "QuestManager.h"
+#include "Minimap.h"
 #include "DialogueManager.h"
+#include "ParticleManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -44,7 +46,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entity = new j1Entity();
 	player = new Player();
 	questmanager = new QuestManager();
+	minimap = new Minimap();
 	dialogs = new DialogueManager();
+	particle = new ParticleManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -60,10 +64,16 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(entity);
 	AddModule(player);
-	AddModule(questmanager);
 	AddModule(dialogs);
 	// Scene
 	AddModule(scene);
+	AddModule(questmanager);
+
+	// Particle Manager
+	AddModule(particle);
+
+	// Minimap
+	AddModule(minimap);
 
 	// Gui
 	AddModule(gui);
@@ -160,10 +170,7 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
-		ret = false;
-
-	if(input->GetWindowEvent(we_quit) == true || end_program)
+	if(input->GetWindowEvent(we_quit) == true || end_program || stop_exe)
 		ret = false;
 
 	if(ret == true)
@@ -386,7 +393,8 @@ bool j1App::LoadGameNow()
 			list<j1Module*>::iterator it;
 			for (it = modules.begin(); it != modules.end(); it++)
 			{
-				ret = (*it)->Load(root.child((*it)->name.c_str()));
+				if ((*it)->name != "")
+					ret = (*it)->Load(root.child((*it)->name.c_str()));
 			}
 
 			data.reset();
@@ -421,7 +429,8 @@ bool j1App::SavegameNow() const
 	list<j1Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); it++)
 	{
-		ret = (*it)->Save(root.child((*it)->name.c_str()));
+		if ((*it)->name != "")
+			ret = (*it)->Save(root.append_child((*it)->name.c_str()));
 	}
 
 	if(ret == true)
@@ -435,6 +444,7 @@ bool j1App::SavegameNow() const
 	}
 	else
 		LOG("Save process halted from an error in module %s", (*it)->name.c_str());
+
 
 	data.reset();
 	want_to_save = false;

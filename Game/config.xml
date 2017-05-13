@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <config>
-	<app framerate_cap="">
+	<app framerate_cap="80">
 		<title name="Project 2: Age of Empires" />
 		<organization>UPC</organization>
 	</app>
 	<renderer>
 		<vsync value="true" />
-    <camera_offset x="2200" y="1850"/>
+		<camera_offset x="2200" y="1850" />
 	</renderer>
 	<fonts>
 		<default_font file="fonts/open_sans/OpenSans-Regular.ttf" size="24" />
