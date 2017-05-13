@@ -16,6 +16,7 @@ enum entity_name
 	broken_building,
 	provisions,
 	basic_building,
+	boss,
 	towers,
 	test
 };
@@ -30,7 +31,8 @@ enum entity_type
 	building,
 	object,
 	ally_building,
-	enemy_building
+	enemy_building,
+	enemy_boss
 };
 
 class Entity;

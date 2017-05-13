@@ -11,6 +11,7 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "Boss_Axe_Knight.h"
 #include "BrokenBuilding.h"
 #include "SceneTest.h"
 #include "j1Scene.h"
@@ -308,6 +309,9 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case provisions:
 		ret = new Provisions(type);
+		break;
+	case boss:
+		ret = new BossAxeKnight(type);
 		break;
 	case broken_building:
 		ret = new BrokenBuilding(type);

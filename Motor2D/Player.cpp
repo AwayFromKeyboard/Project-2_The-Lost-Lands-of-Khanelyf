@@ -1731,11 +1731,7 @@ void Player::Charge()
 			if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 
-				//if (found != nullptr)
-				//	col = found->GetCollider();
-				//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
-
-				if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
+				if (found != nullptr && found->life > 0 && (found->type == enemy || found->type == enemy_boss) && App->map->WorldToMapPoint(mouse) == found->position_map)
 				{
 					GetHero()->speed += CHARGE_SPEED;
 					GetHero()->damage += CHARGE_DAMAGE;
@@ -1772,7 +1768,6 @@ void Player::Charge()
 					charge_ability->SetImage("clicked");
 					charge_cd->SetEnabled(true);
 					charge_timer.Start();
-
 				}
 				else
 				{
