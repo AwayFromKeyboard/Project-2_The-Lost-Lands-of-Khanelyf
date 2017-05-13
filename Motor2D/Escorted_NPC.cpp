@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "Log.h"
 #include "j1Collisions.h"
+#include "SceneTest.h"
 
 EscortedNPC::EscortedNPC(entity_type _type)
 {
@@ -82,8 +83,46 @@ bool EscortedNPC::LoadEntity(iPoint pos, entity_name name)
 
 bool EscortedNPC::CheckEscortRadius()
 {
+	std::list<iPoint> frontier;
 
+	if (position_map != range_visited.front())
+	{
+		range_visited.clear();
+		range_visited.push_back(position_map);
+		frontier.push_back(position_map);
+		for (int i = 0; i < ESCORT_RADIUS; ++i) {
+			for (int j = frontier.size(); j > 0; j--) {
+				iPoint neighbors[4];
+				neighbors[0] = frontier.front() + iPoint(1, 0);
+				neighbors[1] = frontier.front() + iPoint(-1, 0);
+				neighbors[2] = frontier.front() + iPoint(0, 1);
+				neighbors[3] = frontier.front() + iPoint(0, -1);
+				frontier.pop_front();
 
+				for (int k = 0; k < 4; k++) {
+					bool is_visited = false;
+					for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it) {
+						if (neighbors[k] == *it) {
+							is_visited = true;
+							break;
+						}
+					}
+					if (!is_visited) {
+						frontier.push_back(neighbors[k]);
+						range_visited.push_back(neighbors[k]);
+					}
+				}
+			}
+		}
+	}
+	for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
+		App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
+		for (std::list<Entity*>::iterator it2 = App->entity->entity_list.begin(); it2 != App->entity->entity_list.end(); it2++) {
+			if (App->map->WorldToMapPoint((*it2)->position) == (*it) && ((*it2)->type == entity_type::ally || (*it2)->type == entity_type::player)) {
+				return true;
+			}
+		}
+	}
 
 	return false;
 }

@@ -21,6 +21,8 @@ public:
 
 	bool CheckEscortRadius();
 	bool is_path_created = false;
+
+	std::list<iPoint> range_visited;
 };
 
 #endif
