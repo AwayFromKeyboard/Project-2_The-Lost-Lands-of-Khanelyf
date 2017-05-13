@@ -27,6 +27,7 @@
 #include "BrokenBuilding.h"
 #include "ParticleManager.h"
 #include "Fire.h"
+#include "Escorted_NPC.h"
 
 SceneTest::SceneTest()
 {
@@ -202,6 +203,11 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
 	{
 		App->player->GetHero()->levelup_points += 5;
+	}
+
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort && !escortedNPC_created) {
+		escortedNPC_created = true;
+		EscortedNPC* escorted_npc = (EscortedNPC*)App->entity->CreateEntity(npc_escort, npc, App->map->MapToWorld(90, 70));
 	}
 }
 

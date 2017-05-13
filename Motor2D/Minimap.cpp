@@ -64,14 +64,16 @@ bool Minimap::PreUpdate()
 			switch ((*it)->GetType())
 			{
 			case player:
-				cells[map_size.x * pos.y + pos.x].cell_color = { 20,20,255,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 0,255,0,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case ally:
-				cells[map_size.x * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 50,255,50,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case npc:
+				cells[map_size.x * pos.y + pos.x].cell_color = { 120,255,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case enemy:
 				cells[map_size.x * pos.y + pos.x].cell_color = { 255,20,20,255 };

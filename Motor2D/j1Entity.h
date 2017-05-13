@@ -18,6 +18,7 @@ enum entity_name
 	basic_building,
 	boss,
 	towers,
+	npc_escort,
 	test
 };
 

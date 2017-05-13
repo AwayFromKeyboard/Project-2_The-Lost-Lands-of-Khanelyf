@@ -17,6 +17,7 @@
 #include "j1Scene.h"
 #include "QuestManager.h"
 #include "Tower.h"
+#include "Escorted_NPC.h"
 
 j1Entity::j1Entity()
 {
@@ -318,6 +319,9 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 		break;
 	case towers:
 		ret = new Tower(type);
+		break;
+	case npc_escort:
+		ret = new EscortedNPC(type);
 		break;
 	default:
 		break;
