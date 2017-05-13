@@ -773,22 +773,30 @@ void j1Map::GetEntitiesSpawn() const
 						}
 						break;
 
+						case 35: // Enemy Barrack
+						{
+							Entity* enemy_barrack = App->entity->CreateEntity(barracks, enemy_building, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+
 						case 36: // Broken Building
 						{
 							Entity* brokenbuilding = App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(x, y - 1));
 						}
 						break;
 
-						case 35: // Broken Building
+						case 37: // Enemy Building
 						{
-							Entity* enemy_barrack = App->entity->CreateEntity(barracks, enemy_building, App->map->MapToWorld(x + 1, y));
+							Entity* enemy_blacksmith = App->entity->CreateEntity(blacksmiths, enemy_building, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 37: {
-							Entity* enemy_blacksmith = App->entity->CreateEntity(blacksmiths, enemy_building, App->map->MapToWorld(x + 1, y));
+						case 38: // Boss Enemy
+						{
+							Entity* enemy_boss = App->entity->CreateEntity(boss, entity_type::enemy_boss, App->map->MapToWorld(x + 1, y));
 						}
-								 break;
+						break;
+
 						}
 					
 					}

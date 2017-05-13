@@ -33,6 +33,7 @@ class Player;
 class QuestManager;
 class Minimap;
 class DialogueManager;
+class ParticleManager;
 
 class j1App
 {
@@ -124,6 +125,7 @@ public:
 	QuestManager*		questmanager = nullptr;
 	Minimap*			minimap = nullptr;
 	DialogueManager*	dialogs = nullptr;
+	ParticleManager*	particle = nullptr;
 
 	// Console logs
 	list<string>        logs;
