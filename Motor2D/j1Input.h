@@ -2,9 +2,10 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
-
+#include "SDL/include/SDL.h"
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
+#define CONTROLS_SIZE 8
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
@@ -24,6 +25,19 @@ enum j1_key_state
 	key_repeat,
 	key_up,
 	j1_key_state_null
+};
+
+enum Controls {
+
+	MOVE_MAP_UP,
+	MOVE_MAP_DOWN,
+	MOVE_MAP_LEFT,
+	MOVE_MAP_RIGHT,
+	BATTLECRY,
+	WHIRLWIND,
+	CHARGE,
+	CREATE_GROUP,
+	NULL_CONTROL
 };
 
 class j1Input : public j1Module
@@ -61,6 +75,12 @@ public:
 		return keyboard[id];
 	}
 
+	void DefaultControls();
+
+	const char * GetKeyString(SDL_Scancode scan) const;
+
+	SDL_Scancode ReturnKey();
+
 	j1_key_state GetMouseButtonDown(int id) const
 	{
 		return mouse_buttons[id - 1];
@@ -74,6 +94,8 @@ public:
 	void GetMouseMotion(int& x, int& y);
 
 	string		input_text;
+
+	int controls[NULL_CONTROL];
 
 private:
 	bool		windowEvents[we_count];

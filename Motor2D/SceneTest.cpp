@@ -199,6 +199,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
+	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
+	{
+		App->player->GetHero()->levelup_points += 5;
+	}
 }
 
 void SceneTest::IncreaseGold(int gold)

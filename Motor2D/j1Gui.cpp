@@ -1515,7 +1515,7 @@ bool UI_Text_Input::TakeInput()
 bool UI_Text_Input::Delete()
 {
 	bool ret = false;
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == key_down)
 	{
 		if (intern_text.size() > 0 && bar_pos > 0)
