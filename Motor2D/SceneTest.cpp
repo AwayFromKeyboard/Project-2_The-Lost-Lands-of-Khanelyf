@@ -67,6 +67,7 @@ bool SceneTest::Start()
 	App->entity->Enable();
 	App->questmanager->Enable();
 	App->dialogs->Enable();
+	App->minimap->Enable();
 
 	if (App->map->Load("map.tmx") == true)
 	{

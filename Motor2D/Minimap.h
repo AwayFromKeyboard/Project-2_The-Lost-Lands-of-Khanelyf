@@ -50,7 +50,7 @@ public:
 
 	// Disable/Enable Module
 	void Enable();
-	void Disable();
+	void DisableMinimap();
 
 	// MiniMap Input Funtionality ------------------
 	void MoveCameraToPoint(int x = 0, int y = 0);

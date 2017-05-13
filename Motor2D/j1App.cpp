@@ -71,9 +71,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(questmanager);
 
-	// Scene
-	AddModule(scene);
-
 	// Gui
 	AddModule(gui);
 
@@ -90,6 +87,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entity->Disable();
 	questmanager->Disable();
 	dialogs->Disable();
+	minimap->Disable();
 
 	cf = new collision_filters();
 	PERF_PEEK(ptimer);

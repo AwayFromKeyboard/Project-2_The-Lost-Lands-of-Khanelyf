@@ -228,7 +228,7 @@ void Minimap::Enable()
 	}
 }
 
-void Minimap::Disable()
+void Minimap::DisableMinimap()
 {
 	units_to_print.clear();
 }
