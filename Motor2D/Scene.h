@@ -18,6 +18,7 @@ public:
 
 	virtual ~Scene() {};
 
+	virtual bool Init() { return true; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update(float dt) { return true; };

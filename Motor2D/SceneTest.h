@@ -19,6 +19,8 @@ public:
 	SceneTest();
 	~SceneTest();
 
+	bool Init();
+
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);

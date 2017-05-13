@@ -15,6 +15,8 @@ public:
 	MainMenu();
 	~MainMenu();
 
+	bool Init();
+
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);

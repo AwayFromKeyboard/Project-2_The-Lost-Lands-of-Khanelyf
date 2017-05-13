@@ -71,11 +71,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(questmanager);
 
-	// Gui
-	AddModule(gui);
-
 	// Scene
 	AddModule(scene);
+
+	// Gui
+	AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);

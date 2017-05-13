@@ -53,6 +53,9 @@ bool j1Scene::Start()
 	//current_scene->Pause();
 	current_scene = main_menu;
 
+	for (std::list<Scene*>::iterator it = scenes.begin(); it != scenes.end(); ++it)
+		(*it)->Init();
+
 	if(current_scene != nullptr)
 		ret = current_scene->Start();
 

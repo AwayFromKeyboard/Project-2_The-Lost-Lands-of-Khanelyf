@@ -558,8 +558,7 @@ bool UI_Element::cleanup()
 
 void UI_Element::SetEnabled(bool set)
 {
-	if (this != NULL)
-		enabled = set;
+	enabled = set;
 }
 
 // ---------------------------------------------------------------------
@@ -1340,7 +1339,7 @@ bool UI_Text::cleanup()
 // -----------------------------------
 // Image -----------------------------
 
-UI_Image::UI_Image()
+UI_Image::UI_Image() : UI_Element()
 {
 }
 
