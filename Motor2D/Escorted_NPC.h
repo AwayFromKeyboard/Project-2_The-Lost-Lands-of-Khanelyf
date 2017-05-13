@@ -3,6 +3,7 @@
 
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
+#define ESCORT_RADIUS 3
 
 enum entity_type;
 
@@ -17,6 +18,9 @@ public:
 
 public:
 	iPoint mouse_position;
+
+	bool CheckEscortRadius();
+	bool is_path_created = false;
 };
 
 #endif

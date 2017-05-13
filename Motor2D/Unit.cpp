@@ -21,6 +21,7 @@
 #include "Boss_Axe_Knight.h"
 #include "Particle.h"
 #include "ParticleManager.h"
+#include "Escorted_NPC.h"
 
 Unit::Unit()
 {
@@ -345,36 +346,48 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
-	if (is_boss && life > 0) {
-		CheckPhase();
+	if (life > 0)
+	{
+		if (is_escortednpc) {
+			if (!npc_quest->is_path_created && npc_quest->CheckEscortRadius()) {
+				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), { 80, 10 });
+				state = entity_state::entity_move;
+				npc_quest->is_path_created = true;
+			}
 
-		if (life == max_life)
-			phase = asleep;
-		else if (life >= max_life * 80 / 100 && life < max_life) {
-			phase = phase_1;
-			boss->starter_ability_phase2_timer = false;
-			boss->starter_ability_phase3_timer = false;
-			boss->starter_ability_last_phase_timer = false;
-			boss->range_visited.clear();
-			boss->range_visited2.clear();
 		}
-		else if (life >= max_life * 50 / 100 && life < max_life * 80 / 100) {
-			phase = phase_2;
-			boss->starter_ability_phase3_timer = false;
-			boss->starter_ability_last_phase_timer = false;
-			boss->fireballs.clear();
-			boss->range_visited2.clear();
-		}
-		else if (life >= max_life * 25 / 100 && life < max_life * 50 / 100) {
-			phase = phase_3;
-			boss->starter_ability_phase2_timer = false;
-			boss->starter_ability_last_phase_timer = false;
-			boss->range_visited.clear();
-		}
-		else if (phase != last_phase) {
-			phase = last_phase;
-			boss->starter_ability_phase2_timer = false;
-			boss->starter_ability_phase3_timer = false;
+
+		if (is_boss) {
+			CheckPhase();
+
+			if (life == max_life)
+				phase = asleep;
+			else if (life >= max_life * 80 / 100 && life < max_life) {
+				phase = phase_1;
+				boss->starter_ability_phase2_timer = false;
+				boss->starter_ability_phase3_timer = false;
+				boss->starter_ability_last_phase_timer = false;
+				boss->range_visited.clear();
+				boss->range_visited2.clear();
+			}
+			else if (life >= max_life * 50 / 100 && life < max_life * 80 / 100) {
+				phase = phase_2;
+				boss->starter_ability_phase3_timer = false;
+				boss->starter_ability_last_phase_timer = false;
+				boss->fireballs.clear();
+				boss->range_visited2.clear();
+			}
+			else if (life >= max_life * 25 / 100 && life < max_life * 50 / 100) {
+				phase = phase_3;
+				boss->starter_ability_phase2_timer = false;
+				boss->starter_ability_last_phase_timer = false;
+				boss->range_visited.clear();
+			}
+			else if (phase != last_phase) {
+				phase = last_phase;
+				boss->starter_ability_phase2_timer = false;
+				boss->starter_ability_phase3_timer = false;
+			}
 		}
 	}
 

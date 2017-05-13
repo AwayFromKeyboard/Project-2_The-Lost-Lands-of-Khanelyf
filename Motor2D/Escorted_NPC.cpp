@@ -44,7 +44,7 @@ bool EscortedNPC::LoadEntity(iPoint pos, entity_name name)
 		cost = node.child("cost").attribute("value").as_int(0);
 		human_cost = node.child("human_cost").attribute("value").as_int(0);
 		gold_drop = node.child("gold_drop").attribute("value").as_int(0);
-		speed = node.child("speed").attribute("value").as_float();
+		speed = 1;//node.child("speed").attribute("value").as_float();
 		damage = node.child("damage").attribute("value").as_int();
 		armor = node.child("armor").attribute("value").as_int();
 		pierce_armor = node.child("pierce_armor").attribute("value").as_int();
@@ -72,8 +72,18 @@ bool EscortedNPC::LoadEntity(iPoint pos, entity_name name)
 		direction = { 0, 1 };
 
 		state = entity_state::entity_idle;
+		is_escortednpc = true;
+		npc_quest = this;
 	}
 	else LOG("\nERROR, no node found\n");
 
 	return ret;
+}
+
+bool EscortedNPC::CheckEscortRadius()
+{
+
+
+
+	return false;
 }

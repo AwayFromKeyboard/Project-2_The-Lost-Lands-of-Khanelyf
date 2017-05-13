@@ -39,6 +39,7 @@ enum entity_type;
 class Building;
 class Object;
 class BossAxeKnight;
+class EscortedNPC;
 
 class Unit : public Entity
 {
@@ -192,6 +193,11 @@ public:
 	BossAxeKnight* boss = nullptr;
 
 	bool LooksDiagonal();
+
+public:
+	bool is_escortednpc = false;
+	EscortedNPC* npc_quest = nullptr;
+	
 };
 
 #endif
