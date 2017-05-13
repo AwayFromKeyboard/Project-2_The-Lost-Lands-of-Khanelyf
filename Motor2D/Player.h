@@ -12,7 +12,7 @@
 #define BATTLECRY_BUFF 5
 #define BATTLECRY_RANGE 10
 
-#define DURATION_UNDYING_WILL 5
+#define DURATION_UNDYING_WILL 4
 #define COOLDOWN_UNDYING_WILL 20
 
 #define COOLDOWN_WHIRLWIND 8
@@ -21,7 +21,7 @@
 
 #define COOLDOWN_CHARGE 12
 #define CHARGE_DAMAGE 40
-#define CHARGE_RANGE 5
+#define CHARGE_RANGE 6
 #define CHARGE_SPEED 5
 
 enum first_ability {

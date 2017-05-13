@@ -397,7 +397,7 @@ bool Player::Start()
 	charge_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18), 60, 60);
 	charge_ability->AddImage("standard", { 802, 0, 25, 25 });
 	charge_ability->SetImage("standard");
-	charge_ability->AddImage("clicked", { 827, 60, 25, 25 });
+	charge_ability->AddImage("clicked", { 827, 0, 25, 25 });
 
 	charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
@@ -1235,11 +1235,11 @@ bool Player::PreUpdate()
 					battlecry_cd->SetEnabled(true);
 					battlecry_timer.Start();
 				}
-				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
 					battlecry_cd->SetEnabled(false);
 					battlecry_ability->SetImage("standard");
 				}
-				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
 					StopBuff(-BATTLECRY_BUFF);
 				}
 
@@ -2082,7 +2082,7 @@ void Player::DrawCD(int ability_number)
 
 	if (ability_number == 4)
 	{
-		int timer = COOLDOWN_UNDYING_WILL - charge_timer.ReadSec() + 1;
+		int timer = COOLDOWN_UNDYING_WILL - undying_will_timer.ReadSec() + 1;
 		oss << timer;
 		std::string txt = oss.str();
 		undying_will_cd->SetText(txt);
