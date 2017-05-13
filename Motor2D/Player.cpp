@@ -462,9 +462,60 @@ bool Player::PreUpdate()
 		pause_status = !pause_status;
 	}
 
+	if (choose_ability_b->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != battlecry_active && App->scene->scene_test->gold >= 50)
+	{
+		active_ability = battlecry_active;
+		App->scene->scene_test->gold = App->scene->scene_test->gold - 50;
+
+		show_ability_name->SetText("BC");
+
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		battlecry_ability->SetImage("clicked");
+
+		battlecry_timer.Start();
+		battlecry_cd->enabled = true;
+		undying_will_cd->enabled = false;
+	}
+	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != undying_will_active && App->scene->scene_test->gold >= 50)
+	{
+		active_ability = undying_will_active;
+		App->scene->scene_test->gold = App->scene->scene_test->gold - 50;
+
+		show_ability_name->SetText("UW");
+
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		battlecry_ability->SetImage("clicked");
+
+		undying_will_timer.Start();
+		undying_will_cd->enabled = true;
+		battlecry_cd->enabled = false;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 	{
 		
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
 		if (change_controls_status)
 		{
 			change_controls_status = false;
@@ -963,7 +1014,8 @@ bool Player::PreUpdate()
 				
 	}
 
-	else if ((!pause_status && pause_window->enabled && active_ability != not_chosen)) {
+	else if ((!pause_status && pause_window->enabled && active_ability != not_chosen))
+	{
 		pause_window->SetEnabledAndChilds(false);
 	}
 	
@@ -1089,12 +1141,14 @@ bool Player::PreUpdate()
 			}
 		}
 
-		if (create_unit_button2->MouseClickOutLeft()) {
+		if (create_unit_button2->MouseClickOutLeft())
+		{
 			create_unit_button2->SetImage("standard");
 		}
 
 		//Brokenbuilding create building buttons
-		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode)) {
+		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode))
+		{
 			create_building_button->SetImage("clicked");
 
 			if (!App->debug_mode)
@@ -1109,18 +1163,21 @@ bool Player::PreUpdate()
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
-					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader)
+					{
 						App->questmanager->GetCurrentQuest()->progress++;
 					}
 				}
 			}
 			
 		}
-		if (create_building_button->MouseClickOutLeft()) {
+		if (create_building_button->MouseClickOutLeft())
+		{
 			create_building_button->SetImage("standard");
 		}
 
-		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode)) {
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode))
+		{
 			create_building_button2->SetImage("clicked");
 
 			if (!App->debug_mode)
@@ -1139,7 +1196,8 @@ bool Player::PreUpdate()
 
 		}
 
-		if (create_building_button2->MouseClickOutLeft()) {
+		if (create_building_button2->MouseClickOutLeft())
+		{
 			create_building_button2->SetImage("standard");
 		}
 
@@ -1333,7 +1391,23 @@ bool Player::Update(float dt)
 						}
 						break;
 					}
-					else {
+					else if ((*it)->GetType() == building && (*it)->name == blacksmiths)
+					{
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+
+						choose_ability_b->click_through = false;
+						choose_ability_b->enabled = true;
+						choose_ability_b_txt->enabled = true;
+
+						choose_ability_uw->click_through = false;
+						choose_ability_uw->enabled = true;
+						choose_ability_uw_txt->enabled = true;
+
+						break;
+					}
+					else
+					{
 						App->entity->selected.push_back((Unit*)*it);
 					}
 				}
@@ -1525,27 +1599,30 @@ bool Player::PostUpdate()
 {
 	bool ret = true;
 
-	if (hero != nullptr) {
+	if (hero != nullptr)
 		UpdateAttributes();
-	}
 	
 	if (draw_buff == true)
 		DrawBuff();
 
-	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY) {
+	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY && active_ability == battlecry_active)
+	{
 		DrawCD(1); // 1 == Battlecry
 	}
 
-	if (whirlwind_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
+	if (undying_will_timer.ReadSec() <= COOLDOWN_UNDYING_WILL && active_ability == undying_will_active)
+	{
+		DrawCD(4); // 4 == Undying Will
+	}
+
+	if (whirlwind_timer.ReadSec() <= COOLDOWN_WHIRLWIND)
+	{
 		DrawCD(2); // 2 == Whirlwind
 	}
 
-	if (charge_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
+	if (charge_timer.ReadSec() <= COOLDOWN_WHIRLWIND)
+	{
 		DrawCD(3); // 3 == Charge
-	}
-
-	if (undying_will_timer.ReadSec() <= COOLDOWN_UNDYING_WILL) {
-		DrawCD(4); // 3 == Charge
 	}
 
 	return ret;
@@ -1623,8 +1700,10 @@ bool Player::Save(pugi::xml_node& data) const
 	misc.append_attribute("human_resources") = App->scene->scene_test->current_human_resources;
 	misc.append_attribute("max_human_resources") = App->scene->scene_test->human_resources_max;
 
-	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		if ((*it)->type == entity_type::ally) {
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+	{
+		if ((*it)->type == entity_type::ally)
+		{
 			pugi::xml_node ally = allies.append_child("Ally");
 			ally.append_attribute("name") = (*it)->name;
 	
@@ -1636,7 +1715,8 @@ bool Player::Save(pugi::xml_node& data) const
 	return true;
 }
 
-void Player::MoveToTile(iPoint tile) {
+void Player::MoveToTile(iPoint tile)
+{
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->position), tile);
 		(*it)->state = entity_state::entity_move;
@@ -1645,25 +1725,32 @@ void Player::MoveToTile(iPoint tile) {
 	}
 }
 
-void Player::SetAttackingEnemy(Unit* enemy) {
-	if (enemy->life > 0) {
-		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+void Player::SetAttackingEnemy(Unit* enemy)
+{
+	if (enemy->life > 0)
+	{
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++)
+		{
 			(*it)->SetAttackingUnit(enemy);
 			(*it)->state = entity_state::entity_move_to_enemy;
 		}
 	}
 }
 
-void Player::SetAttackingBuilding(Building* building) {
-	if (building->life > 0) {
-		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+void Player::SetAttackingBuilding(Building* building)
+{
+	if (building->life > 0)
+	{
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++)
+		{
 			(*it)->SetAttackingBuilding(building);
 			(*it)->state = entity_state::entity_move_to_building;
 		}
 	}
 }
 
-void Player::UpdateAttributes() {
+void Player::UpdateAttributes()
+{
 	std::stringstream life;
 	life << hero->life;
 	life_txt->SetText(life.str());
@@ -1684,8 +1771,10 @@ void Player::UpdateAttributes() {
 	{
 		levelup_window->SetEnabledAndChilds(true);
 	}
-	else if (levelup_window->enabled) {
-		if (hero->levelup_points == 0) {
+	else if (levelup_window->enabled)
+	{
+		if (hero->levelup_points == 0)
+		{
 			levelup_window->SetEnabledAndChilds(false);
 		}
 		else {

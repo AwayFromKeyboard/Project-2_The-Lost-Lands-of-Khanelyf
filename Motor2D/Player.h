@@ -175,6 +175,12 @@ public:
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
 
+	UI_Button* choose_ability_b = nullptr;
+	UI_Button* choose_ability_uw = nullptr;
+
+	UI_Text* choose_ability_b_txt = nullptr;
+	UI_Text* choose_ability_uw_txt = nullptr;
+
 private:
 	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
@@ -191,11 +197,7 @@ private:
 	UI_Button* whirlwind_ability = nullptr;
 	UI_Button* charge_ability = nullptr;
 
-	UI_Button* choose_ability_b = nullptr;
-	UI_Button* choose_ability_uw = nullptr;
-
-	UI_Text* choose_ability_b_txt = nullptr;
-	UI_Text* choose_ability_uw_txt = nullptr;
+	bool changing_ability = false;
 
 public:
 	bool audio_status = false;

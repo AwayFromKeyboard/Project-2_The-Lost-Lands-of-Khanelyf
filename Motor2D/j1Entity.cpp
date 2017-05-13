@@ -426,6 +426,14 @@ void j1Entity::UnselectEverything()
 	if (App->player->brokenbuilding_ui_window->enabled)
 		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
+	App->player->choose_ability_b->click_through = true;
+	App->player->choose_ability_b->enabled = false;
+	App->player->choose_ability_b_txt->enabled = false;
+
+	App->player->choose_ability_uw->click_through = true;
+	App->player->choose_ability_uw->enabled = false;
+	App->player->choose_ability_uw_txt->enabled = false;
+
 	selected.clear();
 }
 
