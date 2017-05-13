@@ -83,6 +83,7 @@ bool EscortedNPC::LoadEntity(iPoint pos, entity_name name)
 
 bool EscortedNPC::CheckEscortRadius()
 {
+	bool ret = false;
 	std::list<iPoint> frontier;
 
 	if (position_map != range_visited.front())
@@ -119,10 +120,10 @@ bool EscortedNPC::CheckEscortRadius()
 		App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 		for (std::list<Entity*>::iterator it2 = App->entity->entity_list.begin(); it2 != App->entity->entity_list.end(); it2++) {
 			if (App->map->WorldToMapPoint((*it2)->position) == (*it) && ((*it2)->type == entity_type::ally || (*it2)->type == entity_type::player)) {
-				return true;
+				ret = true;
 			}
 		}
 	}
 
-	return false;
+	return ret;
 }

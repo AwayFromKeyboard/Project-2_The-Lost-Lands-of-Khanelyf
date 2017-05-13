@@ -349,12 +349,20 @@ bool Unit::PostUpdate()
 	if (life > 0)
 	{
 		if (is_escortednpc && App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort) {
-			if (!npc_quest->is_path_created && npc_quest->CheckEscortRadius()) {
-				path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), { 80, 10 });
-				state = entity_state::entity_move;
-				npc_quest->is_path_created = true;
+			if (npc_quest->CheckEscortRadius()) {
+				if (!npc_quest->is_path_created) {
+					path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), ESCORT_DESTINATION);
+					state = entity_state::entity_move;
+					npc_quest->is_path_created = true;
+				}
 			}
-			if (npc_quest->CheckEscortRadius())
+			else if (npc_quest->is_path_created) {
+				App->pathfinding->DeletePath(path_id);
+				path.clear();
+				path_id = 0;
+				state = entity_state::entity_idle;
+				npc_quest->is_path_created = false;
+			}
 
 		}
 

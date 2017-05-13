@@ -4,6 +4,7 @@
 #include "Unit.h"
 #define	COLLISION_ADJUSTMENT iPoint(0, 0)
 #define ESCORT_RADIUS 3
+#define ESCORT_DESTINATION iPoint()
 
 enum entity_type;
 
