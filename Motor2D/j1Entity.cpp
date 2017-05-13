@@ -316,6 +316,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case towers:
 		ret = new Tower(type);
 		break;
+	case blacksmiths:
+		ret = new Blacksmith(type);
 	default:
 		break;
 	}

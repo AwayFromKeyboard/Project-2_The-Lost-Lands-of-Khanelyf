@@ -72,7 +72,7 @@
     <life value="200"/>
     <cost value="90"/>
     <rect w="211" h="167"/>
-    <collision_box w="211" h="167" offset_x="-140" offset_y="-130"/>
-    <offset offset_x="150" offset_y="150"/>
+    <collision_box w="210" h="165" offset_x="-150" offset_y="-125"/>
+    <offset offset_x="120" offset_y="140"/>
   </building>
 </buildings>
