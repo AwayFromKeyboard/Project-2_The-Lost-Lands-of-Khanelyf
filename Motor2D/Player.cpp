@@ -446,6 +446,8 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
+	load->enabled = false;
+	save->enabled = false;
 
 
 	if (victory_status) {
