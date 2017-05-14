@@ -78,7 +78,7 @@ Controls:
 
   or
 
-* X + left click to use Undying Will (hero is inmune to damage for 3 seconds) (there is nothing to represent it visually for the moment)
+* X + left click to use Undying Will (hero is inmune to damage for 3 seconds)
 
 * C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
 
