@@ -360,11 +360,6 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(21, 69));
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_J))
-	{
-		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		barb->move_to_ally_building = true;
-	}
 }
 
 void SceneTest::IncreaseGold(int gold)
