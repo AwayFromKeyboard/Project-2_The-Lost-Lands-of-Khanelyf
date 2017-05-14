@@ -29,6 +29,8 @@ bool Object::Start()
 {
 	bool ret = true;
 
+	CheckIDInRect();
+
 	return ret;
 }
 

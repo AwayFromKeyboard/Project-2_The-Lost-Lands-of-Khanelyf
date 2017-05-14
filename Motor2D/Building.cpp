@@ -37,6 +37,8 @@ bool Building::Start()
 		App->scene->scene_test->human_resources_max++;
 	}
 
+	CheckIDInRect();
+
 	return ret;
 }
 
@@ -84,8 +86,11 @@ bool Building::Update(float dt)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
 		if (type == entity_type::enemy_building) {
-			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
-				App->questmanager->GetCurrentQuest()->progress++;
+			if (id == quest_4) {
+				if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
+					App->questmanager->GetCurrentQuest()->progress++;
+				else App->scene->scene_test->progress_quest_4++;
+			}
 			if (name == basic_building)
 				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
 			else if (name == towers)

@@ -25,6 +25,17 @@ enum entity_state {
 	entity_null
 };
 
+enum entity_quest_id {
+	quest_0,
+	quest_2,
+	quest_3,
+	quest_4,
+	quest_7,
+
+	quest_id_null
+};
+
+
 class Entity
 {
 public:
@@ -73,11 +84,12 @@ public:
 	};
 
 	void LifeBar(iPoint size, iPoint offset);
-
+	void CheckIDInRect();
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
 	entity_name name = entity_name::test;
+	entity_quest_id id = entity_quest_id::quest_id_null;
 	bool to_delete = false;
 
 	int life = 0;
