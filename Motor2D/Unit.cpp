@@ -903,12 +903,15 @@ void Unit::UnitAttack()
 	if (attacked_unit != nullptr) {
 		LookAtAttack();
 
-		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+		if (current_animation->GetFrameIndex() == 5 && shout_fx == true)
+		{
+			if (App->player->audio_muted == false)
+			{
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+			}
 			shout_fx = false;
 		}
-
 		if (current_animation->Finished())
 		{
 			if (attacked_unit->type == player) {
@@ -919,14 +922,20 @@ void Unit::UnitAttack()
 				attacked_unit->life -= damage;
 
 			current_animation->Reset();
-			if (attacked_unit->life <= 0)
+
+			if (App->player->audio_muted == false)
 			{
-				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
+
+				if (App->player->audio_muted == false)
+				{
+					App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
+				}
 				state = entity_idle;
 				attacked_unit->state = entity_death;
 				attacked_unit = nullptr;
+
+				shout_fx = true;
 			}
-			shout_fx = true;
 		}
 	}
 	else state = entity_idle;
@@ -937,11 +946,13 @@ void Unit::BuildingAttack()
 	if (attacked_building != nullptr) {
 		LookAtAttack();
 
-		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
-			shout_fx = false;
+		if (App->player->audio_muted == false)
+		{
+			if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+				shout_fx = false;
+			}
 		}
-
 		if (current_animation->Finished())
 		{
 			attacked_building->life -= damage;

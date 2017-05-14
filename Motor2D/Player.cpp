@@ -23,6 +23,7 @@
 #include "BasicBuilding.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "j1Audio.h"
 
 Player::Player()
 {
@@ -233,6 +234,10 @@ bool Player::Start()
 	audio_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
 	audio_txt->SetText("Audio");
 	audio_txt->click_through = true;
+
+	audio_on_off = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 50), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	audio_on_off->SetText("On");
+	audio_on_off->click_through = true;
 
 	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
 	pause_menu_txt->SetText("PAUSE");
@@ -534,6 +539,7 @@ bool Player::PreUpdate()
 			controls_txt->SetEnabled(true);
 			backpause_txt->SetEnabled(true);
 			audio_txt->SetEnabled(true);
+			audio_on_off->SetEnabled(true);
 
 			//quit controls menu
 			controls_bg->SetEnabled(false);
@@ -602,6 +608,7 @@ bool Player::PreUpdate()
 			controls_txt->SetEnabled(false);
 			backpause_txt->SetEnabled(false);
 			audio_txt->SetEnabled(false);
+			audio_on_off->SetEnabled(false);
 		}
 		else
 			pause_status = !pause_status;
@@ -612,6 +619,20 @@ bool Player::PreUpdate()
 		audio_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
+
+		if(audio_muted)
+		{
+			audio_muted = !audio_muted;
+			audio_on_off->SetText("On");
+			App->audio->ResumeMusic();
+		}
+		else
+		{
+			audio_muted = !audio_muted;
+			audio_on_off->SetText("Off");
+			App->audio->PauseMusic();
+		}
+
 	}
 	else if (controls_button->MouseClickEnterLeft())
 	{
@@ -790,6 +811,12 @@ bool Player::PreUpdate()
 		back->SetImage("standard");
 	}
 
+	else if (button_clicked.ReadSec() >= 0.1 && audio_button->CompareState("clicked") && button_on_clicked == true)
+	{
+		button_on_clicked = false;
+		audio_button->SetImage("standard");
+	}
+
 	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || options->CompareState("clicked"))) {
 		button_on_clicked = false;
 		options->SetImage("standard");
@@ -819,6 +846,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(true);
 		backpause_txt->SetEnabled(true);
 		audio_txt->SetEnabled(true);
+		audio_on_off->SetEnabled(true);
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backpause->CompareState("clicked"))
 	{
@@ -852,6 +880,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
+		audio_on_off->SetEnabled(false);
 	}
 
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && controls_button->CompareState("clicked"))
@@ -871,6 +900,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
+		audio_on_off->SetEnabled(false);
 
 		//active controls menu
 		controls_bg->SetEnabled(true);
@@ -920,6 +950,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(true);
 		backpause_txt->SetEnabled(true);
 		audio_txt->SetEnabled(true);
+		audio_on_off->SetEnabled(true);
 
 		//quit controls menu
 		controls_bg->SetEnabled(false);
@@ -993,6 +1024,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
+		audio_on_off->SetEnabled(false);
 		backoptions->SetEnabled(false);
 		backoptions_txt->SetEnabled(false);
 		battlecry_txt->SetEnabled(false);

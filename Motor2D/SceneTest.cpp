@@ -109,7 +109,7 @@ bool SceneTest::Update(float dt)
 	
 	UpdateCameraMovement();
 
-	if (App->player->pause_status) {
+	if (App->player->pause_status || App->player->audio_muted) {
 		
 		App->audio->PauseMusic();
 	}else
