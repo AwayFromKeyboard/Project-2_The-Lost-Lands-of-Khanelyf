@@ -1167,7 +1167,7 @@ bool Player::PreUpdate()
 		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
 			create_unit_button2->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
+			if (App->scene->scene_test->gold >= 20 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
 				Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= sword->cost;
 				App->scene->scene_test->current_human_resources += sword->human_cost;
@@ -1209,7 +1209,9 @@ bool Player::PreUpdate()
 			create_building_button->SetImage("standard");
 		}
 
-		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode))
+
+
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode) && App->scene->scene_test->create_barrack == false)
 		{
 			create_building_button2->SetImage("clicked");
 
