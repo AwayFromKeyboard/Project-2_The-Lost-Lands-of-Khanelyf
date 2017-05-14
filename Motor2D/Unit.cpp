@@ -48,6 +48,30 @@ bool Unit::Start()
 	max_life = life;
 	
 	layer = 5;
+	if (position.PointInRect(App->scene->scene_test->quest_0.x, App->scene->scene_test->quest_0.y, App->scene->scene_test->quest_0.w, App->scene->scene_test->quest_0.h)) {
+		id = entity_quest_id::quest_0;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_1.x, App->scene->scene_test->quest_1.y, App->scene->scene_test->quest_1.w, App->scene->scene_test->quest_1.h)){
+		id = entity_quest_id::quest_1;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_2.x, App->scene->scene_test->quest_2.y, App->scene->scene_test->quest_2.w, App->scene->scene_test->quest_2.h)){
+		id = entity_quest_id::quest_2;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_3.x, App->scene->scene_test->quest_3.y, App->scene->scene_test->quest_3.w, App->scene->scene_test->quest_3.h)) {
+		id = entity_quest_id::quest_3;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_4.x, App->scene->scene_test->quest_4.y, App->scene->scene_test->quest_4.w, App->scene->scene_test->quest_4.h)) {
+		id = entity_quest_id::quest_4;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_5.x, App->scene->scene_test->quest_5.y, App->scene->scene_test->quest_5.w, App->scene->scene_test->quest_5.h)) {
+		id = entity_quest_id::quest_5;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_6.x, App->scene->scene_test->quest_6.y, App->scene->scene_test->quest_6.w, App->scene->scene_test->quest_6.h)) {
+		id = entity_quest_id::quest_6;
+	}
+	else if (position.PointInRect(App->scene->scene_test->quest_7.x, App->scene->scene_test->quest_7.y, App->scene->scene_test->quest_7.w, App->scene->scene_test->quest_7.h)) {
+		id = entity_quest_id::quest_7;
+	}
 
 	return ret;
 }
