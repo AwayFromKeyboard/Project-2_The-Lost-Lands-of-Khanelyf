@@ -81,13 +81,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	console->AddCommand("save", console, 0, 0, "Save data");
 	console->AddCommand("cap_fps", console, 0, 1, "Cap fps. Min_args: 0 Max_args: 1 Args: num > 0");
 
-	player->Disable();
-	collisions->Disable();
-	pathfinding->Disable();
-	entity->Disable();
-	questmanager->Disable();
-	dialogs->Disable();
-	minimap->Disable();
+	player->active = false;
+	collisions->active = false;
+	pathfinding->active = false;
+	entity->active = false;
+	questmanager->active = false;
+	dialogs->active = false;
+	minimap->active = false;
 
 	cf = new collision_filters();
 	PERF_PEEK(ptimer);

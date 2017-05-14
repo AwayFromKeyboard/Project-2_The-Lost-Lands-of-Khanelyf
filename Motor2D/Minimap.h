@@ -49,7 +49,7 @@ public:
 	bool IsMouseOver();
 
 	// Disable/Enable Module
-	void Enable();
+	void EnableMinimap();
 	void DisableMinimap();
 
 	// MiniMap Input Funtionality ------------------

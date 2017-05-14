@@ -33,16 +33,14 @@ Player::~Player()
 {
 }
 
-bool Player::Start()
+bool Player::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
-
 	//pause menu
+	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, 240, 386, 12);
 
-	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
-	
 	controls_bg = (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 3) + (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, { 271,2300,310,499 });
-	pause_bg= (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, {0,2300,240,386});
+	pause_bg = (UI_Image*)pause_window->CreateImage({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) }, { 0,2300,240,386 });
 
 	create_group_button = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 12) - (App->win->_GetWindowSize().y / 300) }, 186, 31);
 	create_group_button->AddImage("standard", { 592, 2722, 228, 21 });
@@ -127,19 +125,19 @@ bool Player::Start()
 	quit_game->SetImage("standard");
 	quit_game->AddImage("clicked", { 25, 2768, 186, 31 });
 	quit_game->AddImage("hovered", { 26, 2732, 186, 31 });
-	
-	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+
+	back = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
 	back->AddImage("standard", { 25, 2695, 186, 31 });
 	back->SetImage("standard");
 	back->AddImage("clicked", { 25, 2768, 186, 31 });
 	back->AddImage("hovered", { 26, 2732, 186, 31 });
-	
+
 	save = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 186, 31);
 	save->AddImage("standard", { 25, 2695, 186, 31 });
 	save->SetImage("standard");
 	save->AddImage("clicked", { 25, 2768, 186, 31 });
 	save->AddImage("hovered", { 26, 2732, 186, 31 });
-	
+
 	load = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 5) - (App->win->_GetWindowSize().y / 97) }, 186, 31);
 	load->AddImage("standard", { 25, 2695, 186, 31 });
 	load->SetImage("standard");
@@ -234,17 +232,17 @@ bool Player::Start()
 	audio_txt->SetText("Audio");
 	audio_txt->click_through = true;
 
-	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
+	pause_menu_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default, 0, false, 0, 0, 0);
 	pause_menu_txt->SetText("PAUSE");
-	
-	quit_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+
+	quit_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
 	quit_txt->SetText("Quit");
 	quit_txt->click_through = true;
-	
+
 	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
 	back_txt->SetText("Resume Game");
 	back_txt->click_through = true;
-	
+
 	save_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
 	save_txt->SetText("Save");
 	save_txt->click_through = true;
@@ -266,7 +264,8 @@ bool Player::Start()
 	damage_txt = (UI_Text*)attributes_window->CreateText({ 149, 956 }, App->font->default_15);
 	armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 972 }, App->font->default_15);
 	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 988 }, App->font->default_15);
-	
+	attributes_window->SetEnabledAndChilds(false);
+
 	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
 	life_button = (UI_Button*)levelup_window->CreateButton({ 169, 937 }, 10, 10);
 	life_button->AddImage("standard", { 792, 73, 10, 10 });
@@ -348,15 +347,14 @@ bool Player::Start()
 	battlecry_key->SetText("X");
 
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
-	battlecry_cd->SetEnabled(false);
 
 	//drop object interface
 
 	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
+	inventory->SetEnabled(false);
 	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
 	item_drop->AddImage("standard", { 645, 60, 25, 25 });
 	item_drop->SetImage("standard");
-	item_drop->SetEnabled(false);
 
 	//Whirlwind
 
@@ -369,7 +367,6 @@ bool Player::Start()
 	whirlwind_key->SetText("C");
 
 	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
-	whirlwind_cd->SetEnabled(false);
 
 	//Charge
 
@@ -382,7 +379,31 @@ bool Player::Start()
 	charge_key->SetText("V");
 
 	charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
-	charge_cd->SetEnabled(false);
+	player_abilities->SetEnabledAndChilds(false);
+
+	return ret;
+}
+
+bool Player::Start()
+{
+	bool ret = true;
+
+	//stats
+	attributes_window->SetEnabledAndChilds(true);
+
+	//Player abilities
+	player_abilities->SetEnabled(true);
+	//Battlecry
+	battlecry_ability->SetEnabled(true);
+	battlecry_key->SetEnabled(true);
+	//Drop object interface
+	inventory->SetEnabled(true);
+	//Whirlwind
+	whirlwind_ability->SetEnabled(true);
+	whirlwind_key->SetEnabled(true);
+	//Charge
+	charge_ability->SetEnabled(true);
+	charge_key->SetEnabled(true);
 
 	return ret;
 }
@@ -395,11 +416,9 @@ bool Player::PreUpdate()
 		App->stop_exe = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
-	{
-		
-		if (change_controls_status)
-		{
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down) {
+
+		if (change_controls_status) {
 			change_controls_status = false;
 
 			button_on_clicked = false;
@@ -448,12 +467,10 @@ bool Player::PreUpdate()
 			create_group_txt2->SetEnabled(false);
 
 		}
-		else if (audio_status)
-		{
+		else if (audio_status) {
 
 		}
-		else if (options_status)
-		{
+		else if (options_status) {
 			options_status = false;
 
 			button_on_clicked = false;
@@ -489,67 +506,57 @@ bool Player::PreUpdate()
 			pause_status = !pause_status;
 	}
 
-	if (audio_button->MouseClickEnterLeft())
-	{
+	if (audio_button->MouseClickEnterLeft()) {
 		audio_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (controls_button->MouseClickEnterLeft())
-	{
+	else if (controls_button->MouseClickEnterLeft()) {
 		change_controls_status = true;
 		controls_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (backpause->MouseClickEnterLeft())
-	{
+	else if (backpause->MouseClickEnterLeft()) {
 		backpause->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (back->MouseClickEnterLeft())
-	{
+	else if (back->MouseClickEnterLeft()) {
 		back->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (load->MouseClickEnterLeft())
-	{
+	else if (load->MouseClickEnterLeft()) {
 		load->SetImage("clicked");
 		App->entity->loaded = false;
 		App->LoadGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (options->MouseClickEnterLeft() && pause_status)
-	{
+	else if (options->MouseClickEnterLeft() && pause_status) {
 		options_status = true;
 		options->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (save->MouseClickEnterLeft())
-	{
+	else if (save->MouseClickEnterLeft()) {
 		save->SetImage("clicked");
 		App->SaveGame("Save_File.xml");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (backpause->MouseClickEnterLeft())
-	{
+	else if (backpause->MouseClickEnterLeft()) {
 		backpause->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (backoptions->MouseClickEnterLeft())
-	{
+	else if (backoptions->MouseClickEnterLeft()) {
 		backoptions->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
-	else if (battlecry_button_options->MouseClickEnterLeft())
-	{
+	else if (battlecry_button_options->MouseClickEnterLeft()) {
 		battlecry_button_options->SetImage("clicked");
 		change_button_config = true;
 
@@ -561,8 +568,7 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (whirlwind_button_options->MouseClickEnterLeft())
-	{
+	else if (whirlwind_button_options->MouseClickEnterLeft()) {
 		whirlwind_button_options->SetImage("clicked");
 		change_button_config = true;
 
@@ -574,8 +580,7 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (charge_button_options->MouseClickEnterLeft())
-	{
+	else if (charge_button_options->MouseClickEnterLeft()) {
 		charge_button_options->SetImage("clicked");
 		change_button_config = true;
 
@@ -587,8 +592,7 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (move_map_up_button->MouseClickEnterLeft())
-	{
+	else if (move_map_up_button->MouseClickEnterLeft()) {
 		move_map_up_button->SetImage("clicked");
 		change_button_config = true;
 
@@ -600,8 +604,7 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (move_map_down_button->MouseClickEnterLeft())
-	{
+	else if (move_map_down_button->MouseClickEnterLeft()) {
 		move_map_down_button->SetImage("clicked");
 		change_button_config = true;
 
@@ -613,8 +616,7 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (move_map_left_button->MouseClickEnterLeft())
-	{
+	else if (move_map_left_button->MouseClickEnterLeft()) {
 		move_map_left_button->SetImage("clicked");
 		change_button_config = true;
 
@@ -626,8 +628,7 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (move_map_right_button->MouseClickEnterLeft())
-	{
+	else if (move_map_right_button->MouseClickEnterLeft()) {
 		move_map_right_button->SetImage("clicked");
 		change_button_config = true;
 
@@ -639,8 +640,7 @@ bool Player::PreUpdate()
 		move_map_left_button->SetImage("standard");
 		create_group_button->SetImage("standard");
 	}
-	else if (create_group_button->MouseClickEnterLeft())
-	{
+	else if (create_group_button->MouseClickEnterLeft()) {
 		create_group_button->SetImage("clicked");
 		change_button_config = true;
 
@@ -653,20 +653,17 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 	}
 
-	if (!pause_status && (pause_window->enabled))
-	{
+	if (!pause_status && (pause_window->enabled)) {
 		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
-	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || load->CompareState("clicked")))
-	{
+
+	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || load->CompareState("clicked"))) {
 		button_on_clicked = false;
 		save->SetImage("standard");
 		load->SetImage("standard");
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true)
-	{
+	else if (button_clicked.ReadSec() >= 0.1 && back->CompareState("clicked") && button_on_clicked == true) {
 		pause_status = !pause_status;
 		button_on_clicked = false;
 		back->SetImage("standard");
@@ -702,8 +699,7 @@ bool Player::PreUpdate()
 		backpause_txt->SetEnabled(true);
 		audio_txt->SetEnabled(true);
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backpause->CompareState("clicked"))
-	{
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backpause->CompareState("clicked")) {
 		options_status = false;
 
 		button_on_clicked = false;
@@ -736,8 +732,7 @@ bool Player::PreUpdate()
 		audio_txt->SetEnabled(false);
 	}
 
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && controls_button->CompareState("clicked"))
-	{
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && controls_button->CompareState("clicked")) {
 		button_on_clicked = false;
 		controls_button->SetImage("standard");
 
@@ -784,8 +779,7 @@ bool Player::PreUpdate()
 		move_map_right_txt2->SetEnabled(true);
 		create_group_txt2->SetEnabled(true);
 	}
-	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked"))
-	{
+	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backoptions->CompareState("clicked")) {
 		change_controls_status = false;
 
 		button_on_clicked = false;
@@ -833,7 +827,7 @@ bool Player::PreUpdate()
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
 	}
-	
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
@@ -893,23 +887,23 @@ bool Player::PreUpdate()
 		move_map_left_txt2->SetEnabled(false);
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
-				
+
 	}
 
 	else if ((!pause_status && pause_window->enabled)) {
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
+
 	if (backpause->MouseEnter())
 		backpause->SetImage("hovered");
 	else if (backpause->MouseOut() && backpause->CompareState("hovered"))
 		backpause->SetImage("standard");
-	
+
 	if (controls_button->MouseEnter())
 		controls_button->SetImage("hovered");
 	else if (controls_button->MouseOut() && controls_button->CompareState("hovered"))
 		controls_button->SetImage("standard");
-	
+
 	if (audio_button->MouseEnter())
 		audio_button->SetImage("hovered");
 	else if (audio_button->MouseOut() && audio_button->CompareState("hovered"))
@@ -971,13 +965,13 @@ bool Player::PreUpdate()
 		save->SetImage("hovered");
 	else if (save->MouseOut() && save->CompareState("hovered"))
 		save->SetImage("standard");
-	
+
 	//load button
 	if (load->MouseEnter())
 		load->SetImage("hovered");
 	else if (load->MouseOut() && load->CompareState("hovered"))
 		load->SetImage("standard");
-	
+
 	// options button
 
 	if (options->MouseEnter())
@@ -995,7 +989,7 @@ bool Player::PreUpdate()
 		quit_game->SetImage("clicked");
 		App->stop_exe = true;
 	}
-	
+
 	if (!pause_status) {
 
 		//Barracks create unit buttons
@@ -1033,13 +1027,11 @@ bool Player::PreUpdate()
 			if (!App->debug_mode)
 				App->scene->scene_test->gold -= 90;	//Barracks cost
 
-			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-			{
-				if ((*it)->GetSelected())
-				{
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+				if ((*it)->GetSelected()) {
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
-					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
+					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, pos);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
 					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
@@ -1047,7 +1039,7 @@ bool Player::PreUpdate()
 					}
 				}
 			}
-			
+
 		}
 		if (create_building_button->MouseClickOutLeft()) {
 			create_building_button->SetImage("standard");
@@ -1059,10 +1051,8 @@ bool Player::PreUpdate()
 			if (!App->debug_mode)
 				App->scene->scene_test->gold -= 30;	//Basic Building cost
 
-			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-			{
-				if ((*it)->GetSelected())
-				{
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+				if ((*it)->GetSelected()) {
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
@@ -1077,8 +1067,7 @@ bool Player::PreUpdate()
 		}
 
 		//player abilities
-		if (!hero->is_holding_object)
-		{
+		if (!hero->is_holding_object) {
 			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && battlecry_ability->CompareState("standard")) {
 				draw_battlecry_range = true;
 				CheckAbilityRange(BATTLECRY_RANGE);
@@ -1102,8 +1091,7 @@ bool Player::PreUpdate()
 			}
 
 			//player abilities
-			if (!hero->is_holding_object)
-			{
+			if (!hero->is_holding_object) {
 				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat) {
 					draw_battlecry_range = true;
 					CheckAbilityRange(BATTLECRY_RANGE);
@@ -1163,14 +1151,12 @@ bool Player::PreUpdate()
 					Charge();
 				}
 
-				if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
-				{
+				if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true) {
 					GetHero()->speed -= CHARGE_SPEED;
 					charge_speed_buff = false;
 				}
 
-				if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
-				{
+				if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true) {
 					GetHero()->damage -= CHARGE_DAMAGE;
 					charge_damage_buff = false;
 				}
@@ -1183,8 +1169,7 @@ bool Player::PreUpdate()
 		}
 
 		//Object interface
-		if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-		{
+		if (item_drop->MouseClickEnterLeft() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 			GetHero()->DropObject();
 		}
 	}
@@ -1194,9 +1179,8 @@ bool Player::PreUpdate()
 bool Player::Update(float dt)
 {
 	bool ret = true;
-	
-	if (!App->minimap->IsMouseOver())
-	{
+
+	if (!App->minimap->IsMouseOver()) {
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat) {
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
@@ -1204,8 +1188,7 @@ bool Player::Update(float dt)
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 				Collider* unit = (*it)->GetCollider();
 
-				if (unit != nullptr)
-				{
+				if (unit != nullptr) {
 					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
 						(*it)->SetSelected(true);
 					}
@@ -1217,8 +1200,7 @@ bool Player::Update(float dt)
 						barracks_ui_window->SetEnabledAndChilds(true);
 						break;
 					}
-					else if ((*it)->GetType() == building && (*it)->name == broken_building)
-					{
+					else if ((*it)->GetType() == building && (*it)->name == broken_building) {
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
@@ -1241,15 +1223,12 @@ bool Player::Update(float dt)
 			p = App->map->WorldToMap(p.x, p.y);
 			bool mouse_over_entity = false;
 
-			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-			{
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 				Collider* unit = (*it)->GetCollider();
 
-				if (unit != nullptr)
-				{
+				if (unit != nullptr) {
 					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-						switch ((*it)->GetType())
-						{
+						switch ((*it)->GetType()) {
 						case entity_type::ally:
 							MoveToTile(p);
 							mouse_over_entity = true;
@@ -1300,31 +1279,25 @@ bool Player::Update(float dt)
 		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 			Collider* unit = (*it)->GetCollider();
 
-			if (unit != nullptr)
-			{
+			if (unit != nullptr) {
 				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
 					if ((*it)->life > 0) (*it)->KillEntity();
 			}
 		}
 	}
 
-	if (change_button_config)
-	{
+	if (change_button_config) {
 		SDL_Scancode code = App->input->ReturnKey();
-		if (code != SDL_SCANCODE_0)
-		{
+		if (code != SDL_SCANCODE_0) {
 			bool key_repeated = false;
-			for (int i = 0; i < CONTROLS_SIZE; i++)
-			{
-				if (App->input->controls[i] == code)
-				{
+			for (int i = 0; i < CONTROLS_SIZE; i++) {
+				if (App->input->controls[i] == code) {
 					key_repeated = true;
 					continue;
 				}
 			}
 
-			if (battlecry_button_options->CompareState("clicked") && !key_repeated)
-			{
+			if (battlecry_button_options->CompareState("clicked") && !key_repeated) {
 				App->input->controls[BATTLECRY] = code;
 				battlecry_button_options->SetImage("standard");
 				change_button_config = false;
@@ -1332,8 +1305,7 @@ bool Player::Update(float dt)
 				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
 				battlecry_txt2->SetText(battlecry_txt2->str);
 			}
-			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
-			{
+			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated) {
 				App->input->controls[WHIRLWIND] = code;
 				whirlwind_button_options->SetImage("standard");
 				change_button_config = false;
@@ -1341,8 +1313,7 @@ bool Player::Update(float dt)
 				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
 				whirlwind_txt2->SetText(whirlwind_txt2->str);
 			}
-			else if (charge_button_options->CompareState("clicked") && !key_repeated)
-			{
+			else if (charge_button_options->CompareState("clicked") && !key_repeated) {
 				App->input->controls[CHARGE] = code;
 				charge_button_options->SetImage("standard");
 				change_button_config = false;
@@ -1350,8 +1321,7 @@ bool Player::Update(float dt)
 				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
 				charge_txt2->SetText(charge_txt2->str);
 			}
-			else if (move_map_up_button->CompareState("clicked") && !key_repeated)
-			{
+			else if (move_map_up_button->CompareState("clicked") && !key_repeated) {
 				App->input->controls[MOVE_MAP_UP] = code;
 				move_map_up_button->SetImage("standard");
 				change_button_config = false;
@@ -1359,8 +1329,7 @@ bool Player::Update(float dt)
 				move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
 				move_map_up_txt2->SetText(move_map_up_txt2->str);
 			}
-			else if (move_map_down_button->CompareState("clicked") && !key_repeated)
-			{
+			else if (move_map_down_button->CompareState("clicked") && !key_repeated) {
 				App->input->controls[MOVE_MAP_DOWN] = code;
 				move_map_down_button->SetImage("standard");
 				change_button_config = false;
@@ -1368,8 +1337,7 @@ bool Player::Update(float dt)
 				move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
 				move_map_down_txt2->SetText(move_map_down_txt2->str);
 			}
-			else if (move_map_left_button->CompareState("clicked") && !key_repeated)
-			{
+			else if (move_map_left_button->CompareState("clicked") && !key_repeated) {
 				App->input->controls[MOVE_MAP_LEFT] = code;
 				move_map_left_button->SetImage("standard");
 				change_button_config = false;
@@ -1377,8 +1345,7 @@ bool Player::Update(float dt)
 				move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
 				move_map_left_txt2->SetText(move_map_left_txt2->str);
 			}
-			else if (move_map_right_button->CompareState("clicked") && !key_repeated)
-			{
+			else if (move_map_right_button->CompareState("clicked") && !key_repeated) {
 				App->input->controls[MOVE_MAP_RIGHT] = code;
 				move_map_right_button->SetImage("standard");
 				change_button_config = false;
@@ -1386,8 +1353,7 @@ bool Player::Update(float dt)
 				move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
 				move_map_right_txt2->SetText(move_map_right_txt2->str);
 			}
-			else if (create_group_button->CompareState("clicked") && !key_repeated)
-			{
+			else if (create_group_button->CompareState("clicked") && !key_repeated) {
 				App->input->controls[CREATE_GROUP] = code;
 				create_group_button->SetImage("standard");
 				change_button_config = false;
@@ -1408,7 +1374,7 @@ bool Player::PostUpdate()
 	if (hero != nullptr) {
 		UpdateAttributes();
 	}
-	
+
 	if (draw_buff == true)
 		DrawBuff();
 
@@ -1430,6 +1396,13 @@ bool Player::PostUpdate()
 bool Player::CleanUp()
 {
 	bool ret = true;
+	pause_window->SetEnabledAndChilds(false);
+	attributes_window->SetEnabledAndChilds(false);
+	levelup_window->SetEnabledAndChilds(false);
+	barracks_ui_window->SetEnabledAndChilds(false);
+	brokenbuilding_ui_window->SetEnabledAndChilds(false);
+	player_abilities->SetEnabledAndChilds(false);
+	inventory->SetEnabledAndChilds(false);
 	return ret;
 }
 
@@ -1449,7 +1422,7 @@ bool Player::Load(pugi::xml_node& data)
 	hero->damage = stats.attribute("damage").as_int();
 	hero->armor = stats.attribute("armor").as_int();
 	hero->pierce_armor = stats.attribute("pierce_armor").as_int();
-	
+
 	hero->levelup_points = misc.attribute("level_up_Points").as_int();
 	App->scene->scene_test->gold = misc.attribute("gold").as_int();
 	App->scene->scene_test->current_human_resources = misc.attribute("human_resources").as_int();
@@ -1459,8 +1432,7 @@ bool Player::Load(pugi::xml_node& data)
 		int _name = ally.attribute("name").as_int();
 		entity_name name;
 
-		switch (_name)
-		{
+		switch (_name) {
 		case barbarian:
 			name = barbarian;
 			break;
@@ -1503,7 +1475,7 @@ bool Player::Save(pugi::xml_node& data) const
 		if ((*it)->type == entity_type::ally) {
 			pugi::xml_node ally = allies.append_child("Ally");
 			ally.append_attribute("name") = (*it)->name;
-	
+
 			ally.append_child("Position").append_attribute("x") = (*it)->position.x;
 			ally.child("Position").append_attribute("y") = (*it)->position.y;
 		}
@@ -1512,7 +1484,8 @@ bool Player::Save(pugi::xml_node& data) const
 	return true;
 }
 
-void Player::MoveToTile(iPoint tile) {
+void Player::MoveToTile(iPoint tile)
+{
 	for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 		(*it)->path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint((*it)->position), tile);
 		(*it)->state = entity_state::entity_move;
@@ -1521,7 +1494,8 @@ void Player::MoveToTile(iPoint tile) {
 	}
 }
 
-void Player::SetAttackingEnemy(Unit* enemy) {
+void Player::SetAttackingEnemy(Unit* enemy)
+{
 	if (enemy->life > 0) {
 		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 			(*it)->SetAttackingUnit(enemy);
@@ -1530,7 +1504,8 @@ void Player::SetAttackingEnemy(Unit* enemy) {
 	}
 }
 
-void Player::SetAttackingBuilding(Building* building) {
+void Player::SetAttackingBuilding(Building* building)
+{
 	if (building->life > 0) {
 		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
 			(*it)->SetAttackingBuilding(building);
@@ -1539,19 +1514,20 @@ void Player::SetAttackingBuilding(Building* building) {
 	}
 }
 
-void Player::UpdateAttributes() {
+void Player::UpdateAttributes()
+{
 	std::stringstream life;
 	life << hero->life;
 	life_txt->SetText(life.str());
-	
+
 	std::stringstream damage;
 	damage << hero->damage;
 	damage_txt->SetText(damage.str());
-	
+
 	std::stringstream armor;
 	armor << hero->armor;
 	armor_txt->SetText(armor.str());
-	
+
 	std::stringstream pierce_armor;
 	pierce_armor << hero->pierce_armor;
 	pierce_armor_txt->SetText(pierce_armor.str());
@@ -1607,7 +1583,8 @@ Hero* Player::GetHero()
 	return hero;
 }
 
-void Player::Battlecry() {
+void Player::Battlecry()
+{
 	buffed_list.clear();
 	std::list<iPoint> frontier;
 	std::list<iPoint> visited;
@@ -1625,8 +1602,7 @@ void Player::Battlecry() {
 			frontier.pop_front();
 
 			for (int k = 0; k < 4; k++) {
-				if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
-				{
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
 					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 					if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
 						buffed_list.push_back(found);
@@ -1656,8 +1632,7 @@ void Player::Battlecry() {
 
 void Player::BattlecryModifier(int damage_buff)
 {
-	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) 
-	{
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
 		(*it)->damage += damage_buff;
 	}
 }
@@ -1735,8 +1710,7 @@ void Player::Charge()
 				//	col = found->GetCollider();
 				//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
 
-				if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map)
-				{
+				if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map) {
 					GetHero()->speed += CHARGE_SPEED;
 					GetHero()->damage += CHARGE_DAMAGE;
 					charge_speed_buff = true;
@@ -1774,8 +1748,7 @@ void Player::Charge()
 					charge_timer.Start();
 
 				}
-				else
-				{
+				else {
 					bool is_visited = false;
 					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
 						if (neighbors[k] == *it) {
@@ -1795,12 +1768,10 @@ void Player::Charge()
 
 void Player::CheckAbilityRange(int range)
 {
-	if (draw_battlecry_range == true || draw_whirlwind_range == true)
-	{
+	if (draw_battlecry_range == true || draw_whirlwind_range == true) {
 		std::list<iPoint> frontier;
 
-		if (GetHero()->position_map != range_visited.front())
-		{
+		if (GetHero()->position_map != range_visited.front()) {
 			range_visited.clear();
 			range_visited.push_back(GetHero()->position_map);
 			frontier.push_back(GetHero()->position_map);
@@ -1837,8 +1808,7 @@ void Player::CheckAbilityRange(int range)
 
 void Player::CheckStraightAbilityRange(int range)
 {
-	if (draw_battlecry_range == true || draw_charge_range == true)
-	{
+	if (draw_battlecry_range == true || draw_charge_range == true) {
 		std::list<iPoint> visited;
 
 		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));

@@ -35,6 +35,8 @@ public:
 	Player();
 	~Player();
 
+	bool Awake(pugi::xml_node&);
+
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);

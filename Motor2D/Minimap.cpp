@@ -186,7 +186,7 @@ bool Minimap::IsMouseOver()
 	return mouse.PointInRect(map_rect.x, map_rect.y, map_rect.w, map_rect.h);
 }
 
-void Minimap::Enable()
+void Minimap::EnableMinimap()
 {
 	units_to_print.clear();
 	units_to_print.reserve(App->entity->entity_list.size());

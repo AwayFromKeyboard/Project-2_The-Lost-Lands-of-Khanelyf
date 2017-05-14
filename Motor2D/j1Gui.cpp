@@ -67,7 +67,7 @@ bool j1Gui::Update(float dt)
 {
 	// Start -------------------------------------------------
 
-	if (1)
+	if (start)
 	{
 		// Set variables that inherit from window to childs
 		for (unsigned int i = 0; i < elements_list.size(); i++)
@@ -1244,7 +1244,7 @@ void UI_Text::SetText(string _text)
 
 	tex_str_list.clear();
 
-	string tmp = _text;
+	/*string tmp = _text;
 
 	int i = 0;
 	string comp;
@@ -1260,13 +1260,13 @@ void UI_Text::SetText(string _text)
 		if (tmp[i] != '\0')
 			i++;
 
-		comp[words_counter] = '\0';
+		comp[words_counter] = '\0';*/
 
 		int width = 0; int height = 0;
-		App->font->CalcSize(comp.c_str(), width, height, font);
-		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font), { 0, 0, width, height });
+		App->font->CalcSize(_text.c_str(), width, height, font);
+		tex_str ts(_text.c_str(), App->font->Print(_text.c_str(), color, font), { 0, 0, width, height });
 		tex_str_list.push_back(ts);
-	}
+	//}
 }
 string UI_Text::GetText()
 {
@@ -1378,10 +1378,8 @@ bool UI_Image::update()
 	if (App->gui->debug)
 		App->render->DrawQuad(rect, color.r, color.g, color.b, color.a, false);
 	
-	if (print) {
-		LOG("Printing image at %d, %d, image is %d x, %d y, %d w, %d h", rect.x, rect.y, image.x, image.y, image.w, image.h);
+	if (print) 
 		App->render->Blit(App->gui->atlas, rect.x, rect.y, &image);
-	}
 
 	return true;
 }
