@@ -23,6 +23,7 @@
 #include "QuestManager.h"
 #include "Minimap.h"
 #include "DialogueManager.h"
+#include "ParticleManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -47,6 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	questmanager = new QuestManager();
 	minimap = new Minimap();
 	dialogs = new DialogueManager();
+	particle = new ParticleManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -63,6 +65,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(player);
 	AddModule(dialogs);
+
+	// Particle Manager
+	AddModule(particle);
 
 	// Minimap
 	AddModule(minimap);

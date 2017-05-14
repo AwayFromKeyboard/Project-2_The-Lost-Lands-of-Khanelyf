@@ -72,14 +72,16 @@ bool Minimap::PreUpdate()
 			switch ((*it)->GetType())
 			{
 			case player:
-				cells[map_size.x * pos.y + pos.x].cell_color = { 20,20,255,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 0,255,0,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case ally:
-				cells[map_size.x * pos.y + pos.x].cell_color = { 20,255,20,255 };
+				cells[map_size.x * pos.y + pos.x].cell_color = { 50,255,50,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case npc:
+				cells[map_size.x * pos.y + pos.x].cell_color = { 120,255,20,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case enemy:
 				cells[map_size.x * pos.y + pos.x].cell_color = { 255,20,20,255 };
@@ -96,6 +98,10 @@ bool Minimap::PreUpdate()
 				break;
 			case enemy_building:
 				cells[map_size.x * pos.y + pos.x].cell_color = { 20,255,255,255 };
+				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
+				break;
+			case enemy_boss:
+				cells[map_size.x * pos.y + pos.x].cell_color = { 255,0,0,255 };
 				units_to_print.push_back(cells[map_size.x * pos.y + pos.x]);
 				break;
 			case null:
@@ -155,6 +161,10 @@ bool Minimap::Draw()
 		if (color.r == 255 && color.g == 255 && color.b == 255) {
 			iPoint map_size = { (App->render->camera.w / 26), (App->render->camera.h / 26) };
 			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x - 5, units_to_print[i].cell_position.y, map_size.x, map_size.y }, color.r, color.g, color.b, color.a, false, false, 11);
+		}
+		else if (color.r == 255 && color.g == 0 && color.b == 0) {
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,5,5 }, color.r, color.g, color.b, color.a, true, false, 10);
+
 		}
 		else
 			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);

@@ -1203,11 +1203,8 @@ void UI_Text::SetText(string _text)
 	// Clean last texts
 	if (!tex_str_list.empty())
 	{
-		if (!tex_str_list.empty())
-		{
-			for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
-				App->tex->UnLoadTexture((*it).texture);
-		}
+		for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+			App->tex->UnLoadTexture((*it).texture);
 	}
 
 	tex_str_list.clear();

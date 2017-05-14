@@ -24,7 +24,11 @@
 #include "Object.h"
 #include "Player.h"
 #include "DialogueManager.h"
+#include "Boss_Axe_Knight.h"
 #include "BrokenBuilding.h"
+#include "ParticleManager.h"
+#include "Fire.h"
+#include "Escorted_NPC.h"
 
 SceneTest::SceneTest()
 {
@@ -130,7 +134,7 @@ bool SceneTest::Update(float dt)
 	
 	UpdateCameraMovement();
 
-	if (App->player->pause_status) {
+	if (App->player->pause_status || App->player->audio_muted) {
 		
 		App->audio->PauseMusic();
 	}else
@@ -185,7 +189,6 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
@@ -198,6 +201,10 @@ void SceneTest::CheckUnitCreation(iPoint p)
 			App->questmanager->GetCurrentQuest()->progress++;
 		}
 		create_barrack = false;
+	}
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_W) == key_down)
+	{
+		BossAxeKnight* boss_axe_knight = (BossAxeKnight*)App->entity->CreateEntity(boss, enemy_boss, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
@@ -222,6 +229,11 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
 	{
 		App->player->GetHero()->levelup_points += 5;
+	}
+
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort && !escortedNPC_created) {
+		escortedNPC_created = true;
+		EscortedNPC* escorted_npc = (EscortedNPC*)App->entity->CreateEntity(npc_escort, npc, App->map->MapToWorld(90, 70));
 	}
 }
 

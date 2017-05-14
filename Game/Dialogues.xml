@@ -58,7 +58,18 @@
       <text value="Soldier: Take down the enemy. Title: Lord of the lands of Khanelyf"/>
     </dialogue>
     <dialogue state="1">
-      <text value="People: Give it up for the Lord of the lands of Khanelyf! The greatest champion this world has seen!"/>
+      <text value="People: Give it up for the Lord of the lands of Khanelyf!"/>
+    </dialogue>
+  </npc>
+  <npc id="7">
+    <dialogue state="0">
+      <text value="Comander: Lord, there is an anemy that is nothing like the rest.. the power he holds is from another world!"/>
+      <text value="Comander: We need a strong attack to defeat him"/>
+      <text value="Finish with the great enemy boss. Gold: 1000"/>
+    </dialogue>
+    <dialogue state="1">
+      <text value="People: You've become the greatest champion this world has seen!"/>
+>>>>>>> origin/develop
     </dialogue>
   </npc>
 </npcs>

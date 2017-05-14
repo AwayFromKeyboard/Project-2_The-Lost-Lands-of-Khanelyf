@@ -130,11 +130,29 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Engine\3. Scene\MainScene</Filter>
     </ClCompile>
+    <ClCompile Include="Boss_Axe_Knight.cpp">
+      <Filter>Engine\4. Entities\Boss</Filter>
+    </ClCompile>
     <ClCompile Include="BrokenBuilding.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
     <ClCompile Include="Tower.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Blacksmith.cpp">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Engine\6. Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Engine\6. Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Fire.cpp">
+      <Filter>Engine\6. Particles\Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="Escorted_NPC.cpp">
+      <Filter>Engine\4. Entities\Troops</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,11 +295,29 @@
     <ClInclude Include="Minimap.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Boss_Axe_Knight.h">
+      <Filter>Engine\4. Entities\Boss</Filter>
+    </ClInclude>
     <ClInclude Include="BrokenBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Tower.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Blacksmith.h">
+      <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Engine\6. Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Fire.h">
+      <Filter>Engine\6. Particles\Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Engine\6. Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Escorted_NPC.h">
+      <Filter>Engine\4. Entities\Troops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -297,11 +333,14 @@
     <Xml Include="..\Game\Dialogues.xml">
       <Filter>Engine\5. Tools</Filter>
     </Xml>
+    <Xml Include="..\Game\Objects.xml">
+      <Filter>Engine\4. Entities\Objects</Filter>
+    </Xml>
     <Xml Include="..\Game\Units.xml">
       <Filter>Engine\4. Entities\Troops</Filter>
     </Xml>
-    <Xml Include="..\Game\Objects.xml">
-      <Filter>Engine\4. Entities\Objects</Filter>
+    <Xml Include="..\Game\Particles.xml">
+      <Filter>Engine\6. Particles</Filter>
     </Xml>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +379,15 @@
     </Filter>
     <Filter Include="Engine\4. Entities\Objects">
       <UniqueIdentifier>{765f7eb1-3ccd-4a83-bdf3-1a8962346497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. Entities\Boss">
+      <UniqueIdentifier>{e00d541d-af41-4edd-9c31-5f78d9dba744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles">
+      <UniqueIdentifier>{81a6e842-4646-4419-b8f4-65ea822e6415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\Fire">
+      <UniqueIdentifier>{a2b8b138-d06a-4ae3-85a5-bf03010462a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

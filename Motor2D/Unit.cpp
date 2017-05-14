@@ -18,6 +18,10 @@
 #include "Object.h"
 #include "Player.h"
 #include "Building.h"
+#include "Boss_Axe_Knight.h"
+#include "Particle.h"
+#include "ParticleManager.h"
+#include "Escorted_NPC.h"
 
 Unit::Unit()
 {
@@ -91,10 +95,9 @@ bool Unit::Update(float dt)
 
 		switch (state) {
 		case entity_state::entity_idle:
-
 			if (life < max_life) {
 				if (life_up_timer.ReadSec() >= 1) {
-					life += 1;
+					life += max_life * 2 / 100;
 					life_up_timer.Start();
 				}
 			}
@@ -221,6 +224,9 @@ bool Unit::Update(float dt)
 					if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
 						App->questmanager->GetCurrentQuest()->progress++;
 				}
+				else if (type == entity_type::enemy_boss && App->questmanager->GetCurrentQuest()->id == quest_id::quest_boss) {
+					App->questmanager->GetCurrentQuest()->progress++;
+				}
 			}
 			break;
 
@@ -230,7 +236,6 @@ bool Unit::Update(float dt)
 				to_delete = true;
 			}
 			break;
-
 
 		case entity_state::entity_pick_object:
 			if (IsInRange(to_pick_object)) {
@@ -264,7 +269,6 @@ bool Unit::Update(float dt)
 			damaged_by_whirlwind = false;
 			timer_whirlwind_start = true;
 		}
-
 	}
 	return true;
 }
@@ -272,7 +276,6 @@ bool Unit::Update(float dt)
 bool Unit::Draw(float dt)
 {
 	bool ret = true;
-
 
 	switch (state)
 	{
@@ -343,6 +346,67 @@ bool Unit::PostUpdate()
 {
 	bool ret = true;
 
+	if (life > 0)
+	{
+		if (is_escortednpc && App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort) {
+			if (position_map != ESCORT_DESTINATION) {
+				if (npc_quest->CheckEscortRadius()) {
+					if (state != entity_state::entity_move)
+					{
+						if (!npc_quest->is_path_created) {
+							path_id = App->pathfinding->CreatePath(App->map->WorldToMapPoint(position), ESCORT_DESTINATION);
+							state = entity_state::entity_move;
+							npc_quest->is_path_created = true;
+						}
+					}
+				}
+				else if (npc_quest->is_path_created) {
+					App->pathfinding->DeletePath(path_id);
+					path.clear();
+					path_id = 0;
+					state = entity_state::entity_idle;
+					npc_quest->is_path_created = false;
+				}
+			}
+			else {
+				App->questmanager->GetCurrentQuest()->progress++;
+			}
+		}
+
+		if (is_boss) {
+			CheckPhase();
+
+			if (life == max_life)
+				phase = asleep;
+			else if (life >= max_life * 80 / 100 && life < max_life) {
+				phase = phase_1;
+				boss->starter_ability_phase2_timer = false;
+				boss->starter_ability_phase3_timer = false;
+				boss->starter_ability_last_phase_timer = false;
+				boss->range_visited.clear();
+				boss->range_visited2.clear();
+			}
+			else if (life >= max_life * 50 / 100 && life < max_life * 80 / 100) {
+				phase = phase_2;
+				boss->starter_ability_phase3_timer = false;
+				boss->starter_ability_last_phase_timer = false;
+				boss->fireballs.clear();
+				boss->range_visited2.clear();
+			}
+			else if (life >= max_life * 25 / 100 && life < max_life * 50 / 100) {
+				phase = phase_3;
+				boss->starter_ability_phase2_timer = false;
+				boss->starter_ability_last_phase_timer = false;
+				boss->range_visited.clear();
+			}
+			else if (phase != last_phase) {
+				phase = last_phase;
+				boss->starter_ability_phase2_timer = false;
+				boss->starter_ability_phase3_timer = false;
+			}
+		}
+	}
+
 	if (position_map.x >= 0 && position_map.y >= 0 && (App->pathfinding->IsWalkable(position_map) && (type != entity_type::building || type != entity_type::ally_building || type != entity_type::enemy_building)))
 		App->map->entity_matrix[position_map.x][position_map.y] = nullptr;
 
@@ -357,6 +421,115 @@ bool Unit::CleanUp()
 	bool ret = true;
 
 	return ret;
+}
+
+void Unit::CheckPhase()
+{
+	switch (phase)
+	{
+	case boss_phase::phase_1:
+		break;
+	case boss_phase::phase_2:
+			if (!boss->starter_ability_phase2_timer) {
+				boss->modifier = 0;
+				boss->ability_phase2.Start();
+				boss->starter_ability_phase2_timer = true;
+			}
+			else if (boss->ability_phase2.ReadSec() >= 4) {
+				// Charge to random enemy
+				boss->Phase2_Attack();
+				boss->starter_ability_phase2_timer = false;
+			}
+			else if (boss->ability_phase2.ReadSec() >= 2) {
+				boss->Draw_Phase2();
+			}
+
+		break;
+	case boss_phase::phase_3:
+			if (!boss->starter_ability_phase3_timer) {
+				boss->modifier = 0;
+				boss->ability_phase3.Start();
+				boss->starter_ability_phase3_timer = true;
+			}
+			else if (boss->ability_phase3.ReadSec() >= 1 && boss->ability_phase3.ReadSec() < 3) {
+				boss->Draw_Phase3();
+			}
+			else if (boss->ability_phase3.ReadSec() >= 3 && boss->ability_phase3.ReadSec() < 5) {
+				if (!boss->fireballs_created)
+				{
+					boss->fireball_points.clear();
+					boss->Phase3_Attack();
+					boss->fireballs_created = true;
+					boss->tick_started = false;
+				}
+				else {
+					if (!boss->tick_started) {
+						boss->Phase3_Damage();
+						boss->damage_ticks.Start();
+						boss->tick_started = true;
+					}
+					else {
+						if (boss->damage_ticks.ReadSec() >= 0.75) {
+							boss->Phase3_Damage();
+							boss->damage_ticks.Start();
+						}
+					}
+				}
+			}
+			else if (boss->ability_phase3.ReadSec() >= 5) {
+				for (std::list<Particle*>::iterator it = boss->fireballs.begin(); it != boss->fireballs.end(); it++) {
+					(*it)->to_delete = true;
+				}
+				boss->fireballs.clear();
+				boss->fireballs_created = false;
+				boss->starter_ability_phase3_timer = false;
+			}
+		break;
+	case boss_phase::last_phase:
+		if (!boss->starter_ability_last_phase_timer) {
+			boss->modifier = 5;
+			boss->ability_last_phase.Start();
+			boss->starter_ability_last_phase_timer = true;
+		}
+		else if (boss->ability_last_phase.ReadSec() >= 1 && boss->ability_last_phase.ReadSec() < 3) {
+			boss->Draw_LastPhase();
+		}
+		else if (boss->ability_last_phase.ReadSec() >= 3 && boss->ability_last_phase.ReadSec() < 5) {
+			if (!boss->fireballs_created)
+			{
+				boss->fireball_points.clear();
+				boss->Phase2_Attack();
+				boss->Phase3_Attack();
+				boss->fireballs_created = true;
+				boss->tick_started = false;
+			}
+			else {
+				if (!boss->tick_started) {
+					boss->Phase3_Damage();
+					boss->damage_ticks.Start();
+					boss->tick_started = true;
+				}
+				else {
+					if (boss->damage_ticks.ReadSec() >= 0.75) {
+						boss->Phase3_Damage();
+						boss->damage_ticks.Start();
+					}
+				}
+			}
+		}
+		else if (boss->ability_last_phase.ReadSec() >= 5) {
+			for (std::list<Particle*>::iterator it = boss->fireballs.begin(); it != boss->fireballs.end(); it++) {
+				(*it)->to_delete = true;
+			}
+			boss->fireballs.clear();
+			boss->fireballs_created = false;
+			boss->starter_ability_last_phase_timer = false;
+			boss->modifier = 0;
+		}
+		break;
+	case boss_phase::asleep:
+		break;
+	}
 }
 
 bool Unit::Load(pugi::xml_node &)
@@ -610,12 +783,12 @@ bool Unit::CheckSurroundings() {
 					{
 						Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 						if (found != nullptr && found->life > 0) {
-							if ((App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::enemy || found->type == entity_type::ally || found->type == entity_type::player)) || (!App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::building || found->type == entity_type::ally_building || found->type == entity_type::enemy_building))) {
+							if ((App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::enemy || found->type == entity_type::ally || found->type == entity_type::player || found->type == entity_type::enemy_boss || found->name == entity_name::npc_escort)) || (!App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::building || found->type == entity_type::ally_building || found->type == entity_type::enemy_building))) {
 
 								switch (type) {
 								case player:
 								case ally:
-									if (found->type == enemy) {
+									if (found->type == enemy || found->type == enemy_boss) {
 										attacked_unit = (Unit*)found;
 										state = entity_move_to_enemy;
 										return true;
@@ -627,7 +800,8 @@ bool Unit::CheckSurroundings() {
 									}
 									break;
 								case enemy:
-									if (found->type == player || found->type == ally) {
+								case enemy_boss:
+									if (found->type == player || found->type == ally || found->name == npc_escort) {
 										attacked_unit = (Unit*)found;
 										state = entity_move_to_enemy;
 										return true;
@@ -658,6 +832,8 @@ bool Unit::CheckSurroundings() {
 			}
 		}
 	}
+
+	return false;
 }
 
 bool Unit::IsInRange(Entity* attacked_entity)
@@ -756,24 +932,39 @@ void Unit::UnitAttack()
 	if (attacked_unit != nullptr) {
 		LookAtAttack();
 
-		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+		if (current_animation->GetFrameIndex() == 5 && shout_fx == true)
+		{
+			if (App->player->audio_muted == false)
+			{
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->get_hit_id, App->scene->scene_test->get_hit4_id));
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+			}
 			shout_fx = false;
 		}
-
 		if (current_animation->Finished())
 		{
-			attacked_unit->life -= damage;
+			if (attacked_unit->type == player) {
+				if (App->player->undying_state_active != true)
+					attacked_unit->life -= damage;
+			}
+			else
+				attacked_unit->life -= damage;
+
 			current_animation->Reset();
-			if (attacked_unit->life <= 0)
+
+			if (App->player->audio_muted == false)
 			{
-				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
+
+				if (App->player->audio_muted == false)
+				{
+					App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
+				}
 				state = entity_idle;
 				attacked_unit->state = entity_death;
 				attacked_unit = nullptr;
+
+				shout_fx = true;
 			}
-			shout_fx = true;
 		}
 	}
 	else state = entity_idle;
@@ -784,11 +975,13 @@ void Unit::BuildingAttack()
 	if (attacked_building != nullptr) {
 		LookAtAttack();
 
-		if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
-			App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
-			shout_fx = false;
+		if (App->player->audio_muted == false)
+		{
+			if (current_animation->GetFrameIndex() == 5 && shout_fx == true) {
+				App->audio->PlayFx(RandomGenerate(App->scene->scene_test->swords_clash_id, App->scene->scene_test->swords_clash4_id));
+				shout_fx = false;
+			}
 		}
-
 		if (current_animation->Finished())
 		{
 			attacked_building->life -= damage;
@@ -948,5 +1141,50 @@ bool Unit::IsInsideCircle(int x, int y)
 {
 	iPoint center = position;
 	return (x - center.x) ^ 2 + (y - center.y) ^ 2 <= radius_of_action*radius_of_action;
+}
+
+bool Unit::LooksDiagonal()
+{
+	if (direction.x == 1)
+	{
+		if (direction.y == 0)
+		{
+			return false;
+		}
+		else if (direction.y == 0.5)
+		{
+			return true;
+		}
+		else if (direction.y == -0.5)
+		{
+			return true;
+		}
+	}
+	else if (direction.x == 0)
+	{
+		if (direction.y == 1)
+		{
+			return false;
+		}
+		else if (direction.y == -1)
+		{
+			return false;
+		}
+	}
+	else if (direction.x == -1)
+	{
+		if (direction.y == 0)
+		{
+			return false;
+		}
+		else if (direction.y == 0.5)
+		{
+			return true;
+		}
+		else if (direction.y == -0.5)
+		{
+			return true;
+		}
+	}
 }
 

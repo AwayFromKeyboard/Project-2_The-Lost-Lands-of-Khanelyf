@@ -50,11 +50,16 @@ bool Building::PreUpdate()
 		else {
 			if (name == entity_name::towers)
 				LifeBar({ 125, 5 }, { -60, -85 });
+			else if (name == entity_name::blacksmiths)
+				LifeBar({ 145,5 }, { -80,-115 });
+			else if (name == entity_name::barracks)
+				LifeBar({ 195,5 }, { -90,-170 });
 			else
 				LifeBar({ 125, 5 }, { -65, -60 });
 		}
 
 	}
+
 	if (life > 0) {
 		iPoint position_map = App->map->WorldToMapPoint(position);
 		App->map->entity_matrix[position_map.x][position_map.y] = this;
@@ -85,9 +90,15 @@ bool Building::Update(float dt)
 				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
 			else if (name == towers)
 				App->entity->CreateEntity(towers, ally_building, position);
+			else if (name == blacksmiths)
+				App->entity->CreateEntity(blacksmiths, building, position);
 		}
-		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building) {
+		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building && name != entity_name::blacksmiths) {
 			App->entity->CreateEntity(broken_building, building, position);
+		}
+		if (type == entity_type::building && name == entity_name::blacksmiths)
+		{
+			App->entity->CreateEntity(broken_building, building, iPoint(position.x - 40, position.y - 50));
 		}
 		if (type == entity_type::building && name == entity_name::barracks) {
 			if (App->player->barracks_ui_window->enabled)

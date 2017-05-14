@@ -23,6 +23,7 @@
 #include "BasicBuilding.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "j1Audio.h"
 
 Player::Player()
 {
@@ -232,7 +233,11 @@ bool Player::Awake(pugi::xml_node& config)
 	audio_txt->SetText("Audio");
 	audio_txt->click_through = true;
 
-	pause_menu_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default, 0, false, 0, 0, 0);
+	audio_on_off = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) + (App->win->_GetWindowSize().x / 50), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
+	audio_on_off->SetText("On");
+	audio_on_off->click_through = true;
+
+	pause_menu_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /40), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) + (App->win->_GetWindowSize().y / 60) }, App->font->default,0,false,0,0,0);
 	pause_menu_txt->SetText("PAUSE");
 
 	quit_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
@@ -336,7 +341,29 @@ bool Player::Awake(pugi::xml_node& config)
 
 	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
 
-	//Battlecry
+	//Choose ability
+
+	choose_ability_b = (UI_Button*)player_abilities->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) }, 186, 31);
+	choose_ability_b->AddImage("standard", { 25, 2695, 186, 31 });
+	choose_ability_b->SetImage("standard");
+	choose_ability_b->AddImage("clicked", { 25, 2768, 186, 31 });
+	choose_ability_b->AddImage("hovered", { 26, 2732, 186, 31 });
+
+	choose_ability_uw = (UI_Button*)player_abilities->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
+	choose_ability_uw->AddImage("standard", { 25, 2695, 186, 31 });
+	choose_ability_uw->SetImage("standard");
+	choose_ability_uw->AddImage("clicked", { 25, 2768, 186, 31 });
+	choose_ability_uw->AddImage("hovered", { 26, 2732, 186, 31 });
+
+	choose_ability_b_txt = (UI_Text*)player_abilities->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, App->font->default);
+	choose_ability_b_txt->SetText("Berserker");
+	choose_ability_b_txt->click_through = true;
+
+	choose_ability_uw_txt = (UI_Text*)player_abilities->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) }, App->font->default);
+	choose_ability_uw_txt->SetText("Tactical");
+	choose_ability_uw_txt->click_through = true;
+
+	//Battlecry && Undiying Will
 
 	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
 	battlecry_ability->AddImage("standard", { 645, 60, 25, 25 });
@@ -344,17 +371,15 @@ bool Player::Awake(pugi::xml_node& config)
 	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
 
 	battlecry_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
-	battlecry_key->SetText("X");
+	battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+	battlecry_key->SetText(battlecry_key->str);
 
 	battlecry_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
 
-	//drop object interface
+	undying_will_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_15);
+	undying_will_cd->SetEnabled(false);
 
-	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
-	inventory->SetEnabled(false);
-	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
-	item_drop->AddImage("standard", { 645, 60, 25, 25 });
-	item_drop->SetImage("standard");
+	show_ability_name = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 14, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9 }, App->font->default_10);
 
 	//Whirlwind
 
@@ -364,7 +389,8 @@ bool Player::Awake(pugi::xml_node& config)
 	whirlwind_ability->AddImage("clicked", { 720, 60, 25, 25 });
 
 	whirlwind_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
-	whirlwind_key->SetText("C");
+	whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+	whirlwind_key->SetText(whirlwind_key->str);
 
 	whirlwind_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12 }, App->font->default_15);
 
@@ -373,10 +399,11 @@ bool Player::Awake(pugi::xml_node& config)
 	charge_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18), 60, 60);
 	charge_ability->AddImage("standard", { 802, 0, 25, 25 });
 	charge_ability->SetImage("standard");
-	charge_ability->AddImage("clicked", { 827, 60, 25, 25 });
+	charge_ability->AddImage("clicked", { 827, 0, 25, 25 });
 
 	charge_key = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 19, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
-	charge_key->SetText("V");
+	charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+	charge_key->SetText(charge_key->str);
 
 	charge_cd = (UI_Text*)player_abilities->CreateText({ App->win->_GetWindowSize().x / 16, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18 }, App->font->default_15);
 	player_abilities->SetEnabledAndChilds(false);
@@ -393,17 +420,28 @@ bool Player::Start()
 
 	//Player abilities
 	player_abilities->SetEnabled(true);
+	//Choose ability
+	choose_ability_b->SetEnabled(true);
+	choose_ability_b_txt->SetEnabled(true);
+	choose_ability_uw->SetEnabled(true);
+	choose_ability_uw_txt->SetEnabled(true);
 	//Battlecry
 	battlecry_ability->SetEnabled(true);
 	battlecry_key->SetEnabled(true);
-	//Drop object interface
-	inventory->SetEnabled(true);
 	//Whirlwind
 	whirlwind_ability->SetEnabled(true);
 	whirlwind_key->SetEnabled(true);
 	//Charge
 	charge_ability->SetEnabled(true);
 	charge_key->SetEnabled(true);
+
+	//drop object interface
+
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
+	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	item_drop->SetImage("standard");
+	item_drop->SetEnabled(false);
 
 	return ret;
 }
@@ -416,9 +454,99 @@ bool Player::PreUpdate()
 		App->stop_exe = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down) {
+	if (active_ability == not_chosen && pause_status == false)
+		pause_status = !pause_status;
 
-		if (change_controls_status) {
+	if (choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen)
+	{
+		active_ability = battlecry_active;
+
+		show_ability_name->SetText("BC");
+
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		pause_status = !pause_status;
+		
+	}
+	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen)
+	{
+		active_ability = undying_will_active;
+
+		show_ability_name->SetText("UW");
+
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		pause_status = !pause_status;
+	}
+
+	if (choose_ability_b->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != battlecry_active && App->scene->scene_test->gold >= 50)
+	{
+		active_ability = battlecry_active;
+		App->scene->scene_test->gold = App->scene->scene_test->gold - 50;
+
+		show_ability_name->SetText("BC");
+
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		battlecry_ability->SetImage("clicked");
+
+		battlecry_timer.Start();
+		battlecry_cd->enabled = true;
+		undying_will_cd->enabled = false;
+	}
+	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != undying_will_active && App->scene->scene_test->gold >= 50)
+	{
+		active_ability = undying_will_active;
+		App->scene->scene_test->gold = App->scene->scene_test->gold - 50;
+
+		show_ability_name->SetText("UW");
+
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		battlecry_ability->SetImage("clicked");
+
+		undying_will_timer.Start();
+		undying_will_cd->enabled = true;
+		battlecry_cd->enabled = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
+	{
+		
+		choose_ability_b->click_through = true;
+		choose_ability_b->enabled = false;
+		choose_ability_b_txt->enabled = false;
+
+		choose_ability_uw->click_through = true;
+		choose_ability_uw->enabled = false;
+		choose_ability_uw_txt->enabled = false;
+
+		if (change_controls_status)
+		{
 			change_controls_status = false;
 
 			button_on_clicked = false;
@@ -435,6 +563,7 @@ bool Player::PreUpdate()
 			controls_txt->SetEnabled(true);
 			backpause_txt->SetEnabled(true);
 			audio_txt->SetEnabled(true);
+			audio_on_off->SetEnabled(true);
 
 			//quit controls menu
 			controls_bg->SetEnabled(false);
@@ -501,6 +630,7 @@ bool Player::PreUpdate()
 			controls_txt->SetEnabled(false);
 			backpause_txt->SetEnabled(false);
 			audio_txt->SetEnabled(false);
+			audio_on_off->SetEnabled(false);
 		}
 		else
 			pause_status = !pause_status;
@@ -510,6 +640,20 @@ bool Player::PreUpdate()
 		audio_button->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
+
+		if(audio_muted)
+		{
+			audio_muted = !audio_muted;
+			audio_on_off->SetText("On");
+			App->audio->ResumeMusic();
+		}
+		else
+		{
+			audio_muted = !audio_muted;
+			audio_on_off->SetText("Off");
+			App->audio->PauseMusic();
+		}
+
 	}
 	else if (controls_button->MouseClickEnterLeft()) {
 		change_controls_status = true;
@@ -653,7 +797,9 @@ bool Player::PreUpdate()
 		move_map_right_button->SetImage("standard");
 	}
 
-	if (!pause_status && (pause_window->enabled)) {
+
+	if (!pause_status && (pause_window->enabled) && active_ability != not_chosen)
+	{
 		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
 	}
@@ -667,6 +813,12 @@ bool Player::PreUpdate()
 		pause_status = !pause_status;
 		button_on_clicked = false;
 		back->SetImage("standard");
+	}
+
+	else if (button_clicked.ReadSec() >= 0.1 && audio_button->CompareState("clicked") && button_on_clicked == true)
+	{
+		button_on_clicked = false;
+		audio_button->SetImage("standard");
 	}
 
 	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || options->CompareState("clicked"))) {
@@ -698,6 +850,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(true);
 		backpause_txt->SetEnabled(true);
 		audio_txt->SetEnabled(true);
+		audio_on_off->SetEnabled(true);
 	}
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && backpause->CompareState("clicked")) {
 		options_status = false;
@@ -730,6 +883,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
+		audio_on_off->SetEnabled(false);
 	}
 
 	else if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && controls_button->CompareState("clicked")) {
@@ -748,6 +902,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
+		audio_on_off->SetEnabled(false);
 
 		//active controls menu
 		controls_bg->SetEnabled(true);
@@ -796,6 +951,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(true);
 		backpause_txt->SetEnabled(true);
 		audio_txt->SetEnabled(true);
+		audio_on_off->SetEnabled(true);
 
 		//quit controls menu
 		controls_bg->SetEnabled(false);
@@ -848,7 +1004,7 @@ bool Player::PreUpdate()
 		ShellExecute(NULL, "open", "https://github.com/AwayFromKeyboard/Project-2_The-Lost-Lands-of-Khanelyf/issues", NULL, NULL, SW_SHOWMAXIMIZED);
 
 	//pause
-	if (pause_status && !pause_window->enabled) {
+	if (pause_status && !pause_window->enabled && active_ability != not_chosen) {
 		pause_window->SetEnabledAndChilds(true);
 
 		controls_bg->SetEnabled(false);
@@ -869,6 +1025,7 @@ bool Player::PreUpdate()
 		controls_txt->SetEnabled(false);
 		backpause_txt->SetEnabled(false);
 		audio_txt->SetEnabled(false);
+		audio_on_off->SetEnabled(false);
 		backoptions->SetEnabled(false);
 		backoptions_txt->SetEnabled(false);
 		battlecry_txt->SetEnabled(false);
@@ -890,7 +1047,8 @@ bool Player::PreUpdate()
 
 	}
 
-	else if ((!pause_status && pause_window->enabled)) {
+	else if ((!pause_status && pause_window->enabled && active_ability != not_chosen))
+	{
 		pause_window->SetEnabledAndChilds(false);
 	}
 
@@ -1016,12 +1174,14 @@ bool Player::PreUpdate()
 			}
 		}
 
-		if (create_unit_button2->MouseClickOutLeft()) {
+		if (create_unit_button2->MouseClickOutLeft())
+		{
 			create_unit_button2->SetImage("standard");
 		}
 
 		//Brokenbuilding create building buttons
-		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode)) {
+		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode))
+		{
 			create_building_button->SetImage("clicked");
 
 			if (!App->debug_mode)
@@ -1034,18 +1194,21 @@ bool Player::PreUpdate()
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, pos);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
-					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
+					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader)
+					{
 						App->questmanager->GetCurrentQuest()->progress++;
 					}
 				}
 			}
 
 		}
-		if (create_building_button->MouseClickOutLeft()) {
+		if (create_building_button->MouseClickOutLeft())
+		{
 			create_building_button->SetImage("standard");
 		}
 
-		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode)) {
+		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode))
+		{
 			create_building_button2->SetImage("clicked");
 
 			if (!App->debug_mode)
@@ -1062,73 +1225,108 @@ bool Player::PreUpdate()
 
 		}
 
-		if (create_building_button2->MouseClickOutLeft()) {
+		if (create_building_button2->MouseClickOutLeft())
+		{
 			create_building_button2->SetImage("standard");
 		}
 
 		//player abilities
-		if (!hero->is_holding_object) {
-			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && battlecry_ability->CompareState("standard")) {
+		if (!hero->is_holding_object)
+		{
+			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+			{
 				draw_battlecry_range = true;
 				CheckAbilityRange(BATTLECRY_RANGE);
 			}
-			else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && whirlwind_ability->CompareState("standard")) {
+			else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && whirlwind_ability->CompareState("standard"))
+			{
 				draw_whirlwind_range = true;
 				CheckAbilityRange(WHIRLWIND_RANGE);
 			}
-			else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && charge_ability->CompareState("standard")) {
+			else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && charge_ability->CompareState("standard"))
+			{
 				draw_charge_range = true;
 				CheckStraightAbilityRange(CHARGE_RANGE);
 			}
 
-			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up) {
+			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up)
+			{
 				draw_battlecry_range = false;
 				range_visited.clear();
 			}
-			if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up) {
+			if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up)
+			{
 				draw_whirlwind_range = false;
 				range_visited.clear();
 			}
 
 			//player abilities
-			if (!hero->is_holding_object) {
-				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat) {
+			if (!hero->is_holding_object)
+			{
+				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && active_ability == battlecry_active)
+				{
 					draw_battlecry_range = true;
 					CheckAbilityRange(BATTLECRY_RANGE);
 				}
-				else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat) {
+
+				//Undying Will
+				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
+				{
+					undying_state_active = true;
+
+					battlecry_ability->SetImage("clicked");
+
+					undying_will_cd->SetEnabled(true);
+					undying_will_timer.Start();
+				}
+
+				if (undying_will_timer.ReadSec() >= 5)
+					undying_state_active = false;
+
+				if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
+					undying_will_cd->SetEnabled(false);
+					battlecry_ability->SetImage("standard");
+				}
+
+				else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat)
+				{
 					draw_whirlwind_range = true;
 					CheckAbilityRange(WHIRLWIND_RANGE);
 				}
-				else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat) {
+				else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat)
+				{
 					draw_charge_range = true;
 					CheckStraightAbilityRange(CHARGE_RANGE);
 				}
 
-				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up) {
+				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up)
+				{
 					draw_battlecry_range = false;
 				}
-				if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up) {
+				if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up)
+				{
 					draw_whirlwind_range = false;
 				}
-				if (App->input->GetKey(App->input->controls[CHARGE]) == key_up) {
+				if (App->input->GetKey(App->input->controls[CHARGE]) == key_up)
+				{
 					draw_charge_range = false;
 				}
 
 				//Battlecry
 
 
-				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+				{
 					battlecry_ability->SetImage("clicked");
 					Battlecry();
 					battlecry_cd->SetEnabled(true);
 					battlecry_timer.Start();
 				}
-				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
 					battlecry_cd->SetEnabled(false);
 					battlecry_ability->SetImage("standard");
 				}
-				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
 					StopBuff(-BATTLECRY_BUFF);
 				}
 
@@ -1140,14 +1338,16 @@ bool Player::PreUpdate()
 					whirlwind_cd->SetEnabled(true);
 					whirlwind_timer.Start();
 				}
-				if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND) {
+				if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND)
+				{
 					whirlwind_cd->SetEnabled(false);
 					whirlwind_ability->SetImage("standard");
 				}
 
 				//Charge
 
-				if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard")) {
+				if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard"))
+				{
 					Charge();
 				}
 
@@ -1180,21 +1380,28 @@ bool Player::Update(float dt)
 {
 	bool ret = true;
 
-	if (!App->minimap->IsMouseOver()) {
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat) {
+	if (!App->minimap->IsMouseOver())
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat)
+		{
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
 			App->entity->UnselectEverything();
-			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
 				Collider* unit = (*it)->GetCollider();
 
-				if (unit != nullptr) {
-					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)) {
+				if (unit != nullptr)
+				{
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building))
+					{
 						(*it)->SetSelected(true);
 					}
 				}
-				if ((*it)->GetSelected()) {
-					if ((*it)->GetType() == building && (*it)->name == barracks) {
+				if ((*it)->GetSelected())
+				{
+					if ((*it)->GetType() == building && (*it)->name == barracks)
+					{
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 						barracks_ui_window->SetEnabledAndChilds(true);
@@ -1203,18 +1410,36 @@ bool Player::Update(float dt)
 					else if ((*it)->GetType() == building && (*it)->name == broken_building) {
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
-						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar) {
+						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
+						{
 							brokenbuilding_ui_window->SetEnabledAndChilds(true);
 						}
 						break;
 					}
-					else {
+					else if ((*it)->GetType() == building && (*it)->name == blacksmiths)
+					{
+						App->entity->UnselectEverything();
+						(*it)->SetSelected(true);
+
+						choose_ability_b->click_through = false;
+						choose_ability_b->enabled = true;
+						choose_ability_b_txt->enabled = true;
+
+						choose_ability_uw->click_through = false;
+						choose_ability_uw->enabled = true;
+						choose_ability_uw_txt->enabled = true;
+
+						break;
+					}
+					else
+					{
 						App->entity->selected.push_back((Unit*)*it);
 					}
 				}
 			}
 		}
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down) {
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+		{
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
 			iPoint mouse_pathfinding;
@@ -1226,9 +1451,12 @@ bool Player::Update(float dt)
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
 				Collider* unit = (*it)->GetCollider();
 
-				if (unit != nullptr) {
-					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h) {
-						switch ((*it)->GetType()) {
+				if (unit != nullptr)
+				{
+					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+					{
+						switch ((*it)->GetType())
+						{
 						case entity_type::ally:
 							MoveToTile(p);
 							mouse_over_entity = true;
@@ -1271,12 +1499,14 @@ bool Player::Update(float dt)
 			}
 		}
 	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down) {
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down)
+	{
 
 		iPoint mouse;
 		App->input->GetMouseWorld(mouse.x, mouse.y);
 
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
 			Collider* unit = (*it)->GetCollider();
 
 			if (unit != nullptr) {
@@ -1304,6 +1534,9 @@ bool Player::Update(float dt)
 
 				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
 				battlecry_txt2->SetText(battlecry_txt2->str);
+				
+				battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+				battlecry_key->SetText(battlecry_key->str);
 			}
 			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated) {
 				App->input->controls[WHIRLWIND] = code;
@@ -1312,6 +1545,9 @@ bool Player::Update(float dt)
 
 				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
 				whirlwind_txt2->SetText(whirlwind_txt2->str);
+
+				whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+				whirlwind_key->SetText(whirlwind_key->str);
 			}
 			else if (charge_button_options->CompareState("clicked") && !key_repeated) {
 				App->input->controls[CHARGE] = code;
@@ -1320,6 +1556,9 @@ bool Player::Update(float dt)
 
 				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
 				charge_txt2->SetText(charge_txt2->str);
+
+				charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+				charge_key->SetText(charge_key->str);
 			}
 			else if (move_map_up_button->CompareState("clicked") && !key_repeated) {
 				App->input->controls[MOVE_MAP_UP] = code;
@@ -1371,22 +1610,29 @@ bool Player::PostUpdate()
 {
 	bool ret = true;
 
-	if (hero != nullptr) {
+	if (hero != nullptr)
 		UpdateAttributes();
-	}
 
 	if (draw_buff == true)
 		DrawBuff();
 
-	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY) {
+	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY && active_ability == battlecry_active)
+	{
 		DrawCD(1); // 1 == Battlecry
 	}
 
-	if (whirlwind_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
+	if (undying_will_timer.ReadSec() <= COOLDOWN_UNDYING_WILL && active_ability == undying_will_active)
+	{
+		DrawCD(4); // 4 == Undying Will
+	}
+
+	if (whirlwind_timer.ReadSec() <= COOLDOWN_WHIRLWIND)
+	{
 		DrawCD(2); // 2 == Whirlwind
 	}
 
-	if (charge_timer.ReadSec() <= COOLDOWN_WHIRLWIND) {
+	if (charge_timer.ReadSec() <= COOLDOWN_WHIRLWIND)
+	{
 		DrawCD(3); // 3 == Charge
 	}
 
@@ -1471,8 +1717,10 @@ bool Player::Save(pugi::xml_node& data) const
 	misc.append_attribute("human_resources") = App->scene->scene_test->current_human_resources;
 	misc.append_attribute("max_human_resources") = App->scene->scene_test->human_resources_max;
 
-	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		if ((*it)->type == entity_type::ally) {
+	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+	{
+		if ((*it)->type == entity_type::ally)
+		{
 			pugi::xml_node ally = allies.append_child("Ally");
 			ally.append_attribute("name") = (*it)->name;
 
@@ -1496,8 +1744,10 @@ void Player::MoveToTile(iPoint tile)
 
 void Player::SetAttackingEnemy(Unit* enemy)
 {
-	if (enemy->life > 0) {
-		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+	if (enemy->life > 0)
+	{
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++)
+		{
 			(*it)->SetAttackingUnit(enemy);
 			(*it)->state = entity_state::entity_move_to_enemy;
 		}
@@ -1506,8 +1756,10 @@ void Player::SetAttackingEnemy(Unit* enemy)
 
 void Player::SetAttackingBuilding(Building* building)
 {
-	if (building->life > 0) {
-		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++) {
+	if (building->life > 0)
+	{
+		for (std::list<Unit*>::iterator it = App->entity->selected.begin(); it != App->entity->selected.end(); it++)
+		{
 			(*it)->SetAttackingBuilding(building);
 			(*it)->state = entity_state::entity_move_to_building;
 		}
@@ -1532,11 +1784,14 @@ void Player::UpdateAttributes()
 	pierce_armor << hero->pierce_armor;
 	pierce_armor_txt->SetText(pierce_armor.str());
 
-	if (hero->levelup_points > 0 && !levelup_window->enabled) {
+	if (hero->levelup_points > 0 && !levelup_window->enabled)
+	{
 		levelup_window->SetEnabledAndChilds(true);
 	}
-	else if (levelup_window->enabled) {
-		if (hero->levelup_points == 0) {
+	else if (levelup_window->enabled)
+	{
+		if (hero->levelup_points == 0)
+		{
 			levelup_window->SetEnabledAndChilds(false);
 		}
 		else {
@@ -1544,20 +1799,24 @@ void Player::UpdateAttributes()
 			levelup_points << "points left: " << hero->levelup_points;
 			level_points_txt->SetText(levelup_points.str());
 
-			if (life_button->MouseClickEnterLeft()) {
+			if (life_button->MouseClickEnterLeft())
+			{
 				hero->levelup_points -= 1;
 				hero->life += 20;
 				hero->max_life += 20;
 			}
-			else if (damage_button->MouseClickEnterLeft()) {
+			else if (damage_button->MouseClickEnterLeft())
+			{
 				hero->levelup_points -= 1;
 				hero->damage += 1;
 			}
-			else if (armor_button->MouseClickEnterLeft()) {
+			else if (armor_button->MouseClickEnterLeft())
+			{
 				hero->levelup_points -= 1;
 				hero->armor += 1;
 			}
-			else if (pierce_armor_button->MouseClickEnterLeft()) {
+			else if (pierce_armor_button->MouseClickEnterLeft())
+			{
 				hero->levelup_points -= 1;
 				hero->pierce_armor += 1;
 			}
@@ -1567,7 +1826,8 @@ void Player::UpdateAttributes()
 
 void Player::SetPickingObject(Object* object)
 {
-	if (hero->GetSelected() && hero->is_holding_object == false) {
+	if (hero->GetSelected() && hero->is_holding_object == false)
+	{
 		hero->SetPickObject(object);
 		hero->state = entity_state::entity_pick_object;
 	}
@@ -1592,8 +1852,10 @@ void Player::Battlecry()
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < BATTLECRY_RANGE; ++i) {
-		for (int j = frontier.size(); j > 0; j--) {
+	for (int i = 0; i < BATTLECRY_RANGE; ++i)
+	{
+		for (int j = frontier.size(); j > 0; j--)
+		{
 			iPoint neighbors[4];
 			neighbors[0] = frontier.front() + iPoint(1, 0);
 			neighbors[1] = frontier.front() + iPoint(-1, 0);
@@ -1601,22 +1863,28 @@ void Player::Battlecry()
 			neighbors[3] = frontier.front() + iPoint(0, -1);
 			frontier.pop_front();
 
-			for (int k = 0; k < 4; k++) {
-				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+			for (int k = 0; k < 4; k++)
+			{
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+				{
 					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-					if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed) {
+					if (found != nullptr && found->life > 0 && found->type == ally && !found->buffed)
+					{
 						buffed_list.push_back(found);
 						found->buffed = true;
 					}
 					else {
 						bool is_visited = false;
-						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-							if (neighbors[k] == *it) {
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it)
+						{
+							if (neighbors[k] == *it)
+							{
 								is_visited = true;
 								break;
 							}
 						}
-						if (!is_visited) {
+						if (!is_visited)
+						{
 							frontier.push_back(neighbors[k]);
 							visited.push_back(neighbors[k]);
 						}
@@ -1645,8 +1913,10 @@ void Player::Whirlwind()
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 	frontier.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < WHIRLWIND_RANGE; ++i) {
-		for (int j = frontier.size(); j > 0; j--) {
+	for (int i = 0; i < WHIRLWIND_RANGE; ++i)
+	{
+		for (int j = frontier.size(); j > 0; j--)
+		{
 			iPoint neighbors[4];
 			neighbors[0] = frontier.front() + iPoint(1, 0);
 			neighbors[1] = frontier.front() + iPoint(-1, 0);
@@ -1654,10 +1924,13 @@ void Player::Whirlwind()
 			neighbors[3] = frontier.front() + iPoint(0, -1);
 			frontier.pop_front();
 
-			for (int k = 0; k < 4; k++) {
-				if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+			for (int k = 0; k < 4; k++)
+			{
+				if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+				{
 					Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
-					if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false) {
+					if (found != nullptr && found->life > 0 && found->type == enemy && found->damaged_by_whirlwind == false)
+					{
 						found->life -= WHIRLWIND_DAMAGE;
 						if (found->life <= 0)
 							found->state = entity_death;
@@ -1665,13 +1938,16 @@ void Player::Whirlwind()
 					}
 					else {
 						bool is_visited = false;
-						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-							if (neighbors[k] == *it) {
+						for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it)
+						{
+							if (neighbors[k] == *it)
+							{
 								is_visited = true;
 								break;
 							}
 						}
-						if (!is_visited) {
+						if (!is_visited)
+						{
 							frontier.push_back(neighbors[k]);
 							visited.push_back(neighbors[k]);
 						}
@@ -1691,7 +1967,8 @@ void Player::Charge()
 
 	visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-	for (int i = 0; i < CHARGE_RANGE; ++i) {
+	for (int i = 0; i < CHARGE_RANGE; ++i)
+	{
 		iPoint neighbors[8];
 		neighbors[0] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 0);
 		neighbors[1] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 0);
@@ -1702,21 +1979,21 @@ void Player::Charge()
 		neighbors[6] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 1 + i);
 		neighbors[7] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, -1 - i);
 
-		for (int k = 0; k < 8; k++) {
-			if (neighbors[k].x >= 0 && neighbors[k].y >= 0) {
+		for (int k = 0; k < 8; k++)
+		{
+			if (neighbors[k].x >= 0 && neighbors[k].y >= 0)
+			{
 				Unit* found = (Unit*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 
-				//if (found != nullptr)
-				//	col = found->GetCollider();
-				//if (found != nullptr && found->life > 0 && found->type == enemy && mouse.x > col->rect.x && mouse.x < col->rect.x + col->rect.w && mouse.y > col->rect.y && mouse.y < col->rect.y + col->rect.h) {
-
-				if (found != nullptr && found->life > 0 && found->type == enemy && App->map->WorldToMapPoint(mouse) == found->position_map) {
+				if (found != nullptr && found->life > 0 && (found->type == enemy || found->type == enemy_boss) && App->map->WorldToMapPoint(mouse) == found->position_map)
+				{
 					GetHero()->speed += CHARGE_SPEED;
 					GetHero()->damage += CHARGE_DAMAGE;
 					charge_speed_buff = true;
 					charge_damage_buff = true;
 
-					switch (k) {
+					switch (k)
+					{
 					case 0:
 						MoveToTile(found->position_map + iPoint(-1, 0));
 						break;
@@ -1746,17 +2023,19 @@ void Player::Charge()
 					charge_ability->SetImage("clicked");
 					charge_cd->SetEnabled(true);
 					charge_timer.Start();
-
 				}
 				else {
 					bool is_visited = false;
-					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-						if (neighbors[k] == *it) {
+					for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it)
+					{
+						if (neighbors[k] == *it)
+						{
 							is_visited = true;
 							break;
 						}
 					}
-					if (!is_visited) {
+					if (!is_visited)
+					{
 						visited.push_back(neighbors[k]);
 					}
 				}
@@ -1784,15 +2063,19 @@ void Player::CheckAbilityRange(int range)
 					neighbors[3] = frontier.front() + iPoint(0, -1);
 					frontier.pop_front();
 
-					for (int k = 0; k < 4; k++) {
+					for (int k = 0; k < 4; k++)
+					{
 						bool is_visited = false;
-						for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it) {
-							if (neighbors[k] == *it) {
+						for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); ++it)
+						{
+							if (neighbors[k] == *it)
+							{
 								is_visited = true;
 								break;
 							}
 						}
-						if (!is_visited) {
+						if (!is_visited)
+						{
 							frontier.push_back(neighbors[k]);
 							range_visited.push_back(neighbors[k]);
 						}
@@ -1800,7 +2083,8 @@ void Player::CheckAbilityRange(int range)
 				}
 			}
 		}
-		for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++) {
+		for (std::list<iPoint>::iterator it = range_visited.begin(); it != range_visited.end(); it++)
+		{
 			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 		}
 	}
@@ -1813,7 +2097,8 @@ void Player::CheckStraightAbilityRange(int range)
 
 		visited.push_back(App->map->WorldToMapPoint(GetHero()->position));
 
-		for (int i = 0; i < range; ++i) {
+		for (int i = 0; i < range; ++i)
+		{
 			iPoint neighbors[8];
 			neighbors[0] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(1 + i, 0);
 			neighbors[1] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 0);
@@ -1824,10 +2109,13 @@ void Player::CheckStraightAbilityRange(int range)
 			neighbors[6] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, 1 + i);
 			neighbors[7] = App->map->WorldToMapPoint(GetHero()->position) + iPoint(-1 - i, -1 - i);
 
-			for (int k = 0; k < 8; k++) {
+			for (int k = 0; k < 8; k++)
+			{
 				bool is_visited = false;
-				for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it) {
-					if (neighbors[k] == *it) {
+				for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); ++it)
+				{
+					if (neighbors[k] == *it)
+					{
 						is_visited = true;
 						break;
 					}
@@ -1837,7 +2125,8 @@ void Player::CheckStraightAbilityRange(int range)
 				}
 			}
 		}
-		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++) {
+		for (std::list<iPoint>::iterator it = visited.begin(); it != visited.end(); it++)
+		{
 			App->scene->LayerBlit(200, App->scene->scene_test->debug_tex, App->map->MapToWorldPoint(*it), { 0, 0, 64, 64 });
 		}
 	}
@@ -1857,7 +2146,8 @@ void Player::StopBuff(int modifier)
 	draw_buff = false;
 	BattlecryModifier(modifier);
 
-	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++)
+	{
 		(*it)->buffed = false;
 	}
 	buffed_list.clear();
@@ -1867,24 +2157,35 @@ void Player::DrawCD(int ability_number)
 {
 	std::stringstream oss;
 
-	if (ability_number == 1) {
+	if (ability_number == 1)
+	{
 		int timer = COOLDOWN_BATTLECRY - battlecry_timer.ReadSec() + 1;
 		oss << timer;
 		std::string txt = oss.str();
 		battlecry_cd->SetText(txt);
 	}
 
-	if (ability_number == 2) {
+	if (ability_number == 2)
+	{
 		int timer = COOLDOWN_WHIRLWIND - whirlwind_timer.ReadSec() + 1;
 		oss << timer;
 		std::string txt = oss.str();
 		whirlwind_cd->SetText(txt);
 	}
 
-	if (ability_number == 3) {
+	if (ability_number == 3)
+	{
 		int timer = COOLDOWN_CHARGE - charge_timer.ReadSec() + 1;
 		oss << timer;
 		std::string txt = oss.str();
 		charge_cd->SetText(txt);
+	}
+
+	if (ability_number == 4)
+	{
+		int timer = COOLDOWN_UNDYING_WILL - undying_will_timer.ReadSec() + 1;
+		oss << timer;
+		std::string txt = oss.str();
+		undying_will_cd->SetText(txt);
 	}
 }

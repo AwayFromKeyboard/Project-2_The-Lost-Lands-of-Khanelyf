@@ -12,14 +12,23 @@
 #define BATTLECRY_BUFF 5
 #define BATTLECRY_RANGE 10
 
+#define DURATION_UNDYING_WILL 4
+#define COOLDOWN_UNDYING_WILL 20
+
 #define COOLDOWN_WHIRLWIND 8
 #define WHIRLWIND_DAMAGE 40
 #define WHIRLWIND_RANGE 2
 
 #define COOLDOWN_CHARGE 12
 #define CHARGE_DAMAGE 40
-#define CHARGE_RANGE 5
+#define CHARGE_RANGE 6
 #define CHARGE_SPEED 5
+
+enum first_ability {
+	battlecry_active,
+	undying_will_active,
+	not_chosen
+};
 
 class Unit;
 class Building;
@@ -52,6 +61,8 @@ private:
 	void CheckStraightAbilityRange(int range);
 	void DrawBuff();
 	void StopBuff(int modifier);
+
+	void UndyingRage();
 
 	void Whirlwind();
 
@@ -115,6 +126,8 @@ private:
 	UI_Text* move_map_right_txt2 = nullptr;
 	UI_Text* create_group_txt2 = nullptr;
 
+	UI_Text* audio_on_off = nullptr;
+
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;
@@ -122,12 +135,15 @@ private:
 	UI_Text* pierce_armor_txt = nullptr;
 
 	UI_Text* battlecry_cd = nullptr;
+	UI_Text* undying_will_cd = nullptr;
 	UI_Text* whirlwind_cd = nullptr;
 	UI_Text* charge_cd = nullptr;
 
 	UI_Text* battlecry_key = nullptr;
 	UI_Text* whirlwind_key = nullptr;
 	UI_Text* charge_key = nullptr;
+
+	UI_Text* show_ability_name = nullptr;
 
 	UI_Window* levelup_window = nullptr;
 	UI_Button* life_button = nullptr;
@@ -163,6 +179,12 @@ public:
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
 
+	UI_Button* choose_ability_b = nullptr;
+	UI_Button* choose_ability_uw = nullptr;
+
+	UI_Text* choose_ability_b_txt = nullptr;
+	UI_Text* choose_ability_uw_txt = nullptr;
+
 private:
 	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
@@ -178,6 +200,8 @@ private:
 	UI_Button* battlecry_ability = nullptr;
 	UI_Button* whirlwind_ability = nullptr;
 	UI_Button* charge_ability = nullptr;
+
+	bool changing_ability = false;
 
 public:
 	bool audio_status = false;
@@ -201,8 +225,14 @@ public:
 
 	std::list<iPoint> range_visited;
 
+	first_ability active_ability = not_chosen;
+	bool undying_state_active = false;
+
+	bool audio_muted = false;
+
 private:
 	j1Timer battlecry_timer;
+	j1Timer undying_will_timer;
 	j1Timer whirlwind_timer;
 	j1Timer charge_timer;
 	j1Timer button_clicked;

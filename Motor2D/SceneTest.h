@@ -71,6 +71,9 @@ public:
 	unsigned int swords_clash3_id;
 	unsigned int swords_clash4_id;
 	unsigned int swords_clash5_id;
+
+public:
+	bool escortedNPC_created = false;
 };
 
 #endif // _SceneTest_H_

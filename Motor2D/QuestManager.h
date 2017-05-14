@@ -9,12 +9,12 @@
 #include "SDL/include/SDL.h"
 
 enum titles {
-	beggar, leader, mayor, titles_null
+	beggar, leader, mayor, king, titles_null
 
 };
 
 enum quest_type {
-	kill, capture, hire, create, conquer, move_object, type_null
+	kill, capture, hire, create, conquer, move_object, escort, type_null
 };
 
 enum quest_id {
@@ -23,7 +23,9 @@ enum quest_id {
 	quest_mayor,
 	quest_mayor2,
 	quest_conquer,
+	quest_escort,
 	quest_provisions,
+	quest_boss,
 	quest_null
 };
 
