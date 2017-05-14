@@ -724,74 +724,74 @@ void j1Map::GetEntitiesSpawn() const
 						int relative_id = id - tileset->firstgid;
 						switch (id)
 						{
-						case 27: // Hero
+						case 43: // Hero
 						{
 							Entity* player_unit = App->entity->CreateEntity(hero, player, App->map->MapToWorld(x + 1, y));
 							App->player->SetHero((Hero*)player_unit);
 						}
 						break;
 
-						case 28: // Barbarian Enemy
+						case 44: // Barbarian Enemy
 						{
 							Entity* barb_enemy = App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 29: // NPC
+						case 45: // NPC
 						{
 							Entity* barb_npc = App->entity->CreateEntity(barbarian, npc, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 30: // Object
+						case 46: // Object
 						{
 							Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 31: // Basic Building Ally
+						case 47: // Basic Building Ally
 						{
 							Entity* basicbuilding_ally = App->entity->CreateBuildingEntity(basic_building, ally_building, App->map->MapToWorld(x, y - 1), RandomGenerate(1, 3));
 						}
 						break;
 
-						case 32: // Basic Building Enemy
+						case 48: // Basic Building Enemy
 						{
 							Entity* basicbuilding_enemy = App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(x, y - 1), RandomGenerate(1, 3));
 						}
 						break;
 
-						case 33: // Swordsman Enemy
+						case 49: // Swordsman Enemy
 						{
 							Entity* swordsman_enemy = App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 34: //Towers
+						case 50: //Towers
 						{
 							Entity* tower_enemy = App->entity->CreateEntity(towers, enemy_building, App->map->MapToWorld(x, y - 1));
 						}
 						break;
 
-						case 35: // Enemy Barrack
+						case 51: // Enemy Barrack
 						{
 							Entity* enemy_barrack = App->entity->CreateEntity(barracks, enemy_building, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 36: // Broken Building
+						case 52: // Broken Building
 						{
 							Entity* brokenbuilding = App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(x, y - 1));
 						}
 						break;
 
-						case 37: // Enemy Building
+						case 53: // Enemy Building
 						{
 							Entity* enemy_blacksmith = App->entity->CreateEntity(blacksmiths, enemy_building, App->map->MapToWorld(x + 1, y));
 						}
 						break;
 
-						case 38: // Boss Enemy
+						case 54: // Boss Enemy
 						{
 							Entity* enemy_boss = App->entity->CreateEntity(boss, entity_type::enemy_boss, App->map->MapToWorld(x + 1, y));
 						}
