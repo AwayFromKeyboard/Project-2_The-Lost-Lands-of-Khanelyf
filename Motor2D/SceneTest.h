@@ -77,7 +77,6 @@ public:
 	SDL_Rect quest_2 = NULLRECT;
 	SDL_Rect quest_3 = NULLRECT;
 	SDL_Rect quest_4 = NULLRECT;
-	SDL_Rect quest_7 = NULLRECT;
 };
 
 #endif // _SceneTest_H_

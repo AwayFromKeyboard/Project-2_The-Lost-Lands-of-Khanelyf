@@ -954,9 +954,7 @@ void Unit::UnitAttack()
 
 			current_animation->Reset();
 
-			if (App->player->audio_muted == false)
-			{
-
+			if (attacked_unit->life <= 0) {
 				if (App->player->audio_muted == false)
 				{
 					App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
@@ -964,9 +962,8 @@ void Unit::UnitAttack()
 				state = entity_idle;
 				attacked_unit->state = entity_death;
 				attacked_unit = nullptr;
-
-				shout_fx = true;
 			}
+			shout_fx = true;
 		}
 	}
 	else state = entity_idle;

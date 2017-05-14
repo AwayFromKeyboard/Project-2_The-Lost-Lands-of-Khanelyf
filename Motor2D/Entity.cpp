@@ -40,7 +40,7 @@ void Entity::LifeBar(iPoint size, iPoint offset)
 
 void Entity::CheckIDInRect()
 {
-	if (type == entity_type::enemy || type == entity_type::enemy_boss) {
+	if (type == entity_type::enemy) {
 		if (position.PointInRect(App->scene->scene_test->quest_0.x, App->scene->scene_test->quest_0.y, App->scene->scene_test->quest_0.w, App->scene->scene_test->quest_0.h)) {
 			id = entity_quest_id::quest_0;
 		}
@@ -49,9 +49,6 @@ void Entity::CheckIDInRect()
 		}
 		else if (position.PointInRect(App->scene->scene_test->quest_3.x, App->scene->scene_test->quest_3.y, App->scene->scene_test->quest_3.w, App->scene->scene_test->quest_3.h)) {
 			id = entity_quest_id::quest_3;
-		}
-		else if (position.PointInRect(App->scene->scene_test->quest_7.x, App->scene->scene_test->quest_7.y, App->scene->scene_test->quest_7.w, App->scene->scene_test->quest_7.h)) {
-			id = entity_quest_id::quest_7;
 		}
 	}
 	else if (type == entity_type::enemy_building) {

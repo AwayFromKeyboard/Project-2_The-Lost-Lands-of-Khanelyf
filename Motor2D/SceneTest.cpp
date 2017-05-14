@@ -49,6 +49,11 @@ bool SceneTest::Start()
 		RELEASE_ARRAY(data);
 	}
 
+	this->quest_0 = { App->map->MapToWorldPoint({ 14, 70 }).x, 	App->map->MapToWorldPoint({ 14, 70 }).y, App->map->MapToWorldPoint({ 37, 71 }).x - App->map->MapToWorldPoint({ 14, 70 }).x, App->map->MapToWorldPoint({ 37, 71 }).y - App->map->MapToWorldPoint({ 14, 70 }).y };
+	this->quest_2 = { App->map->MapToWorldPoint({ 55, 50 }).x, 	App->map->MapToWorldPoint({ 55, 50 }).y, App->map->MapToWorldPoint({ 107, 89 }).x - App->map->MapToWorldPoint({ 55, 50 }).x, App->map->MapToWorldPoint({ 107, 89 }).y - App->map->MapToWorldPoint({ 55, 50 }).y };
+	this->quest_3 = { App->map->MapToWorldPoint({ 7, 22 }).x, 	App->map->MapToWorldPoint({ 7, 22 }).y, App->map->MapToWorldPoint({ 21, 22 }).x - App->map->MapToWorldPoint({ 7, 22 }).x, App->map->MapToWorldPoint({ 21, 22 }).y - App->map->MapToWorldPoint({ 7, 22 }).y };
+	this->quest_4 = { App->map->MapToWorldPoint({ 7, 20 }).x, 	App->map->MapToWorldPoint({ 7, 20 }).y, App->map->MapToWorldPoint({ 17, 20 }).x - App->map->MapToWorldPoint({ 7, 20 }).x, App->map->MapToWorldPoint({ 17, 20 }).y - App->map->MapToWorldPoint({ 7, 20 }).y };
+	
 	//LOAD FXs
 
 	death_id = App->audio->LoadFx("audio/fx/Death.wav");
