@@ -783,7 +783,7 @@ bool Unit::CheckSurroundings() {
 					{
 						Entity* found = (Entity*)App->map->entity_matrix[neighbors[k].x][neighbors[k].y];
 						if (found != nullptr && found->life > 0) {
-							if ((App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::enemy || found->type == entity_type::ally || found->type == entity_type::player || found->type == entity_type::enemy_boss )) || (!App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::building || found->type == entity_type::ally_building || found->type == entity_type::enemy_building))) {
+							if ((App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::enemy || found->type == entity_type::ally || found->type == entity_type::player || found->type == entity_type::enemy_boss || found->name == entity_name::npc_escort)) || (!App->pathfinding->IsWalkable(App->map->WorldToMapPoint(found->position)) && (found->type == entity_type::building || found->type == entity_type::ally_building || found->type == entity_type::enemy_building))) {
 
 								switch (type) {
 								case player:
@@ -801,7 +801,7 @@ bool Unit::CheckSurroundings() {
 									break;
 								case enemy:
 								case enemy_boss:
-									if (found->type == player || found->type == ally) {
+									if (found->type == player || found->type == ally || found->name == npc_escort) {
 										attacked_unit = (Unit*)found;
 										state = entity_move_to_enemy;
 										return true;
