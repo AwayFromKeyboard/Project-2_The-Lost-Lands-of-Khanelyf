@@ -45,6 +45,7 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool Start();
 	bool PostUpdate();
+	bool CleanUp();
 	bool BlitDialog(uint id, uint state);
 
 	bool LoadGame(pugi::xml_node&);
