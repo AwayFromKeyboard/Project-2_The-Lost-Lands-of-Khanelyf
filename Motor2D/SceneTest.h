@@ -88,6 +88,7 @@ public:
 
 public:
 	bool escortedNPC_created = false;
+	bool mission_provision_created = false;
 
 	j1Timer enemy_waves_timer;
 	bool start_waves_timer = true;

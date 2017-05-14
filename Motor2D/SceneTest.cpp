@@ -245,6 +245,11 @@ void SceneTest::CheckUnitCreation(iPoint p)
 		escortedNPC_created = true;
 		EscortedNPC* escorted_npc = (EscortedNPC*)App->entity->CreateEntity(npc_escort, npc, App->map->MapToWorld(90, 70));
 	}
+
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && !mission_provision_created) {
+		mission_provision_created = true;
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(21, 69));
+	}
 }
 
 void SceneTest::IncreaseGold(int gold)
