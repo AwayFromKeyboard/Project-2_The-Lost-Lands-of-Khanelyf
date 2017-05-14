@@ -88,11 +88,25 @@ public:
 
 public:
 	bool escortedNPC_created = false;
+
+public:
+	SDL_Rect quest_0 = NULLRECT;
+	SDL_Rect quest_2 = NULLRECT;
+	SDL_Rect quest_3 = NULLRECT;
+	SDL_Rect quest_4 = NULLRECT;
+
+	int progress_quest_0 = 0;
+	int progress_quest_2 = 0;
+	int progress_quest_3 = 0;
+	int progress_quest_4 = 0;
+
+public:
 	bool mission_provision_created = false;
 
 	j1Timer enemy_waves_timer;
 	bool start_waves_timer = true;
 	bool enemy_waves_active = false;
+
 };
 
 #endif // _SceneTest_H_

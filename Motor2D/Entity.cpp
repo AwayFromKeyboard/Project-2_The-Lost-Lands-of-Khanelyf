@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "j1Scene.h"
+#include "SceneTest.h"
 
 void Entity::LifeBar(iPoint size, iPoint offset)
 {
@@ -34,5 +35,25 @@ void Entity::LifeBar(iPoint size, iPoint offset)
 				App->scene->LayerDrawQuad(life_rect, 255, 0, 0, 255, true, true, 11);
 		}
 		
+	}
+}
+
+void Entity::CheckIDInRect()
+{
+	if (type == entity_type::enemy) {
+		if (position.PointInRect(App->scene->scene_test->quest_0.x, App->scene->scene_test->quest_0.y, App->scene->scene_test->quest_0.w, App->scene->scene_test->quest_0.h)) {
+			id = entity_quest_id::quest_0;
+		}
+		else if (position.PointInRect(App->scene->scene_test->quest_2.x, App->scene->scene_test->quest_2.y, App->scene->scene_test->quest_2.w, App->scene->scene_test->quest_2.h)) {
+			id = entity_quest_id::quest_2;
+		}
+		else if (position.PointInRect(App->scene->scene_test->quest_3.x, App->scene->scene_test->quest_3.y, App->scene->scene_test->quest_3.w, App->scene->scene_test->quest_3.h)) {
+			id = entity_quest_id::quest_3;
+		}
+	}
+	else if (type == entity_type::enemy_building) {
+		if (position.PointInRect(App->scene->scene_test->quest_4.x, App->scene->scene_test->quest_4.y, App->scene->scene_test->quest_4.w, App->scene->scene_test->quest_4.h)) {
+			id = entity_quest_id::quest_4;
+		}
 	}
 }

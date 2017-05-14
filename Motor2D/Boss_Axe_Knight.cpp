@@ -79,6 +79,7 @@ bool BossAxeKnight::LoadEntity(iPoint pos, entity_name name)
 		phase = boss_phase::asleep;
 		this->boss = this;
 		is_boss = true;
+		id = entity_quest_id::quest_7;
 
 	}
 	else LOG("\nERROR, no node found\n");
