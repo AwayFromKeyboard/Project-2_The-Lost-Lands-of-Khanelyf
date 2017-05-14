@@ -49,7 +49,7 @@ public:
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
 
-	int human_resources_max = 15;
+	int human_resources_max = 5;
 	int current_human_resources = 0;
 	UI_Text* human_resources_txt = nullptr;
 
@@ -68,6 +68,9 @@ public:
 	unsigned int swords_clash3_id;
 	unsigned int swords_clash4_id;
 	unsigned int swords_clash5_id;
+
+public:
+	bool escortedNPC_created = false;
 };
 
 #endif // _SceneTest_H_

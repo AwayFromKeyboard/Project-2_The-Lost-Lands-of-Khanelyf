@@ -23,11 +23,23 @@ enum unit_direction {
 	south_east
 };
 
+enum boss_phase {
+	phase_1, // normal attacks
+	phase_2, // move to diferent entities fast and attack (sort of a charge ability)
+	phase_3, // area attack
+
+	last_phase,
+
+	asleep
+};
+
 enum entity_name;
 enum entity_type;
 
 class Building;
 class Object;
+class BossAxeKnight;
+class EscortedNPC;
 
 class Unit : public Entity
 {
@@ -45,6 +57,8 @@ public:
 	bool Draw(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+
+	void CheckPhase();
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -83,7 +97,6 @@ public:
 	void DropObject();
   
 public:
-	entity_name name;
 	bool flip = false;
   
 	bool can_hold_object = false;
@@ -165,12 +178,26 @@ public:
 private:
 	j1Timer death_timer;
 	j1Timer AI_timer;
+	j1Timer whirlwind_damage;
+	bool timer_whirlwind_start = true;
 public:
 	bool IsInsideCircle(int x, int y);
-
+	bool damaged_by_whirlwind = false;
 public:
 	// attacked audio
 	bool shout_fx = true;
+
+public:
+	bool is_boss = false;
+	boss_phase phase = asleep;
+	BossAxeKnight* boss = nullptr;
+
+	bool LooksDiagonal();
+
+public:
+	bool is_escortednpc = false;
+	EscortedNPC* npc_quest = nullptr;
+	
 };
 
 #endif

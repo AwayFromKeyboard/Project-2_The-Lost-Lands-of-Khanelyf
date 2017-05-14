@@ -139,6 +139,8 @@ public:
 	// Mouse functions
 	bool MouseClickEnterLeftIntern();
 	bool MouseClickOutLeftIntern();
+	bool MouseClickEnterRightIntern();
+	bool MouseClickOutRightIntern();
 
 	void SetDebugColor(SDL_Color color);
 
@@ -302,10 +304,11 @@ public:
 	string GetText();
 
 public:
-	list<tex_str>          tex_str_list;  
-	SDL_Color	           color = NULLCOLOR;
-	_TTF_Font*	           font = nullptr;
-	int                    spacing = 0;
+	list<tex_str>			tex_str_list;  
+	SDL_Color				color = NULLCOLOR;
+	_TTF_Font*				font = nullptr;
+	int						spacing = 0;
+	std::string				str;
 };
 
 // ------------------------------
