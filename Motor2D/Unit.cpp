@@ -48,7 +48,9 @@ bool Unit::Start()
 	max_life = life;
 	
 	layer = 5;
-
+	
+	CheckIDInRect();
+	
 	return ret;
 }
 
@@ -104,6 +106,21 @@ bool Unit::Update(float dt)
 			CheckDirection();
 			CheckSurroundings();
 			has_moved = false;
+
+			if (state == entity_idle && move_to_ally_building == true && type == entity_type::enemy)
+			{
+				for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+				{
+					if (((*it)->type == entity_type::building && (*it)->name != entity_name::broken_building) || (*it)->type == entity_type::ally_building)
+					{
+						attacked_building = (Building*)(*it);
+						state = entity_state::entity_move_to_building;
+						move_to_ally_building = false;
+						continue;
+					}
+				}
+			}
+
 			break;
 
 		case entity_state::entity_move:
@@ -131,7 +148,7 @@ bool Unit::Update(float dt)
 					if (path.size() > 0) {
 						FollowPath(dt);
 
-						if (type == entity_type::enemy) {
+						if (type == entity_type::enemy || type == entity_type::enemy_boss) {
 							if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
 								state = entity_idle;
 								attacked_unit = nullptr;
@@ -146,7 +163,11 @@ bool Unit::Update(float dt)
 		case entity_state::entity_move_to_building:
 		{
 			if (attacked_building == nullptr || attacked_building->life <= 0)
+			{
 				state = entity_idle;
+				if (type == entity_type::enemy)
+					move_to_ally_building = true;
+				}
 			else {
 				if (IsInRange(attacked_building)) {
 					App->pathfinding->DeletePath(path_id);
@@ -171,6 +192,10 @@ bool Unit::Update(float dt)
 
 		case entity_state::entity_attack:
 			if ((attacked_unit == nullptr || attacked_unit->life <= 0) && (attacked_building == nullptr || attacked_building->life <= 0) || is_holding_object) {
+				
+				if (attacked_building != nullptr)
+					move_to_ally_building = true;
+
 				attacked_unit = nullptr;
 				attacked_building = nullptr;
 				state = entity_idle;
@@ -221,8 +246,48 @@ bool Unit::Update(float dt)
 				state = entity_state::entity_decompose;
 				if (type == entity_type::enemy) {
 					App->scene->scene_test->IncreaseGold(gold_drop);
-					if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
-						App->questmanager->GetCurrentQuest()->progress++;
+					if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_beggar) {
+						switch (id)
+						{
+						case quest_0:
+							App->questmanager->GetCurrentQuest()->progress++;
+							break;
+						case quest_2:
+							App->scene->scene_test->progress_quest_2++;
+							break;
+						case quest_3:
+							App->scene->scene_test->progress_quest_3++;
+							break;
+						}
+					}
+					else if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_mayor) {
+						switch (id)
+						{
+						case quest_0:
+							App->scene->scene_test->progress_quest_0++;
+							break;
+						case quest_2:
+							App->questmanager->GetCurrentQuest()->progress++;
+							break;
+						case quest_3:
+							App->scene->scene_test->progress_quest_3++;
+							break;
+						}
+					}
+					else if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_mayor2) {
+						switch (id)
+						{
+						case quest_0:
+							App->scene->scene_test->progress_quest_0++;
+							break;
+						case quest_2:
+							App->scene->scene_test->progress_quest_2++;
+							break;
+						case quest_3:
+							App->questmanager->GetCurrentQuest()->progress++;
+							break;
+						}
+					}
 				}
 				else if (type == entity_type::enemy_boss && App->questmanager->GetCurrentQuest()->id == quest_id::quest_boss) {
 					App->questmanager->GetCurrentQuest()->progress++;
@@ -952,9 +1017,7 @@ void Unit::UnitAttack()
 
 			current_animation->Reset();
 
-			if (App->player->audio_muted == false)
-			{
-
+			if (attacked_unit->life <= 0) {
 				if (App->player->audio_muted == false)
 				{
 					App->audio->PlayFx(RandomGenerate(App->scene->scene_test->death_id, App->scene->scene_test->death2_id));
@@ -962,9 +1025,8 @@ void Unit::UnitAttack()
 				state = entity_idle;
 				attacked_unit->state = entity_death;
 				attacked_unit = nullptr;
-
-				shout_fx = true;
 			}
+			shout_fx = true;
 		}
 	}
 	else state = entity_idle;

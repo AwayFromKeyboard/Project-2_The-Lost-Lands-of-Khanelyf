@@ -13,6 +13,21 @@ class Barbarian;
 #define TROOP_PRICE 20
 #define TROOP_OFFSET 1
 
+enum enemy_waves
+{
+	first,
+	second,
+	third,
+	fourth,
+	fifth,
+	sixth,
+	seventh,
+	eighth,
+	ninth,
+	tenth,
+	none
+};
+
 class SceneTest : public Scene
 {
 public:
@@ -44,12 +59,14 @@ private:
 	SDL_Rect ui_r;
 	SDL_Rect buy_unit;
 
+	enemy_waves enemy_wave_number = none;
+
 public:
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
 
-	int human_resources_max = 5;
+	int human_resources_max = 1;
 	int current_human_resources = 0;
 	UI_Text* human_resources_txt = nullptr;
 
@@ -71,6 +88,25 @@ public:
 
 public:
 	bool escortedNPC_created = false;
+
+public:
+	SDL_Rect quest_0 = NULLRECT;
+	SDL_Rect quest_2 = NULLRECT;
+	SDL_Rect quest_3 = NULLRECT;
+	SDL_Rect quest_4 = NULLRECT;
+
+	int progress_quest_0 = 0;
+	int progress_quest_2 = 0;
+	int progress_quest_3 = 0;
+	int progress_quest_4 = 0;
+
+public:
+	bool mission_provision_created = false;
+
+	j1Timer enemy_waves_timer;
+	bool start_waves_timer = true;
+	bool enemy_waves_active = false;
+
 };
 
 #endif // _SceneTest_H_

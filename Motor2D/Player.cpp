@@ -543,15 +543,16 @@ bool Player::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 	{
-		
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		if (active_ability != not_chosen)
+		{
+			choose_ability_b->click_through = true;
+			choose_ability_b->enabled = false;
+			choose_ability_b_txt->enabled = false;
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
-
+			choose_ability_uw->click_through = true;
+			choose_ability_uw->enabled = false;
+			choose_ability_uw_txt->enabled = false;
+		}
 		if (change_controls_status)
 		{
 			change_controls_status = false;
