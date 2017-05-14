@@ -124,6 +124,8 @@ private:
 	UI_Text* move_map_right_txt2 = nullptr;
 	UI_Text* create_group_txt2 = nullptr;
 
+	UI_Text* audio_on_off = nullptr;
+
 	UI_Window* attributes_window = nullptr;
 	UI_Text* life_txt = nullptr;
 	UI_Text* damage_txt = nullptr;
@@ -223,6 +225,8 @@ public:
 
 	first_ability active_ability = not_chosen;
 	bool undying_state_active = false;
+
+	bool audio_muted = false;
 
 private:
 	j1Timer battlecry_timer;
