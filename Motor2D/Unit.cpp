@@ -940,7 +940,13 @@ void Unit::UnitAttack()
 
 		if (current_animation->Finished())
 		{
-			attacked_unit->life -= damage;
+			if (attacked_unit->type == player) {
+				if (App->player->undying_state_active != true)
+					attacked_unit->life -= damage;
+			}
+			else
+				attacked_unit->life -= damage;
+
 			current_animation->Reset();
 			if (attacked_unit->life <= 0)
 			{

@@ -18,6 +18,7 @@
 #include "QuestManager.h"
 #include "Tower.h"
 #include "Escorted_NPC.h"
+#include "Blacksmith.h"
 
 j1Entity::j1Entity()
 {
@@ -323,6 +324,8 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case npc_escort:
 		ret = new EscortedNPC(type);
 		break;
+	case blacksmiths:
+		ret = new Blacksmith(type);
 	default:
 		break;
 	}
@@ -426,6 +429,14 @@ void j1Entity::UnselectEverything()
 		App->player->barracks_ui_window->SetEnabledAndChilds(false);
 	if (App->player->brokenbuilding_ui_window->enabled)
 		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
+
+	App->player->choose_ability_b->click_through = true;
+	App->player->choose_ability_b->enabled = false;
+	App->player->choose_ability_b_txt->enabled = false;
+
+	App->player->choose_ability_uw->click_through = true;
+	App->player->choose_ability_uw->enabled = false;
+	App->player->choose_ability_uw_txt->enabled = false;
 
 	selected.clear();
 }

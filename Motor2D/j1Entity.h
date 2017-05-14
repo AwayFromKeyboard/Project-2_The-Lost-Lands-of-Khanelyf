@@ -19,6 +19,7 @@ enum entity_name
 	boss,
 	towers,
 	npc_escort,
+	blacksmiths,
 	test
 };
 

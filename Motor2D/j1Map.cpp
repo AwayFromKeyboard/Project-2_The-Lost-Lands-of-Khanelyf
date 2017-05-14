@@ -785,12 +785,20 @@ void j1Map::GetEntitiesSpawn() const
 						}
 						break;
 
-						case 37: // Boss Enemy
+						case 37: // Enemy Building
+						{
+							Entity* enemy_blacksmith = App->entity->CreateEntity(blacksmiths, enemy_building, App->map->MapToWorld(x + 1, y));
+						}
+						break;
+
+						case 38: // Boss Enemy
 						{
 							Entity* enemy_boss = App->entity->CreateEntity(boss, entity_type::enemy_boss, App->map->MapToWorld(x + 1, y));
 						}
 						break;
+
 						}
+					
 					}
 				}
 			}
