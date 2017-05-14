@@ -45,10 +45,10 @@ bool MainMenu::Init()
 bool MainMenu::Start()
 {
 	cursor_window->SetEnabledAndChilds(true);
-	cursor->SetEnabled(true);
+	//cursor->SetEnabled(true);
 	main_menu_window->SetEnabledAndChilds(true);
-	main_menu_image->SetEnabled(true);
-	start_button->SetEnabled(true);
+	//main_menu_image->SetEnabled(true);
+	//start_button->SetEnabled(true);
 
 	SDL_ShowCursor(0);
 	return true;

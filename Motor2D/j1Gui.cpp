@@ -1244,7 +1244,7 @@ void UI_Text::SetText(string _text)
 
 	tex_str_list.clear();
 
-	/*string tmp = _text;
+	string tmp = _text;
 
 	int i = 0;
 	string comp;
@@ -1260,13 +1260,13 @@ void UI_Text::SetText(string _text)
 		if (tmp[i] != '\0')
 			i++;
 
-		comp[words_counter] = '\0';*/
+		comp[words_counter] = '\0';
 
 		int width = 0; int height = 0;
 		App->font->CalcSize(_text.c_str(), width, height, font);
 		tex_str ts(_text.c_str(), App->font->Print(_text.c_str(), color, font), { 0, 0, width, height });
 		tex_str_list.push_back(ts);
-	//}
+	}
 }
 string UI_Text::GetText()
 {

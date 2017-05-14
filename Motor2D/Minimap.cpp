@@ -16,12 +16,20 @@ Minimap::~Minimap()
 {
 }
 
-bool Minimap::Start() 
+bool Minimap::Awake(pugi::xml_node &)
 {
-	map_rect = { 1389,912,273,139 };
-
 	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 1389, 912 }, 273, 139, 8);
 	minimap_background = (UI_Image*)minimap_window->CreateImage({ 1389, 912 }, { 1237, 810, 273, 139 });
+	minimap_window->SetEnabledAndChilds(false);
+
+	return true;
+}
+
+bool Minimap::Start() 
+{
+	minimap_window->SetEnabledAndChilds(true);
+
+	map_rect = { 1389,912,273,139 };
 
 	map_size = { 120, 110 };
 
@@ -158,6 +166,7 @@ bool Minimap::Draw()
 bool Minimap::CleanUp()
 {
 	bool ret = true;
+	minimap_window->SetEnabledAndChilds(false);
 	cells.clear();
 	units_to_print.clear();
 

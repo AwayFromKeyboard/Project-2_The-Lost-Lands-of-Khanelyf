@@ -36,10 +36,12 @@ public:
 	Minimap();
 	~Minimap();
 
-	bool CleanUp();
+	bool Awake(pugi::xml_node&);
+
 	bool Start();
 	bool PreUpdate();
 	bool PostUpdate();
+	bool CleanUp();
 	bool Draw();
 
 	// Handle_input_GUI
