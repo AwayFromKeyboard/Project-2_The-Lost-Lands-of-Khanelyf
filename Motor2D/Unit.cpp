@@ -131,7 +131,7 @@ bool Unit::Update(float dt)
 					if (path.size() > 0) {
 						FollowPath(dt);
 
-						if (type == entity_type::enemy) {
+						if (type == entity_type::enemy || type == entity_type::enemy_boss) {
 							if (App->map->WorldToMapPoint(position).DistanceTo(App->map->WorldToMapPoint(attacked_unit->position)) > radius_of_action * 3 / 2) {
 								state = entity_idle;
 								attacked_unit = nullptr;

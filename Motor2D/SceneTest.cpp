@@ -110,30 +110,59 @@ bool SceneTest::PreUpdate()
 
 		if (enemy_wave_number == enemy_waves::first && enemy_waves_timer.ReadSec() >= 60) {
 			enemy_wave_number = enemy_waves::second;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::second && enemy_waves_timer.ReadSec() >= 180) {
 			enemy_wave_number = enemy_waves::third;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::third && enemy_waves_timer.ReadSec() >= 300) {
 			enemy_wave_number = enemy_waves::fourth;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::fourth && enemy_waves_timer.ReadSec() >= 420) {
 			enemy_wave_number = enemy_waves::fifth;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::fifth && enemy_waves_timer.ReadSec() >= 540) {
 			enemy_wave_number = enemy_waves::sixth;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::sixth && enemy_waves_timer.ReadSec() >= 660) {
 			enemy_wave_number = enemy_waves::seventh;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::seventh && enemy_waves_timer.ReadSec() >= 780) {
 			enemy_wave_number = enemy_waves::eighth;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::eighth && enemy_waves_timer.ReadSec() >= 900) {
 			enemy_wave_number = enemy_waves::ninth;
+
+
 		}
 		else if (enemy_wave_number == enemy_waves::ninth && enemy_waves_timer.ReadSec() >= 1020) {
 			enemy_wave_number = enemy_waves::tenth;
+
+		}
+
+		else if (enemy_wave_number == enemy_waves::tenth && enemy_waves_timer.ReadSec() >= 1020) {
+			enemy_wave_number = enemy_waves::none;
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				if ((*it)->type == entity_type::enemy_boss)
+				{
+					(*it)->move_to_player = true;
+				}
+			}
 		}
 	}
 
@@ -249,6 +278,19 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && !mission_provision_created) {
 		mission_provision_created = true;
 		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(21, 69));
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down)
+	{
+		enemy_wave_number = enemy_waves::none;
+
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
+			if ((*it)->type == entity_type::enemy_boss)
+			{
+				(*it)->move_to_player = true;
+			}
+		}
 	}
 }
 
