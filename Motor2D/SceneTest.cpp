@@ -99,6 +99,43 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
+	if (enemy_waves_active)
+	{
+		if (start_waves_timer)
+		{
+			enemy_waves_timer.Start();
+			start_waves_timer = false;
+			enemy_wave_number = enemy_waves::first;
+		}
+
+		if (enemy_wave_number == enemy_waves::first && enemy_waves_timer.ReadSec() >= 60) {
+			enemy_wave_number = enemy_waves::second;
+		}
+		else if (enemy_wave_number == enemy_waves::second && enemy_waves_timer.ReadSec() >= 180) {
+			enemy_wave_number = enemy_waves::third;
+		}
+		else if (enemy_wave_number == enemy_waves::third && enemy_waves_timer.ReadSec() >= 300) {
+			enemy_wave_number = enemy_waves::fourth;
+		}
+		else if (enemy_wave_number == enemy_waves::fourth && enemy_waves_timer.ReadSec() >= 420) {
+			enemy_wave_number = enemy_waves::fifth;
+		}
+		else if (enemy_wave_number == enemy_waves::fifth && enemy_waves_timer.ReadSec() >= 540) {
+			enemy_wave_number = enemy_waves::sixth;
+		}
+		else if (enemy_wave_number == enemy_waves::sixth && enemy_waves_timer.ReadSec() >= 660) {
+			enemy_wave_number = enemy_waves::seventh;
+		}
+		else if (enemy_wave_number == enemy_waves::seventh && enemy_waves_timer.ReadSec() >= 780) {
+			enemy_wave_number = enemy_waves::eighth;
+		}
+		else if (enemy_wave_number == enemy_waves::eighth && enemy_waves_timer.ReadSec() >= 900) {
+			enemy_wave_number = enemy_waves::ninth;
+		}
+		else if (enemy_wave_number == enemy_waves::ninth && enemy_waves_timer.ReadSec() >= 1020) {
+			enemy_wave_number = enemy_waves::tenth;
+		}
+	}
 
 	return true;
 }
@@ -115,7 +152,6 @@ bool SceneTest::Update(float dt)
 		App->audio->PauseMusic();
 	}else
 		App->audio->ResumeMusic();
-	
 	
 	App->map->Draw();
 
