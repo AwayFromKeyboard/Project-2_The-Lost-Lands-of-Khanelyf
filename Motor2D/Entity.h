@@ -87,7 +87,7 @@ public:
 	};
 
 	void LifeBar(iPoint size, iPoint offset);
-
+	void CheckIDInRect();
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;

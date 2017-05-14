@@ -37,6 +37,8 @@ bool Building::Start()
 		App->scene->scene_test->human_resources_max++;
 	}
 
+	CheckIDInRect();
+
 	return ret;
 }
 
