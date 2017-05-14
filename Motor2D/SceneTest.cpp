@@ -175,11 +175,6 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_B) == key_down)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-
-		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
-			App->questmanager->GetCurrentQuest()->progress++;
-		}
-		create_barrack = false;
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_W) == key_down)
 	{

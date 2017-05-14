@@ -77,6 +77,11 @@ public:
 	SDL_Rect quest_2 = NULLRECT;
 	SDL_Rect quest_3 = NULLRECT;
 	SDL_Rect quest_4 = NULLRECT;
+
+	int progress_quest_0 = 0;
+	int progress_quest_2 = 0;
+	int progress_quest_3 = 0;
+	int progress_quest_4 = 0;
 };
 
 #endif // _SceneTest_H_

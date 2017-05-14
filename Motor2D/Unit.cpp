@@ -223,8 +223,48 @@ bool Unit::Update(float dt)
 				state = entity_state::entity_decompose;
 				if (type == entity_type::enemy) {
 					App->scene->scene_test->IncreaseGold(gold_drop);
-					if (App->questmanager->GetCurrentQuest()->type == quest_type::kill)
-						App->questmanager->GetCurrentQuest()->progress++;
+					if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_beggar) {
+						switch (id)
+						{
+						case quest_0:
+							App->questmanager->GetCurrentQuest()->progress++;
+							break;
+						case quest_2:
+							App->scene->scene_test->progress_quest_2++;
+							break;
+						case quest_3:
+							App->scene->scene_test->progress_quest_3++;
+							break;
+						}
+					}
+					else if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_mayor) {
+						switch (id)
+						{
+						case quest_0:
+							App->scene->scene_test->progress_quest_0++;
+							break;
+						case quest_2:
+							App->questmanager->GetCurrentQuest()->progress++;
+							break;
+						case quest_3:
+							App->scene->scene_test->progress_quest_3++;
+							break;
+						}
+					}
+					else if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_mayor2) {
+						switch (id)
+						{
+						case quest_0:
+							App->scene->scene_test->progress_quest_0++;
+							break;
+						case quest_2:
+							App->scene->scene_test->progress_quest_2++;
+							break;
+						case quest_3:
+							App->questmanager->GetCurrentQuest()->progress++;
+							break;
+						}
+					}
 				}
 				else if (type == entity_type::enemy_boss && App->questmanager->GetCurrentQuest()->id == quest_id::quest_boss) {
 					App->questmanager->GetCurrentQuest()->progress++;
