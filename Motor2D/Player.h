@@ -70,8 +70,11 @@ private:
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
-private:
 	
+private:
+	UI_Window* victory_window = nullptr;
+	UI_Text* victory = nullptr;
+	UI_Text* lose = nullptr;
 	UI_Image* pause_bg = nullptr;
 
 	UI_Button* back = nullptr;
@@ -81,6 +84,8 @@ private:
 	UI_Button* audio_button = nullptr;
 	UI_Button* controls_button = nullptr;
 	UI_Button* backpause = nullptr;
+	UI_Button* returnmenu = nullptr;
+	UI_Button* mainmenu = nullptr;
 
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
@@ -91,6 +96,7 @@ private:
 	UI_Text* controls_txt = nullptr;
 	UI_Text* audio_txt = nullptr;
 	UI_Text* backpause_txt = nullptr;
+	UI_Text* mainmenu_txt = nullptr;
 
 	//Controls buttons and texts
 	UI_Image* controls_bg = nullptr;
@@ -207,7 +213,8 @@ public:
 	bool options_status = false;
 	bool pause_status = false;
 	bool button_on_clicked = false;
-
+	bool victory_status = false;
+	bool lose_status = false;
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 

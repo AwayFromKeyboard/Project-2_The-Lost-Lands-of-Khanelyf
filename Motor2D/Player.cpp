@@ -38,6 +38,17 @@ bool Player::Start()
 {
 	bool ret = true;
 
+
+
+	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)-(App->win->_GetWindowSize().y /10) }, 100, 200, 100);
+	
+	victory = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)- (App->win->_GetWindowSize().y / 10) }, App->font->default_50);
+	victory->SetText("Victory is yours!");
+		
+	lose = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) - (App->win->_GetWindowSize().y / 10) }, App->font->default_50);
+	lose->SetText("You Lose");
+	
+	victory_window->SetEnabledAndChilds(false);
 	//pause menu
 
 	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
@@ -128,6 +139,12 @@ bool Player::Start()
 	quit_game->SetImage("standard");
 	quit_game->AddImage("clicked", { 25, 2768, 186, 31 });
 	quit_game->AddImage("hovered", { 26, 2732, 186, 31 });
+
+	mainmenu = (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 10) + (App->win->_GetWindowSize().y / 97) }, 186, 31);
+	mainmenu->AddImage("standard", { 25, 2695, 186, 31 });
+	mainmenu->SetImage("standard");
+	mainmenu->AddImage("clicked", { 25, 2768, 186, 31 });
+	mainmenu->AddImage("hovered", { 26, 2732, 186, 31 });
 	
 	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
 	back->AddImage("standard", { 25, 2695, 186, 31 });
@@ -245,6 +262,10 @@ bool Player::Start()
 	quit_txt= (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 8) - (App->win->_GetWindowSize().y / 180) }, App->font->default);
 	quit_txt->SetText("Quit");
 	quit_txt->click_through = true;
+
+	mainmenu_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 22), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 10)  +(App->win->_GetWindowSize().y / 120) }, App->font->default);
+	mainmenu_txt->SetText("Main Menu");
+	mainmenu_txt->click_through = true;
 	
 	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
 	back_txt->SetText("Resume Game");
@@ -426,8 +447,34 @@ bool Player::PreUpdate()
 {
 	bool ret = true;
 
+
+	if (victory_status) {
+		victory_window->SetEnabledAndChilds(true);
+		lose->SetEnabled(false);
+		pause_status = true;
+		back->SetEnabled(false);
+		save->SetEnabled(false);
+		load->SetEnabled(false);
+		save_txt->SetEnabled(false);
+		load_txt->SetEnabled(false);
+		pause_menu_txt->SetEnabled(false);
+		back_txt->SetEnabled(false);
+	}
+	if (lose_status) {
+		victory_window->SetEnabledAndChilds(true);
+		victory->SetEnabled(false);
+		pause_status = true;
+		back->SetEnabled(false);
+		save->SetEnabled(false);
+		load->SetEnabled(false);
+		save_txt->SetEnabled(false);
+		load_txt->SetEnabled(false);
+		pause_menu_txt->SetEnabled(false);
+		back_txt->SetEnabled(false);
+	}
+
 	if (hero->life <= 0) {
-		App->stop_exe = true;
+		App->player->lose_status = true;
 	}
 
 	if (active_ability == not_chosen && pause_status == false)
@@ -600,6 +647,11 @@ bool Player::PreUpdate()
 			options_txt->SetEnabled(true);
 			quit_txt->SetEnabled(true);
 			back_txt->SetEnabled(true);
+			mainmenu->SetEnabled(true);
+			mainmenu->click_through = false;
+			mainmenu_txt->SetEnabled(true);
+			mainmenu_txt->click_through = false;
+
 
 			//quit options menu
 			audio_button->SetEnabled(false);
@@ -673,6 +725,12 @@ bool Player::PreUpdate()
 	{
 		save->SetImage("clicked");
 		App->SaveGame("Save_File.xml");
+		button_clicked.Start();
+		button_on_clicked = true;
+	}
+	else if (mainmenu->MouseClickEnterLeft() && pause_status)
+	{
+		mainmenu->SetImage("clicked");
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
@@ -811,6 +869,12 @@ bool Player::PreUpdate()
 		button_on_clicked = false;
 		back->SetImage("standard");
 	}
+	else if (button_clicked.ReadSec() >= 0.1 && mainmenu->CompareState("clicked") && button_on_clicked == true)
+	{
+		pause_status = !pause_status;
+		button_on_clicked = false;
+		mainmenu->SetImage("standard");
+	}
 
 	else if (button_clicked.ReadSec() >= 0.1 && audio_button->CompareState("clicked") && button_on_clicked == true)
 	{
@@ -838,6 +902,9 @@ bool Player::PreUpdate()
 		options_txt->SetEnabled(false);
 		quit_txt->SetEnabled(false);
 		back_txt->SetEnabled(false);
+		mainmenu->SetEnabled(false);
+		mainmenu->click_through = true;
+		mainmenu_txt->SetEnabled(false);
 
 		//active options button
 		audio_button->SetEnabled(true);
@@ -861,6 +928,8 @@ bool Player::PreUpdate()
 		save->click_through = false;
 		load->SetEnabled(true);
 		load->click_through = false;
+		mainmenu->SetEnabled(true);
+		mainmenu->click_through = false;
 		quit_game->SetEnabled(true);
 		quit_game->click_through = false;
 		back->SetEnabled(true);
@@ -872,6 +941,7 @@ bool Player::PreUpdate()
 		options_txt->SetEnabled(true);
 		quit_txt->SetEnabled(true);
 		back_txt->SetEnabled(true);
+		mainmenu_txt->SetEnabled(true);
 
 		//quit options menu
 		audio_button->SetEnabled(false);
@@ -1117,6 +1187,11 @@ bool Player::PreUpdate()
 		back->SetImage("hovered");
 	else if (back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
+
+	if (mainmenu->MouseEnter())
+		mainmenu->SetImage("hovered");
+	else if (mainmenu->MouseOut() && mainmenu->CompareState("hovered"))
+		mainmenu->SetImage("standard");
 
 	//savebutton
 	if (save->MouseEnter())
