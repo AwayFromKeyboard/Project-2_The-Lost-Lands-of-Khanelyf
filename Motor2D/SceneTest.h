@@ -74,12 +74,9 @@ public:
 
 public:
 	SDL_Rect quest_0 = NULLRECT;
-	SDL_Rect quest_1 = NULLRECT;
 	SDL_Rect quest_2 = NULLRECT;
 	SDL_Rect quest_3 = NULLRECT;
 	SDL_Rect quest_4 = NULLRECT;
-	SDL_Rect quest_5 = NULLRECT;
-	SDL_Rect quest_6 = NULLRECT;
 	SDL_Rect quest_7 = NULLRECT;
 };
 
