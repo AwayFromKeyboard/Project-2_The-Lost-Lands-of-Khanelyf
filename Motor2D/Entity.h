@@ -27,12 +27,9 @@ enum entity_state {
 
 enum entity_quest_id {
 	quest_0,
-	quest_1,
 	quest_2,
 	quest_3,
 	quest_4,
-	quest_5,
-	quest_6,
 	quest_7,
 
 	quest_id_null
