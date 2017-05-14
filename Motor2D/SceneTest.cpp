@@ -357,7 +357,7 @@ void SceneTest::CheckUnitCreation(iPoint p)
 
 	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && !mission_provision_created) {
 		mission_provision_created = true;
-		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(21, 69));
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(40, 6));
 	}
 
 }
