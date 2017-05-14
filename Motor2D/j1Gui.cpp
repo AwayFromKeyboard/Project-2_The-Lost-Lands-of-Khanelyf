@@ -8,7 +8,6 @@
 #include "j1Gui.h"
 #include "j1Entity.h"
 #include "Functions.h"
-#include "j1Scene.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -277,7 +276,7 @@ void j1Gui::ReorderElements()
 	list<UI_Element*> copy;
 
 	// Copy all elements of PQ and clean it
-	while (elements_list.size() != 0)
+	while (App->gui->elements_list.size() != 0)
 	{
 		UI_Element* tmp = elements_list[0].data;
 		elements_list.pop_front();
@@ -329,7 +328,7 @@ bool j1Gui::Move_Elements()
 
 		// Get childs 
 		list<UI_Element*> visited;
-		GetChilds(to_move, visited);
+		App->gui->GetChilds(to_move, visited);
 
 		// Move all childs ------
 		for (list<UI_Element*>::iterator it = visited.begin(); it != visited.end(); it++)
@@ -427,7 +426,7 @@ UI_Element* j1Gui::CheckClickMove(int x, int y)
 		if (!higher_element->dinamic)
 		{
 			list<UI_Element*> parents_list;
-			GetParentElements(higher_element, parents_list);
+			App->gui->GetParentElements(higher_element, parents_list);
 
 			higher_element = nullptr;
 
@@ -454,7 +453,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 		return;
 
 	list<UI_Element*> childs;
-	GetChilds(element, childs);
+	App->gui->GetChilds(element, childs);
 
 	// Delete element and it's childs
 	for (list<UI_Element*>::iterator ch = childs.begin(); ch != childs.end(); ch++)
@@ -517,19 +516,16 @@ void PushElements(std::deque<ElementItem>& pqueue, UI_Element * item, double pri
 {
 	std::deque<ElementItem>::iterator it;
 	it = pqueue.begin();
-	for (; it != pqueue.end(); ++it)
+	for (unsigned int i = 0; i < pqueue.size(); ++i)
 	{
-		if ((*it).priority > priority)
+		if (pqueue[i].priority > priority)
 			break;
+		++it;
 	}
 	ElementItem tmp;
 	tmp.data = item;
 	tmp.priority = priority;
-	if (it != pqueue.end()
-		)
-		pqueue.insert(it, tmp);
-	else
-		pqueue.push_back(tmp);
+	pqueue.insert(it,tmp);
 }
 
 // -----------------------------------
@@ -708,32 +704,6 @@ bool UI_Element::MouseClickOutLeftIntern()
 	return false;
 }
 
-bool UI_Element::MouseClickEnterRightIntern()
-{
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
-	{
-		if (clicked)
-		{
-			clicked = false;
-			return true;
-		}
-	}
-	return false;
-}
-
-bool UI_Element::MouseClickOutRightIntern()
-{
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_up)
-	{
-		if (clicked)
-		{
-			clicked = false;
-			return true;
-		}
-	}
-}
-
-
 void UI_Element::SetDebugColor(SDL_Color _color)
 {
 	color.r = _color.r; color.g = _color.g; color.b = _color.b; color.a = _color.a;
@@ -809,7 +779,7 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 {
 	UI_Text* ret = nullptr;
 	ret = new UI_Text();
-	
+
 	if (ret != nullptr)
 	{
 		ret->type = ui_text;
@@ -818,13 +788,13 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-	
+
 		// Layers --
-	
+
 		ret->layer = childs.size() + layer + 1;
-	
+
 		// ---------
-	
+
 		PushElements(App->gui->elements_list, ret, ret->layer);
 		childs.push_back((UI_Element*)ret);
 	}
@@ -834,14 +804,13 @@ UI_Element* UI_Window::CreateText(iPoint pos, _TTF_Font * font, int spacing, boo
 // ---------------------------------------------------------------------
 // Create an image linked to the current window
 // ---------------------------------------------------------------------
-UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic, string tag)
+UI_Element* UI_Window::CreateImage(iPoint pos, SDL_Rect image, bool _dinamic)
 {
 	UI_Image* ret = nullptr;
 	ret = new UI_Image();
 	
 	if (ret != nullptr)
 	{
-		ret->tag = tag;
 		ret->type = ui_image;
 		ret->Set(pos, image);
 		ret->parent = this;
@@ -1232,7 +1201,6 @@ void UI_Text::Set(iPoint _pos, _TTF_Font* _font, int _spacing, uint r, uint g, u
 void UI_Text::SetText(string _text)
 {
 	// Clean last texts
-
 	if (!tex_str_list.empty())
 	{
 		if (!tex_str_list.empty())
@@ -1263,8 +1231,8 @@ void UI_Text::SetText(string _text)
 		comp[words_counter] = '\0';
 
 		int width = 0; int height = 0;
-		App->font->CalcSize(_text.c_str(), width, height, font);
-		tex_str ts(_text.c_str(), App->font->Print(_text.c_str(), color, font), { 0, 0, width, height });
+		App->font->CalcSize(comp.c_str(), width, height, font);
+		tex_str ts(comp.c_str(), App->font->Print(comp.c_str(), color, font), { 0, 0, width, height });
 		tex_str_list.push_back(ts);
 	}
 }
@@ -1339,7 +1307,7 @@ bool UI_Text::cleanup()
 // -----------------------------------
 // Image -----------------------------
 
-UI_Image::UI_Image() : UI_Element()
+UI_Image::UI_Image()
 {
 }
 
@@ -1378,7 +1346,7 @@ bool UI_Image::update()
 	if (App->gui->debug)
 		App->render->DrawQuad(rect, color.r, color.g, color.b, color.a, false);
 	
-	if (print) 
+	if(print)
 		App->render->Blit(App->gui->atlas, rect.x, rect.y, &image);
 
 	return true;
@@ -1434,7 +1402,7 @@ bool UI_Text_Input::update()
 		SetIsActive();
 
 		if (intern_text.size() == 0 && active)
-			text->SetText("");
+		text->SetText("");
 
 		// Manuall change text
 		ChangeTextInput();
@@ -1521,7 +1489,7 @@ bool UI_Text_Input::TakeInput()
 bool UI_Text_Input::Delete()
 {
 	bool ret = false;
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == key_down)
 	{
 		if (intern_text.size() > 0 && bar_pos > 0)

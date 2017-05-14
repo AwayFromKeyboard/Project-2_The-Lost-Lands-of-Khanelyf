@@ -38,13 +38,13 @@ bool SceneTest::Init()
 {
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 7, 37, 40 };
-	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true, "cursor");
+	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	cursor_window->SetEnabledAndChilds(false);
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
 	ui_r = { 0, 88, 1680, 1050 };
-	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r, false, "general_ui_image");
+	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r, false);
 	
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 

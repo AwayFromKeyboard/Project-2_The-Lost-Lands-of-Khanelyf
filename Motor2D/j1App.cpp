@@ -493,22 +493,3 @@ void j1App::EndSDL()
 {
 	end_program = true;
 }
-
-//void j1App::ActivateScene()
-//{
-//	player->active = true;
-//	collisions->active = true;
-//	pathfinding->active = true;
-//	entity->active = true;
-//	questmanager->active = true;
-//	dialogs->active = true;
-//	console->active = true;
-//
-//	player->Start();
-//	collisions->Start();
-//	pathfinding->Start();
-//	entity->Start();
-//	questmanager->Start();
-//	dialogs->Start();
-//	console->Start();
-//}

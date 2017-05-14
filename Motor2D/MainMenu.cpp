@@ -28,7 +28,7 @@ bool MainMenu::Init()
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
 	ui_r = { 0, 1139, 1680, 1050 };
-	main_menu_image = (UI_Image*)main_menu_window->CreateImage(iPoint(0, 0), ui_r, false, "main_menu_image");
+	main_menu_image = (UI_Image*)main_menu_window->CreateImage(iPoint(0, 0), ui_r, false);
 
 	start_button = (UI_Button*)main_menu_window->CreateButton(iPoint(1089, 189), 283, 129, 0);
 	start_button->AddImage("standard", { 0, 2190, 283, 129 });
