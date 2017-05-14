@@ -118,6 +118,9 @@ bool Unit::Update(float dt)
 						move_to_ally_building = false;
 						continue;
 					}
+					else {
+					//	App->player->lose_status = true;
+					}
 				}
 			}
 

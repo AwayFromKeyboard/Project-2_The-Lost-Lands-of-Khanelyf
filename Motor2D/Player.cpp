@@ -41,11 +41,14 @@ bool Player::Start()
 
 
 	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)-(App->win->_GetWindowSize().y /10) }, 100, 200, 100);
+	
 	victory = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)- (App->win->_GetWindowSize().y / 10) }, App->font->default_50);
 	victory->SetText("Victory is yours!");
+		
+	lose = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3) - (App->win->_GetWindowSize().y / 10) }, App->font->default_50);
+	lose->SetText("You Lose");
+	
 	victory_window->SetEnabledAndChilds(false);
-	
-	
 	//pause menu
 
 	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
@@ -447,6 +450,19 @@ bool Player::PreUpdate()
 
 	if (victory_status) {
 		victory_window->SetEnabledAndChilds(true);
+		lose->SetEnabled(false);
+		pause_status = true;
+		back->SetEnabled(false);
+		save->SetEnabled(false);
+		load->SetEnabled(false);
+		save_txt->SetEnabled(false);
+		load_txt->SetEnabled(false);
+		pause_menu_txt->SetEnabled(false);
+		back_txt->SetEnabled(false);
+	}
+	if (lose_status) {
+		victory_window->SetEnabledAndChilds(true);
+		victory->SetEnabled(false);
 		pause_status = true;
 		back->SetEnabled(false);
 		save->SetEnabled(false);
@@ -458,7 +474,7 @@ bool Player::PreUpdate()
 	}
 
 	if (hero->life <= 0) {
-		App->stop_exe = true;
+		App->player->lose_status = true;
 	}
 
 	if (active_ability == not_chosen && pause_status == false)

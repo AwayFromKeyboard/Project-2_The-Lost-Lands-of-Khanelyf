@@ -214,7 +214,7 @@ public:
 	bool pause_status = false;
 	bool button_on_clicked = false;
 	bool victory_status = false;
-
+	bool lose_status = false;
 	bool create_barbarian = true;
 	bool create_swordsman = false;
 
