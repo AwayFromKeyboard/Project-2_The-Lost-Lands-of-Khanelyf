@@ -8,6 +8,8 @@
 #include "Barracks.h"
 #include "Functions.h"
 #include "QuestManager.h"
+#include "j1App.h"
+#include "Player.h"
 
 Building::Building()
 {
@@ -31,6 +33,12 @@ bool Building::Start()
 	layer = 5;
 	max_life = life;
 
+	if (name == entity_name::basic_building && type == entity_type::ally_building) {
+		App->scene->scene_test->human_resources_max++;
+	}
+
+	CheckIDInRect();
+
 	return ret;
 }
 
@@ -38,20 +46,27 @@ bool Building::PreUpdate()
 {
 	bool ret = true;
 
-	if (state == entity_state::entity_idle) {
+	if (state == entity_state::entity_idle && name != entity_name::broken_building) {
 		if (type == entity_type::building)
 			LifeBar({ 185, 5 }, { -100, -100 });
 		else {
 			if (name == entity_name::towers)
 				LifeBar({ 125, 5 }, { -60, -85 });
+			else if (name == entity_name::blacksmiths)
+				LifeBar({ 145,5 }, { -80,-115 });
+			else if (name == entity_name::barracks)
+				LifeBar({ 195,5 }, { -90,-170 });
 			else
 				LifeBar({ 125, 5 }, { -65, -60 });
 		}
 
 	}
+
+	if (life > 0) {
+		iPoint position_map = App->map->WorldToMapPoint(position);
+		App->map->entity_matrix[position_map.x][position_map.y] = this;
+	}
 	
-
-
 	return ret;
 }
 
@@ -62,18 +77,39 @@ bool Building::Update(float dt)
 
 	switch (state) {
 	case entity_death:
+
+		if (name == entity_name::basic_building && type == entity_type::ally_building) {
+			App->scene->scene_test->human_resources_max--;
+		}
+
 		if(collision != nullptr)
 			App->collisions->EraseCollider(collision);
 		to_delete = true;
 		if (type == entity_type::enemy_building) {
-			if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
-				App->questmanager->GetCurrentQuest()->progress++;
+			if (id == quest_4) {
+				if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_conquer)
+					App->questmanager->GetCurrentQuest()->progress++;
+				else App->scene->scene_test->progress_quest_4++;
+			}
 			if (name == basic_building)
 				App->entity->CreateBuildingEntity(basic_building, ally_building, position, building_rect_number);
-			if (name == towers)
+			else if (name == towers)
 				App->entity->CreateEntity(towers, ally_building, position);
+			else if (name == blacksmiths)
+				App->entity->CreateEntity(blacksmiths, building, position);
 		}
-
+		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building && name != entity_name::blacksmiths) {
+			App->entity->CreateEntity(broken_building, building, position);
+		}
+		if (type == entity_type::building && name == entity_name::blacksmiths)
+		{
+			App->entity->CreateEntity(broken_building, building, iPoint(position.x - 40, position.y - 50));
+		}
+		if (type == entity_type::building && name == entity_name::barracks) {
+			if (App->player->barracks_ui_window->enabled)
+				App->player->barracks_ui_window->SetEnabledAndChilds(false);
+			App->scene->scene_test->create_barrack = true;
+		}
 		break;
 	}
 

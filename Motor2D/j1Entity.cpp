@@ -11,7 +11,14 @@
 #include "j1Gui.h"
 #include "Player.h"
 #include "Provisions.h"
+#include "Boss_Axe_Knight.h"
+#include "BrokenBuilding.h"
+#include "SceneTest.h"
+#include "j1Scene.h"
+#include "QuestManager.h"
 #include "Tower.h"
+#include "Escorted_NPC.h"
+#include "Blacksmith.h"
 
 j1Entity::j1Entity()
 {
@@ -305,8 +312,20 @@ Entity* j1Entity::CreateEntity(entity_name name, entity_type type, iPoint pos)
 	case provisions:
 		ret = new Provisions(type);
 		break;
+	case boss:
+		ret = new BossAxeKnight(type);
+		break;
+	case broken_building:
+		ret = new BrokenBuilding(type);
+		break;
 	case towers:
 		ret = new Tower(type);
+		break;
+	case npc_escort:
+		ret = new EscortedNPC(type);
+		break;
+	case blacksmiths:
+		ret = new Blacksmith(type);
 	default:
 		break;
 	}
@@ -362,7 +381,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 
 		iPoint unit = (*it)->position;
 
-		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building)
+		if ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally)
 		{
 			if (unit.x > select_rect.x && unit.x < select_rect.w && unit.y > select_rect.y && unit.y < select_rect.h)
 			{
@@ -382,16 +401,13 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 			}
 
 			if ((*it)->GetSelected())
-				if ((*it)->GetType() == building) {
-					App->entity->UnselectEverything();
-					App->player->barracks_ui_window->SetEnabledAndChilds(true);
-					(*it)->SetSelected(true);
-				}
-				else {
-					if (App->player->barracks_ui_window->enabled)
-						App->player->barracks_ui_window->SetEnabledAndChilds(false);
-					selected.push_back((Unit*)*it);
-				}
+			{
+				if (App->player->barracks_ui_window->enabled)
+					App->player->barracks_ui_window->SetEnabledAndChilds(false);
+				if (App->player->brokenbuilding_ui_window->enabled)
+					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				selected.push_back((Unit*)*it);
+			}
 		}
 	}
 }
@@ -411,13 +427,26 @@ void j1Entity::UnselectEverything()
 	}
 	if (App->player->barracks_ui_window->enabled)
 		App->player->barracks_ui_window->SetEnabledAndChilds(false);
+	if (App->player->brokenbuilding_ui_window->enabled)
+		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
+
+	if (App->player->active_ability != not_chosen)
+	{
+		App->player->choose_ability_b->click_through = true;
+		App->player->choose_ability_b->enabled = false;
+		App->player->choose_ability_b_txt->enabled = false;
+
+		App->player->choose_ability_uw->click_through = true;
+		App->player->choose_ability_uw->enabled = false;
+		App->player->choose_ability_uw_txt->enabled = false;
+	}
 
 	selected.clear();
 }
 
 void j1Entity::AddGroup()
 {
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == key_repeat) {
+	if (App->input->controls[CREATE_GROUP] == key_repeat) {
 		SelectedList new_group;
 		new_group.key_id = NULL;
 

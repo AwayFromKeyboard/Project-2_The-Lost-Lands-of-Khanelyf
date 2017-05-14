@@ -1232,11 +1232,8 @@ void UI_Text::SetText(string _text)
 
 	if (!tex_str_list.empty())
 	{
-		if (!tex_str_list.empty())
-		{
-			for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
-				App->tex->UnLoadTexture((*it).texture);
-		}
+		for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)
+			App->tex->UnLoadTexture((*it).texture);
 	}
 
 	tex_str_list.clear();
@@ -1518,7 +1515,7 @@ bool UI_Text_Input::TakeInput()
 bool UI_Text_Input::Delete()
 {
 	bool ret = false;
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == key_down)
 	{
 		if (intern_text.size() > 0 && bar_pos > 0)
