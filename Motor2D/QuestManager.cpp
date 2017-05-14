@@ -30,6 +30,7 @@ bool QuestManager::Start() {
 	CreateQuest("Kill the enemies at the east!", "Go to the east and kill 4 enemies at the towers", quest_type::kill, quest_id::quest_mayor, 4, 50, titles::mayor, 5, false);
 	CreateQuest("Kill the enemies at the north!", "Go to the north and kill 5 enemies at the fortress", quest_type::kill, quest_id::quest_mayor2, 5, 75, titles::mayor, 5, false);
 	CreateQuest("Conquer the north fortress!", "Attack to the enemy houses near the fortress to conquer them", quest_type::conquer, quest_id::quest_conquer, 2, 20, titles::mayor, 3, false);
+	CreateQuest("Escort the NPC", "Escort the old man to the main village", quest_type::escort, quest_id::quest_escort, 1, 200, titles::mayor, 5, false );
 	CreateQuest("Give provisions to the other village!", "Go to the captured village and leave the provisions there", quest_type::move_object, quest_id::quest_provisions, 1, 100, titles::mayor, 3, false);
 	CreateQuest("kill the boss", "Go to the north city and kill the boss", quest_type::kill, quest_id::quest_boss, 1, 500, titles::king, 5, false);
 
@@ -78,6 +79,9 @@ bool QuestManager::Update(float dt) {
 			App->player->create_swordsman = true;
 			break;
 		case quest_conquer:
+			current_quest = ChangeQuest(quest_id::quest_escort);
+			break;
+		case quest_escort:
 			current_quest = ChangeQuest(quest_id::quest_provisions);
 			break;
 		case quest_provisions:
@@ -138,6 +142,9 @@ bool QuestManager::Load(pugi::xml_node& data)
 		break;
 	case quest_provisions:
 		id = quest_provisions;
+		break;
+	case quest_escort:
+		id = quest_escort;
 		break;
 	case quest_boss:
 		id = quest_boss;

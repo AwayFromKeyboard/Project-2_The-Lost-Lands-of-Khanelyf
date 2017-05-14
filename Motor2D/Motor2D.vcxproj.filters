@@ -148,6 +148,9 @@
     <ClCompile Include="Fire.cpp">
       <Filter>Engine\6. Particles\Fire</Filter>
     </ClCompile>
+    <ClCompile Include="Escorted_NPC.cpp">
+      <Filter>Engine\4. Entities\Troops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -306,6 +309,9 @@
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Engine\6. Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Escorted_NPC.h">
+      <Filter>Engine\4. Entities\Troops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

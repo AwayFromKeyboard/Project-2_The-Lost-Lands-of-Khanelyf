@@ -86,6 +86,7 @@
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Escorted_NPC.cpp" />
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="Functions.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="DialogueManager.h" />
+    <ClInclude Include="Escorted_NPC.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="j1Collisions.h" />
     <ClInclude Include="Entity.h" />
