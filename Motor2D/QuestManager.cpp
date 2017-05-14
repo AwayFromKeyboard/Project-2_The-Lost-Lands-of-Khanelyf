@@ -89,6 +89,7 @@ bool QuestManager::Update(float dt) {
 			break;
 		case quest_boss:
 			current_quest = ChangeQuest(quest_id::quest_null);
+			App->player->victory_status = true;
 			break;
 		case quest_null:
 			break;

@@ -38,6 +38,14 @@ bool Player::Start()
 {
 	bool ret = true;
 
+
+
+	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) }, 100, 200, 12);
+	victory = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 16), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 4) - (App->win->_GetWindowSize().y / 200) }, App->font->default_15);
+	victory->SetText("Victory is yours!");
+	victory_window->SetEnabledAndChilds(false);
+	
+	
 	//pause menu
 
 	pause_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x/2)- (App->win->_GetWindowSize().x / 14), (App->win->_GetWindowSize().y/2)- (App->win->_GetWindowSize().y / 3) },240, 386, 12);
@@ -425,6 +433,10 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
+
+
+	if(victory_status)
+		victory_window->SetEnabledAndChilds(true);
 
 	if (hero->life <= 0) {
 		App->stop_exe = true;
