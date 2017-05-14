@@ -103,6 +103,8 @@ public:
 
 	bool show_life_bar = true;
 
+	bool move_to_ally_building = false;
+
 	int layer = 0;
 protected:
 	bool selected = false;

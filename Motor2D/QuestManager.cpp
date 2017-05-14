@@ -66,6 +66,7 @@ bool QuestManager::Update(float dt) {
 		case quest_beggar:
 			current_quest = ChangeQuest(quest_id::quest_leader);
 			App->scene->scene_test->create_barrack = true;
+			App->scene->scene_test->enemy_waves_active = true;
 			break;
 		case quest_leader:
 			current_quest = ChangeQuest(quest_id::quest_mayor);
