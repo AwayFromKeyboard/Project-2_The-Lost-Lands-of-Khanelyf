@@ -91,6 +91,7 @@ public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
 	entity_name name = entity_name::test;
+	entity_quest_id id = entity_quest_id::quest_id_null;
 	bool to_delete = false;
 
 	int life = 0;
