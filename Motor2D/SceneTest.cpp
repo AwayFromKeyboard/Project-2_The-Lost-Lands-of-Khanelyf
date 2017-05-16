@@ -75,6 +75,10 @@ bool SceneTest::Start()
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 7, 37, 40 };
 	cursor_attack_r = { 115, 7, 37, 40 };
+	cursor_build_r = { 153, 7, 37, 40 };
+	cursor_object_r = { 39, 7, 37, 40 };
+	cursor_ui_r = { 77, 7, 37, 40 };
+
 	current_cursor_r = cursor_r;
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 

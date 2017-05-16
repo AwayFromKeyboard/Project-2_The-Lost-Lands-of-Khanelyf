@@ -67,7 +67,9 @@ private:
 public:
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect cursor_attack_r = NULLRECT;
-
+	SDL_Rect cursor_build_r = NULLRECT;
+	SDL_Rect cursor_object_r = NULLRECT;
+	SDL_Rect cursor_ui_r = NULLRECT;
 
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;

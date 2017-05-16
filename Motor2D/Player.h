@@ -60,13 +60,14 @@ private:
 	void DrawBuff();
 	void StopBuff(int modifier);
 
-	void UndyingRage();
-
 	void Whirlwind();
 
 	void Charge();
 
 	void DrawCD(int ability_number);
+private:
+	void CheckMouseEntity();
+
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
