@@ -205,6 +205,9 @@ private:
 	UI_Button* whirlwind_ability = nullptr;
 	UI_Button* charge_ability = nullptr;
 
+	bool clicked_charge_1 = false;
+	bool clicked_charge_2 = false;
+
 	bool changing_ability = false;
 
 public:

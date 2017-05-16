@@ -38,8 +38,6 @@ bool Player::Start()
 {
 	bool ret = true;
 
-
-
 	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)-(App->win->_GetWindowSize().y /10) }, 100, 200, 100);
 	
 	victory = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)- (App->win->_GetWindowSize().y / 10) }, App->font->default_50);
@@ -387,7 +385,7 @@ bool Player::Start()
 
 	//Battlecry && Undiying Will
 
-	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 60, 60);
+	battlecry_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 9), 25, 25);
 	battlecry_ability->AddImage("standard", { 645, 60, 25, 25 });
 	battlecry_ability->SetImage("standard");
 	battlecry_ability->AddImage("clicked", { 670, 60, 25, 25 });
@@ -406,7 +404,7 @@ bool Player::Start()
 
 	//Whirlwind
 
-	whirlwind_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12), 60, 60);
+	whirlwind_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 12), 25, 25);
 	whirlwind_ability->AddImage("standard", { 695, 60, 25, 25 });
 	whirlwind_ability->SetImage("standard");
 	whirlwind_ability->AddImage("clicked", { 720, 60, 25, 25 });
@@ -420,7 +418,7 @@ bool Player::Start()
 
 	//Charge
 
-	charge_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18), 60, 60);
+	charge_ability = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 17 + App->win->_GetWindowSize().x / 400, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 18), 25, 25);
 	charge_ability->AddImage("standard", { 802, 0, 25, 25 });
 	charge_ability->SetImage("standard");
 	charge_ability->AddImage("clicked", { 827, 0, 25, 25 });
@@ -448,7 +446,6 @@ bool Player::PreUpdate()
 	bool ret = true;
 	load->enabled = false;
 	save->enabled = false;
-
 
 	if (victory_status) {
 		victory_window->SetEnabledAndChilds(true);
@@ -1316,139 +1313,120 @@ bool Player::PreUpdate()
 		//player abilities
 		if (!hero->is_holding_object)
 		{
-			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+			if (draw_battlecry_range || (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat || battlecry_ability->MouseEnter()) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
 			{
 				draw_battlecry_range = true;
 				CheckAbilityRange(BATTLECRY_RANGE);
 			}
-			else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && whirlwind_ability->CompareState("standard"))
+			else if (draw_whirlwind_range || ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat || whirlwind_ability->MouseEnter()) && whirlwind_ability->CompareState("standard")))
 			{
 				draw_whirlwind_range = true;
 				CheckAbilityRange(WHIRLWIND_RANGE);
 			}
-			else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && charge_ability->CompareState("standard"))
+			else if (clicked_charge_1 && !clicked_charge_2 || draw_charge_range || (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat || charge_ability->MouseEnter())&& charge_ability->CompareState("standard"))
 			{
 				draw_charge_range = true;
 				CheckStraightAbilityRange(CHARGE_RANGE);
 			}
 
-			if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up)
+			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_up || battlecry_ability->MouseOut()) && draw_battlecry_range)
 			{
 				draw_battlecry_range = false;
 				range_visited.clear();
 			}
-			if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up)
+			if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up || whirlwind_ability->MouseOut()) && draw_whirlwind_range)
 			{
 				draw_whirlwind_range = false;
 				range_visited.clear();
 			}
-
-			//player abilities
-			if (!hero->is_holding_object)
+			if (!clicked_charge_1 && (App->input->GetKey(App->input->controls[CHARGE]) == key_up || charge_ability->MouseOut()) && draw_charge_range)
 			{
-				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && active_ability == battlecry_active)
-				{
-					draw_battlecry_range = true;
-					CheckAbilityRange(BATTLECRY_RANGE);
+				draw_charge_range = false;
+			}
+
+			//Battlecry
+			if (((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+			{
+				battlecry_ability->SetImage("clicked");
+				Battlecry();
+				battlecry_cd->SetEnabled(true);
+				battlecry_timer.Start();
+				draw_battlecry_range = false;
+				range_visited.clear();
+			}
+			if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
+				battlecry_cd->SetEnabled(false);
+				battlecry_ability->SetImage("standard");
+			}
+			else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
+				StopBuff(-BATTLECRY_BUFF);
+			}
+
+			//Undying Will
+			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_down || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
+			{
+				undying_state_active = true;
+
+				battlecry_ability->SetImage("clicked");
+
+				undying_will_cd->SetEnabled(true);
+				undying_will_timer.Start();
+			}
+			if (undying_will_timer.ReadSec() >= 5)
+				undying_state_active = false;
+
+			if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
+				undying_will_cd->SetEnabled(false);
+				battlecry_ability->SetImage("standard");
+			}
+
+			// Whirlwind
+
+			if ((whirlwind_ability->MouseClickEnterLeft() || (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)) && whirlwind_ability->CompareState("standard")) {
+				whirlwind_ability->SetImage("clicked");
+				Whirlwind();
+				whirlwind_cd->SetEnabled(true);
+				whirlwind_timer.Start();
+				draw_whirlwind_range = false;
+				range_visited.clear();
+			}
+			if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND)
+			{
+				whirlwind_cd->SetEnabled(false);
+				whirlwind_ability->SetImage("standard");
+			}
+
+			//Charge
+
+			if (!clicked_charge_1 && charge_ability->MouseClickEnterLeft()) {
+				clicked_charge_1 = true;
+				App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_attack_r);
+			}
+			else if (clicked_charge_1 && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
+				clicked_charge_2 = true;
+			}
+			if ((clicked_charge_2 || (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)) && charge_ability->CompareState("standard"))
+			{
+				Charge();
+			}
+
+			if (charge_ability->CompareState("clicked"))
+			{
+				if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+					charge_cd->SetEnabled(false);
+					charge_ability->SetImage("standard");
+					clicked_charge_1 = false;
+					clicked_charge_2 = false;
 				}
-
-				//Undying Will
-				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
-				{
-					undying_state_active = true;
-
-					battlecry_ability->SetImage("clicked");
-
-					undying_will_cd->SetEnabled(true);
-					undying_will_timer.Start();
-				}
-
-				if (undying_will_timer.ReadSec() >= 5)
-					undying_state_active = false;
-
-				if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
-					undying_will_cd->SetEnabled(false);
-					battlecry_ability->SetImage("standard");
-				}
-
-				else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat)
-				{
-					draw_whirlwind_range = true;
-					CheckAbilityRange(WHIRLWIND_RANGE);
-				}
-				else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat)
-				{
-					draw_charge_range = true;
-					CheckStraightAbilityRange(CHARGE_RANGE);
-				}
-
-				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up)
-				{
-					draw_battlecry_range = false;
-				}
-				if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up)
-				{
-					draw_whirlwind_range = false;
-				}
-				if (App->input->GetKey(App->input->controls[CHARGE]) == key_up)
-				{
-					draw_charge_range = false;
-				}
-
-				//Battlecry
-
-
-				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
-				{
-					battlecry_ability->SetImage("clicked");
-					Battlecry();
-					battlecry_cd->SetEnabled(true);
-					battlecry_timer.Start();
-				}
-				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
-					battlecry_cd->SetEnabled(false);
-					battlecry_ability->SetImage("standard");
-				}
-				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
-					StopBuff(-BATTLECRY_BUFF);
-				}
-
-				// Whirlwind
-
-				if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
-					whirlwind_ability->SetImage("clicked");
-					Whirlwind();
-					whirlwind_cd->SetEnabled(true);
-					whirlwind_timer.Start();
-				}
-				if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND)
-				{
-					whirlwind_cd->SetEnabled(false);
-					whirlwind_ability->SetImage("standard");
-				}
-
-				//Charge
-
-				if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard"))
-				{
-					Charge();
-				}
-
-				if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
-				{
-					GetHero()->speed -= CHARGE_SPEED;
-					charge_speed_buff = false;
-				}
-
-				if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+				else if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
 				{
 					GetHero()->damage -= CHARGE_DAMAGE;
 					charge_damage_buff = false;
 				}
-
-				if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
-					charge_cd->SetEnabled(false);
-					charge_ability->SetImage("standard");
+				else if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+				{
+					GetHero()->speed -= CHARGE_SPEED;
+					charge_speed_buff = false;
 				}
 			}
 		}
@@ -2119,6 +2097,8 @@ void Player::Charge()
 					charge_ability->SetImage("clicked");
 					charge_cd->SetEnabled(true);
 					charge_timer.Start();
+					App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+					draw_charge_range = false;
 				}
 				else
 				{
@@ -2138,6 +2118,12 @@ void Player::Charge()
 				}
 			}
 		}
+	}
+
+	if (charge_ability->CompareState("standard")) {
+		App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+		clicked_charge_1 = false;
+		clicked_charge_2 = false;
 	}
 
 }
