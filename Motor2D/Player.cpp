@@ -1347,7 +1347,7 @@ bool Player::PreUpdate()
 			}
 
 			//Battlecry
-			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+			if (((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
 			{
 				battlecry_ability->SetImage("clicked");
 				Battlecry();
@@ -1363,7 +1363,7 @@ bool Player::PreUpdate()
 			}
 
 			//Undying Will
-			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
+			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_down || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
 			{
 				undying_state_active = true;
 
