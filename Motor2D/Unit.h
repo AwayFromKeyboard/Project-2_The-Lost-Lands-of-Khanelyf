@@ -180,6 +180,7 @@ private:
 	j1Timer AI_timer;
 	j1Timer whirlwind_damage;
 	bool timer_whirlwind_start = true;
+	bool choose_another_build = false;
 public:
 	bool IsInsideCircle(int x, int y);
 	bool damaged_by_whirlwind = false;
