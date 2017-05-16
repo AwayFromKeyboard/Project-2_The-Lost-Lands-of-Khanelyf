@@ -1524,22 +1524,20 @@ bool Player::Update(float dt)
 						switch ((*it)->GetType())
 						{
 						case entity_type::ally:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
-						case entity_type::enemy:
-							SetAttackingEnemy((Unit*)*it);
-							mouse_over_entity = true;
-							break;
 						case entity_type::npc:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
 						case entity_type::player:
 							MoveToTile(p);
 							mouse_over_entity = true;
+							App->scene->scene_test->clicked_point = p;
+							App->scene->scene_test->move_init = true;
+							break;
+						case entity_type::enemy:
+						case entity_type::enemy_boss:
+							SetAttackingEnemy((Unit*)*it);
+							mouse_over_entity = true;
 							break;
 						case entity_type::building:
+						case entity_type::ally_building:
 							mouse_over_entity = true;
 							break;
 						case entity_type::object:
@@ -1562,6 +1560,9 @@ bool Player::Update(float dt)
 
 			if (!mouse_over_entity) {
 				MoveToTile(p);
+				App->scene->scene_test->clicked_point = p;
+				App->scene->scene_test->move_init = true;
+				App->scene->scene_test->RestartMoveAnim();
 			}
 		}
 	}
