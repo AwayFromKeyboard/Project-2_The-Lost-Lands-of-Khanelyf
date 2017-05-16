@@ -449,7 +449,6 @@ bool Player::PreUpdate()
 	load->enabled = false;
 	save->enabled = false;
 
-
 	if (victory_status) {
 		victory_window->SetEnabledAndChilds(true);
 		lose->SetEnabled(false);
@@ -1342,114 +1341,81 @@ bool Player::PreUpdate()
 				draw_whirlwind_range = false;
 				range_visited.clear();
 			}
-
-			//player abilities
-			if (!hero->is_holding_object)
+			if (App->input->GetKey(App->input->controls[CHARGE]) == key_up)
 			{
-				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && active_ability == battlecry_active)
-				{
-					draw_battlecry_range = true;
-					CheckAbilityRange(BATTLECRY_RANGE);
-				}
+				draw_charge_range = false;
+			}
 
-				//Undying Will
-				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
-				{
-					undying_state_active = true;
+			//Battlecry
+			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+			{
+				battlecry_ability->SetImage("clicked");
+				Battlecry();
+				battlecry_cd->SetEnabled(true);
+				battlecry_timer.Start();
+			}
+			if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
+				battlecry_cd->SetEnabled(false);
+				battlecry_ability->SetImage("standard");
+			}
+			else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
+				StopBuff(-BATTLECRY_BUFF);
+			}
 
-					battlecry_ability->SetImage("clicked");
+			//Undying Will
+			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
+			{
+				undying_state_active = true;
 
-					undying_will_cd->SetEnabled(true);
-					undying_will_timer.Start();
-				}
+				battlecry_ability->SetImage("clicked");
 
-				if (undying_will_timer.ReadSec() >= 5)
-					undying_state_active = false;
+				undying_will_cd->SetEnabled(true);
+				undying_will_timer.Start();
+			}
+			if (undying_will_timer.ReadSec() >= 5)
+				undying_state_active = false;
 
-				if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
-					undying_will_cd->SetEnabled(false);
-					battlecry_ability->SetImage("standard");
-				}
+			if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
+				undying_will_cd->SetEnabled(false);
+				battlecry_ability->SetImage("standard");
+			}
 
-				else if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat)
-				{
-					draw_whirlwind_range = true;
-					CheckAbilityRange(WHIRLWIND_RANGE);
-				}
-				else if (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat)
-				{
-					draw_charge_range = true;
-					CheckStraightAbilityRange(CHARGE_RANGE);
-				}
+			// Whirlwind
 
-				if (App->input->GetKey(App->input->controls[BATTLECRY]) == key_up)
-				{
-					draw_battlecry_range = false;
-				}
-				if (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_up)
-				{
-					draw_whirlwind_range = false;
-				}
-				if (App->input->GetKey(App->input->controls[CHARGE]) == key_up)
-				{
-					draw_charge_range = false;
-				}
+			if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+				whirlwind_ability->SetImage("clicked");
+				Whirlwind();
+				whirlwind_cd->SetEnabled(true);
+				whirlwind_timer.Start();
+			}
+			if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND)
+			{
+				whirlwind_cd->SetEnabled(false);
+				whirlwind_ability->SetImage("standard");
+			}
 
-				//Battlecry
+			//Charge
 
+			if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard"))
+			{
+				Charge();
+			}
 
-				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
-				{
-					battlecry_ability->SetImage("clicked");
-					Battlecry();
-					battlecry_cd->SetEnabled(true);
-					battlecry_timer.Start();
-				}
-				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
-					battlecry_cd->SetEnabled(false);
-					battlecry_ability->SetImage("standard");
-				}
-				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
-					StopBuff(-BATTLECRY_BUFF);
-				}
+			if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+			{
+				GetHero()->speed -= CHARGE_SPEED;
+				charge_speed_buff = false;
+			}
 
-				// Whirlwind
+			if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+			{
+				GetHero()->damage -= CHARGE_DAMAGE;
+				charge_damage_buff = false;
+			}
 
-				if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
-					whirlwind_ability->SetImage("clicked");
-					Whirlwind();
-					whirlwind_cd->SetEnabled(true);
-					whirlwind_timer.Start();
-				}
-				if (whirlwind_timer.ReadSec() >= COOLDOWN_WHIRLWIND)
-				{
-					whirlwind_cd->SetEnabled(false);
-					whirlwind_ability->SetImage("standard");
-				}
-
-				//Charge
-
-				if ((App->input->GetKey(App->input->controls[CHARGE]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && charge_ability->CompareState("standard"))
-				{
-					Charge();
-				}
-
-				if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
-				{
-					GetHero()->speed -= CHARGE_SPEED;
-					charge_speed_buff = false;
-				}
-
-				if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
-				{
-					GetHero()->damage -= CHARGE_DAMAGE;
-					charge_damage_buff = false;
-				}
-
-				if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
-					charge_cd->SetEnabled(false);
-					charge_ability->SetImage("standard");
-				}
+			if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+				charge_cd->SetEnabled(false);
+				charge_ability->SetImage("standard");
 			}
 		}
 
