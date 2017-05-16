@@ -47,7 +47,7 @@ bool j1PathFinding::PreUpdate()
 		}
 		else{
 			for (std::list<Entity*>::iterator it2 = App->entity->entity_list.begin(); it2 != App->entity->entity_list.end(); it2++) {
-				if ((*it2)->GetType() != null) {
+				if ((*it2)->GetType() != null && (*it2)->GetType() != enemy_building && (*it2)->GetType() != building && (*it2)->GetType() != ally_building) {
 					if ((*it).first == ((Unit*)*it2)->path_id && it->second->completed && (*it).second->finished_path.size() < 200) {
 						((Unit*)*it2)->SetPath((*it).second->finished_path);
 					}
