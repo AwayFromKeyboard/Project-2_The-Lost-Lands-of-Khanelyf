@@ -73,6 +73,7 @@ public:
 	
 private:
 	UI_Window* victory_window = nullptr;
+	UI_Window* help_window = nullptr;
 	UI_Text* victory = nullptr;
 	UI_Text* lose = nullptr;
 	UI_Image* pause_bg = nullptr;
@@ -87,6 +88,7 @@ private:
 	UI_Button* returnmenu = nullptr;
 	UI_Button* mainmenu = nullptr;
 
+	UI_Text* helping_txt = nullptr;
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
 	UI_Text* save_txt = nullptr;

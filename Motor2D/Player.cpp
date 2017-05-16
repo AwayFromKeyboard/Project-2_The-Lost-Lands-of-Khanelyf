@@ -38,6 +38,12 @@ bool Player::Start()
 {
 	bool ret = true;
 
+	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 100, 200, 100);
+
+	helping_txt = (UI_Text*)help_window->CreateText({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_15);
+	
+	help_window->SetEnabledAndChilds(false);
+
 
 
 	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)-(App->win->_GetWindowSize().y /10) }, 100, 200, 100);
@@ -497,7 +503,7 @@ bool Player::PreUpdate()
 		choose_ability_uw_txt->enabled = false;
 
 		pause_status = !pause_status;
-		
+
 	}
 	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen)
 	{
@@ -675,7 +681,7 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 
-		if(audio_muted)
+		if (audio_muted)
 		{
 			audio_muted = !audio_muted;
 			audio_on_off->SetText("On");
@@ -858,7 +864,7 @@ bool Player::PreUpdate()
 		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
+
 	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || load->CompareState("clicked")))
 	{
 		button_on_clicked = false;
@@ -1055,7 +1061,7 @@ bool Player::PreUpdate()
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
 	}
-	
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
@@ -1116,49 +1122,55 @@ bool Player::PreUpdate()
 		move_map_left_txt2->SetEnabled(false);
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
-				
+
 	}
 
 	else if ((!pause_status && pause_window->enabled && active_ability != not_chosen))
 	{
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
-	if (backpause->MouseEnter())
+	if (backpause->MouseEnter()) {
 		backpause->SetImage("hovered");
-	else if (backpause->MouseOut() && backpause->CompareState("hovered"))
+		}
+	else if (backpause->MouseOut() && backpause->CompareState("hovered")) {
 		backpause->SetImage("standard");
-	
-	if (controls_button->MouseEnter())
+		}
+	if (controls_button->MouseEnter()) {
 		controls_button->SetImage("hovered");
+		}
 	else if (controls_button->MouseOut() && controls_button->CompareState("hovered"))
 		controls_button->SetImage("standard");
-	
-	if (audio_button->MouseEnter())
+
+	if (audio_button->MouseEnter()) {
 		audio_button->SetImage("hovered");
+		}
 	else if (audio_button->MouseOut() && audio_button->CompareState("hovered"))
 		audio_button->SetImage("standard");
 
-	if (backoptions->MouseEnter())
+	if (backoptions->MouseEnter()) {
 		backoptions->SetImage("hovered");
+		}
 	else if (backoptions->MouseOut() && backoptions->CompareState("hovered"))
 		backoptions->SetImage("standard");
 
-	if (battlecry_button_options->MouseEnter())
+	if (battlecry_button_options->MouseEnter()) {
 		battlecry_button_options->SetImage("hovered");
-	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered"))
+		}
+	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered")){
 		battlecry_button_options->SetImage("standard");
-
-	if (whirlwind_button_options->MouseEnter())
+		}
+	if (whirlwind_button_options->MouseEnter()) {
 		whirlwind_button_options->SetImage("hovered");
+		}
 	else if (whirlwind_button_options->MouseOut() && whirlwind_button_options->CompareState("hovered"))
 		whirlwind_button_options->SetImage("standard");
-
-	if (charge_button_options->MouseEnter())
+	
+	if (charge_button_options->MouseEnter()) {
 		charge_button_options->SetImage("hovered");
-	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered"))
+	}
+	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered")){
 		charge_button_options->SetImage("standard");
-
+		}
 	if (move_map_up_button->MouseEnter())
 		move_map_up_button->SetImage("hovered");
 	else if (move_map_up_button->MouseOut() && move_map_up_button->CompareState("hovered"))
@@ -1185,38 +1197,50 @@ bool Player::PreUpdate()
 		create_group_button->SetImage("standard");
 
 	//backbutton
-	if (back->MouseEnter())
+	if (back->MouseEnter()) {
 		back->SetImage("hovered");
+		
+	}
 	else if (back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
 
-	if (mainmenu->MouseEnter())
+	if (mainmenu->MouseEnter()) {
 		mainmenu->SetImage("hovered");
+		
+	}
 	else if (mainmenu->MouseOut() && mainmenu->CompareState("hovered"))
 		mainmenu->SetImage("standard");
 
 	//savebutton
-	if (save->MouseEnter())
+	if (save->MouseEnter()) {
 		save->SetImage("hovered");
+		
+	}
 	else if (save->MouseOut() && save->CompareState("hovered"))
 		save->SetImage("standard");
 	
 	//load button
-	if (load->MouseEnter())
+	if (load->MouseEnter()) {
 		load->SetImage("hovered");
+		
+	}
 	else if (load->MouseOut() && load->CompareState("hovered"))
 		load->SetImage("standard");
 	
 	// options button
 
-	if (options->MouseEnter())
+	if (options->MouseEnter()) {
 		options->SetImage("hovered");
+		
+	}
 	else if (options->MouseOut() && options->CompareState("hovered"))
 		options->SetImage("standard");
 
 	//quitbutton
-	if (quit_game->MouseEnter())
+	if (quit_game->MouseEnter()) {
 		quit_game->SetImage("hovered");
+		
+	}
 	else if (quit_game->MouseOut())
 		quit_game->SetImage("standard");
 
@@ -1225,6 +1249,22 @@ bool Player::PreUpdate()
 		App->stop_exe = true;
 	}
 	
+	if (battlecry_ability->MouseEnter()) {
+		battlecry_ability->SetImage("hovered");
+		help_window->SetEnabledAndChilds(true);
+		helping_txt->SetText("Battle Shout. Gives +5 attack to tropes during 5 seconds");
+		}
+	else if (battlecry_ability->MouseOut() && battlecry_ability->CompareState("hovered")) {
+		battlecry_ability->SetImage("standard");
+		help_window->SetEnabledAndChilds(false);
+	}
+		/*help_window->SetEnabledAndChilds(true);
+	
+	helping_txt->SetText("Whirlwind. A spin that does AoE damage");
+	helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit");
+
+*/
+
 	if (!pause_status) {
 
 		//Barracks create unit buttons
