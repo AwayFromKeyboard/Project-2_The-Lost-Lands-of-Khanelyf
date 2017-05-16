@@ -1323,7 +1323,7 @@ bool Player::PreUpdate()
 				draw_whirlwind_range = true;
 				CheckAbilityRange(WHIRLWIND_RANGE);
 			}
-			else if (clicked_charge_1 || draw_charge_range || (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat || charge_ability->MouseEnter())&& charge_ability->CompareState("standard"))
+			else if (clicked_charge_1 && !clicked_charge_2 || draw_charge_range || (App->input->GetKey(App->input->controls[CHARGE]) == key_repeat || charge_ability->MouseEnter())&& charge_ability->CompareState("standard"))
 			{
 				draw_charge_range = true;
 				CheckStraightAbilityRange(CHARGE_RANGE);
@@ -1382,7 +1382,7 @@ bool Player::PreUpdate()
 
 			// Whirlwind
 
-			if ((App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) && whirlwind_ability->CompareState("standard")) {
+			if ((whirlwind_ability->MouseClickEnterLeft() || (App->input->GetKey(App->input->controls[WHIRLWIND]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)) && whirlwind_ability->CompareState("standard")) {
 				whirlwind_ability->SetImage("clicked");
 				Whirlwind();
 				whirlwind_cd->SetEnabled(true);
@@ -1410,21 +1410,24 @@ bool Player::PreUpdate()
 				Charge();
 			}
 
-			if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+			if (charge_ability->CompareState("clicked"))
 			{
-				GetHero()->speed -= CHARGE_SPEED;
-				charge_speed_buff = false;
-			}
-
-			if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
-			{
-				GetHero()->damage -= CHARGE_DAMAGE;
-				charge_damage_buff = false;
-			}
-
-			if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
-				charge_cd->SetEnabled(false);
-				charge_ability->SetImage("standard");
+				if (charge_timer.ReadSec() >= COOLDOWN_CHARGE) {
+					charge_cd->SetEnabled(false);
+					charge_ability->SetImage("standard");
+					clicked_charge_1 = false;
+					clicked_charge_2 = false;
+				}
+				else if (charge_timer.ReadSec() >= 3 && charge_damage_buff == true)
+				{
+					GetHero()->damage -= CHARGE_DAMAGE;
+					charge_damage_buff = false;
+				}
+				else if (charge_timer.ReadSec() >= 1 && charge_speed_buff == true)
+				{
+					GetHero()->speed -= CHARGE_SPEED;
+					charge_speed_buff = false;
+				}
 			}
 		}
 
@@ -2094,9 +2097,8 @@ void Player::Charge()
 					charge_ability->SetImage("clicked");
 					charge_cd->SetEnabled(true);
 					charge_timer.Start();
-					clicked_charge_1 = false;
-					clicked_charge_2 = false;
 					App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+					draw_charge_range = false;
 				}
 				else
 				{
@@ -2116,6 +2118,12 @@ void Player::Charge()
 				}
 			}
 		}
+	}
+
+	if (charge_ability->CompareState("standard")) {
+		App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+		clicked_charge_1 = false;
+		clicked_charge_2 = false;
 	}
 
 }
