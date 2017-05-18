@@ -1345,39 +1345,44 @@ bool Player::PreUpdate()
 			}
 
 			//Battlecry
-			if (((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+			if (active_ability == battlecry_active)
 			{
-				battlecry_ability->SetImage("clicked");
-				Battlecry();
-				battlecry_cd->SetEnabled(true);
-				battlecry_timer.Start();
-				draw_battlecry_range = false;
-				range_visited.clear();
+				if (((App->input->GetKey(App->input->controls[BATTLECRY]) == key_repeat && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == battlecry_active)
+				{
+					battlecry_ability->SetImage("clicked");
+					Battlecry();
+					battlecry_cd->SetEnabled(true);
+					battlecry_timer.Start();
+					draw_battlecry_range = false;
+					range_visited.clear();
+				}
+				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
+					battlecry_cd->SetEnabled(false);
+					battlecry_ability->SetImage("standard");
+				}
+				else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY) {
+					StopBuff(-BATTLECRY_BUFF);
+				}
 			}
-			if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY && active_ability == battlecry_active) {
-				battlecry_cd->SetEnabled(false);
-				battlecry_ability->SetImage("standard");
-			}
-			else if (battlecry_timer.ReadSec() >= DURATION_BATTLECRY && active_ability == battlecry_active) {
-				StopBuff(-BATTLECRY_BUFF);
-			}
-
 			//Undying Will
-			if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_down || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard") && active_ability == undying_will_active)
+			if (active_ability == undying_will_active)
 			{
-				undying_state_active = true;
+				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_down || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard"))
+				{
+					undying_state_active = true;
 
-				battlecry_ability->SetImage("clicked");
+					battlecry_ability->SetImage("clicked");
 
-				undying_will_cd->SetEnabled(true);
-				undying_will_timer.Start();
-			}
-			if (undying_will_timer.ReadSec() >= 5)
-				undying_state_active = false;
+					undying_will_cd->SetEnabled(true);
+					undying_will_timer.Start();
+				}
+				if (undying_will_timer.ReadSec() >= 5)
+					undying_state_active = false;
 
-			if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
-				undying_will_cd->SetEnabled(false);
-				battlecry_ability->SetImage("standard");
+				if (undying_will_timer.ReadSec() >= COOLDOWN_UNDYING_WILL) {
+					undying_will_cd->SetEnabled(false);
+					battlecry_ability->SetImage("standard");
+				}
 			}
 
 			// Whirlwind
