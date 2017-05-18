@@ -1297,6 +1297,15 @@ bool Player::PreUpdate()
 		}
 
 		//Brokenbuilding create building buttons
+		if (create_building_button->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Left click to create a barrack to hire troops. 90 Gold");
+		}
+		else if (create_building_button->MouseOut()) {
+				
+			help_window->SetEnabledAndChilds(false);
+
+		}
 		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode))
 		{
 			create_building_button->SetImage("clicked");
