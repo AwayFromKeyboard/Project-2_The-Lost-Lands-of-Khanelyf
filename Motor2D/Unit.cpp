@@ -116,10 +116,8 @@ bool Unit::Update(float dt)
 						attacked_building = (Building*)(*it);
 						state = entity_state::entity_move_to_building;
 						move_to_ally_building = false;
+						choose_another_build = true;
 						continue;
-					}
-					else {
-					//	App->player->lose_status = true;
 					}
 				}
 			}
@@ -168,7 +166,7 @@ bool Unit::Update(float dt)
 			if (attacked_building == nullptr || attacked_building->life <= 0)
 			{
 				state = entity_idle;
-				if (type == entity_type::enemy)
+				if (type == entity_type::enemy && choose_another_build == true)
 					move_to_ally_building = true;
 				}
 			else {
@@ -202,6 +200,8 @@ bool Unit::Update(float dt)
 				attacked_unit = nullptr;
 				attacked_building = nullptr;
 				state = entity_idle;
+				if (type == entity_type::enemy && choose_another_build == true)
+					move_to_ally_building = true;
 			}
 			else if (attacked_building == nullptr)
 			{
