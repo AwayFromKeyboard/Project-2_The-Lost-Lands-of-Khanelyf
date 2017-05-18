@@ -10,15 +10,11 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 
 * [Andreu Sacasas](https://github.com/Andreu997) (Manager)
 
-* [Enrique Ibáñez](https://github.com/QuiqueUPC) (Art and Sound)
-
 * [Simón Stoyanov](https://github.com/SimonStoyanov) (Code)
 
 * [Sergi Parra](https://github.com/t3m1X) (QA)
 
 * [Eric Abad](https://github.com/cireks) (Design)
-
-* [Oriol Rodriguez](https://github.com/Eweer) (UI)
 
 ## Instructions
 
@@ -74,21 +70,29 @@ Controls:
 
 * B to constuct barrack(then you can create 2 types of units with left click)
 
-* X + left click to use Battlecry ability (attack buff to allies)
+* Abilities
+	* Battlecry: Boosts the damage of the allies inside the radius of action.
+	* Undying Will: The Hero is immune to damage for 3 seconds.
+	* Whirlwind: The hero deals heavy damage to adjecent enemies.
+	* Charge: The hero charges to one selected enemy inside the radius of action.
 
-  or
+* Battlecry and Undying Will abilities can be activated by 2 ways:
+	* X + left click (default key)
+	* Left click to the button of the ability
 
-* X + left click to use Undying Will (hero is inmune to damage for 3 seconds)
+* Whirlwind ability can be used by:
+	* C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
+	* Left click to the button of the ability.
+	
+* Charge ability is activated with:
+	* V + left click on enemy at range to use Charge (heavy damage to one enemy)
+	* Left click to the button of the ability and then click to an enemy inside the radius of action.
 
-* C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
-
-* V + left click on enemy at range to use Charge (heavy damage to one enemy)
-
-Goal:
+## Goal:
 
 Follow and complete the quests without getting your hero killed and avoid that the enemy waves destroy all the buildings of your empire. 
 
-Quests:
+## Quests:
 
 1st: Kill 5 enemies(there's two hidden on your right and three more in the town going north), you will receive some gold.
 2nd: Create a barrack and create troops in it.
