@@ -1319,6 +1319,57 @@ bool UI_Text::update()
 	return true;
 }
 
+bool UI_Text::MouseEnter()
+{
+	if (!enabled)
+		return false;
+
+	int mouse_x, mouse_y;
+	App->input->GetMousePosition(mouse_x, mouse_y);
+	mouse_x -= App->render->camera.x;
+	mouse_y -= App->render->camera.y;
+
+	if (CheckClickOverlap(mouse_x, mouse_y) != layer)
+		return false;
+
+	if (CheckClickRect(mouse_x, mouse_y))
+	{
+		if (!enter)
+		{
+			to_enter = true;
+			return true;
+		}
+		return false;
+	}
+
+	return false;
+}
+
+bool UI_Text::MouseOut()
+{
+	if (!enabled)
+		return false;
+
+	int mouse_x, mouse_y;
+	App->input->GetMousePosition(mouse_x, mouse_y);
+	mouse_x -= App->render->camera.x;
+	mouse_y -= App->render->camera.y;
+
+	if (CheckClickOverlap(mouse_x, mouse_y) != layer && !enter)
+		return true;
+
+	if (CheckClickRect(mouse_x, mouse_y))
+		return false;
+
+	if (enter)
+	{
+		to_enter = false;
+		return true;
+	}
+	else
+		return false;
+}
+
 bool UI_Text::cleanup()
 {
 	for (list<tex_str>::iterator it = tex_str_list.begin(); it != tex_str_list.end(); it++)

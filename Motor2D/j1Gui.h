@@ -141,7 +141,7 @@ public:
 	bool MouseClickOutLeftIntern();
 	bool MouseClickEnterRightIntern();
 	bool MouseClickOutRightIntern();
-
+	
 	void SetDebugColor(SDL_Color color);
 
 	bool PutWindowToTop();
@@ -301,6 +301,8 @@ public:
 
 	void Set(iPoint pos, _TTF_Font* font, int spacing,  uint r = 255, uint g = 255, uint b = 255);
 	void SetText(string text);
+	bool MouseEnter();
+	bool MouseOut();
 	string GetText();
 
 public:
@@ -309,6 +311,10 @@ public:
 	_TTF_Font*				font = nullptr;
 	int						spacing = 0;
 	std::string				str;
+private:
+	bool			  to_enter = false;
+	bool			  enter = false;
+
 };
 
 // ------------------------------

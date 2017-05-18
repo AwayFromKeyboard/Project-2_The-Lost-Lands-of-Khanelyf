@@ -1267,6 +1267,30 @@ bool Player::PreUpdate()
 
 	if (!pause_status) {
 
+
+		if (life_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Life points");
+		}
+		
+		else if (armor_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Armor points");
+		}
+	
+		else if (damage_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Damage points");
+		}
+		
+		else if (pierce_armor_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Armor Penetration points");
+		}
+		else if (pierce_armor_txt->MouseOut() || damage_txt->MouseOut() || armor_txt->MouseOut() || life_txt->MouseOut())
+			help_window->SetEnabledAndChilds(false);
+		
+
 		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 			create_unit_button->SetImage("clicked");
@@ -1299,13 +1323,16 @@ bool Player::PreUpdate()
 		//Brokenbuilding create building buttons
 		if (create_building_button->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Left click to create a barrack to hire troops. 90 Gold");
+			helping_txt->SetText("Create a barrack to hire troops. Requirements: 90 Gold. (You can only have one building of this type)");
 		}
-		else if (create_building_button->MouseOut()) {
-				
+		else if (create_building_button2->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a house to increase maximum poblation (+1). Requirements: 30 Gold");
+		}
+		else if (create_building_button->MouseOut() && create_building_button2->MouseOut())
 			help_window->SetEnabledAndChilds(false);
 
-		}
+		
 		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode))
 		{
 			create_building_button->SetImage("clicked");
