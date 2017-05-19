@@ -11,6 +11,7 @@ public:
 	~CursorAnimations();
 
 	bool Draw(float dt);
+	bool Update(float dt);
 
 	bool LoadParticle(iPoint pos);
 

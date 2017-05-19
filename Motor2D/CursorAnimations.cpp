@@ -24,6 +24,16 @@ bool CursorAnimations::Draw(float dt)
 	return true;
 }
 
+bool CursorAnimations::Update(float dt)
+{
+	if (current_animation->Finished()) {
+		to_delete = true;
+	}
+
+
+	return true;
+}
+
 bool CursorAnimations::LoadParticle(iPoint pos)
 {
 	bool ret = true;
