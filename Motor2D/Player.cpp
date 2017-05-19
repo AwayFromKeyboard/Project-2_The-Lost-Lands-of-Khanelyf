@@ -1528,7 +1528,7 @@ bool Player::Update(float dt)
 						case entity_type::player:
 							MoveToTile(p);
 							mouse_over_entity = true;
-							App->scene->scene_test->clicked_point = p;
+							App->scene->scene_test->clicked_point = App->map->MapToWorldPoint(p);
 							App->scene->scene_test->move_init = true;
 							break;
 						case entity_type::enemy:
@@ -1560,7 +1560,7 @@ bool Player::Update(float dt)
 
 			if (!mouse_over_entity) {
 				MoveToTile(p);
-				App->scene->scene_test->clicked_point = p;
+				App->scene->scene_test->clicked_point = App->map->MapToWorldPoint(p);
 				App->scene->scene_test->move_init = true;
 				App->scene->scene_test->RestartMoveAnim();
 			}

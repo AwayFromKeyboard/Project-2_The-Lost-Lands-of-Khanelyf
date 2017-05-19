@@ -79,15 +79,6 @@ bool SceneTest::Start()
 	cursor_object_r = { 39, 7, 37, 40 };
 	cursor_ui_r = { 77, 7, 37, 40 };
 
-	cursor_click_tex = App->tex->LoadTexture("textures/Click.png");
-	cursor_click.frames.push_back({ 52, 0, 51, 30 });
-	cursor_click.frames.push_back({ 104, 0, 51, 30 });
-	cursor_click.frames.push_back({ 156, 0, 51, 30 });
-	cursor_click.frames.push_back({ 0, 31, 51, 30 });
-	cursor_click.frames.push_back({ 52, 31, 51, 30 });
-	cursor_click.frames.push_back({ 104, 31, 51, 30 });
-	cursor_click.SetSpeed(1);
-
 	current_cursor_r = cursor_r;
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
@@ -285,12 +276,6 @@ bool SceneTest::Update(float dt)
 	App->map->Draw();
 
 	cursor->Set(iPoint(mouse.x, mouse.y), current_cursor_r);
-
-	if (move_init) {
-		App->scene->LayerBlit(500, cursor_click_tex, { clicked_point.x, clicked_point.y }, cursor_click.GetAnimationFrame(dt));
-	}
-	if (cursor_click.Finished() && move_init)
-		move_init = false;
 
 	return true;
 }

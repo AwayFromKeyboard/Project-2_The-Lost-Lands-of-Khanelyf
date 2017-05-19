@@ -151,6 +151,9 @@
     <ClCompile Include="Escorted_NPC.cpp">
       <Filter>Engine\4. Entities\Troops</Filter>
     </ClCompile>
+    <ClCompile Include="CursorAnimations.cpp">
+      <Filter>Engine\6. Particles\CursorAnimations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -313,6 +316,9 @@
     <ClInclude Include="Escorted_NPC.h">
       <Filter>Engine\4. Entities\Troops</Filter>
     </ClInclude>
+    <ClInclude Include="CursorAnimations.h">
+      <Filter>Engine\6. Particles\CursorAnimations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -382,6 +388,9 @@
     </Filter>
     <Filter Include="Engine\6. Particles\Fire">
       <UniqueIdentifier>{a2b8b138-d06a-4ae3-85a5-bf03010462a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\CursorAnimations">
+      <UniqueIdentifier>{da8e66ff-8a06-40cf-85f3-4400e91876c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
