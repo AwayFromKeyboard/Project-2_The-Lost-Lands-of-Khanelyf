@@ -51,14 +51,11 @@ public:
 
 	UI_Image* GetCursor();
 	void SetCurrentCursor(SDL_Rect new_cursor);
-	void RestartMoveAnim();
+
 private:
 	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
 	SDL_Rect current_cursor_r = NULLRECT;
-	SDL_Texture* cursor_click_tex;
-	Animation cursor_click;
-
 
 	UI_Window* general_ui_window = nullptr;
 	UI_Image* general_ui_image = nullptr;

@@ -24,6 +24,8 @@
 #include "Functions.h"
 #include "QuestManager.h"
 #include "j1Audio.h"
+#include "ParticleManager.h"
+#include "Particle.h"
 
 Player::Player()
 {
@@ -1528,8 +1530,7 @@ bool Player::Update(float dt)
 						case entity_type::player:
 							MoveToTile(p);
 							mouse_over_entity = true;
-							App->scene->scene_test->clicked_point = App->map->MapToWorldPoint(p);
-							App->scene->scene_test->move_init = true;
+							App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(p));
 							break;
 						case entity_type::enemy:
 						case entity_type::enemy_boss:
@@ -1560,9 +1561,7 @@ bool Player::Update(float dt)
 
 			if (!mouse_over_entity) {
 				MoveToTile(p);
-				App->scene->scene_test->clicked_point = App->map->MapToWorldPoint(p);
-				App->scene->scene_test->move_init = true;
-				App->scene->scene_test->RestartMoveAnim();
+				App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(p));
 			}
 		}
 	}
