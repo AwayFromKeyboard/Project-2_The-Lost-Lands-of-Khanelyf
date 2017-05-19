@@ -1530,7 +1530,6 @@ bool Player::Update(float dt)
 						case entity_type::player:
 							MoveToTile(p);
 							mouse_over_entity = true;
-							App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(p));
 							break;
 						case entity_type::enemy:
 						case entity_type::enemy_boss:
@@ -1561,7 +1560,6 @@ bool Player::Update(float dt)
 
 			if (!mouse_over_entity) {
 				MoveToTile(p);
-				App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(p));
 			}
 		}
 	}
@@ -1815,6 +1813,8 @@ void Player::MoveToTile(iPoint tile)
 		(*it)->attacked_unit = nullptr;
 		(*it)->attacked_building = nullptr;
 	}
+
+	App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
 }
 
 void Player::SetAttackingEnemy(Unit* enemy)
