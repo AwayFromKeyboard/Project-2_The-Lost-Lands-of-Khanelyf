@@ -381,8 +381,3 @@ void SceneTest::SetCurrentCursor(SDL_Rect new_cursor)
 {
 	current_cursor_r = new_cursor;
 }
-
-void SceneTest::RestartMoveAnim()
-{
-	cursor_click.Reset();
-}
