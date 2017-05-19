@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "j1Render.h"
 #include "j1Gui.h"
+#include "Animation.h"
 
 class b2Fixture;
 class Parallax;
@@ -67,7 +68,11 @@ private:
 public:
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect cursor_attack_r = NULLRECT;
-
+	SDL_Rect cursor_build_r = NULLRECT;
+	SDL_Rect cursor_object_r = NULLRECT;
+	SDL_Rect cursor_ui_r = NULLRECT;
+	bool move_init = false;
+	iPoint clicked_point = NULLPOINT;
 
 	int gold = 0;
 	UI_Text* gold_txt = nullptr;

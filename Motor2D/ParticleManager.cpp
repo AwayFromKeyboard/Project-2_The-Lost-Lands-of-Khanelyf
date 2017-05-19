@@ -2,6 +2,7 @@
 #include "Particle.h"
 #include "Fire.h"
 #include "Log.h"
+#include "CursorAnimations.h"
 
 ParticleManager::ParticleManager()
 {
@@ -87,6 +88,9 @@ Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint po
 	{
 	case particle_type::fire:
 		ret = new Fire(set);
+		break;
+	case particle_type::cursor:
+		ret = new CursorAnimations(set);
 		break;
 	}
 

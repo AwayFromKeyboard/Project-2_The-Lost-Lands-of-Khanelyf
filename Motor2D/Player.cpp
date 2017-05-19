@@ -24,6 +24,8 @@
 #include "Functions.h"
 #include "QuestManager.h"
 #include "j1Audio.h"
+#include "ParticleManager.h"
+#include "Particle.h"
 
 Player::Player()
 {
@@ -1529,22 +1531,18 @@ bool Player::Update(float dt)
 						switch ((*it)->GetType())
 						{
 						case entity_type::ally:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
-						case entity_type::enemy:
-							SetAttackingEnemy((Unit*)*it);
-							mouse_over_entity = true;
-							break;
 						case entity_type::npc:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
 						case entity_type::player:
 							MoveToTile(p);
 							mouse_over_entity = true;
 							break;
+						case entity_type::enemy:
+						case entity_type::enemy_boss:
+							SetAttackingEnemy((Unit*)*it);
+							mouse_over_entity = true;
+							break;
 						case entity_type::building:
+						case entity_type::ally_building:
 							mouse_over_entity = true;
 							break;
 						case entity_type::object:
@@ -1694,6 +1692,8 @@ bool Player::PostUpdate()
 {
 	bool ret = true;
 
+	CheckMouseEntity();
+
 	if (hero != nullptr)
 		UpdateAttributes();
 	
@@ -1818,6 +1818,8 @@ void Player::MoveToTile(iPoint tile)
 		(*it)->attacked_unit = nullptr;
 		(*it)->attacked_building = nullptr;
 	}
+
+	App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
 }
 
 void Player::SetAttackingEnemy(Unit* enemy)
@@ -2279,4 +2281,64 @@ void Player::DrawCD(int ability_number)
 		std::string txt = oss.str();
 		undying_will_cd->SetText(txt);
 	}
+}
+
+void Player::CheckMouseEntity()
+{
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
+	iPoint mouse_pathfinding;
+	App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+	iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+	p = App->map->WorldToMap(p.x, p.y);
+	bool mouse_over_entity = false;
+
+	if (!pause_window->enabled)
+	{
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
+			Collider* unit = (*it)->GetCollider();
+
+			if (unit != nullptr)
+			{
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+				{
+					switch ((*it)->GetType())
+					{
+					case entity_type::ally:
+					case entity_type::npc:
+					case entity_type::player:
+						mouse_over_entity = true;
+						break;
+					case entity_type::building:
+					case entity_type::ally_building:
+						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_build_r);
+						mouse_over_entity = true;
+						break;
+					case entity_type::object:
+						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_object_r);
+						mouse_over_entity = true;
+						break;
+					case entity_type::enemy:
+					case entity_type::enemy_building:
+					case entity_type::enemy_boss:
+						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_attack_r);
+						mouse_over_entity = true;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
+			if (mouse_over_entity)
+				continue;
+		}
+
+		if (!mouse_over_entity)
+			App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+	}
+	else 
+		App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_ui_r);
+
 }

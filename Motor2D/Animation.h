@@ -9,6 +9,7 @@ struct SDL_Texture;
 class Animation;
 class Unit;
 class Fire;
+class CursorAnimations;
 // -----------------------------------------
 // -----------------------------------------
 
@@ -44,7 +45,8 @@ public:
 	void LoadAnimationsFromXML(pugi::xml_node &node);
 	void LoadFireAnimationsFromParticlesXML(pugi::xml_node & node, Fire * fire);
 	void LoadAnimationsFromUnitsXML(pugi::xml_node &node, Unit* unit);
-
+	void LoadCursorAnimationsFromParticlesXML(pugi::xml_node &node, CursorAnimations* cursor_anim);
+	
 	// Set a current animation
 	void SetAnimation(const char* name);
 
