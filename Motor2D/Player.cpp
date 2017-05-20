@@ -446,8 +446,6 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
-	load->enabled = false;
-	save->enabled = false;
 
 	if (victory_status) {
 		victory_window->SetEnabledAndChilds(true);
@@ -1765,8 +1763,13 @@ bool Player::Load(pugi::xml_node& data)
 			break;
 		}
 
-		Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
-		entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+		if (ally.child("Life").attribute("current").as_int() > 0)
+		{
+			Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
+			entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+			entity->life = ally.child("Life").attribute("current").as_int();
+			entity->max_life = ally.child("Life").attribute("max").as_int();
+		}
 	}
 
 
@@ -1802,6 +1805,9 @@ bool Player::Save(pugi::xml_node& data) const
 			pugi::xml_node ally = allies.append_child("Ally");
 			ally.append_attribute("name") = (*it)->name;
 	
+			ally.append_child("Life").append_attribute("current") = (*it)->life;
+			ally.child("Life").append_attribute("max") = (*it)->max_life;
+
 			ally.append_child("Position").append_attribute("x") = (*it)->position.x;
 			ally.child("Position").append_attribute("y") = (*it)->position.y;
 		}

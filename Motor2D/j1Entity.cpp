@@ -150,10 +150,24 @@ bool j1Entity::Load(pugi::xml_node& data)
 		case swordsman:
 			name = swordsman;
 			break;
+		case entity_name::boss:
+			name = boss;
+			break;
 		}
 
-		Entity* entity = App->entity->CreateEntity(name, entity_type::enemy, { 0, 0 });
-		entity->position.create(enemy.child("Position").attribute("x").as_int(), enemy.child("Position").attribute("y").as_int());
+		Entity* entity;
+		if (enemy.child("Life").attribute("current").as_int() > 0)
+		{
+			if (name != boss)
+				entity = App->entity->CreateEntity(name, entity_type::enemy, { 0, 0 });
+			else
+				entity = App->entity->CreateEntity(name, entity_type::enemy_boss, { 0, 0 });
+
+			entity->life = enemy.child("Life").attribute("current").as_int();
+			entity->max_life = enemy.child("Life").attribute("max").as_int();
+
+			entity->position.create(enemy.child("Position").attribute("x").as_int(), enemy.child("Position").attribute("y").as_int());
+		}
 	}
 	for (pugi::xml_node npc = npcs.child("NPC"); npc != NULL; npc = npc.next_sibling()) {
 		int _name = npc.attribute("name").as_int();
@@ -166,6 +180,9 @@ bool j1Entity::Load(pugi::xml_node& data)
 			break;
 		case swordsman:
 			name = swordsman;
+			break;
+		case entity_name::npc_escort:
+			name = npc_escort;
 			break;
 		}
 
@@ -184,10 +201,29 @@ bool j1Entity::Load(pugi::xml_node& data)
 		case basic_building:
 			name = basic_building;
 			break;
+		case entity_name::blacksmiths:
+			name = blacksmiths;
+			break;
+		case entity_name::broken_building:
+			name = broken_building;
+			break;
+		case entity_name::towers:
+			name = towers;
+			break;
 		}
 		
-		Entity* entity = App->entity->CreateBuildingEntity(name, entity_type::ally_building, { 0, 0 }, ally_b.child("Rect").attribute("number").as_int());
-		entity->position.create(ally_b.child("Position").attribute("x").as_int(), ally_b.child("Position").attribute("y").as_int());
+		Entity* entity;
+		if (ally_b.child("Life").attribute("current").as_int() > 0)
+		{
+			if (name == basic_building)
+				entity = App->entity->CreateBuildingEntity(name, entity_type::ally_building, { 0, 0 }, ally_b.child("Rect").attribute("number").as_int());
+			else
+				entity = App->entity->CreateEntity(name, entity_type::ally_building, { 0, 0 });
+
+			entity->life = ally_b.child("Life").attribute("current").as_int();
+			entity->max_life = ally_b.child("Life").attribute("max").as_int();
+			entity->position.create(ally_b.child("Position").attribute("x").as_int(), ally_b.child("Position").attribute("y").as_int());
+		}
 	}
 	for (pugi::xml_node enemy_b = enemy_buildings.child("Enemy_Building"); enemy_b != NULL; enemy_b = enemy_b.next_sibling()) {
 		int _name = enemy_b.attribute("name").as_int();
@@ -201,11 +237,29 @@ bool j1Entity::Load(pugi::xml_node& data)
 		case basic_building:
 			name = basic_building;
 			break;
+		case entity_name::blacksmiths:
+			name = blacksmiths;
+			break;
+		case entity_name::broken_building:
+			name = broken_building;
+			break;
+		case entity_name::towers:
+			name = towers;
+			break;
 		}
 
-		Entity* entity = App->entity->CreateBuildingEntity(name, entity_type::enemy_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
-		entity->position.create(enemy_b.child("Position").attribute("x").as_int(), enemy_b.child("Position").attribute("y").as_int());
+		Entity* entity;
+		if (enemy_b.child("Life").attribute("current").as_int() > 0)
+		{
+			if (name == basic_building)
+				entity = App->entity->CreateBuildingEntity(name, entity_type::enemy_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
+			else
+				entity = App->entity->CreateEntity(name, entity_type::enemy_building, { 0,0 });
 
+			entity->life = enemy_b.child("Life").attribute("current").as_int();
+			entity->max_life = enemy_b.child("Life").attribute("max").as_int();
+			entity->position.create(enemy_b.child("Position").attribute("x").as_int(), enemy_b.child("Position").attribute("y").as_int());
+		}
 	}
 	for (pugi::xml_node object = objects.child("Object"); object != NULL; object = object.next_sibling()) {
 		int _name = object.attribute("name").as_int();
@@ -242,9 +296,12 @@ bool j1Entity::Save(pugi::xml_node& data) const
 	pugi::xml_node player = data.parent().append_child("player");
 
 	for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++) {
-		if ((*it)->type == entity_type::enemy) {
+		if ((*it)->type == entity_type::enemy || (*it)->type == entity_type::enemy_boss) {
 			pugi::xml_node enemy = enemies.append_child("Enemy");
 			enemy.append_attribute("name") = (*it)->name;
+
+			enemy.append_child("Life").append_attribute("current") = (*it)->life;
+			enemy.child("Life").append_attribute("max") = (*it)->max_life;
 
 			enemy.append_child("Position").append_attribute("x") = (*it)->position.x;
 			enemy.child("Position").append_attribute("y") = (*it)->position.y;
@@ -252,6 +309,9 @@ bool j1Entity::Save(pugi::xml_node& data) const
 		else if ((*it)->type == entity_type::ally_building) {
 			pugi::xml_node building = ally_buildings.append_child("Ally_Building");
 			building.append_attribute("name") = (*it)->name;
+
+			building.append_child("Life").append_attribute("current") = (*it)->life;
+			building.child("Life").append_attribute("max") = (*it)->max_life;
 
 			building.append_child("Position").append_attribute("x") = (*it)->position.x;
 			building.child("Position").append_attribute("y") = (*it)->position.y;
@@ -261,6 +321,9 @@ bool j1Entity::Save(pugi::xml_node& data) const
 		else if ((*it)->type == entity_type::enemy_building) {
 			pugi::xml_node building = enemy_buildings.append_child("Enemy_Building");
 			building.append_attribute("name") = (*it)->name;
+
+			building.append_child("Life").append_attribute("current") = (*it)->life;
+			building.child("Life").append_attribute("max") = (*it)->max_life;
 
 			building.append_child("Position").append_attribute("x") = (*it)->position.x;
 			building.child("Position").append_attribute("y") = (*it)->position.y;
