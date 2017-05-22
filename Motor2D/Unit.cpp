@@ -1000,6 +1000,10 @@ void Unit::UnitAttack()
 	if (attacked_unit != nullptr) {
 		LookAtAttack();
 
+		if (attacked_unit->attacked_building != nullptr) {
+			attacked_unit->attacked_building = nullptr;
+			attacked_unit->attacked_unit = this;
+		}
 		if (current_animation->GetFrameIndex() == 5 && shout_fx == true)
 		{
 			if (App->player->audio_muted == false)
@@ -1031,6 +1035,7 @@ void Unit::UnitAttack()
 			}
 			shout_fx = true;
 		}
+
 	}
 	else state = entity_idle;
 }
