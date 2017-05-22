@@ -64,8 +64,6 @@ public:
 
 	//HUD Panels
 	UI_Window*	minimap_window = nullptr;
-	UI_Image*	minimap_background = nullptr;
-
 
 public:
 	SDL_Rect    map_rect = { 0,0,0,0 };
