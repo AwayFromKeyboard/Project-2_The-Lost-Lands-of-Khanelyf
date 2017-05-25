@@ -342,12 +342,12 @@ bool Player::Start()
 	create_building_button->SetImage("standard");
 	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
 
-	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(565, 500), 60, 60);
+	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(550, 500), 60, 60);
 	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button2->SetImage("standard");
 	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
 
-	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(645, 500), 60, 60);
+	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(615, 500), 60, 60);
 	create_building_button3->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button3->SetImage("standard");
 	create_building_button3->AddImage("clicked", { 645, 0, 60, 60 });
@@ -355,10 +355,10 @@ bool Player::Start()
 	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(497, 510), { 808, 48, 39, 38 });
 	barrack_img->click_through = true;
 
-	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(575, 515), { 847, 52, 37, 33 });
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(560, 515), { 847, 52, 37, 33 });
 	house_img->click_through = true;
 
-	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(655, 510), { 852, 0, 45, 36 });
+	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(625, 510), { 852, 0, 45, 36 });
 	blacksmith_img->click_through = true;
 
 	brokenbuilding_ui_window->SetEnabledAndChilds(false);
@@ -1312,6 +1312,9 @@ bool Player::PreUpdate()
 			create_building_button2->SetImage("standard");
 		}
 
+		App->scene->scene_test->create_blacksmith = true;
+		blacksmith_alive = false;
+
 		if (create_building_button3->MouseClickEnterLeft() && create_building_button3->CompareState("standard") && (App->scene->scene_test->gold >= 50 || App->debug_mode) && App->scene->scene_test->create_blacksmith == true && blacksmith_alive == false)
 		{
 			create_building_button3->SetImage("clicked");
@@ -1325,7 +1328,7 @@ bool Player::PreUpdate()
 				{
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
-					Blacksmith* blacksmith = (Blacksmith*)App->entity->CreateEntity(blacksmiths, building, pos);
+					Blacksmith* blacksmith = (Blacksmith*)App->entity->CreateEntity(blacksmiths, building, iPoint(pos.x + 40, pos.y + 50));
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
