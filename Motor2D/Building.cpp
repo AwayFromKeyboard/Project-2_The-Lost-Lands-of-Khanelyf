@@ -101,7 +101,11 @@ bool Building::Update(float dt)
 		if (type == entity_type::ally_building || type == entity_type::building && name != entity_name::broken_building) {
 
 			if (type == entity_type::building && name == entity_name::blacksmiths)
+			{
 				App->entity->CreateEntity(broken_building, building, iPoint(position.x - 40, position.y - 50));
+				App->scene->scene_test->create_blacksmith = true;
+				App->player->blacksmith_alive = false;
+			}
 			else
 				App->entity->CreateEntity(broken_building, building, position);
 
