@@ -1287,8 +1287,6 @@ bool Player::PreUpdate()
 			create_building_button->SetImage("standard");
 		}
 
-
-
 		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode) && App->scene->scene_test->create_barrack == false)
 		{
 			create_building_button2->SetImage("clicked");
@@ -1314,8 +1312,6 @@ bool Player::PreUpdate()
 			create_building_button2->SetImage("standard");
 		}
 
-		App->scene->scene_test->create_blacksmith = true;
-		blacksmith_alive = false;
 		if (create_building_button3->MouseClickEnterLeft() && create_building_button3->CompareState("standard") && (App->scene->scene_test->gold >= 50 || App->debug_mode) && App->scene->scene_test->create_blacksmith == true && blacksmith_alive == false)
 		{
 			create_building_button3->SetImage("clicked");
