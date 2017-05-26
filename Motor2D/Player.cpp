@@ -1271,42 +1271,57 @@ bool Player::PreUpdate()
 		if (life_txt->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Life points");
+			text_on = true;
 		}
 		
 		else if (armor_txt->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Armor points");
+			text_on = true;
 		}
 	
 		else if (damage_txt->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Damage points");
+			text_on = true;
 		}
 		
 		else if (pierce_armor_txt->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Armor Penetration points");
+			text_on = true;
 		}
 		else if (create_building_button->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a barrack to hire troops. Requirements: 90 Gold. (You can only have one building of this type)");
+			text_on = true;
 		}
 		else if (create_building_button2->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a house to increase maximum poblation (+1). Requirements: 30 Gold");
+			text_on = true;
 		}
 		else if (create_unit_button->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hire a Barbarian. Requirements: 30 Gold");
+			text_on = true;
 		}
 		else if (create_unit_button2->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold");
+			text_on = true;
 		}
 		
-		else if (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut() && create_unit_button->MouseOut() && create_unit_button2->MouseOut() && (create_building_button->MouseOut() && create_building_button2->MouseOut()))
+		else if (text_on && (pierce_armor_txt->MouseOut() || damage_txt->MouseOut() || armor_txt->MouseOut() || life_txt->MouseOut()) || ( create_unit_button->MouseOut() && create_unit_button2->MouseOut() && (create_building_button->MouseOut() && create_building_button2->MouseOut()))) {
 			help_window->SetEnabledAndChilds(false);
-		
+			text_on = false;
+		}
+
+		if(text_on==false)
+			help_window->SetEnabledAndChilds(false);
+		else
+			help_window->SetEnabledAndChilds(true);
+
 
 		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {

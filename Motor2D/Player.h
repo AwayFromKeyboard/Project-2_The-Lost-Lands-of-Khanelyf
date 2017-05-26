@@ -210,6 +210,7 @@ private:
 	bool changing_ability = false;
 
 public:
+	bool text_on = false;
 	bool audio_status = false;
 	bool change_controls_status = false;
 	bool options_status = false;
