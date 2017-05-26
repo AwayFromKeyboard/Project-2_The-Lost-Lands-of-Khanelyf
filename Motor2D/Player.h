@@ -183,6 +183,9 @@ public:
 	//buttons for brokenbuilding
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
+	UI_Button* create_building_button3 = nullptr;
+
+	bool blacksmith_alive = false;
 
 	UI_Button* choose_ability_b = nullptr;
 	UI_Button* choose_ability_uw = nullptr;
@@ -200,6 +203,7 @@ private:
 	//buttons for brokenbuilding
 	UI_Button* barrack_img = nullptr;
 	UI_Button* house_img = nullptr;
+	UI_Button* blacksmith_img = nullptr;
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;

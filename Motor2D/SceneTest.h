@@ -83,6 +83,7 @@ public:
 	UI_Text* human_resources_txt = nullptr;
 
 	bool create_barrack = false;
+	bool create_blacksmith = false;
 
 public:
 	//FXs
