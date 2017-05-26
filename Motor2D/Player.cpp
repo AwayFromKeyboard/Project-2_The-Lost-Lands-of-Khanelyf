@@ -1312,7 +1312,8 @@ bool Player::PreUpdate()
 			text_on = true;
 		}
 		
-		else if (text_on && (pierce_armor_txt->MouseOut() || damage_txt->MouseOut() || armor_txt->MouseOut() || life_txt->MouseOut()) || ( create_unit_button->MouseOut() && create_unit_button2->MouseOut() && (create_building_button->MouseOut() && create_building_button2->MouseOut()))) {
+		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut())))
+		{
 			help_window->SetEnabledAndChilds(false);
 			text_on = false;
 		}
