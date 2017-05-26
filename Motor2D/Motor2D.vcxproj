@@ -84,6 +84,7 @@
     <ClCompile Include="Boss_Axe_Knight.cpp" />
     <ClCompile Include="BrokenBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="CursorAnimations.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Escorted_NPC.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="BrokenBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="CursorAnimations.h" />
     <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="Escorted_NPC.h" />
     <ClInclude Include="Fire.h" />

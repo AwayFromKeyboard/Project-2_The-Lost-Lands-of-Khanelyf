@@ -21,7 +21,6 @@ bool Minimap::Start()
 	map_rect = { 1389,912,273,139 };
 
 	minimap_window = (UI_Window*)App->gui->UI_CreateWin({ 1389, 912 }, 273, 139, 8);
-	minimap_background = (UI_Image*)minimap_window->CreateImage({ 1389, 912 }, { 1237, 810, 273, 139 });
 
 	map_size = { 120, 110 };
 
@@ -147,19 +146,21 @@ bool Minimap::Draw()
 	// Draw Units in Minimap
 	SDL_Color color;
 	int size = units_to_print.size();
+
+	App->scene->LayerDrawQuad({ 1389, 912, 273, 139 }, 0, 0, 0, 255, true, false, 18);
 	for (int i = 0; i < size; i++)
 	{
 		color = units_to_print[i].cell_color;
 		if (color.r == 255 && color.g == 255 && color.b == 255) {
 			iPoint map_size = { (App->render->camera.w / 26), (App->render->camera.h / 26) };
-			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x - 5, units_to_print[i].cell_position.y, map_size.x, map_size.y }, color.r, color.g, color.b, color.a, false, false, 11);
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x - 5, units_to_print[i].cell_position.y, map_size.x, map_size.y }, color.r, color.g, color.b, color.a, false, false, 20);
 		}
 		else if (color.r == 255 && color.g == 0 && color.b == 0) {
-			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,5,5 }, color.r, color.g, color.b, color.a, true, false, 10);
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,5,5 }, color.r, color.g, color.b, color.a, true, false, 19);
 
 		}
 		else
-			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 10);
+			App->scene->LayerDrawQuad({ units_to_print[i].cell_position.x, units_to_print[i].cell_position.y,3,3 }, color.r, color.g, color.b, color.a, true, false, 19);
 	}
 
 	return ret;

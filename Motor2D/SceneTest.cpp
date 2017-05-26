@@ -74,6 +74,12 @@ bool SceneTest::Start()
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 7, 37, 40 };
+	cursor_attack_r = { 115, 7, 37, 40 };
+	cursor_build_r = { 153, 7, 37, 40 };
+	cursor_object_r = { 39, 7, 37, 40 };
+	cursor_ui_r = { 77, 7, 37, 40 };
+
+	current_cursor_r = cursor_r;
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
@@ -269,14 +275,13 @@ bool SceneTest::Update(float dt)
 	
 	App->map->Draw();
 
-	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
+	cursor->Set(iPoint(mouse.x, mouse.y), current_cursor_r);
 
 	return true;
 }
 
 bool SceneTest::PostUpdate()
 {
-
 	return true;
 }
 
@@ -365,4 +370,14 @@ void SceneTest::CheckUnitCreation(iPoint p)
 void SceneTest::IncreaseGold(int gold)
 {
 	this->gold += gold;
+}
+
+UI_Image * SceneTest::GetCursor()
+{
+	return cursor;
+}
+
+void SceneTest::SetCurrentCursor(SDL_Rect new_cursor)
+{
+	current_cursor_r = new_cursor;
 }

@@ -60,13 +60,14 @@ private:
 	void DrawBuff();
 	void StopBuff(int modifier);
 
-	void UndyingRage();
-
 	void Whirlwind();
 
 	void Charge();
 
 	void DrawCD(int ability_number);
+private:
+	void CheckMouseEntity();
+
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
@@ -184,6 +185,9 @@ public:
 	//buttons for brokenbuilding
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
+	UI_Button* create_building_button3 = nullptr;
+
+	bool blacksmith_alive = false;
 
 	UI_Button* choose_ability_b = nullptr;
 	UI_Button* choose_ability_uw = nullptr;
@@ -201,11 +205,15 @@ private:
 	//buttons for brokenbuilding
 	UI_Button* barrack_img = nullptr;
 	UI_Button* house_img = nullptr;
+	UI_Button* blacksmith_img = nullptr;
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;
 	UI_Button* whirlwind_ability = nullptr;
 	UI_Button* charge_ability = nullptr;
+
+	bool clicked_charge_1 = false;
+	bool clicked_charge_2 = false;
 
 	bool changing_ability = false;
 
