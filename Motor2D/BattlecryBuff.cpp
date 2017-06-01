@@ -19,7 +19,7 @@ BattlecryBuff::~BattlecryBuff()
 
 bool BattlecryBuff::Draw(float dt)
 {
-	App->scene->LayerBlit(10, particle_texture, { position.x + offset.x, position.y + offset.y }, current_animation->GetAnimationFrame(dt), -1.0);
+	App->scene->LayerBlit(4, particle_texture, { position.x + offset.x, position.y + offset.y }, current_animation->GetAnimationFrame(dt), -1.0);
 
 	return true;
 }

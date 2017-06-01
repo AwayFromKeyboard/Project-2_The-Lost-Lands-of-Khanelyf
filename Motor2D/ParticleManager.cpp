@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "CursorAnimations.h"
 #include "BattlecryBuff.h"
+#include "Player.h"
 
 ParticleManager::ParticleManager()
 {
@@ -53,6 +54,8 @@ bool ParticleManager::PostUpdate()
 
 	for (std::list<Particle*>::iterator it = particle_list.begin(); it != particle_list.end();) {
 		if ((*it)->to_delete == true) {
+			if ((*it)->type == particle_type::battlecrybuff && App->player->draw_buff == true)
+				App->player->create_new_buff_particle = true;
 			list<Particle*>::iterator it_next = std::next(it);
 			DeleteParticle(*it);
 			it = it_next;

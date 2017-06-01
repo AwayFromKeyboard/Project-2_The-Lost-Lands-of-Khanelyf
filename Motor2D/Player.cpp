@@ -1729,8 +1729,9 @@ bool Player::PostUpdate()
 	
 	if (draw_buff == true)
 	{
-		DrawBuff();
-		draw_buff = false;
+		if (create_new_buff_particle == true)
+			DrawBuff();
+		create_new_buff_particle = false;
 	}
 
 	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY && active_ability == battlecry_active)
@@ -2270,7 +2271,7 @@ void Player::DrawBuff()
 {
 	if (buffed_list.empty() != true) {
 		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
-			App->particle->CreateParticle(particle_type::battlecrybuff, 0, { (*it)->position.x + 10, (*it)->position.y + 10 });
+			App->particle->CreateParticle(particle_type::battlecrybuff, 0, { (*it)->position.x, (*it)->position.y - 15});
 		}
 	}
 }
