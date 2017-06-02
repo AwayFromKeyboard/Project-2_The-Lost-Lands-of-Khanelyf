@@ -328,11 +328,13 @@ bool Player::Start()
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 645, 0, 60, 60 });
+	create_unit_button->change_click_through = true;
 
 	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(112, 785), 60, 60);
 	create_unit_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 645, 0, 60, 60 });
+	create_unit_button2->change_click_through = true;
 
 	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(37, 795), 37, 36);
 	barbarian_img->AddImage("standard", { 765, 0, 37, 36 });
@@ -351,16 +353,19 @@ bool Player::Start()
 	create_building_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button->SetImage("standard");
 	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button->change_click_through = true;
 
 	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(66, 785), 60, 60);
 	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button2->SetImage("standard");
 	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button2->change_click_through = true;
 
 	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(129, 785), 60, 60);
 	create_building_button3->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button3->SetImage("standard");
 	create_building_button3->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button3->change_click_through = true;
 
 	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(15, 795), { 808, 48, 39, 38 });
 	barrack_img->click_through = true;

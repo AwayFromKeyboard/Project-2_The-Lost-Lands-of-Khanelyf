@@ -557,6 +557,10 @@ void UI_Element::SetEnabled(bool set)
 {
 	if (this != NULL)
 		enabled = set;
+	if (this->change_click_through == true && set == false)
+		this->click_through = true;
+	else if (this->change_click_through == true && set == true)
+		this->click_through = false;
 }
 
 // ---------------------------------------------------------------------
@@ -568,7 +572,13 @@ void UI_Element::SetEnabledAndChilds(bool set)
 	App->gui->GetChilds(this, visited);
 
 	for (list<UI_Element*>::iterator it = visited.begin(); it != visited.end(); it++)
+	{
 		(*it)->enabled = set;
+		if ((*it)->change_click_through == true && set == false)
+			(*it)->click_through = true;
+		else if ((*it)->change_click_through == true && set == true)
+			(*it)->click_through = false;
+	}
 }
 
 

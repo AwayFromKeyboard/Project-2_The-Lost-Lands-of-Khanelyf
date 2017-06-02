@@ -162,6 +162,7 @@ public:
 	bool				enabled = true;
 	bool				click_through = false;
 	bool				is_ui = true;
+	bool				change_click_through = false;
 
 	// Layers --
 	double				layer = 0;
