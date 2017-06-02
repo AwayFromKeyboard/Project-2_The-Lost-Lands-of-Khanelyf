@@ -185,6 +185,9 @@ bool Unit::Update(float dt)
 				else {
 					if (path.size() > 0) {
 						FollowPath(dt);
+						if (type == entity_type::enemy) {
+							CheckSurroundings();
+						}
 					}
 				}
 			}
@@ -1000,6 +1003,14 @@ void Unit::UnitAttack()
 	if (attacked_unit != nullptr) {
 		LookAtAttack();
 
+		if (attacked_unit->attacked_building != nullptr) {
+			attacked_unit->attacked_building = nullptr;
+			attacked_unit->attacked_unit = this;
+		}
+		else if (attacked_unit->attacked_unit == nullptr) {
+			attacked_unit->attacked_building = nullptr;
+			attacked_unit->attacked_unit = this;
+		}
 		if (current_animation->GetFrameIndex() == 5 && shout_fx == true)
 		{
 			if (App->player->audio_muted == false)
@@ -1031,6 +1042,7 @@ void Unit::UnitAttack()
 			}
 			shout_fx = true;
 		}
+
 	}
 	else state = entity_idle;
 }
