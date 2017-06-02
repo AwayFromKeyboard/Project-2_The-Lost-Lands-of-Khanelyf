@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
+#include "Player.h"
 
 BattlecryBuff::BattlecryBuff(int set)
 {
@@ -26,7 +27,7 @@ bool BattlecryBuff::Draw(float dt)
 
 bool BattlecryBuff::Update(float dt)
 {
-	if (current_animation->Finished()) {
+	if (!App->player->draw_buff) {
 		to_delete = true;
 	}
 

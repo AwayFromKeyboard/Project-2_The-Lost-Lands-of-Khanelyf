@@ -1382,6 +1382,7 @@ bool Player::PreUpdate()
 					battlecry_timer.Start();
 					draw_battlecry_range = false;
 					range_visited.clear();
+					create_new_buff_particle = true;
 				}
 				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
 					battlecry_cd->SetEnabled(false);
@@ -1729,9 +1730,10 @@ bool Player::PostUpdate()
 	
 	if (draw_buff == true)
 	{
-		if (create_new_buff_particle == true)
+		if (create_new_buff_particle == true) {
 			DrawBuff();
-		create_new_buff_particle = false;
+			create_new_buff_particle = false;
+		}
 	}
 
 	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY && active_ability == battlecry_active)

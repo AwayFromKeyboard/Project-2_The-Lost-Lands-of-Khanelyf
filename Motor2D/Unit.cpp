@@ -239,6 +239,8 @@ bool Unit::Update(float dt)
 
 		case entity_state::entity_death:
 			CheckDeathDirection();
+			if (App->player->draw_buff && buff_particle != nullptr) {
+			}
 			if (collision != nullptr) {
 				App->collisions->EraseCollider(collision);
 				collision = nullptr;
