@@ -324,22 +324,22 @@ bool Player::Start()
 
 	//Buttons for barracks
 
-	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
+	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(25, 785), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 645, 0, 60, 60 });
 
-	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
+	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(112, 785), 60, 60);
 	create_unit_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 645, 0, 60, 60 });
 
-	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(297, 510), 37, 36);
+	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(37, 795), 37, 36);
 	barbarian_img->AddImage("standard", { 765, 0, 37, 36 });
 	barbarian_img->SetImage("standard");
 	barbarian_img->click_through = true;
 
-	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(395, 510), 37, 36);
+	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(123, 795), 37, 36);
 	swordsman_img->AddImage("standard", { 765, 36, 37, 36 });
 	swordsman_img->SetImage("standard");
 	swordsman_img->click_through = true;
@@ -347,28 +347,28 @@ bool Player::Start()
 	barracks_ui_window->SetEnabledAndChilds(false);
 
 	//Buttons for brokenbuilding
-	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(485, 500), 60, 60);
+	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(3, 785), 60, 60);
 	create_building_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button->SetImage("standard");
 	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
 
-	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(550, 500), 60, 60);
+	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(66, 785), 60, 60);
 	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button2->SetImage("standard");
 	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
 
-	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(615, 500), 60, 60);
+	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(129, 785), 60, 60);
 	create_building_button3->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button3->SetImage("standard");
 	create_building_button3->AddImage("clicked", { 645, 0, 60, 60 });
 
-	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(497, 510), { 808, 48, 39, 38 });
+	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(15, 795), { 808, 48, 39, 38 });
 	barrack_img->click_through = true;
 
-	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(560, 515), { 847, 52, 37, 33 });
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(76, 800), { 847, 52, 37, 33 });
 	house_img->click_through = true;
 
-	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(625, 510), { 852, 0, 45, 36 });
+	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(139, 795), { 852, 0, 45, 36 });
 	blacksmith_img->click_through = true;
 
 	brokenbuilding_ui_window->SetEnabledAndChilds(false);
