@@ -319,7 +319,11 @@ bool Player::Start()
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
 	brokenbuilding_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(480, 200), 225, 144, 11);
 
+	unit_scroll = (UI_Image*)barracks_ui_window->CreateImage(iPoint(0, 750), { 1326, 2190, 224, 125 });
+	unit_scroll->click_through = true;
+
 	//Buttons for barracks
+
 	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
@@ -1371,6 +1375,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
 					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader)
@@ -1400,6 +1405,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
@@ -1425,6 +1431,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					Blacksmith* blacksmith = (Blacksmith*)App->entity->CreateEntity(blacksmiths, building, iPoint(pos.x + 40, pos.y + 50));
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
@@ -1608,6 +1615,7 @@ bool Player::Update(float dt)
 						(*it)->SetSelected(true);
 						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
 						{
+							unit_scroll->SetEnabled(true);
 							brokenbuilding_ui_window->SetEnabledAndChilds(true);
 							if (App->scene->scene_test->create_blacksmith == false)
 							{

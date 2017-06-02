@@ -182,6 +182,8 @@ public:
 
 	UI_Button* item_drop = nullptr;
 
+	UI_Image* unit_scroll = nullptr;
+
 	//buttons for brokenbuilding
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
@@ -196,6 +198,7 @@ public:
 	UI_Text* choose_ability_uw_txt = nullptr;
 
 private:
+
 	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
 	UI_Button* swordsman_img = nullptr;
