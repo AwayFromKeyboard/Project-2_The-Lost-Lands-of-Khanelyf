@@ -1261,8 +1261,8 @@ bool Player::PreUpdate()
 	
 	if (battlecry_ability->MouseEnter()) {
 		battlecry_ability->SetImage("hovered");
+		helping_txt->SetText("Battlecry. Gives +5 attack to tropes during 5 seconds (30s cd)");
 		help_window->SetEnabledAndChilds(true);
-		helping_txt->SetText("Battle Shout. Gives +5 attack to tropes during 5 seconds");
 		}
 	else if (battlecry_ability->MouseOut() && battlecry_ability->CompareState("hovered")) {
 		battlecry_ability->SetImage("standard");
@@ -1308,7 +1308,7 @@ bool Player::PreUpdate()
 		}
 		else if (create_building_button2->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Create a house to increase maximum poblation (+1). Requirements: 30 Gold");
+			helping_txt->SetText("Create a house to increase by 1 the maximum amount of units you can have. Requirements: 30 Gold (You need a barrack to build one)");
 			text_on = true;
 		}
 		else if (create_unit_button->MouseEnter()) {
@@ -1318,7 +1318,7 @@ bool Player::PreUpdate()
 		}
 		else if (create_unit_button2->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold");
+			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold & complete mission 4");
 			text_on = true;
 		}
 		
@@ -1338,7 +1338,7 @@ bool Player::PreUpdate()
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 			create_unit_button->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
+			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
 				Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= barb->cost;
 				App->scene->scene_test->current_human_resources += barb->human_cost;
@@ -1348,10 +1348,10 @@ bool Player::PreUpdate()
 			create_unit_button->SetImage("standard");
 		}
 
-		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
+		if (create_unit_button2->MouseClickEnterLeft()) {
 			create_unit_button2->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 20 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
+			if (App->scene->scene_test->gold >= 30 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
 				Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= sword->cost;
 				App->scene->scene_test->current_human_resources += sword->human_cost;
