@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Fire.h"
 #include "CursorAnimations.h"
+#include "BattlecryBuff.h"
 
 Animation::Animation() : frames(5), speed(1.0f), curr_frame(0), loop(true), loops(0)
 {
@@ -385,6 +386,19 @@ void Animator::LoadCursorAnimationsFromParticlesXML(pugi::xml_node & node, Curso
 	}
 
 	cursor_anim->movement.SetSpeed(node.child("movement").attribute("speed").as_float());
+}
+
+void Animator::LoadBattlecryBuffFromParticlesXML(pugi::xml_node & node, BattlecryBuff* battlecry_buff)
+{
+	pugi::xml_node _node;
+
+	battlecry_buff->movement.frames.clear();
+
+	for (pugi::xml_node rect = node.child("movement").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		battlecry_buff->movement.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("movement").attribute("w").as_int(), node.child("movement").attribute("h").as_int() });
+	}
+
+	battlecry_buff->movement.SetSpeed(node.child("movement").attribute("speed").as_float());
 }
 
 void Animator::SetAnimation(const char* name)

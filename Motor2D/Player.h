@@ -233,6 +233,7 @@ public:
 	bool draw_whirlwind_range = false;
 	bool draw_charge_range = false;
 	bool draw_buff = false;
+	bool create_new_buff_particle = true;
 	bool charge_speed_buff = false;
 	bool charge_damage_buff = false;
 

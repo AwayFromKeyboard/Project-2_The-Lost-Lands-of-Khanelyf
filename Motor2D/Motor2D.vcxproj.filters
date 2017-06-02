@@ -154,6 +154,9 @@
     <ClCompile Include="CursorAnimations.cpp">
       <Filter>Engine\6. Particles\CursorAnimations</Filter>
     </ClCompile>
+    <ClCompile Include="BattlecryBuff.cpp">
+      <Filter>Engine\6. Particles\BattlecryBuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -319,6 +322,9 @@
     <ClInclude Include="CursorAnimations.h">
       <Filter>Engine\6. Particles\CursorAnimations</Filter>
     </ClInclude>
+    <ClInclude Include="BattlecryBuff.h">
+      <Filter>Engine\6. Particles\BattlecryBuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -391,6 +397,9 @@
     </Filter>
     <Filter Include="Engine\6. Particles\CursorAnimations">
       <UniqueIdentifier>{da8e66ff-8a06-40cf-85f3-4400e91876c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\BattlecryBuff">
+      <UniqueIdentifier>{40f9aef8-f133-43b4-93ee-b94d24244d71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
