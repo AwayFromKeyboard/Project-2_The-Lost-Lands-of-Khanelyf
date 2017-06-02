@@ -40,6 +40,7 @@ class Building;
 class Object;
 class BossAxeKnight;
 class EscortedNPC;
+class BattlecryBuff;
 
 class Unit : public Entity
 {
@@ -198,7 +199,7 @@ public:
 public:
 	bool is_escortednpc = false;
 	EscortedNPC* npc_quest = nullptr;
-	
+	BattlecryBuff* buff_particle = nullptr;
 };
 
 #endif

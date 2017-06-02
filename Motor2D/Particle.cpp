@@ -36,7 +36,6 @@ bool Particle::Draw(float dt)
 
 bool Particle::CleanUp()
 {
-
 	return true;
 }
 

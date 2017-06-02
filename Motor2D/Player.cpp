@@ -1493,6 +1493,7 @@ bool Player::PreUpdate()
 					battlecry_timer.Start();
 					draw_battlecry_range = false;
 					range_visited.clear();
+					create_new_buff_particle = true;
 				}
 				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
 					battlecry_cd->SetEnabled(false);
@@ -1840,7 +1841,12 @@ bool Player::PostUpdate()
 		UpdateAttributes();
 	
 	if (draw_buff == true)
-		DrawBuff();
+	{
+		if (create_new_buff_particle == true) {
+			DrawBuff();
+			create_new_buff_particle = false;
+		}
+	}
 
 	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY && active_ability == battlecry_active)
 	{
@@ -2377,11 +2383,11 @@ void Player::CheckStraightAbilityRange(int range)
 
 void Player::DrawBuff()
 {
-	//if (buffed_list.empty() != true) {
-	//	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
-	//		App->scene->LayerBlit(5, (*it)->entity_texture, { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
-	//	}
-	//}
+	if (buffed_list.empty() != true) {
+		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+			(*it)->buff_particle = (BattlecryBuff*)App->particle->CreateParticle(particle_type::battlecrybuff, 0, { (*it)->position.x, (*it)->position.y - 15});
+		}
+	}
 }
 
 void Player::StopBuff(int modifier)
