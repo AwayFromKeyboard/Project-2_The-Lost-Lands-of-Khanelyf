@@ -1261,7 +1261,10 @@ bool Player::PreUpdate()
 	
 	if (battlecry_ability->MouseEnter()) {
 		battlecry_ability->SetImage("hovered");
-		helping_txt->SetText("Battlecry. Gives +5 attack to tropes during 5 seconds (30s cd)");
+		if (active_ability == battlecry_active)
+			helping_txt->SetText("Battlecry. Gives +5 attack to tropes during 5 seconds (30s cd)");
+		else if (active_ability == undying_will_active)
+			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
 		help_window->SetEnabledAndChilds(true);
 		}
 	else if (battlecry_ability->MouseOut() && battlecry_ability->CompareState("hovered")) {
