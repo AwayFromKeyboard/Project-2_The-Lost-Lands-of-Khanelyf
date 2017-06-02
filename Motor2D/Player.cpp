@@ -1314,9 +1314,14 @@ bool Player::PreUpdate()
 			helping_txt->SetText("Create a house to increase by 1 the maximum amount of units you can have. Requirements: 30 Gold (You need a barrack to build one)");
 			text_on = true;
 		}
+		else if (create_building_button3->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a blacksmith to forge you powerful items. Requirements: 50 Gold ");
+			text_on = true;
+		}
 		else if (create_unit_button->MouseEnter()) {
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Hire a Barbarian. Requirements: 30 Gold");
+			helping_txt->SetText("Hire a Barbarian. Requirements: 10 Gold");
 			text_on = true;
 		}
 		else if (create_unit_button2->MouseEnter()) {
@@ -1325,7 +1330,7 @@ bool Player::PreUpdate()
 			text_on = true;
 		}
 		
-		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut())))
+		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())))
 		{
 			help_window->SetEnabledAndChilds(false);
 			text_on = false;
