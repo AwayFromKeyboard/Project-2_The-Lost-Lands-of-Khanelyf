@@ -22,6 +22,7 @@
 #include "Particle.h"
 #include "ParticleManager.h"
 #include "Escorted_NPC.h"
+#include "BattlecryBuff.h"
 
 Unit::Unit()
 {
@@ -416,6 +417,9 @@ bool Unit::PostUpdate()
 
 	if (life > 0)
 	{
+		if (App->player->draw_buff && buff_particle != nullptr) {
+			buff_particle->position.create(position.x, position.y);
+		}
 		if (is_escortednpc && App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort) {
 			if (position_map != ESCORT_DESTINATION) {
 				if (npc_quest->CheckEscortRadius()) {

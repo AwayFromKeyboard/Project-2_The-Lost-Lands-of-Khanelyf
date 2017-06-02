@@ -2271,7 +2271,7 @@ void Player::DrawBuff()
 {
 	if (buffed_list.empty() != true) {
 		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
-			App->particle->CreateParticle(particle_type::battlecrybuff, 0, { (*it)->position.x, (*it)->position.y - 15});
+			(*it)->buff_particle = (BattlecryBuff*)App->particle->CreateParticle(particle_type::battlecrybuff, 0, { (*it)->position.x, (*it)->position.y - 15});
 		}
 	}
 }
