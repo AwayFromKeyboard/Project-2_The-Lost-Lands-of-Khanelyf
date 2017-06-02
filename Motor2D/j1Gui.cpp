@@ -557,6 +557,10 @@ void UI_Element::SetEnabled(bool set)
 {
 	if (this != NULL)
 		enabled = set;
+	if (this->change_click_through == true && set == false)
+		this->click_through = true;
+	else if (this->change_click_through == true && set == true)
+		this->click_through = false;
 }
 
 // ---------------------------------------------------------------------
@@ -568,7 +572,13 @@ void UI_Element::SetEnabledAndChilds(bool set)
 	App->gui->GetChilds(this, visited);
 
 	for (list<UI_Element*>::iterator it = visited.begin(); it != visited.end(); it++)
+	{
 		(*it)->enabled = set;
+		if ((*it)->change_click_through == true && set == false)
+			(*it)->click_through = true;
+		else if ((*it)->change_click_through == true && set == true)
+			(*it)->click_through = false;
+	}
 }
 
 
@@ -1317,6 +1327,57 @@ bool UI_Text::update()
 	}
 
 	return true;
+}
+
+bool UI_Text::MouseEnter()
+{
+	if (!enabled)
+		return false;
+
+	int mouse_x, mouse_y;
+	App->input->GetMousePosition(mouse_x, mouse_y);
+	mouse_x -= App->render->camera.x;
+	mouse_y -= App->render->camera.y;
+
+	if (CheckClickOverlap(mouse_x, mouse_y) != layer)
+		return false;
+
+	if (CheckClickRect(mouse_x, mouse_y))
+	{
+		if (!enter)
+		{
+			to_enter = true;
+			return true;
+		}
+		return false;
+	}
+
+	return false;
+}
+
+bool UI_Text::MouseOut()
+{
+	if (!enabled)
+		return false;
+
+	int mouse_x, mouse_y;
+	App->input->GetMousePosition(mouse_x, mouse_y);
+	mouse_x -= App->render->camera.x;
+	mouse_y -= App->render->camera.y;
+
+	if (CheckClickOverlap(mouse_x, mouse_y) != layer && !enter)
+		return true;
+
+	if (CheckClickRect(mouse_x, mouse_y))
+		return false;
+
+	if (enter)
+	{
+		to_enter = false;
+		return true;
+	}
+	else
+		return false;
 }
 
 bool UI_Text::cleanup()
