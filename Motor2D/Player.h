@@ -8,7 +8,7 @@
 #include "Point.h"
 
 #define DURATION_BATTLECRY 5
-#define COOLDOWN_BATTLECRY 1
+#define COOLDOWN_BATTLECRY 30
 #define BATTLECRY_BUFF 5
 #define BATTLECRY_RANGE 10
 
