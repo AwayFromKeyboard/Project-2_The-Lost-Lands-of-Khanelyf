@@ -213,15 +213,18 @@ bool j1Entity::Load(pugi::xml_node& data)
 		}
 		
 		Entity* entity;
-		if (ally_b.child("Life").attribute("current").as_int() > 0)
+		if (ally_b.child("Life").attribute("current").as_int() > 0 || name == broken_building)
 		{
 			if (name == basic_building)
 				entity = App->entity->CreateBuildingEntity(name, entity_type::ally_building, { 0, 0 }, ally_b.child("Rect").attribute("number").as_int());
 			else
 				entity = App->entity->CreateEntity(name, entity_type::ally_building, { 0, 0 });
 
-			entity->life = ally_b.child("Life").attribute("current").as_int();
-			entity->max_life = ally_b.child("Life").attribute("max").as_int();
+			if (name != broken_building)
+			{
+				entity->life = ally_b.child("Life").attribute("current").as_int();
+				entity->max_life = ally_b.child("Life").attribute("max").as_int();
+			}
 			entity->position.create(ally_b.child("Position").attribute("x").as_int(), ally_b.child("Position").attribute("y").as_int());
 		}
 	}
@@ -249,15 +252,19 @@ bool j1Entity::Load(pugi::xml_node& data)
 		}
 
 		Entity* entity;
-		if (enemy_b.child("Life").attribute("current").as_int() > 0)
+		if (enemy_b.child("Life").attribute("current").as_int() > 0 || name == broken_building)
 		{
 			if (name == basic_building)
-				entity = App->entity->CreateBuildingEntity(name, entity_type::enemy_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
+				entity = App->entity->CreateBuildingEntity(name, entity_type::ally_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
 			else
-				entity = App->entity->CreateEntity(name, entity_type::enemy_building, { 0,0 });
+				entity = App->entity->CreateEntity(name, entity_type::ally_building, { 0, 0 });
 
-			entity->life = enemy_b.child("Life").attribute("current").as_int();
-			entity->max_life = enemy_b.child("Life").attribute("max").as_int();
+
+			if (name != broken_building)
+			{
+				entity->life = enemy_b.child("Life").attribute("current").as_int();
+				entity->max_life = enemy_b.child("Life").attribute("max").as_int();
+			}
 			entity->position.create(enemy_b.child("Position").attribute("x").as_int(), enemy_b.child("Position").attribute("y").as_int());
 		}
 	}
