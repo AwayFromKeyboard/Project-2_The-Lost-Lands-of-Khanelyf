@@ -255,9 +255,9 @@ bool j1Entity::Load(pugi::xml_node& data)
 		if (enemy_b.child("Life").attribute("current").as_int() > 0 || name == broken_building)
 		{
 			if (name == basic_building)
-				entity = App->entity->CreateBuildingEntity(name, entity_type::ally_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
+				entity = App->entity->CreateBuildingEntity(name, entity_type::enemy_building, { 0, 0 }, enemy_b.child("Rect").attribute("number").as_int());
 			else
-				entity = App->entity->CreateEntity(name, entity_type::ally_building, { 0, 0 });
+				entity = App->entity->CreateEntity(name, entity_type::enemy_building, { 0, 0 });
 
 
 			if (name != broken_building)
@@ -313,7 +313,7 @@ bool j1Entity::Save(pugi::xml_node& data) const
 			enemy.append_child("Position").append_attribute("x") = (*it)->position.x;
 			enemy.child("Position").append_attribute("y") = (*it)->position.y;
 		}
-		else if ((*it)->type == entity_type::ally_building) {
+		else if ((*it)->type == entity_type::ally_building || (*it)->name == entity_name::broken_building) {
 			pugi::xml_node building = ally_buildings.append_child("Ally_Building");
 			building.append_attribute("name") = (*it)->name;
 
