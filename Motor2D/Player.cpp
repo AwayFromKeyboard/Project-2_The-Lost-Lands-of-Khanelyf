@@ -1259,100 +1259,106 @@ bool Player::PreUpdate()
 		quit_game->SetImage("clicked");
 		App->stop_exe = true;
 	}
-	
-	if (battlecry_ability->MouseEnter()) {
-		
-		if (active_ability == battlecry_active) {
-			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd)");
-			text_on = true;
-		}
-		else if (active_ability == undying_will_active) {
-			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
-			text_on = true;
-		}
-	}
-	
-	else if (whirlwind_ability->MouseEnter()) {
-		help_window->SetEnabledAndChilds(true);
-		helping_txt->SetText("Whirlwind.  A spin that does 40 AoE damage to a max. of 2 enemies (8s cd)");
-		text_on = true;
-	}
-	else if (charge_ability->MouseEnter()) {
-		help_window->SetEnabledAndChilds(true);
-		helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit of 40 damage (12s cd)");
-		text_on = true;
-	}
-	else if (text_on && (battlecry_ability->MouseOut() || battlecry_ability->enabled == false) && (whirlwind_ability->MouseOut() || whirlwind_ability->enabled == false) && (charge_ability->MouseOut() || charge_ability->enabled == false)) {
-		
-		help_window->SetEnabledAndChilds(false);
-		text_on = false;
-	}
-	if (text_on == false)
-		help_window->SetEnabledAndChilds(false);
-	else
-		help_window->SetEnabledAndChilds(true);
 
 
-	if (!pause_status) {
+	if (!pause_status)
+	{
 
 
-		if (life_txt->MouseEnter()) {
+		if (life_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Life points");
 			text_on = true;
 		}
 		
-		else if (armor_txt->MouseEnter()) {
+		else if (armor_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Armor points");
 			text_on = true;
 		}
 	
-		else if (damage_txt->MouseEnter()) {
+		else if (damage_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Damage points");
 			text_on = true;
 		}
 		
-		else if (pierce_armor_txt->MouseEnter()) {
+		else if (pierce_armor_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Armor Penetration points");
 			text_on = true;
 		}
-		else if (create_building_button->MouseEnter()) {
+		else if (create_building_button->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a barrack to hire troops. Requirements: 90 Gold. (You can only have one building of this type)");
 			text_on = true;
 		}
-		else if (create_building_button2->MouseEnter()) {
+		else if (create_building_button2->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a house to increase by 1 the maximum amount of units you can have. Requirements: 30 Gold (You need a barrack to build one)");
 			text_on = true;
 		}
-		else if (create_building_button3->MouseEnter()) {
+		else if (create_building_button3->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a blacksmith to forge you powerful items. Requirements: 50 Gold ");
 			text_on = true;
 		}
-		else if (create_unit_button->MouseEnter()) {
+		else if (create_unit_button->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hire a Barbarian. Requirements: 10 Gold");
 			text_on = true;
 		}
-		else if (create_unit_button2->MouseEnter()) {
+		else if (create_unit_button2->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold & complete mission 4");
 			text_on = true;
 		}
-		else if (item_drop->MouseEnter()) {
+		else if (item_drop->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Click to drop the item");
 			text_on = true;
 		}
+
+		if (battlecry_ability->MouseEnter())
+		{
+
+			if (active_ability == battlecry_active) {
+				help_window->SetEnabledAndChilds(true);
+				helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd)");
+				text_on = true;
+			}
+			else if (active_ability == undying_will_active) {
+				help_window->SetEnabledAndChilds(true);
+				helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
+				text_on = true;
+			}
+		}
+
+		else if (whirlwind_ability->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Whirlwind.  A spin that does 40 AoE damage to a max. of 2 enemies (8s cd)");
+			text_on = true;
+		}
+
+		else if (charge_ability->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit of 40 damage (12s cd)");
+			text_on = true;
+		}
 		
-		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
+		else if (text_on && (battlecry_ability->MouseOut() && whirlwind_ability->MouseOut() && charge_ability->MouseOut() && pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
 		{
 			help_window->SetEnabledAndChilds(false);
 			text_on = false;
@@ -1365,7 +1371,8 @@ bool Player::PreUpdate()
 
 
 		//Barracks create unit buttons
-		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
+		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true)
+		{
 			create_unit_button->SetImage("clicked");
 
 			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
@@ -1374,11 +1381,13 @@ bool Player::PreUpdate()
 				App->scene->scene_test->current_human_resources += barb->human_cost;
 			}
 		}
-		if (create_unit_button->MouseClickOutLeft()) {
+		if (create_unit_button->MouseClickOutLeft())
+		{
 			create_unit_button->SetImage("standard");
 		}
 
-		if (create_unit_button2->MouseClickEnterLeft()) {
+		if (create_unit_button2->MouseClickEnterLeft())
+		{
 			create_unit_button2->SetImage("clicked");
 
 			if (App->scene->scene_test->gold >= 30 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
