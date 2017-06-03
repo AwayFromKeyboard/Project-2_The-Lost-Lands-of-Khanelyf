@@ -454,9 +454,9 @@ bool Player::Start()
 
 	//drop object interface
 
-	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
-	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
-	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1300, 1000), 0, 0, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x - App->win->_GetWindowSize().x / 5, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 8), 60, 60);
+	item_drop->AddImage("standard", { 898, 0, 40, 40 });
 	item_drop->SetImage("standard");
 	item_drop->SetEnabled(false);
 
