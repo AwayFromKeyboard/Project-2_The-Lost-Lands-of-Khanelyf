@@ -27,10 +27,9 @@ bool UndWillBuff::Draw(float dt)
 
 bool UndWillBuff::Update(float dt)
 {
-	if (!App->player->draw_buff) {
+	if (!App->player->undying_state_active) {
 		to_delete = true;
 	}
-
 
 	return true;
 }
