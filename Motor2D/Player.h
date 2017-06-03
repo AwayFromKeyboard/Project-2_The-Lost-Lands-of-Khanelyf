@@ -74,6 +74,7 @@ public:
 	
 private:
 	UI_Window* victory_window = nullptr;
+	UI_Window* help_window = nullptr;
 	UI_Text* victory = nullptr;
 	UI_Text* lose = nullptr;
 	UI_Image* pause_bg = nullptr;
@@ -88,6 +89,7 @@ private:
 	UI_Button* returnmenu = nullptr;
 	UI_Button* mainmenu = nullptr;
 
+	UI_Text* helping_txt = nullptr;
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
 	UI_Text* save_txt = nullptr;
@@ -180,6 +182,8 @@ public:
 
 	UI_Button* item_drop = nullptr;
 
+	UI_Image* unit_scroll = nullptr;
+
 	//buttons for brokenbuilding
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
@@ -194,6 +198,7 @@ public:
 	UI_Text* choose_ability_uw_txt = nullptr;
 
 private:
+
 	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
 	UI_Button* swordsman_img = nullptr;
@@ -216,6 +221,7 @@ private:
 	bool changing_ability = false;
 
 public:
+	bool text_on = false;
 	bool audio_status = false;
 	bool change_controls_status = false;
 	bool options_status = false;

@@ -468,6 +468,7 @@ void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 				if (App->player->barracks_ui_window->enabled)
 					App->player->barracks_ui_window->SetEnabledAndChilds(false);
 				if (App->player->brokenbuilding_ui_window->enabled)
+					App->player->unit_scroll->SetEnabled(false);
 					App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				selected.push_back((Unit*)*it);
 			}
@@ -491,6 +492,7 @@ void j1Entity::UnselectEverything()
 	if (App->player->barracks_ui_window->enabled)
 		App->player->barracks_ui_window->SetEnabledAndChilds(false);
 	if (App->player->brokenbuilding_ui_window->enabled)
+		App->player->unit_scroll->SetEnabled(false);
 		App->player->brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	if (App->player->active_ability != not_chosen)

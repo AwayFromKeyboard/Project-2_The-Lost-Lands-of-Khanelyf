@@ -41,6 +41,12 @@ bool Player::Start()
 {
 	bool ret = true;
 
+	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 100, 200, 100);
+
+	helping_txt = (UI_Text*)help_window->CreateText({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_15);
+	
+	help_window->SetEnabledAndChilds(false);
+
 	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)-(App->win->_GetWindowSize().y /10) }, 100, 200, 100);
 	
 	victory = (UI_Text*)victory_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x /9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)- (App->win->_GetWindowSize().y / 10) }, App->font->default_50);
@@ -313,23 +319,29 @@ bool Player::Start()
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
 	brokenbuilding_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(480, 200), 225, 144, 11);
 
+	unit_scroll = (UI_Image*)barracks_ui_window->CreateImage(iPoint(0, 750), { 1326, 2190, 224, 125 });
+	unit_scroll->click_through = true;
+
 	//Buttons for barracks
-	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
+
+	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(25, 785), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 645, 0, 60, 60 });
+	create_unit_button->change_click_through = true;
 
-	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
+	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(112, 785), 60, 60);
 	create_unit_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 645, 0, 60, 60 });
+	create_unit_button2->change_click_through = true;
 
-	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(297, 510), 37, 36);
+	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(37, 795), 37, 36);
 	barbarian_img->AddImage("standard", { 765, 0, 37, 36 });
 	barbarian_img->SetImage("standard");
 	barbarian_img->click_through = true;
 
-	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(395, 510), 37, 36);
+	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(123, 795), 37, 36);
 	swordsman_img->AddImage("standard", { 765, 36, 37, 36 });
 	swordsman_img->SetImage("standard");
 	swordsman_img->click_through = true;
@@ -337,28 +349,31 @@ bool Player::Start()
 	barracks_ui_window->SetEnabledAndChilds(false);
 
 	//Buttons for brokenbuilding
-	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(485, 500), 60, 60);
+	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(3, 785), 60, 60);
 	create_building_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button->SetImage("standard");
 	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button->change_click_through = true;
 
-	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(550, 500), 60, 60);
+	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(66, 785), 60, 60);
 	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button2->SetImage("standard");
 	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button2->change_click_through = true;
 
-	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(615, 500), 60, 60);
+	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(129, 785), 60, 60);
 	create_building_button3->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button3->SetImage("standard");
 	create_building_button3->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button3->change_click_through = true;
 
-	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(497, 510), { 808, 48, 39, 38 });
+	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(15, 795), { 808, 48, 39, 38 });
 	barrack_img->click_through = true;
 
-	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(560, 515), { 847, 52, 37, 33 });
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(76, 800), { 847, 52, 37, 33 });
 	house_img->click_through = true;
 
-	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(625, 510), { 852, 0, 45, 36 });
+	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(139, 795), { 852, 0, 45, 36 });
 	blacksmith_img->click_through = true;
 
 	brokenbuilding_ui_window->SetEnabledAndChilds(false);
@@ -498,7 +513,7 @@ bool Player::PreUpdate()
 		choose_ability_uw_txt->enabled = false;
 
 		pause_status = !pause_status;
-		
+
 	}
 	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen)
 	{
@@ -676,7 +691,7 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 
-		if(audio_muted)
+		if (audio_muted)
 		{
 			audio_muted = !audio_muted;
 			audio_on_off->SetText("On");
@@ -859,7 +874,7 @@ bool Player::PreUpdate()
 		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
+
 	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || load->CompareState("clicked")))
 	{
 		button_on_clicked = false;
@@ -1056,7 +1071,7 @@ bool Player::PreUpdate()
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
 	}
-	
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
@@ -1117,49 +1132,55 @@ bool Player::PreUpdate()
 		move_map_left_txt2->SetEnabled(false);
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
-				
+
 	}
 
 	else if ((!pause_status && pause_window->enabled && active_ability != not_chosen))
 	{
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
-	if (backpause->MouseEnter())
+	if (backpause->MouseEnter()) {
 		backpause->SetImage("hovered");
-	else if (backpause->MouseOut() && backpause->CompareState("hovered"))
+		}
+	else if (backpause->MouseOut() && backpause->CompareState("hovered")) {
 		backpause->SetImage("standard");
-	
-	if (controls_button->MouseEnter())
+		}
+	if (controls_button->MouseEnter()) {
 		controls_button->SetImage("hovered");
+		}
 	else if (controls_button->MouseOut() && controls_button->CompareState("hovered"))
 		controls_button->SetImage("standard");
-	
-	if (audio_button->MouseEnter())
+
+	if (audio_button->MouseEnter()) {
 		audio_button->SetImage("hovered");
+		}
 	else if (audio_button->MouseOut() && audio_button->CompareState("hovered"))
 		audio_button->SetImage("standard");
 
-	if (backoptions->MouseEnter())
+	if (backoptions->MouseEnter()) {
 		backoptions->SetImage("hovered");
+		}
 	else if (backoptions->MouseOut() && backoptions->CompareState("hovered"))
 		backoptions->SetImage("standard");
 
-	if (battlecry_button_options->MouseEnter())
+	if (battlecry_button_options->MouseEnter()) {
 		battlecry_button_options->SetImage("hovered");
-	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered"))
+		}
+	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered")){
 		battlecry_button_options->SetImage("standard");
-
-	if (whirlwind_button_options->MouseEnter())
+		}
+	if (whirlwind_button_options->MouseEnter()) {
 		whirlwind_button_options->SetImage("hovered");
+		}
 	else if (whirlwind_button_options->MouseOut() && whirlwind_button_options->CompareState("hovered"))
 		whirlwind_button_options->SetImage("standard");
-
-	if (charge_button_options->MouseEnter())
+	
+	if (charge_button_options->MouseEnter()) {
 		charge_button_options->SetImage("hovered");
-	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered"))
+	}
+	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered")){
 		charge_button_options->SetImage("standard");
-
+		}
 	if (move_map_up_button->MouseEnter())
 		move_map_up_button->SetImage("hovered");
 	else if (move_map_up_button->MouseOut() && move_map_up_button->CompareState("hovered"))
@@ -1186,38 +1207,50 @@ bool Player::PreUpdate()
 		create_group_button->SetImage("standard");
 
 	//backbutton
-	if (back->MouseEnter())
+	if (back->MouseEnter()) {
 		back->SetImage("hovered");
+		
+	}
 	else if (back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
 
-	if (mainmenu->MouseEnter())
+	if (mainmenu->MouseEnter()) {
 		mainmenu->SetImage("hovered");
+		
+	}
 	else if (mainmenu->MouseOut() && mainmenu->CompareState("hovered"))
 		mainmenu->SetImage("standard");
 
 	//savebutton
-	if (save->MouseEnter())
+	if (save->MouseEnter()) {
 		save->SetImage("hovered");
+		
+	}
 	else if (save->MouseOut() && save->CompareState("hovered"))
 		save->SetImage("standard");
 	
 	//load button
-	if (load->MouseEnter())
+	if (load->MouseEnter()) {
 		load->SetImage("hovered");
+		
+	}
 	else if (load->MouseOut() && load->CompareState("hovered"))
 		load->SetImage("standard");
 	
 	// options button
 
-	if (options->MouseEnter())
+	if (options->MouseEnter()) {
 		options->SetImage("hovered");
+		
+	}
 	else if (options->MouseOut() && options->CompareState("hovered"))
 		options->SetImage("standard");
 
 	//quitbutton
-	if (quit_game->MouseEnter())
+	if (quit_game->MouseEnter()) {
 		quit_game->SetImage("hovered");
+		
+	}
 	else if (quit_game->MouseOut())
 		quit_game->SetImage("standard");
 
@@ -1226,13 +1259,86 @@ bool Player::PreUpdate()
 		App->stop_exe = true;
 	}
 	
+	if (battlecry_ability->MouseEnter()) {
+		battlecry_ability->SetImage("hovered");
+		helping_txt->SetText("Battlecry. Gives +5 attack to tropes during 5 seconds (30s cd)");
+		help_window->SetEnabledAndChilds(true);
+		}
+	else if (battlecry_ability->MouseOut() && battlecry_ability->CompareState("hovered")) {
+		battlecry_ability->SetImage("standard");
+		help_window->SetEnabledAndChilds(false);
+	}
+		/*help_window->SetEnabledAndChilds(true);
+	
+	helping_txt->SetText("Whirlwind. A spin that does AoE damage");
+	helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit");
+
+*/
+
 	if (!pause_status) {
+
+
+		if (life_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Life points");
+			text_on = true;
+		}
+		
+		else if (armor_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Armor points");
+			text_on = true;
+		}
+	
+		else if (damage_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Damage points");
+			text_on = true;
+		}
+		
+		else if (pierce_armor_txt->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Armor Penetration points");
+			text_on = true;
+		}
+		else if (create_building_button->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a barrack to hire troops. Requirements: 90 Gold. (You can only have one building of this type)");
+			text_on = true;
+		}
+		else if (create_building_button2->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a house to increase by 1 the maximum amount of units you can have. Requirements: 30 Gold (You need a barrack to build one)");
+			text_on = true;
+		}
+		else if (create_unit_button->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hire a Barbarian. Requirements: 30 Gold");
+			text_on = true;
+		}
+		else if (create_unit_button2->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold & complete mission 4");
+			text_on = true;
+		}
+		
+		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut())))
+		{
+			help_window->SetEnabledAndChilds(false);
+			text_on = false;
+		}
+
+		if(text_on==false)
+			help_window->SetEnabledAndChilds(false);
+		else
+			help_window->SetEnabledAndChilds(true);
+
 
 		//Barracks create unit buttons
 		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
 			create_unit_button->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
+			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
 				Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= barb->cost;
 				App->scene->scene_test->current_human_resources += barb->human_cost;
@@ -1242,10 +1348,10 @@ bool Player::PreUpdate()
 			create_unit_button->SetImage("standard");
 		}
 
-		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
+		if (create_unit_button2->MouseClickEnterLeft()) {
 			create_unit_button2->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 20 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
+			if (App->scene->scene_test->gold >= 30 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
 				Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= sword->cost;
 				App->scene->scene_test->current_human_resources += sword->human_cost;
@@ -1258,6 +1364,8 @@ bool Player::PreUpdate()
 		}
 
 		//Brokenbuilding create building buttons
+		
+				
 		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode))
 		{
 			create_building_button->SetImage("clicked");
@@ -1272,6 +1380,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
 					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader)
@@ -1301,6 +1410,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
@@ -1326,6 +1436,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					Blacksmith* blacksmith = (Blacksmith*)App->entity->CreateEntity(blacksmiths, building, iPoint(pos.x + 40, pos.y + 50));
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
@@ -1510,6 +1621,7 @@ bool Player::Update(float dt)
 						(*it)->SetSelected(true);
 						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
 						{
+							unit_scroll->SetEnabled(true);
 							brokenbuilding_ui_window->SetEnabledAndChilds(true);
 							if (App->scene->scene_test->create_blacksmith == false)
 							{
