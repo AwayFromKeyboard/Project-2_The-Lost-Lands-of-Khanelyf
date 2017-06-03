@@ -114,6 +114,7 @@ public:
 	Object* to_pick_object = nullptr;
 	attack_state att_state = attack_state::attack_null;
 	bool has_moved = false;
+	bool stay_still = false;
 public:
 	int human_cost = 0; // only for allies
 	int gold_drop = 0; // only for enemies
