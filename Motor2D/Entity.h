@@ -25,8 +25,16 @@ enum entity_state {
 	entity_null
 };
 
-class b2Fixture;
-class PhysBody;
+enum entity_quest_id {
+	quest_0,
+	quest_2,
+	quest_3,
+	quest_4,
+	quest_7,
+
+	quest_id_null
+};
+
 
 class Entity
 {
@@ -35,7 +43,7 @@ public:
 
 	virtual ~Entity() {};
 
-	virtual bool LoadEntity(iPoint pos) { return true; };
+	virtual bool LoadEntity(iPoint pos, entity_name name) { return true; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update(float dt) { return true; };
@@ -53,7 +61,7 @@ public:
 		return true;
 	}
 
-	virtual void OnColl(Collider* col1, Collider* col2) {};
+	virtual void OnColl(Entity* en1, Entity* en2) {};
 
 	virtual Collider* GetCollider() {
 		return nullptr;
@@ -76,10 +84,12 @@ public:
 	};
 
 	void LifeBar(iPoint size, iPoint offset);
-
+	void CheckIDInRect();
 public:
 	entity_type type = entity_type::null;
 	entity_state state = entity_state::entity_null;
+	entity_name name = entity_name::test;
+	entity_quest_id id = entity_quest_id::quest_id_null;
 	bool to_delete = false;
 
 	int life = 0;
@@ -92,6 +102,10 @@ public:
 	Animator* animator;
 
 	bool show_life_bar = true;
+
+	bool move_to_ally_building = false;
+
+	int layer = 0;
 protected:
 	bool selected = false;
 };

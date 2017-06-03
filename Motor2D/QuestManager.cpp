@@ -29,8 +29,10 @@ bool QuestManager::Start() {
 	CreateQuest("Create a barrack!", "Create a barrack to hire some units, we need more protection", quest_type::create, quest_id::quest_leader, 1, 20, titles::leader, 2, false);
 	CreateQuest("Kill the enemies at the east!", "Go to the east and kill 4 enemies at the towers", quest_type::kill, quest_id::quest_mayor, 4, 50, titles::mayor, 5, false);
 	CreateQuest("Kill the enemies at the north!", "Go to the north and kill 5 enemies at the fortress", quest_type::kill, quest_id::quest_mayor2, 5, 75, titles::mayor, 5, false);
-	CreateQuest("Conquer the north fortress!", "Attack to the enemy houses near the fortress to conquer them", quest_type::conquer, quest_id::quest_conquer, 2, 20, titles::mayor, 3, false);
+	CreateQuest("Conquer the north fortress!", "Attack to the enemy houses near the fortress to conquer them", quest_type::conquer, quest_id::quest_conquer, 2, 25, titles::mayor, 3, false);
+	CreateQuest("Escort the NPC", "Escort the old man to the main village", quest_type::escort, quest_id::quest_escort, 1, 50, titles::mayor, 5, false );
 	CreateQuest("Give provisions to the other village!", "Go to the captured village and leave the provisions there", quest_type::move_object, quest_id::quest_provisions, 1, 100, titles::mayor, 3, false);
+	CreateQuest("kill the boss", "Go to the north city and kill the boss", quest_type::kill, quest_id::quest_boss, 1, 500, titles::king, 5, false);
 
 	CreateQuest("", "", quest_type::type_null, quest_id::quest_null, 999, 999, titles::titles_null, 999, false);
 
@@ -64,23 +66,34 @@ bool QuestManager::Update(float dt) {
 		case quest_beggar:
 			current_quest = ChangeQuest(quest_id::quest_leader);
 			App->scene->scene_test->create_barrack = true;
+			App->scene->scene_test->enemy_waves_active = true;
 			break;
 		case quest_leader:
 			current_quest = ChangeQuest(quest_id::quest_mayor);
+			current_quest->progress += App->scene->scene_test->progress_quest_2;
 			break;
 		case quest_mayor:
 			current_quest = ChangeQuest(quest_id::quest_mayor2);
+			current_quest->progress += App->scene->scene_test->progress_quest_3;
 			App->player->create_swordsman = true;
 			break;
 		case quest_mayor2:
 			current_quest = ChangeQuest(quest_id::quest_conquer);
+			current_quest->progress += App->scene->scene_test->progress_quest_4;
 			App->player->create_swordsman = true;
 			break;
 		case quest_conquer:
+			current_quest = ChangeQuest(quest_id::quest_escort);
+			break;
+		case quest_escort:
 			current_quest = ChangeQuest(quest_id::quest_provisions);
 			break;
 		case quest_provisions:
+			current_quest = ChangeQuest(quest_id::quest_boss);
+			break;
+		case quest_boss:
 			current_quest = ChangeQuest(quest_id::quest_null);
+			App->player->victory_status = true;
 			break;
 		case quest_null:
 			break;
@@ -104,6 +117,65 @@ bool QuestManager::CleanUp() {
 		RELEASE(*it);
 	}
 	quest_list.clear();
+
+	return true;
+}
+
+bool QuestManager::Load(pugi::xml_node& data)
+{
+	pugi::xml_node quest = data.child("Current_Quest");
+	pugi::xml_node dialogues = data.child("Dialogues");
+
+	int _id = quest.attribute("ID").as_int();
+	quest_id id;
+	switch (_id)
+	{
+	case quest_beggar:
+		id = quest_beggar;
+		break;
+	case quest_leader:
+		id = quest_leader;
+		break;
+	case quest_mayor:
+		id = quest_mayor;
+		break;
+	case quest_mayor2:
+		id = quest_mayor2;
+		break;
+	case quest_conquer:
+		id = quest_conquer;
+		break;
+	case quest_provisions:
+		id = quest_provisions;
+		break;
+	case quest_escort:
+		id = quest_escort;
+		break;
+	case quest_boss:
+		id = quest_boss;
+		break;
+	case quest_null:
+		id = quest_null;
+		break;
+	}
+
+	ChangeQuest(id);
+	current_quest->progress = quest.attribute("Progress").as_int();
+
+	App->dialogs->LoadGame(dialogues);
+
+	return true;
+}
+
+bool QuestManager::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node quest = data.append_child("Current_Quest");
+	pugi::xml_node dialogues = data.append_child("Dialogues");
+
+	quest.append_attribute("ID") = current_quest->id;
+	quest.append_attribute("Progress") = current_quest->progress;
+
+	App->dialogs->SaveGame(dialogues);
 
 	return true;
 }

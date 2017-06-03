@@ -30,15 +30,43 @@ Controls:
 
 * Click left mouse button and drag to select multiple units
 
+* Click left mouse button on the minimap to change view
+
+* Left click on barracks to create new units (Swordsmans cannot be created before mission number 3)
+
+  * Barbarian costs 5 gold
+
+  * Swordsman costs 20 gold
+
+* Left click on blacksmith building to change the first ability (for 50 gold)
+
 * Use the right mouse button to:
 
   * Attack enemy units
  
   * Attack enemy buildings
  
-  * Move the selected troops
+  * Move the selected troops (can also be used in the minimap)
 
   * Pick objects
+
+* ESC to open pause menu:
+
+  * Left click on Save Game to save the current game
+
+  * Left click on Load Game to load the last saved game
+
+  * Left click on Options to open the options menu
+
+	* Left click on Audio to disable or enable it
+
+	* Left click on Controls to open controls menu
+
+		* Left click on one button on this menu and click some button on the keyboard to replace the actual key to the new one
+
+  * Left click on Quit to exit game
+
+  * Left click on Resume Game or ESC to exit pause menu
 
 * F1 to debug mode
 
@@ -48,14 +76,17 @@ Controls:
 
 * X + left click to use Battlecry ability (attack buff to allies)
 
+  or
+
+* X + left click to use Undying Will (hero is inmune to damage for 3 seconds)
+
 * C + left click to use Whirlwind ability (heavy damage to adjecent enemies)
 
 * V + left click on enemy at range to use Charge (heavy damage to one enemy)
 
 Goal:
 
-Follow and complete the quests without getting your hero killed. 
-
+Follow and complete the quests without getting your hero killed and avoid that the enemy waves destroy all the buildings of your empire. 
 
 Quests:
 
@@ -64,4 +95,6 @@ Quests:
 3rd: Go east and kill the 4 enemies that protect the towers.
 4rd: Go north and kill the 5 enemies that protect the village.
 5th: Conquer the village at the north (destroy the two enemy buildings).
-6th: Move the provisions from the first village to the village you just conquered.
+6th: Escort the npc from the towers to the village.
+7th: Move the provisions from the enemy base to the village at the north (between the two houses).
+8th: Kill the boss near the enemy fortress.

@@ -9,12 +9,12 @@
 #include "SDL/include/SDL.h"
 
 enum titles {
-	beggar, leader, mayor, titles_null
+	beggar, leader, mayor, king, titles_null
 
 };
 
 enum quest_type {
-	kill, capture, hire, create, conquer, move_object, type_null
+	kill, capture, hire, create, conquer, move_object, escort, type_null
 };
 
 enum quest_id {
@@ -23,7 +23,9 @@ enum quest_id {
 	quest_mayor,
 	quest_mayor2,
 	quest_conquer,
+	quest_escort,
 	quest_provisions,
+	quest_boss,
 	quest_null
 };
 
@@ -71,8 +73,13 @@ public:
 
 	bool CleanUp();
 
-	Quest* CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 	Quest* GetCurrentQuest();
+
+private:
+	Quest* CreateQuest(string name, string description, quest_type type, quest_id id, uint requested, uint gold, titles new_title, uint level_points, bool active = false);
 	Quest* ChangeQuest(quest_id new_quest);
 
 private:

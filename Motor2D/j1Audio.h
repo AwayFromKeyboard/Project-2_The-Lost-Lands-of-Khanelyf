@@ -32,9 +32,19 @@ public:
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
+	
+	void PauseMusic();
+	void ResumeMusic();
+	void StopMusic();
+	void DefaultVolume();
+	void ChangeVolume(int volume);
+	
 
 private:
+	/*_Mix_Music*			    music = NULL;
+	std::list<SoundEffect*>	fx;*/
 
+	int def_volume = 75;
 	_Mix_Music*			music = NULL;
 	list<Mix_Chunk*>    fx;
 };

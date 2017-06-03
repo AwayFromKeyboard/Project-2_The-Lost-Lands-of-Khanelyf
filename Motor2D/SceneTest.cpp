@@ -23,6 +23,12 @@
 #include "Minimap.h"
 #include "Object.h"
 #include "video.h"
+#include "Player.h"
+#include "Boss_Axe_Knight.h"
+#include "BrokenBuilding.h"
+#include "ParticleManager.h"
+#include "Fire.h"
+#include "Escorted_NPC.h"
 
 SceneTest::SceneTest()
 {
@@ -44,6 +50,11 @@ bool SceneTest::Start()
 		RELEASE_ARRAY(data);
 	}
 
+	this->quest_0 = { App->map->MapToWorldPoint({ 14, 70 }).x, 	App->map->MapToWorldPoint({ 14, 70 }).y, App->map->MapToWorldPoint({ 37, 71 }).x - App->map->MapToWorldPoint({ 14, 70 }).x, App->map->MapToWorldPoint({ 37, 71 }).y - App->map->MapToWorldPoint({ 14, 70 }).y };
+	this->quest_2 = { App->map->MapToWorldPoint({ 55, 50 }).x, 	App->map->MapToWorldPoint({ 55, 50 }).y, App->map->MapToWorldPoint({ 107, 89 }).x - App->map->MapToWorldPoint({ 55, 50 }).x, App->map->MapToWorldPoint({ 107, 89 }).y - App->map->MapToWorldPoint({ 55, 50 }).y };
+	this->quest_3 = { App->map->MapToWorldPoint({ 7, 22 }).x, 	App->map->MapToWorldPoint({ 7, 22 }).y, App->map->MapToWorldPoint({ 21, 22 }).x - App->map->MapToWorldPoint({ 7, 22 }).x, App->map->MapToWorldPoint({ 21, 22 }).y - App->map->MapToWorldPoint({ 7, 22 }).y };
+	this->quest_4 = { App->map->MapToWorldPoint({ 7, 20 }).x, 	App->map->MapToWorldPoint({ 7, 20 }).y, App->map->MapToWorldPoint({ 17, 20 }).x - App->map->MapToWorldPoint({ 7, 20 }).x, App->map->MapToWorldPoint({ 17, 20 }).y - App->map->MapToWorldPoint({ 7, 20 }).y };
+	
 	//LOAD FXs
 
 	death_id = App->audio->LoadFx("audio/fx/Death.wav");
@@ -64,6 +75,12 @@ bool SceneTest::Start()
 
 	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
 	cursor_r = { 1, 7, 37, 40 };
+	cursor_attack_r = { 115, 7, 37, 40 };
+	cursor_build_r = { 153, 7, 37, 40 };
+	cursor_object_r = { 39, 7, 37, 40 };
+	cursor_ui_r = { 77, 7, 37, 40 };
+
+	current_cursor_r = cursor_r;
 	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
 
 	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
@@ -95,6 +112,152 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
+	if (enemy_waves_active)
+	{
+		if (start_waves_timer)
+		{
+			enemy_waves_timer.Start();
+			start_waves_timer = false;
+			enemy_wave_number = enemy_waves::first;
+		}
+
+		if (enemy_wave_number == enemy_waves::first && enemy_waves_timer.ReadSec() >= 60) {
+			enemy_wave_number = enemy_waves::second;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+		}
+		else if (enemy_wave_number == enemy_waves::second && enemy_waves_timer.ReadSec() >= 180) {
+			enemy_wave_number = enemy_waves::third;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+		}
+		else if (enemy_wave_number == enemy_waves::third && enemy_waves_timer.ReadSec() >= 300) {
+			enemy_wave_number = enemy_waves::fourth;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+			Barbarian* barb3 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(92, 3));
+			barb3->move_to_ally_building = true;
+		}
+		else if (enemy_wave_number == enemy_waves::fourth && enemy_waves_timer.ReadSec() >= 420) {
+			enemy_wave_number = enemy_waves::fifth;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+			Barbarian* barb3 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(92, 3));
+			barb3->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(91, 3));
+			sword->move_to_ally_building = true;
+
+		}
+		else if (enemy_wave_number == enemy_waves::fifth && enemy_waves_timer.ReadSec() >= 540) {
+			enemy_wave_number = enemy_waves::sixth;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+			Barbarian* barb3 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(92, 3));
+			barb3->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(91, 3));
+			sword->move_to_ally_building = true;
+		}
+		else if (enemy_wave_number == enemy_waves::sixth && enemy_waves_timer.ReadSec() >= 660) {
+			enemy_wave_number = enemy_waves::seventh;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+			Barbarian* barb3 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(92, 3));
+			barb3->move_to_ally_building = true;
+			Barbarian* barb4 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(91, 3));
+			barb4->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(90, 3));
+			sword->move_to_ally_building = true;
+		}
+		else if (enemy_wave_number == enemy_waves::seventh && enemy_waves_timer.ReadSec() >= 780) {
+			enemy_wave_number = enemy_waves::eighth;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(93, 3));
+			sword->move_to_ally_building = true;
+			Swordsman* sword1 = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(92, 3));
+			sword1->move_to_ally_building = true;
+		}
+		else if (enemy_wave_number == enemy_waves::eighth && enemy_waves_timer.ReadSec() >= 900) {
+			enemy_wave_number = enemy_waves::ninth;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(92, 3));
+			sword->move_to_ally_building = true;
+			Swordsman* sword1 = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(91, 3));
+			sword1->move_to_ally_building = true;
+
+		}
+		else if (enemy_wave_number == enemy_waves::ninth && enemy_waves_timer.ReadSec() >= 1020) {
+			enemy_wave_number = enemy_waves::tenth;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Barbarian* barb2 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(93, 3));
+			barb2->move_to_ally_building = true;
+			Barbarian* barb3 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(92, 3));
+			barb3->move_to_ally_building = true;
+			Barbarian* barb4 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(91, 3));
+			barb4->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(90, 3));
+			sword->move_to_ally_building = true;
+			Swordsman* sword1 = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(89, 3));
+			sword1->move_to_ally_building = true;
+		}
+
+		else if (enemy_wave_number == enemy_waves::tenth && enemy_waves_timer.ReadSec() >= 1020) {
+			enemy_wave_number = enemy_waves::none;
+
+			Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(95, 3));
+			barb->move_to_ally_building = true;
+			Barbarian* barb1 = (Barbarian*)App->entity->CreateEntity(barbarian, enemy, App->map->MapToWorld(94, 3));
+			barb1->move_to_ally_building = true;
+			Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(93, 3));
+			sword->move_to_ally_building = true;
+			Swordsman* sword1 = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(92, 3));
+			sword1->move_to_ally_building = true;
+			Swordsman* sword2 = (Swordsman*)App->entity->CreateEntity(swordsman, enemy, App->map->MapToWorld(91, 3));
+			sword2->move_to_ally_building = true;
+
+		}
+	}
 
 	return true;
 }
@@ -106,16 +269,21 @@ bool SceneTest::Update(float dt)
 	
 	UpdateCameraMovement();
 
+	if (App->player->pause_status || App->player->audio_muted) {
+		
+		App->audio->PauseMusic();
+	}else
+		App->audio->ResumeMusic();
+	
 	App->map->Draw();
 
-	cursor->Set(iPoint(mouse.x, mouse.y), cursor_r);
+	cursor->Set(iPoint(mouse.x, mouse.y), current_cursor_r);
 
 	return true;
 }
 
 bool SceneTest::PostUpdate()
 {
-
 	return true;
 }
 
@@ -152,19 +320,17 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_S) == key_down)
 	{
 		Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_B) == key_down && gold >= 90 && create_barrack == true)
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_B) == key_down)
 	{
 		Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
-		gold -= barrack->cost;
-		if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader) {
-			App->questmanager->GetCurrentQuest()->progress++;
-		}
-		create_barrack = false;
+	}
+	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_W) == key_down)
+	{
+		BossAxeKnight* boss_axe_knight = (BossAxeKnight*)App->entity->CreateEntity(boss, enemy_boss, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
 	else if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_U) == key_down)
 	{
@@ -178,14 +344,42 @@ void SceneTest::CheckUnitCreation(iPoint p)
 	{
 		BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, enemy_building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y), 3);
 	}
-	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && App->questmanager->create_provision == true)
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_J) == key_down)
 	{
-		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(20, 70));
-		App->questmanager->create_provision = false;
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
 	}
+	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_N) == key_down)
+	{
+		BrokenBuilding* brokenbuilding = (BrokenBuilding*)App->entity->CreateEntity(broken_building, building, App->map->MapToWorld(p.x + TROOP_OFFSET, p.y));
+	}
+	if (App->input->GetKey(SDL_SCANCODE_Z) == key_down && App->debug_mode)
+	{
+		App->player->GetHero()->levelup_points += 5;
+	}
+
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort && !escortedNPC_created) {
+		escortedNPC_created = true;
+		EscortedNPC* escorted_npc = (EscortedNPC*)App->entity->CreateEntity(npc_escort, npc, App->map->MapToWorld(90, 70));
+	}
+
+	if (App->questmanager->GetCurrentQuest()->id == quest_id::quest_provisions && !mission_provision_created) {
+		mission_provision_created = true;
+		Entity* object_entity = App->entity->CreateEntity(provisions, object, App->map->MapToWorld(40, 6));
+	}
+
 }
 
 void SceneTest::IncreaseGold(int gold)
 {
 	this->gold += gold;
+}
+
+UI_Image * SceneTest::GetCursor()
+{
+	return cursor;
+}
+
+void SceneTest::SetCurrentCursor(SDL_Rect new_cursor)
+{
+	current_cursor_r = new_cursor;
 }

@@ -34,6 +34,7 @@ class QuestManager;
 class Minimap;
 class DialogueManager;
 class Video;
+class ParticleManager;
 
 class j1App
 {
@@ -126,11 +127,13 @@ public:
 	Minimap*			minimap = nullptr;
 	DialogueManager*	dialogs = nullptr;
 	Video*				video = nullptr;
+	ParticleManager*	particle = nullptr;
 
 	// Console logs
 	list<string>        logs;
 
 	bool			    debug_mode = false;
+	bool				stop_exe = false;
 
 	collision_filters* cf;
 

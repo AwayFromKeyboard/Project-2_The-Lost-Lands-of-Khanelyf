@@ -4,10 +4,11 @@
 #include "j1Gui.h"
 #include "Log.h"
 #include "j1Gui.h"
+#include "Player.h"
 
 DialogueManager::DialogueManager() : j1Module()
 {
-	name = ("dialogue");
+	name = ("");
 }
 
 bool DialogueManager::Awake(pugi::xml_node & Dialogues)
@@ -61,9 +62,11 @@ bool DialogueManager::Start()
 
 bool DialogueManager::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_Q) == key_down)
-	{
-		dialogueStep++;
+	if (App->player->pause_status == false) {
+		if (App->input->GetKey(SDL_SCANCODE_Q) == key_down)
+		{
+			dialogueStep++;
+		}
 	}
 
 	BlitDialog(id, NPCstate); //Calls Blit function
@@ -90,6 +93,24 @@ bool DialogueManager::BlitDialog(uint id, uint state)
 	}
 
 	return false;
+}
+
+bool DialogueManager::LoadGame(pugi::xml_node& data)
+{
+	id = data.child("id").attribute("value").as_int();
+	NPCstate = data.child("NPCstate").attribute("value").as_int();
+	dialogueStep = data.child("DialogueStep").attribute("value").as_int();
+
+	return true;
+}
+
+bool DialogueManager::SaveGame(pugi::xml_node& data) const
+{
+	data.append_child("id").append_attribute("value") = id;
+	data.append_child("NPCstate").append_attribute("value") = NPCstate;
+	data.append_child("DialogueStep").append_attribute("value") = dialogueStep;
+
+	return true;
 }
 
 DialogueManager::~DialogueManager()

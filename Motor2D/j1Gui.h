@@ -141,7 +141,7 @@ public:
 	bool MouseClickOutLeftIntern();
 	bool MouseClickEnterRightIntern();
 	bool MouseClickOutRightIntern();
-
+	
 	void SetDebugColor(SDL_Color color);
 
 	bool PutWindowToTop();
@@ -162,6 +162,7 @@ public:
 	bool				enabled = true;
 	bool				click_through = false;
 	bool				is_ui = true;
+	bool				change_click_through = false;
 
 	// Layers --
 	double				layer = 0;
@@ -301,13 +302,20 @@ public:
 
 	void Set(iPoint pos, _TTF_Font* font, int spacing,  uint r = 255, uint g = 255, uint b = 255);
 	void SetText(string text);
+	bool MouseEnter();
+	bool MouseOut();
 	string GetText();
 
 public:
-	list<tex_str>          tex_str_list;  
-	SDL_Color	           color = NULLCOLOR;
-	_TTF_Font*	           font = nullptr;
-	int                    spacing = 0;
+	list<tex_str>			tex_str_list;  
+	SDL_Color				color = NULLCOLOR;
+	_TTF_Font*				font = nullptr;
+	int						spacing = 0;
+	std::string				str;
+private:
+	bool			  to_enter = false;
+	bool			  enter = false;
+
 };
 
 // ------------------------------

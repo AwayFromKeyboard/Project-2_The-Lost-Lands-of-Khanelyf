@@ -6,7 +6,6 @@
 #include "Point.h"
 
 class b2Fixture;
-class PhysBody;
 
 enum entity_name
 {
@@ -14,8 +13,13 @@ enum entity_name
 	barbarian,
 	swordsman,
 	barracks,
+	broken_building,
 	provisions,
 	basic_building,
+	boss,
+	towers,
+	npc_escort,
+	blacksmiths,
 	test
 };
 
@@ -29,7 +33,8 @@ enum entity_type
 	building,
 	object,
 	ally_building,
-	enemy_building
+	enemy_building,
+	enemy_boss
 };
 
 class Entity;
@@ -72,6 +77,11 @@ public:
 
 	void OnCollision(Collider* col1, Collider* col2);
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+public:
+
 	Entity* CreateEntity(entity_name name, entity_type type, iPoint pos);
 	Entity* CreateBuildingEntity(entity_name name, entity_type type, iPoint pos, int building_rect_number);
 	void DeleteEntity(Entity* entity);
@@ -91,6 +101,7 @@ public:
 	std::list<SelectedList> lists_selected;
 	std::list<Unit*> selected;
 	//std::list<Props*> props;
+	bool loaded = true;
 };
 
 #endif // __j1ENTITY_H__
