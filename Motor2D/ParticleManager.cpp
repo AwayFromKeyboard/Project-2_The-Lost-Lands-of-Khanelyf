@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "CursorAnimations.h"
 #include "BattlecryBuff.h"
+#include "UndWillBuf.h"
 #include "Player.h"
 
 ParticleManager::ParticleManager()
@@ -96,6 +97,9 @@ Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint po
 		break;
 	case particle_type::battlecrybuff:
 		ret = new BattlecryBuff(set);
+		break;
+	case particle_type::undwillbuff:
+		ret = new UndWillBuff(set);
 		break;
 	}
 

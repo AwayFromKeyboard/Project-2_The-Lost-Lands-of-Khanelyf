@@ -125,6 +125,7 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Swordsman.cpp" />
     <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="UndWillBuff.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Swordsman.h" />
     <ClInclude Include="Tower.h" />
+    <ClInclude Include="UndWillBuf.h" />
     <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
