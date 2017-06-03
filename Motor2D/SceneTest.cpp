@@ -264,27 +264,6 @@ bool SceneTest::Update(float dt)
 
 bool SceneTest::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_A) == key_down) {
-		/*if (!App->player) {
-			App->scene->CleanUp();
-			App->Start();
-		}
-		else {
-			App->CleanUp();
-			App->scene = new j1Scene();
-			App->scene->Start();
-			App->player->active = !App->player->active;
-			App->dialogs->active = !App->dialogs->active;
-			App->map->active = false;
-			App->player->CleanUp();
-			RELEASE(App->player);
-			App->entity->active = false;
-			App->dialogs->CleanUp();
-			RELEASE(App->dialogs);
-			App->map->CleanUp();
-			RELEASE(App->map);
-		}*/
-	}
 	return true;
 }
 
