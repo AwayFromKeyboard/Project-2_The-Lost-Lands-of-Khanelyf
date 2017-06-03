@@ -1529,6 +1529,8 @@ bool Player::PreUpdate()
 				{
 					undying_state_active = true;
 
+					(UndWillBuff*)App->particle->CreateParticle(particle_type::undwillbuff, 0, { hero->position.x, hero->position.y });
+
 					battlecry_ability->SetImage("clicked");
 
 					undying_will_cd->SetEnabled(true);

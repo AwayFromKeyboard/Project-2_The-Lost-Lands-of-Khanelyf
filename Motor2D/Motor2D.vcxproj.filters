@@ -157,6 +157,9 @@
     <ClCompile Include="BattlecryBuff.cpp">
       <Filter>Engine\6. Particles\BattlecryBuff</Filter>
     </ClCompile>
+    <ClCompile Include="UndWillBuff.cpp">
+      <Filter>Engine\6. Particles\UndWillBuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -325,6 +328,9 @@
     <ClInclude Include="BattlecryBuff.h">
       <Filter>Engine\6. Particles\BattlecryBuff</Filter>
     </ClInclude>
+    <ClInclude Include="UndWillBuf.h">
+      <Filter>Engine\6. Particles\UndWillBuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2D Engine.rc" />
@@ -400,6 +406,9 @@
     </Filter>
     <Filter Include="Engine\6. Particles\BattlecryBuff">
       <UniqueIdentifier>{40f9aef8-f133-43b4-93ee-b94d24244d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\UndWillBuff">
+      <UniqueIdentifier>{770aa642-ce75-4fc1-a52d-38ff3bcf768b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
