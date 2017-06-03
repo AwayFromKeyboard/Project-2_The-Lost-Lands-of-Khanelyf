@@ -44,6 +44,7 @@ bool Player::Start()
 	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 100, 200, 100);
 
 	helping_txt = (UI_Text*)help_window->CreateText({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_15);
+	helping_txt->click_through = true;
 	
 	help_window->SetEnabledAndChilds(false);
 
@@ -153,7 +154,7 @@ bool Player::Start()
 	mainmenu->AddImage("clicked", { 25, 2768, 186, 31 });
 	mainmenu->AddImage("hovered", { 26, 2732, 186, 31 });
 	
-	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 18) }, 186, 31);
 	back->AddImage("standard", { 25, 2695, 186, 31 });
 	back->SetImage("standard");
 	back->AddImage("clicked", { 25, 2768, 186, 31 });
@@ -274,7 +275,7 @@ bool Player::Start()
 	mainmenu_txt->SetText("Main Menu");
 	mainmenu_txt->click_through = true;
 	
-	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, App->font->default);
 	back_txt->SetText("Resume Game");
 	back_txt->click_through = true;
 	
@@ -1260,23 +1261,39 @@ bool Player::PreUpdate()
 	}
 	
 	if (battlecry_ability->MouseEnter()) {
-		battlecry_ability->SetImage("hovered");
-		if (active_ability == battlecry_active)
-			helping_txt->SetText("Battlecry. Gives +5 attack to tropes during 5 seconds (30s cd)");
-		else if (active_ability == undying_will_active)
-			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
-		help_window->SetEnabledAndChilds(true);
+		
+		if (active_ability == battlecry_active) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd)");
+			text_on = true;
 		}
-	else if (battlecry_ability->MouseOut() && battlecry_ability->CompareState("hovered")) {
-		battlecry_ability->SetImage("standard");
-		help_window->SetEnabledAndChilds(false);
+		else if (active_ability == undying_will_active) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
+			text_on = true;
+		}
 	}
-		/*help_window->SetEnabledAndChilds(true);
 	
-	helping_txt->SetText("Whirlwind. A spin that does AoE damage");
-	helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit");
+	else if (whirlwind_ability->MouseEnter()) {
+		help_window->SetEnabledAndChilds(true);
+		helping_txt->SetText("Whirlwind.  A spin that does 40 AoE damage to a max. of 2 enemies (8s cd)");
+		text_on = true;
+	}
+	else if (charge_ability->MouseEnter()) {
+		help_window->SetEnabledAndChilds(true);
+		helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit of 40 damage (12s cd)");
+		text_on = true;
+	}
+	else if (text_on && (battlecry_ability->MouseOut() || battlecry_ability->enabled == false) && (whirlwind_ability->MouseOut() || whirlwind_ability->enabled == false) && (charge_ability->MouseOut() || charge_ability->enabled == false)) {
+		
+		help_window->SetEnabledAndChilds(false);
+		text_on = false;
+	}
+	if (text_on == false)
+		help_window->SetEnabledAndChilds(false);
+	else
+		help_window->SetEnabledAndChilds(true);
 
-*/
 
 	if (!pause_status) {
 
@@ -1329,8 +1346,13 @@ bool Player::PreUpdate()
 			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold & complete mission 4");
 			text_on = true;
 		}
+		else if (item_drop->MouseEnter()) {
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Click to drop the item");
+			text_on = true;
+		}
 		
-		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())))
+		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
 		{
 			help_window->SetEnabledAndChilds(false);
 			text_on = false;
