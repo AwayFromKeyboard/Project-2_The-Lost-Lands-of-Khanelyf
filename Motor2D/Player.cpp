@@ -41,6 +41,18 @@ bool Player::Start()
 {
 	bool ret = true;
 
+	// Cursor
+	cursor_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), 37, 40, 100, true);
+	cursor_r = { 1, 7, 37, 40 };
+	cursor_attack_r = { 115, 7, 37, 40 };
+	cursor_build_r = { 153, 7, 37, 40 };
+	cursor_object_r = { 39, 7, 37, 40 };
+	cursor_ui_r = { 77, 7, 37, 40 };
+
+	current_cursor_r = cursor_r;
+	cursor = (UI_Image*)cursor_window->CreateImage(iPoint(0, 0), cursor_r, true);
+
+	// MISC
 	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 100, 200, 100);
 
 	helping_txt = (UI_Text*)help_window->CreateText({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_15);
@@ -1544,7 +1556,7 @@ bool Player::PreUpdate()
 
 			if (!clicked_charge_1 && charge_ability->MouseClickEnterLeft()) {
 				clicked_charge_1 = true;
-				App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_attack_r);
+				App->player->SetCurrentCursor(App->player->cursor_attack_r);
 			}
 			else if (clicked_charge_1 && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down) {
 				clicked_charge_2 = true;
@@ -1827,6 +1839,10 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+	
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
+	cursor->Set(iPoint(mouse.x, mouse.y), current_cursor_r);
 
 	return ret;
 }
@@ -2260,7 +2276,7 @@ void Player::Charge()
 					charge_ability->SetImage("clicked");
 					charge_cd->SetEnabled(true);
 					charge_timer.Start();
-					App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+					App->player->SetCurrentCursor(App->player->cursor_r);
 					draw_charge_range = false;
 				}
 				else
@@ -2284,7 +2300,7 @@ void Player::Charge()
 	}
 
 	if (charge_ability->CompareState("standard")) {
-		App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+		App->player->SetCurrentCursor(App->player->cursor_r);
 		clicked_charge_1 = false;
 		clicked_charge_2 = false;
 	}
@@ -2468,17 +2484,17 @@ void Player::CheckMouseEntity()
 						break;
 					case entity_type::building:
 					case entity_type::ally_building:
-						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_build_r);
+						App->player->SetCurrentCursor(App->player->cursor_build_r);
 						mouse_over_entity = true;
 						break;
 					case entity_type::object:
-						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_object_r);
+						App->player->SetCurrentCursor(App->player->cursor_object_r);
 						mouse_over_entity = true;
 						break;
 					case entity_type::enemy:
 					case entity_type::enemy_building:
 					case entity_type::enemy_boss:
-						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_attack_r);
+						App->player->SetCurrentCursor(App->player->cursor_attack_r);
 						mouse_over_entity = true;
 						break;
 					default:
@@ -2492,9 +2508,19 @@ void Player::CheckMouseEntity()
 		}
 
 		if (!mouse_over_entity)
-			App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+			App->player->SetCurrentCursor(App->player->cursor_r);
 	}
 	else 
-		App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_ui_r);
+		App->player->SetCurrentCursor(App->player->cursor_ui_r);
 
+}
+
+UI_Image * Player::GetCursor()
+{
+	return cursor;
+}
+
+void Player::SetCurrentCursor(SDL_Rect new_cursor)
+{
+	current_cursor_r = new_cursor;
 }

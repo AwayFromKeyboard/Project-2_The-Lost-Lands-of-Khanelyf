@@ -52,6 +52,9 @@ public:
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
+
+	UI_Image* GetCursor();
+	void SetCurrentCursor(SDL_Rect new_cursor);
 private:
 	void Battlecry();
 	void BattlecryModifier(int damage_buff);
@@ -67,7 +70,18 @@ private:
 	void DrawCD(int ability_number);
 private:
 	void CheckMouseEntity();
-
+private:
+	UI_Window* cursor_window = nullptr;
+	UI_Image* cursor = nullptr;
+	SDL_Rect current_cursor_r = NULLRECT;
+public:
+	SDL_Rect cursor_r = NULLRECT;
+	SDL_Rect cursor_attack_r = NULLRECT;
+	SDL_Rect cursor_build_r = NULLRECT;
+	SDL_Rect cursor_object_r = NULLRECT;
+	SDL_Rect cursor_ui_r = NULLRECT;
+	bool move_init = false;
+	iPoint clicked_point = NULLPOINT;
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
