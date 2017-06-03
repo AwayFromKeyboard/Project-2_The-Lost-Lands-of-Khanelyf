@@ -1899,6 +1899,18 @@ bool Player::PostUpdate()
 bool Player::CleanUp()
 {
 	bool ret = true;
+
+	App->gui->DeleteElement(cursor_window);
+	App->gui->DeleteElement(general_ui_window);
+	App->gui->DeleteElement(pause_window);
+	App->gui->DeleteElement(victory_window);
+	App->gui->DeleteElement(help_window);
+	App->gui->DeleteElement(attributes_window);
+	App->gui->DeleteElement(levelup_window);
+	App->gui->DeleteElement(barracks_ui_window);
+	App->gui->DeleteElement(player_abilities);
+	App->gui->DeleteElement(inventory);
+
 	return ret;
 }
 
