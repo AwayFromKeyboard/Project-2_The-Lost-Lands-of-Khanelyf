@@ -72,20 +72,12 @@ bool SceneTest::Start()
 
 	App->collisions->UpdateQuadtree();
 
-
-
-	general_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(0, 0), App->win->_GetWindowSize().x, App->win->_GetWindowSize().y, 3);
-	ui_r = { 0, 88, 1680, 1050 };
-	general_ui_image = (UI_Image*)general_ui_window->CreateImage(iPoint(0, 0), ui_r);
-
 	InitCameraMovement();
 
 	App->map->GetEntitiesSpawn();
 
 	gold = 0;
-	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
-
-	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
+	
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
@@ -298,11 +290,11 @@ void SceneTest::CheckUnitCreation(iPoint p)
 {
 	std::stringstream oss;
 	oss << gold;
-	gold_txt->SetText(oss.str());
+	App->player->gold_txt->SetText(oss.str());
 
 	std::stringstream oss2;
 	oss2 << current_human_resources << "/" << human_resources_max;
-	human_resources_txt->SetText(oss2.str());
+	App->player->human_resources_txt->SetText(oss2.str());
 
 	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_A) == key_down)
 	{

@@ -74,6 +74,12 @@ private:
 	UI_Window* cursor_window = nullptr;
 	UI_Image* cursor = nullptr;
 	SDL_Rect current_cursor_r = NULLRECT;
+
+	UI_Window* general_ui_window = nullptr;
+	UI_Image* general_ui_image = nullptr;
+
+	SDL_Rect ui_r = NULLRECT;
+	SDL_Rect buy_unit = NULLRECT;
 public:
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect cursor_attack_r = NULLRECT;
@@ -85,7 +91,8 @@ public:
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
-	
+	UI_Text* gold_txt = nullptr;
+	UI_Text* human_resources_txt = nullptr;
 private:
 	UI_Window* victory_window = nullptr;
 	UI_Window* help_window = nullptr;
