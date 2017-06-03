@@ -7,6 +7,7 @@
 #include "j1Textures.h"
 #include "j1Scene.h"
 #include "Player.h"
+#include "Hero.h"
 
 UndWillBuff::UndWillBuff(int set)
 {
@@ -30,6 +31,8 @@ bool UndWillBuff::Update(float dt)
 	if (!App->player->undying_state_active) {
 		to_delete = true;
 	}
+
+	this->position = App->player->GetHero()->position;
 
 	return true;
 }
