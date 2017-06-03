@@ -73,13 +73,6 @@ bool DialogueManager::PostUpdate()
 	return true;
 }
 
-bool DialogueManager::CleanUp()
-{
-	App->gui->DeleteElement(win);
-
-	return true;
-}
-
 bool DialogueManager::BlitDialog(uint id, uint state)
 {
 	//Find the correct ID
