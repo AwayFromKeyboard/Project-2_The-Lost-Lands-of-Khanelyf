@@ -85,43 +85,64 @@ bool SceneTest::Start()
 	
 	int distance = App->win->_GetWindowSize().y / 4 - App->win->_GetWindowSize().y / 8;
 	int y_position = App->win->_GetWindowSize().y / 8;
+	int text_offset = 20;
 	SDL_Rect standard_button = { 0, 2190, 283, 109 };
 	SDL_Rect hover_button = { 331, 2190, 283, 109 };
 	SDL_Rect click_button = { 662, 2190, 283, 109 };
 
 	new_game_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	new_game_button->change_click_through = true;
 	new_game_button->AddImage("standard", standard_button);
 	new_game_button->AddImage("hover", hover_button);
 	new_game_button->AddImage("click", click_button);
 	new_game_button->SetImage("standard");
+	new_game_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_48, 0, false, 0, 0, 0);
+	new_game_txt->click_through = true;
+	new_game_txt->SetText("New Game");
 	y_position += distance;
 
 	load_game_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	load_game_button->change_click_through = true;
 	load_game_button->AddImage("standard", standard_button);
 	load_game_button->AddImage("hover", hover_button);
 	load_game_button->AddImage("click", click_button);
 	load_game_button->SetImage("standard");
+	load_game_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_48, 0, false, 0, 0, 0);
+	load_game_txt->click_through = true;
+	load_game_txt->SetText("Load Game");
 	y_position += distance;
 
 	credits_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	credits_button->change_click_through = true;
 	credits_button->AddImage("standard", standard_button);
 	credits_button->AddImage("hover", hover_button);
 	credits_button->AddImage("click", click_button);
 	credits_button->SetImage("standard");
+	credits_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_48, 0, false, 0, 0, 0);
+	credits_txt->click_through = true;
+	credits_txt->SetText("Credits");
 	y_position += distance;
 
 	trailer_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	trailer_button->change_click_through = true;
 	trailer_button->AddImage("standard", standard_button);
 	trailer_button->AddImage("hover", hover_button);
 	trailer_button->AddImage("click", click_button);
 	trailer_button->SetImage("standard");
+	trailer_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_42, 0, false, 0, 0, 0);
+	trailer_txt->click_through = true;
+	trailer_txt->SetText("Watch Trailer");
 	y_position += distance;
 
 	exit_game_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	exit_game_button->change_click_through = true;
 	exit_game_button->AddImage("standard", standard_button);
 	exit_game_button->AddImage("hover", hover_button);
 	exit_game_button->AddImage("click", click_button);
 	exit_game_button->SetImage("standard");
+	exit_game_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_48, 0, false, 0, 0, 0);
+	exit_game_txt->click_through = true;
+	exit_game_txt->SetText("Exit Game");
 
 	SDL_ShowCursor(0);
 	return true;
@@ -143,28 +164,28 @@ bool SceneTest::PreUpdate()
 	else if (new_game_button->MouseOut())
 		new_game_button->SetImage("standard");
 
-	if (load_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+	if (load_game_button->MouseEnter() || load_game_button->MouseClickOutLeft())
 		load_game_button->SetImage("hover");
 	else if (load_game_button->MouseClickEnterLeft())
 		load_game_button->SetImage("click");
 	else if (load_game_button->MouseOut())
 		load_game_button->SetImage("standard");
 
-	if (credits_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+	if (credits_button->MouseEnter() || credits_button->MouseClickOutLeft())
 		credits_button->SetImage("hover");
 	else if (credits_button->MouseClickEnterLeft())
 		credits_button->SetImage("click");
 	else if (credits_button->MouseOut())
 		credits_button->SetImage("standard");
 
-	if (trailer_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+	if (trailer_button->MouseEnter() || trailer_button->MouseClickOutLeft())
 		trailer_button->SetImage("hover");
 	else if (trailer_button->MouseClickEnterLeft())
 		trailer_button->SetImage("click");
 	else if (trailer_button->MouseOut())
 		trailer_button->SetImage("standard");
 
-	if (exit_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+	if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeft())
 		exit_game_button->SetImage("hover");
 	else if (exit_game_button->MouseClickEnterLeft())
 		exit_game_button->SetImage("click");

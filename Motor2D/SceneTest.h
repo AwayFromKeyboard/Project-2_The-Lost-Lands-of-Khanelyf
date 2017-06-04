@@ -13,6 +13,7 @@ class Barbarian;
 class UI_Window;
 class UI_Image;
 class UI_Button;
+class UI_Text;
 
 #define TROOP_PRICE 20
 #define TROOP_OFFSET 1
@@ -58,12 +59,18 @@ private:
 	
 	UI_Window* main_menu_window = nullptr;
 	UI_Image* main_menu_background = nullptr;
+	
 	UI_Button* new_game_button = nullptr;
 	UI_Button* load_game_button = nullptr;
 	UI_Button* credits_button = nullptr;
 	UI_Button* exit_game_button = nullptr;
 	UI_Button* trailer_button = nullptr;
 
+	UI_Text* new_game_txt = nullptr;
+	UI_Text* load_game_txt = nullptr;
+	UI_Text* credits_txt = nullptr;
+	UI_Text* exit_game_txt = nullptr;
+	UI_Text* trailer_txt = nullptr;
 
 public:
 	int gold = 0;
