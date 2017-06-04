@@ -249,6 +249,7 @@ public:
 	bool undying_state_active = false;
 
 	bool audio_muted = false;
+	bool loaded = false;
 
 private:
 	j1Timer battlecry_timer;
