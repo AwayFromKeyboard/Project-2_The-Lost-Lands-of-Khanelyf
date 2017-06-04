@@ -104,13 +104,11 @@ bool Building::Update(float dt)
 			{
 				App->entity->CreateEntity(broken_building, building, iPoint(position.x - 40, position.y - 50));
 
-				App->player->choose_ability_b->click_through = true;
-				App->player->choose_ability_b->enabled = false;
-				App->player->choose_ability_b_txt->enabled = false;
+				App->player->choose_ability_b->SetEnabled(false);
+				App->player->choose_ability_b_txt->SetEnabled(false);
 
-				App->player->choose_ability_uw->click_through = true;
-				App->player->choose_ability_uw->enabled = false;
-				App->player->choose_ability_uw_txt->enabled = false;
+				App->player->choose_ability_uw->SetEnabled(false);
+				App->player->choose_ability_uw_txt->SetEnabled(false);
 
 				App->scene->scene_test->create_blacksmith = true;
 				App->player->blacksmith_alive = false;

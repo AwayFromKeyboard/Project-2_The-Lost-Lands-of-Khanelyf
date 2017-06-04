@@ -41,9 +41,10 @@ bool Player::Start()
 {
 	bool ret = true;
 
-	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 100, 200, 100);
+	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 0, 0, 100);
 
 	helping_txt = (UI_Text*)help_window->CreateText({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_15);
+	helping_txt->click_through = true;
 	
 	help_window->SetEnabledAndChilds(false);
 
@@ -153,7 +154,7 @@ bool Player::Start()
 	mainmenu->AddImage("clicked", { 25, 2768, 186, 31 });
 	mainmenu->AddImage("hovered", { 26, 2732, 186, 31 });
 	
-	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 18) }, 186, 31);
 	back->AddImage("standard", { 25, 2695, 186, 31 });
 	back->SetImage("standard");
 	back->AddImage("clicked", { 25, 2768, 186, 31 });
@@ -274,7 +275,7 @@ bool Player::Start()
 	mainmenu_txt->SetText("Main Menu");
 	mainmenu_txt->click_through = true;
 	
-	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, App->font->default);
 	back_txt->SetText("Resume Game");
 	back_txt->click_through = true;
 	
@@ -380,7 +381,7 @@ bool Player::Start()
 
 	//player abilities
 
-	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 0, 0, 12);
 
 	//Choose ability
 
@@ -389,12 +390,14 @@ bool Player::Start()
 	choose_ability_b->SetImage("standard");
 	choose_ability_b->AddImage("clicked", { 25, 2768, 186, 31 });
 	choose_ability_b->AddImage("hovered", { 26, 2732, 186, 31 });
+	choose_ability_b->change_click_through = true;
 
 	choose_ability_uw = (UI_Button*)player_abilities->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
 	choose_ability_uw->AddImage("standard", { 25, 2695, 186, 31 });
 	choose_ability_uw->SetImage("standard");
 	choose_ability_uw->AddImage("clicked", { 25, 2768, 186, 31 });
 	choose_ability_uw->AddImage("hovered", { 26, 2732, 186, 31 });
+	choose_ability_uw->change_click_through = true;
 
 	choose_ability_b_txt = (UI_Text*)player_abilities->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, App->font->default);
 	choose_ability_b_txt->SetText("Berserker");
@@ -453,9 +456,9 @@ bool Player::Start()
 
 	//drop object interface
 
-	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
-	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
-	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1300, 1000), 0, 0, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x - App->win->_GetWindowSize().x / 5, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 8), 60, 60);
+	item_drop->AddImage("standard", { 898, 0, 40, 40 });
 	item_drop->SetImage("standard");
 	item_drop->SetEnabled(false);
 
@@ -498,38 +501,39 @@ bool Player::PreUpdate()
 	if (active_ability == not_chosen && pause_status == false)
 		pause_status = !pause_status;
 
-	if (choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen)
+	if ((choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == battlecry_active && loaded))
 	{
 		active_ability = battlecry_active;
 
 		show_ability_name->SetText("BC");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
-
+		
+		if (loaded)
+			loaded = false;
 	}
-	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen)
+	else if ((choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == undying_will_active && loaded))
 	{
 		active_ability = undying_will_active;
 
 		show_ability_name->SetText("UW");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
+
+		if (loaded)
+			loaded = false;
 	}
 
 	if (choose_ability_b->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != battlecry_active && App->scene->scene_test->gold >= 50)
@@ -539,13 +543,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("BC");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		battlecry_ability->SetImage("clicked");
 
@@ -560,13 +562,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("UW");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		battlecry_ability->SetImage("clicked");
 
@@ -579,13 +579,11 @@ bool Player::PreUpdate()
 	{
 		if (active_ability != not_chosen)
 		{
-			choose_ability_b->click_through = true;
-			choose_ability_b->enabled = false;
-			choose_ability_b_txt->enabled = false;
+			choose_ability_b->SetEnabled(false);
+			choose_ability_b_txt->SetEnabled(false);
 
-			choose_ability_uw->click_through = true;
-			choose_ability_uw->enabled = false;
-			choose_ability_uw_txt->enabled = false;
+			choose_ability_uw->SetEnabled(false);
+			choose_ability_uw_txt->SetEnabled(false);
 		}
 		if (change_controls_status)
 		{
@@ -1258,84 +1256,134 @@ bool Player::PreUpdate()
 		quit_game->SetImage("clicked");
 		App->stop_exe = true;
 	}
-	
-	if (battlecry_ability->MouseEnter()) {
-		battlecry_ability->SetImage("hovered");
-		helping_txt->SetText("Battlecry. Gives +5 attack to tropes during 5 seconds (30s cd)");
-		help_window->SetEnabledAndChilds(true);
-		}
-	else if (battlecry_ability->MouseOut() && battlecry_ability->CompareState("hovered")) {
-		battlecry_ability->SetImage("standard");
-		help_window->SetEnabledAndChilds(false);
-	}
-		/*help_window->SetEnabledAndChilds(true);
-	
-	helping_txt->SetText("Whirlwind. A spin that does AoE damage");
-	helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit");
-
-*/
-
-	if (!pause_status) {
 
 
-		if (life_txt->MouseEnter()) {
+	if (!pause_status)
+	{
+
+
+		if (life_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Life points");
 			text_on = true;
 		}
 		
-		else if (armor_txt->MouseEnter()) {
+		else if (armor_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Armor points");
 			text_on = true;
 		}
 	
-		else if (damage_txt->MouseEnter()) {
+		else if (damage_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Damage points");
 			text_on = true;
 		}
 		
-		else if (pierce_armor_txt->MouseEnter()) {
+		else if (pierce_armor_txt->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hero's Armor Penetration points");
 			text_on = true;
 		}
-		else if (create_building_button->MouseEnter()) {
+		else if (create_building_button->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a barrack to hire troops. Requirements: 90 Gold. (You can only have one building of this type)");
 			text_on = true;
 		}
-		else if (create_building_button2->MouseEnter()) {
+		else if (create_building_button2->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Create a house to increase by 1 the maximum amount of units you can have. Requirements: 30 Gold (You need a barrack to build one)");
 			text_on = true;
 		}
-		else if (create_unit_button->MouseEnter()) {
+		else if (create_building_button3->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Hire a Barbarian. Requirements: 30 Gold");
+			helping_txt->SetText("Create a blacksmith to change your first ability for 50 gold. Requirements: 50 Gold");
 			text_on = true;
 		}
-		else if (create_unit_button2->MouseEnter()) {
+		else if (create_unit_button->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hire a Barbarian. Requirements: 10 Gold");
+			text_on = true;
+		}
+		else if (create_unit_button2->MouseEnter())
+		{
 			help_window->SetEnabledAndChilds(true);
 			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold & complete mission 4");
 			text_on = true;
 		}
+		else if (item_drop->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Click to drop the item");
+			text_on = true;
+		}
+
+		else if (battlecry_ability->MouseEnter())
+		{
+
+			if (active_ability == battlecry_active) {
+				help_window->SetEnabledAndChilds(true);
+				helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd)");
+				text_on = true;
+			}
+			else if (active_ability == undying_will_active) {
+				help_window->SetEnabledAndChilds(true);
+				helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
+				text_on = true;
+			}
+		}
+
+		else if (whirlwind_ability->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Whirlwind. A spin that does 40 AoE damage (8s cd)");
+			text_on = true;
+		}
+
+		else if (charge_ability->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Charge. Click on the ground below an enemy inside the range of action to charge at him and deal him 40 damage + your actual attack (12s cd)");
+			text_on = true;
+		}
+
+		else if (choose_ability_uw->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd). Requirements: 50 Gold");
+			text_on = true;
+		}
+
+		else if (choose_ability_b->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd). Requirements: 50 Gold");
+			text_on = true;
+		}
 		
-		else if (text_on && (pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut())))
+		else if (text_on && ((choose_ability_b->enabled == false || (choose_ability_b->MouseOut() && choose_ability_uw->MouseOut())) && battlecry_ability->MouseOut() && whirlwind_ability->MouseOut() && charge_ability->MouseOut() && pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
 		{
 			help_window->SetEnabledAndChilds(false);
 			text_on = false;
 		}
 
-		if(text_on==false)
+		if(text_on == false)
 			help_window->SetEnabledAndChilds(false);
 		else
 			help_window->SetEnabledAndChilds(true);
 
 
 		//Barracks create unit buttons
-		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
+		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true)
+		{
 			create_unit_button->SetImage("clicked");
 
 			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
@@ -1344,11 +1392,13 @@ bool Player::PreUpdate()
 				App->scene->scene_test->current_human_resources += barb->human_cost;
 			}
 		}
-		if (create_unit_button->MouseClickOutLeft()) {
+		if (create_unit_button->MouseClickOutLeft())
+		{
 			create_unit_button->SetImage("standard");
 		}
 
-		if (create_unit_button2->MouseClickEnterLeft()) {
+		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true)
+		{
 			create_unit_button2->SetImage("clicked");
 
 			if (App->scene->scene_test->gold >= 30 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
@@ -1510,6 +1560,8 @@ bool Player::PreUpdate()
 				{
 					undying_state_active = true;
 
+					(UndWillBuff*)App->particle->CreateParticle(particle_type::undwillbuff, 0, { hero->position.x, hero->position.y });
+
 					battlecry_ability->SetImage("clicked");
 
 					undying_will_cd->SetEnabled(true);
@@ -1636,13 +1688,11 @@ bool Player::Update(float dt)
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 
-						choose_ability_b->click_through = false;
-						choose_ability_b->enabled = true;
-						choose_ability_b_txt->enabled = true;
+						choose_ability_b->SetEnabled(true);
+						choose_ability_b_txt->SetEnabled(true);
 
-						choose_ability_uw->click_through = false;
-						choose_ability_uw->enabled = true;
-						choose_ability_uw_txt->enabled = true;
+						choose_ability_uw->SetEnabled(true);
+						choose_ability_uw_txt->SetEnabled(true);
 
 						break;
 					}
@@ -1922,6 +1972,22 @@ bool Player::Load(pugi::xml_node& data)
 		}
 	}
 
+	int ability = data.child("First_Ability").attribute("ability").as_int();
+
+	switch (ability)
+	{
+	case battlecry_active:
+		active_ability = battlecry_active;
+		break;
+	case undying_will_active:
+		active_ability = undying_will_active;
+		break;
+	case not_chosen:
+		active_ability = not_chosen;
+		break;
+	default:
+		break;
+	}
 
 	return true;
 }
@@ -1962,6 +2028,8 @@ bool Player::Save(pugi::xml_node& data) const
 			ally.child("Position").append_attribute("y") = (*it)->position.y;
 		}
 	}
+
+	data.append_child("First_Ability").append_attribute("ability") = active_ability;
 
 	return true;
 }
