@@ -143,6 +143,34 @@ bool SceneTest::PreUpdate()
 	else if (new_game_button->MouseOut())
 		new_game_button->SetImage("standard");
 
+	if (load_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+		load_game_button->SetImage("hover");
+	else if (load_game_button->MouseClickEnterLeft())
+		load_game_button->SetImage("click");
+	else if (load_game_button->MouseOut())
+		load_game_button->SetImage("standard");
+
+	if (credits_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+		credits_button->SetImage("hover");
+	else if (credits_button->MouseClickEnterLeft())
+		credits_button->SetImage("click");
+	else if (credits_button->MouseOut())
+		credits_button->SetImage("standard");
+
+	if (trailer_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+		trailer_button->SetImage("hover");
+	else if (trailer_button->MouseClickEnterLeft())
+		trailer_button->SetImage("click");
+	else if (trailer_button->MouseOut())
+		trailer_button->SetImage("standard");
+
+	if (exit_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+		exit_game_button->SetImage("hover");
+	else if (exit_game_button->MouseClickEnterLeft())
+		exit_game_button->SetImage("click");
+	else if (exit_game_button->MouseOut())
+		exit_game_button->SetImage("standard");
+
 	if (enemy_waves_active)
 	{
 		if (start_waves_timer)
