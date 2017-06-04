@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "j1Render.h"
+#include "j1Gui.h"
 #include "Animation.h"
 
 class b2Fixture;
@@ -53,8 +54,20 @@ public:
 	void CheckUnitCreation(iPoint p);
 	void IncreaseGold(int gold);
 
+	UI_Image* GetCursor();
+	void SetCurrentCursor(SDL_Rect new_cursor);
 
 private:
+	UI_Window* cursor_window = nullptr;
+	UI_Image* cursor = nullptr;
+	SDL_Rect current_cursor_r = NULLRECT;
+
+	UI_Window* general_ui_window = nullptr;
+	UI_Image* general_ui_image = nullptr;
+
+	SDL_Rect ui_r = NULLRECT;
+	SDL_Rect buy_unit = NULLRECT;
+
 	enemy_waves enemy_wave_number = none;
 	
 	UI_Window* main_menu_window = nullptr;
@@ -73,12 +86,21 @@ private:
 	UI_Text* trailer_txt = nullptr;
 
 public:
-	int gold = 0;
+	SDL_Rect cursor_r = NULLRECT;
+	SDL_Rect cursor_attack_r = NULLRECT;
+	SDL_Rect cursor_build_r = NULLRECT;
+	SDL_Rect cursor_object_r = NULLRECT;
+	SDL_Rect cursor_ui_r = NULLRECT;
+	bool move_init = false;
+	iPoint clicked_point = NULLPOINT;
 
+	int gold = 0;
+	UI_Text* gold_txt = nullptr;
 	SDL_Texture* debug_tex = nullptr;
 
 	int human_resources_max = 1;
 	int current_human_resources = 0;
+	UI_Text* human_resources_txt = nullptr;
 
 	bool create_barrack = false;
 	bool create_blacksmith = false;
