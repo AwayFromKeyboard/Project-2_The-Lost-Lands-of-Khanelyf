@@ -78,8 +78,10 @@ bool SceneTest::Start()
 
 	gold = 0;
 	
-
 	App->audio->PlayMusic("audio/music/main_game.ogg");
+
+	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
+	main_menu_background = (UI_Image*)main_menu_window->CreateImage({ 0, 0 }, { 0, 1139, 1680, 1050 });
 
 	SDL_ShowCursor(0);
 	return true;

@@ -10,6 +10,10 @@ class Parallax;
 class Hero;
 class Barbarian;
 
+class UI_Window;
+class UI_Image;
+class UI_Button;
+
 #define TROOP_PRICE 20
 #define TROOP_OFFSET 1
 
@@ -51,6 +55,14 @@ public:
 
 private:
 	enemy_waves enemy_wave_number = none;
+	
+	UI_Window* main_menu_window = nullptr;
+	UI_Image* main_menu_background = nullptr;
+	UI_Button* new_game_button = nullptr;
+	UI_Button* load_game_button = nullptr;
+	UI_Button* credits_button = nullptr;
+	UI_Button* exit_game_button = nullptr;
+	UI_Button* trailer_button = nullptr;
 
 public:
 	int gold = 0;

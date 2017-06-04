@@ -485,7 +485,7 @@ void j1Gui::DeleteElement(UI_Element* element)
 				PushElements(elements_list, (*ta), (*ta)->layer);
 
 		(*ch)->cleanup();
-		RELEASE(*ch);
+		delete(*ch);
 	}
 }
 
