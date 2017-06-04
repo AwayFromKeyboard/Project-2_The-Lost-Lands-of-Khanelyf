@@ -93,6 +93,8 @@ private:
 	UI_Text* credits_Eric = nullptr;
 	UI_Text* credits_Sergi = nullptr;
 	UI_Text* credits_Simon = nullptr;
+	UI_Text* credits_misc = nullptr;
+	UI_Text* credits_misc2 = nullptr;
 
 public:
 	SDL_Rect cursor_r = NULLRECT;

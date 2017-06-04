@@ -147,13 +147,13 @@ bool SceneTest::Start()
 	int text_y_position = y_position + 5;
 	int text_x_position = -295 + App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 ;
 	int text_spacing = 20;
-	credits_Andreu = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
-	credits_Andreu->SetText("Manager: Andreu Sacasas");
-	credits_Andreu->click_through = true;
-	text_y_position += text_spacing;
 	credits_Dani = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
 	credits_Dani->SetText("Team Leader: Daniel Garcia");
 	credits_Dani->click_through = true;
+	text_y_position += text_spacing;
+	credits_Andreu = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_Andreu->SetText("Manager: Andreu Sacasas");
+	credits_Andreu->click_through = true;
 	text_y_position += text_spacing;
 	credits_Eric = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
 	credits_Eric->SetText("Designer: Eric Abad");
@@ -166,6 +166,15 @@ bool SceneTest::Start()
 	credits_Simon = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
 	credits_Simon->SetText("Lead Programmer: Simon Stoyanov");
 	credits_Simon->click_through = true;
+	text_y_position += text_spacing * 2;
+	credits_misc = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_misc->SetText("Game made for educational purposes");
+	credits_misc->click_through = true;
+	text_y_position += text_spacing;
+	credits_misc2 = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_misc2->SetText("University: UPC Tech Talent Center");
+	credits_misc2->click_through = true;
+
 	credits_window->SetEnabledAndChilds(false);
 	
 	y_position += distance;
