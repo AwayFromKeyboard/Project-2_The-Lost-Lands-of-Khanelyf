@@ -85,6 +85,15 @@ private:
 	UI_Text* exit_game_txt = nullptr;
 	UI_Text* trailer_txt = nullptr;
 
+	bool show_credits = false;
+	UI_Window* credits_window = nullptr;
+	UI_ColoredRect* credits_colored_rect;
+	UI_Text* credits_Andreu = nullptr;
+	UI_Text* credits_Dani = nullptr;
+	UI_Text* credits_Eric = nullptr;
+	UI_Text* credits_Sergi = nullptr;
+	UI_Text* credits_Simon = nullptr;
+
 public:
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect cursor_attack_r = NULLRECT;

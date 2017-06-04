@@ -140,6 +140,34 @@ bool SceneTest::Start()
 	credits_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_48, 0, false, 0, 0, 0);
 	credits_txt->click_through = true;
 	credits_txt->SetText("Credits");
+
+	credits_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 99);
+	credits_colored_rect = (UI_ColoredRect*)credits_window->CreateColoredRect({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 - 300, y_position }, 300, 200, { 0, 0, 0, 125 });
+	credits_colored_rect->click_through = true;
+	int text_y_position = y_position + 5;
+	int text_x_position = -295 + App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 ;
+	int text_spacing = 20;
+	credits_Andreu = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_Andreu->SetText("Manager: Andreu Sacasas");
+	credits_Andreu->click_through = true;
+	text_y_position += text_spacing;
+	credits_Dani = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_Dani->SetText("Team Leader: Daniel Garcia");
+	credits_Dani->click_through = true;
+	text_y_position += text_spacing;
+	credits_Eric = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_Eric->SetText("Designer: Eric Abad");
+	credits_Eric->click_through = true;
+	text_y_position += text_spacing;
+	credits_Sergi = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_Sergi->SetText("QA: Sergi Parra");
+	credits_Sergi->click_through = true;
+	text_y_position += text_spacing;
+	credits_Simon = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
+	credits_Simon->SetText("Lead Programmer: Simon Stoyanov");
+	credits_Simon->click_through = true;
+	credits_window->SetEnabledAndChilds(false);
+	
 	y_position += distance;
 
 	trailer_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
@@ -196,12 +224,14 @@ bool SceneTest::PreUpdate()
 	else if (load_game_button->MouseOut())
 		load_game_button->SetImage("standard");
 
-	if (credits_button->MouseEnter() || credits_button->MouseClickOutLeft())
+	if (credits_button->MouseEnter()) {
 		credits_button->SetImage("hover");
-	else if (credits_button->MouseClickEnterLeft())
-		credits_button->SetImage("click");
-	else if (credits_button->MouseOut())
+		credits_window->SetEnabledAndChilds(true);
+	}
+	else if (credits_button->MouseOut()) {
 		credits_button->SetImage("standard");
+		credits_window->SetEnabledAndChilds(false);
+	}
 
 	if (trailer_button->MouseEnter() || trailer_button->MouseClickOutLeft())
 		trailer_button->SetImage("hover");
