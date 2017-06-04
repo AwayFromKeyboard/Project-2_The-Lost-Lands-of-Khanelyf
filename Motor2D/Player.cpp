@@ -498,8 +498,14 @@ bool Player::PreUpdate()
 		App->player->lose_status = true;
 	}
 
-	if (active_ability == not_chosen && pause_status == false)
+	if (active_ability == not_chosen && pause_status == false) {
 		pause_status = !pause_status;
+		choose_ability_b->SetEnabled(true);
+		choose_ability_b_txt->SetEnabled(true);
+		choose_ability_uw->SetEnabled(true);
+		choose_ability_uw_txt->SetEnabled(true);
+		show_ability_name->SetText("");
+	}
 
 	if ((choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == battlecry_active && loaded))
 	{
@@ -747,6 +753,14 @@ bool Player::PreUpdate()
 	else if (mainmenu->MouseClickEnterLeft() && pause_status)
 	{
 		mainmenu->SetImage("clicked");
+		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
+		choose_ability_b->SetEnabled(true);
+		choose_ability_b_txt->SetEnabled(true);
+		choose_ability_uw->SetEnabled(true);
+		choose_ability_uw_txt->SetEnabled(true);
+		App->LoadGame("Restart_Game_File.xml");
+		pause_status = false;
+
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
