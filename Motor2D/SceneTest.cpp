@@ -29,6 +29,7 @@
 #include "ParticleManager.h"
 #include "Fire.h"
 #include "Escorted_NPC.h"
+#include "j1FileSystem.h"
 
 SceneTest::SceneTest()
 {
@@ -40,6 +41,12 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
+	char* buffer;
+	uint size = App->fs->Load("Save_File.xml", &buffer);
+	if (size > 0)
+		has_save_file = true;
+
+
 	if (App->map->Load("map.tmx") == true)
 	{
 		int w, h;
@@ -223,11 +230,13 @@ bool SceneTest::PreUpdate()
 	else if (new_game_button->MouseOut())
 		new_game_button->SetImage("standard");
 
-	if (load_game_button->MouseEnter())
+	if (!has_save_file)
+		load_game_button->SetImage("click");
+	else if (load_game_button->MouseEnter())
 		load_game_button->SetImage("hover");
 	else if (load_game_button->MouseClickEnterLeft())
 		load_game_button->SetImage("click");
-	else if (load_game_button->MouseClickOutLeft()) {
+	else if (load_game_button->MouseClickOutLeft() && has_save_file) {
 		App->LoadGame("Save_File.xml");
 		App->player->loaded = true;
 		main_menu_window->SetEnabledAndChilds(false);
