@@ -136,6 +136,13 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
   
+	if (new_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+		new_game_button->SetImage("hover");
+	else if (new_game_button->MouseClickEnterLeft())
+		new_game_button->SetImage("click");
+	else if (new_game_button->MouseOut())
+		new_game_button->SetImage("standard");
+
 	if (enemy_waves_active)
 	{
 		if (start_waves_timer)
