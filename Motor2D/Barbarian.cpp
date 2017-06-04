@@ -82,6 +82,9 @@ bool Barbarian::LoadEntity(iPoint pos, entity_name name)
 		direction = { 0, 1 };
 
 		state = entity_state::entity_idle;
+
+		if (type == entity_type::enemy)
+			stay_still = true;
 	}
 	else LOG("\nERROR, no node found\n");
 

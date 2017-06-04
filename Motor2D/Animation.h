@@ -11,6 +11,8 @@ class Unit;
 class Fire;
 class CursorAnimations;
 class BattlecryBuff;
+class UndWillBuff;
+
 // -----------------------------------------
 // -----------------------------------------
 
@@ -48,6 +50,7 @@ public:
 	void LoadAnimationsFromUnitsXML(pugi::xml_node &node, Unit* unit);
 	void LoadCursorAnimationsFromParticlesXML(pugi::xml_node &node, CursorAnimations* cursor_anim);
 	void LoadBattlecryBuffFromParticlesXML(pugi::xml_node &node, BattlecryBuff* battlecry_buff);
+	void LoadUndWillBuffFromParticlesXML(pugi::xml_node &node, UndWillBuff* undwill_buff);
 	
 	// Set a current animation
 	void SetAnimation(const char* name);

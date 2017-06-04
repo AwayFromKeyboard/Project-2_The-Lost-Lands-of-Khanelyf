@@ -708,17 +708,25 @@ void Unit::CheckDirection()
 
 void Unit::FollowPath(float dt)
 {
-	SetDirection();
+	if (stay_still == false)
+	{
+		SetDirection();
 
-	fPoint pos = fPoint(position.x, position.y);
+		fPoint pos = fPoint(position.x, position.y);
 
-	pos.x += direction.x * speed;
-	pos.y += direction.y * speed;
+		pos.x += direction.x * speed;
+		pos.y += direction.y * speed;
 
-	position.x = pos.x;
-	position.y = pos.y;
+		position.x = pos.x;
+		position.y = pos.y;
 
-	if (path.size() == 0)
+		if (path.size() == 0)
+		{
+			state = entity_idle;
+			has_destination = false;
+		}
+	}
+	else
 	{
 		state = entity_idle;
 		has_destination = false;
@@ -882,11 +890,13 @@ bool Unit::CheckSurroundings() {
 									if (found->type == player || found->type == ally || found->name == npc_escort) {
 										attacked_unit = (Unit*)found;
 										state = entity_move_to_enemy;
+										stay_still = false;
 										return true;
 									}
 									if (found->type == entity_type::ally_building || (found->type == entity_type::building && found->name == entity_name::barracks)) {
 										attacked_building = (Building*)found;
 										state = entity_move_to_building;
+										stay_still = false;
 										return true;
 									}
 								}
