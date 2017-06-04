@@ -501,7 +501,7 @@ bool Player::PreUpdate()
 	if (active_ability == not_chosen && pause_status == false)
 		pause_status = !pause_status;
 
-	if (choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen)
+	if ((choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == battlecry_active && loaded))
 	{
 		active_ability = battlecry_active;
 
@@ -514,9 +514,11 @@ bool Player::PreUpdate()
 		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
-
+		
+		if (loaded)
+			loaded = false;
 	}
-	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen)
+	else if ((choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == undying_will_active && loaded))
 	{
 		active_ability = undying_will_active;
 
@@ -529,6 +531,9 @@ bool Player::PreUpdate()
 		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
+
+		if (loaded)
+			loaded = false;
 	}
 
 	if (choose_ability_b->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != battlecry_active && App->scene->scene_test->gold >= 50)
@@ -1967,6 +1972,22 @@ bool Player::Load(pugi::xml_node& data)
 		}
 	}
 
+	int ability = data.child("First_Ability").attribute("ability").as_int();
+
+	switch (ability)
+	{
+	case battlecry_active:
+		active_ability = battlecry_active;
+		break;
+	case undying_will_active:
+		active_ability = undying_will_active;
+		break;
+	case not_chosen:
+		active_ability = not_chosen;
+		break;
+	default:
+		break;
+	}
 
 	return true;
 }
@@ -2007,6 +2028,8 @@ bool Player::Save(pugi::xml_node& data) const
 			ally.child("Position").append_attribute("y") = (*it)->position.y;
 		}
 	}
+
+	data.append_child("First_Ability").append_attribute("ability") = active_ability;
 
 	return true;
 }

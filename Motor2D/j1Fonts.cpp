@@ -36,6 +36,8 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 		default = Load(path, size);
 		default_15 = Load(path, 15);
 		default_10 = Load(path, 10);
+		default_42 = Load(path, 42);
+		default_48 = Load(path, 48);
 		default_50 = Load(path, 50);
 	}
 
