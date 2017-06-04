@@ -3,9 +3,11 @@
 #include "Log.h"
 #include "j1Scene.h"
 #include "SceneTest.h"
+#include "j1Audio.h"
 #include "Player.h"
 #include "Hero.h"
 #include "DialogueManager.h"
+#include "SceneTest.h"
 #include "j1Map.h"
 
 QuestManager::QuestManager() {
@@ -207,6 +209,7 @@ Quest * QuestManager::ChangeQuest(quest_id new_quest)
 			App->dialogs->id = (*it)->id;
 			App->dialogs->NPCstate = 0;
 			App->dialogs->dialogueStep = 0;
+			App->audio->PlayFx(App->scene->scene_test->achievement_quest_id);
 			return *it;
 		}
 	}
