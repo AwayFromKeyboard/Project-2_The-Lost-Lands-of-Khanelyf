@@ -754,10 +754,6 @@ bool Player::PreUpdate()
 	{
 		mainmenu->SetImage("clicked");
 		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
-		choose_ability_b->SetEnabled(true);
-		choose_ability_b_txt->SetEnabled(true);
-		choose_ability_uw->SetEnabled(true);
-		choose_ability_uw_txt->SetEnabled(true);
 		App->LoadGame("Restart_Game_File.xml");
 		pause_status = false;
 

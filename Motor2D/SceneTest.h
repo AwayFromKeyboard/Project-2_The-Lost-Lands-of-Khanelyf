@@ -152,7 +152,7 @@ public:
 	j1Timer enemy_waves_timer;
 	bool start_waves_timer = true;
 	bool enemy_waves_active = false;
-
+	bool has_save_file = false;
 };
 
 #endif // _SceneTest_H_
