@@ -174,9 +174,7 @@ bool SceneTest::Start()
 	credits_misc2 = (UI_Text*)credits_window->CreateText({ text_x_position, text_y_position }, App->font->default_15);
 	credits_misc2->SetText("University: UPC Tech Talent Center");
 	credits_misc2->click_through = true;
-
 	credits_window->SetEnabledAndChilds(false);
-	
 	y_position += distance;
 
 	trailer_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
