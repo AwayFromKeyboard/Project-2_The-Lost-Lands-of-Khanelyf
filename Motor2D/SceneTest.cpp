@@ -22,6 +22,7 @@
 #include "Building.h"
 #include "Minimap.h"
 #include "Object.h"
+#include "video.h"
 #include "Player.h"
 #include "Boss_Axe_Knight.h"
 #include "BrokenBuilding.h"
@@ -96,6 +97,7 @@ bool SceneTest::Start()
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
+	App->video->PlayVideo("video.ogv", { 0, 0, 1680, 1050 });
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 	App->audio->PauseMusic();
 

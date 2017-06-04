@@ -127,6 +127,12 @@
     <ClCompile Include="BasicBuilding.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.c">
+      <Filter>Engine\5. Tools</Filter>
+    </ClCompile>
     <ClCompile Include="Boss_Axe_Knight.cpp">
       <Filter>Engine\4. Entities\Boss</Filter>
     </ClCompile>
@@ -294,6 +300,12 @@
     </ClInclude>
     <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Video.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Engine\5. Tools</Filter>
     </ClInclude>
     <ClInclude Include="Minimap.h">
       <Filter>Engine\1. Modules</Filter>
