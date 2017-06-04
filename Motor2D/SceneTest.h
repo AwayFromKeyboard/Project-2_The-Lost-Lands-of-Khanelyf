@@ -129,6 +129,7 @@ public:
 	unsigned int swords_clash3_id;
 	unsigned int swords_clash4_id;
 	unsigned int swords_clash5_id;
+	unsigned int achievement_quest_id;
 
 public:
 	bool escortedNPC_created = false;
