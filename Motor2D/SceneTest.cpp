@@ -92,6 +92,9 @@ bool SceneTest::Start()
 
 	gold = 0;
 
+	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
+	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
+
 	App->audio->PlayMusic("audio/music/main_game.ogg");
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
