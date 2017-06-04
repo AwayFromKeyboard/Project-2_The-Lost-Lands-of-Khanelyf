@@ -381,7 +381,7 @@ bool Player::Start()
 
 	//player abilities
 
-	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 0, 0, 12);
 
 	//Choose ability
 
@@ -390,12 +390,14 @@ bool Player::Start()
 	choose_ability_b->SetImage("standard");
 	choose_ability_b->AddImage("clicked", { 25, 2768, 186, 31 });
 	choose_ability_b->AddImage("hovered", { 26, 2732, 186, 31 });
+	choose_ability_b->change_click_through = true;
 
 	choose_ability_uw = (UI_Button*)player_abilities->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
 	choose_ability_uw->AddImage("standard", { 25, 2695, 186, 31 });
 	choose_ability_uw->SetImage("standard");
 	choose_ability_uw->AddImage("clicked", { 25, 2768, 186, 31 });
 	choose_ability_uw->AddImage("hovered", { 26, 2732, 186, 31 });
+	choose_ability_uw->change_click_through = true;
 
 	choose_ability_b_txt = (UI_Text*)player_abilities->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, App->font->default);
 	choose_ability_b_txt->SetText("Berserker");
@@ -505,13 +507,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("BC");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
 
@@ -522,13 +522,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("UW");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
 	}
@@ -540,13 +538,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("BC");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		battlecry_ability->SetImage("clicked");
 
@@ -561,13 +557,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("UW");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		battlecry_ability->SetImage("clicked");
 
@@ -580,13 +574,11 @@ bool Player::PreUpdate()
 	{
 		if (active_ability != not_chosen)
 		{
-			choose_ability_b->click_through = true;
-			choose_ability_b->enabled = false;
-			choose_ability_b_txt->enabled = false;
+			choose_ability_b->SetEnabled(false);
+			choose_ability_b_txt->SetEnabled(false);
 
-			choose_ability_uw->click_through = true;
-			choose_ability_uw->enabled = false;
-			choose_ability_uw_txt->enabled = false;
+			choose_ability_uw->SetEnabled(false);
+			choose_ability_uw_txt->SetEnabled(false);
 		}
 		if (change_controls_status)
 		{
@@ -1307,7 +1299,7 @@ bool Player::PreUpdate()
 		else if (create_building_button3->MouseEnter())
 		{
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Create a blacksmith to forge you powerful items. Requirements: 50 Gold ");
+			helping_txt->SetText("Create a blacksmith to change your first ability for 50 gold. Requirements: 50 Gold");
 			text_on = true;
 		}
 		else if (create_unit_button->MouseEnter())
@@ -1329,7 +1321,7 @@ bool Player::PreUpdate()
 			text_on = true;
 		}
 
-		if (battlecry_ability->MouseEnter())
+		else if (battlecry_ability->MouseEnter())
 		{
 
 			if (active_ability == battlecry_active) {
@@ -1347,24 +1339,38 @@ bool Player::PreUpdate()
 		else if (whirlwind_ability->MouseEnter())
 		{
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Whirlwind.  A spin that does 40 AoE damage to a max. of 2 enemies (8s cd)");
+			helping_txt->SetText("Whirlwind. A spin that does 40 AoE damage (8s cd)");
 			text_on = true;
 		}
 
 		else if (charge_ability->MouseEnter())
 		{
 			help_window->SetEnabledAndChilds(true);
-			helping_txt->SetText("Charge. Click to the enemy inside the area to advance to him for a powerful hit of 40 damage (12s cd)");
+			helping_txt->SetText("Charge. Click on the ground below an enemy inside the range of action to charge at him and deal him 40 damage + your actual attack (12s cd)");
+			text_on = true;
+		}
+
+		else if (choose_ability_uw->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd). Requirements: 50 Gold");
+			text_on = true;
+		}
+
+		else if (choose_ability_b->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd). Requirements: 50 Gold");
 			text_on = true;
 		}
 		
-		else if (text_on && (battlecry_ability->MouseOut() && whirlwind_ability->MouseOut() && charge_ability->MouseOut() && pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
+		else if (text_on && ((choose_ability_b->enabled == false || (choose_ability_b->MouseOut() && choose_ability_uw->MouseOut())) && battlecry_ability->MouseOut() && whirlwind_ability->MouseOut() && charge_ability->MouseOut() && pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
 		{
 			help_window->SetEnabledAndChilds(false);
 			text_on = false;
 		}
 
-		if(text_on==false)
+		if(text_on == false)
 			help_window->SetEnabledAndChilds(false);
 		else
 			help_window->SetEnabledAndChilds(true);
@@ -1386,7 +1392,7 @@ bool Player::PreUpdate()
 			create_unit_button->SetImage("standard");
 		}
 
-		if (create_unit_button2->MouseClickEnterLeft())
+		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true)
 		{
 			create_unit_button2->SetImage("clicked");
 
@@ -1677,13 +1683,11 @@ bool Player::Update(float dt)
 						App->entity->UnselectEverything();
 						(*it)->SetSelected(true);
 
-						choose_ability_b->click_through = false;
-						choose_ability_b->enabled = true;
-						choose_ability_b_txt->enabled = true;
+						choose_ability_b->SetEnabled(true);
+						choose_ability_b_txt->SetEnabled(true);
 
-						choose_ability_uw->click_through = false;
-						choose_ability_uw->enabled = true;
-						choose_ability_uw_txt->enabled = true;
+						choose_ability_uw->SetEnabled(true);
+						choose_ability_uw_txt->SetEnabled(true);
 
 						break;
 					}

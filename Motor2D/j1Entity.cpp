@@ -504,13 +504,11 @@ void j1Entity::UnselectEverything()
 
 	if (App->player->active_ability != not_chosen)
 	{
-		App->player->choose_ability_b->click_through = true;
-		App->player->choose_ability_b->enabled = false;
-		App->player->choose_ability_b_txt->enabled = false;
+		App->player->choose_ability_b->SetEnabled(false);
+		App->player->choose_ability_b_txt->SetEnabled(false);
 
-		App->player->choose_ability_uw->click_through = true;
-		App->player->choose_ability_uw->enabled = false;
-		App->player->choose_ability_uw_txt->enabled = false;
+		App->player->choose_ability_uw->SetEnabled(false);
+		App->player->choose_ability_uw_txt->SetEnabled(false);
 	}
 
 	selected.clear();
