@@ -156,7 +156,7 @@ bool SceneTest::PreUpdate()
 	p = App->map->WorldToMap(p.x, p.y);
 
 	CheckUnitCreation(p);
-  
+
 	if (new_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
 		new_game_button->SetImage("hover");
 	else if (new_game_button->MouseClickEnterLeft())
@@ -185,10 +185,13 @@ bool SceneTest::PreUpdate()
 	else if (trailer_button->MouseOut())
 		trailer_button->SetImage("standard");
 
-	if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeft())
+	if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeftIntern()) {
 		exit_game_button->SetImage("hover");
-	else if (exit_game_button->MouseClickEnterLeft())
+	}
+	else if (exit_game_button->MouseClickEnterLeft()){
 		exit_game_button->SetImage("click");
+		App->stop_exe = true;
+	}
 	else if (exit_game_button->MouseOut())
 		exit_game_button->SetImage("standard");
 
