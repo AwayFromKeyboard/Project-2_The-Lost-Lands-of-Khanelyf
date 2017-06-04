@@ -96,9 +96,11 @@ bool SceneTest::Start()
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
 	App->audio->PlayMusic("audio/music/main_game.ogg");
+	App->audio->PauseMusic();
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
 	main_menu_background = (UI_Image*)main_menu_window->CreateImage({ 0, 0 }, { 0, 1139, 1680, 1050 });
+	main_menu_background->change_click_through = true;
 	
 	int distance = App->win->_GetWindowSize().y / 4 - App->win->_GetWindowSize().y / 8;
 	int y_position = App->win->_GetWindowSize().y / 8;
@@ -174,17 +176,23 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
 
-	if (new_game_button->MouseEnter() || new_game_button->MouseClickOutLeft())
+	if (new_game_button->MouseEnter())
 		new_game_button->SetImage("hover");
 	else if (new_game_button->MouseClickEnterLeft())
 		new_game_button->SetImage("click");
+	else if (new_game_button->MouseClickOutLeft())
+		main_menu_window->SetEnabledAndChilds(false);
 	else if (new_game_button->MouseOut())
 		new_game_button->SetImage("standard");
 
-	if (load_game_button->MouseEnter() || load_game_button->MouseClickOutLeft())
+	if (load_game_button->MouseEnter())
 		load_game_button->SetImage("hover");
 	else if (load_game_button->MouseClickEnterLeft())
 		load_game_button->SetImage("click");
+	else if (load_game_button->MouseClickOutLeft()) {
+		App->LoadGame("Save_File.xml");
+		main_menu_window->SetEnabledAndChilds(false);
+	}
 	else if (load_game_button->MouseOut())
 		load_game_button->SetImage("standard");
 
