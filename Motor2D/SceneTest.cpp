@@ -226,7 +226,12 @@ bool SceneTest::PreUpdate()
 		load_game_button->SetImage("click");
 	else if (load_game_button->MouseClickOutLeft()) {
 		App->LoadGame("Save_File.xml");
+		App->player->loaded = true;
 		main_menu_window->SetEnabledAndChilds(false);
+		App->player->choose_ability_b->enabled = false;
+		App->player->choose_ability_b_txt->enabled = false;
+		App->player->choose_ability_uw->enabled = false;
+		App->player->choose_ability_uw_txt->enabled = false;
 	}
 	else if (load_game_button->MouseOut())
 		load_game_button->SetImage("standard");
