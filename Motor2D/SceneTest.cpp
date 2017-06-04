@@ -82,6 +82,46 @@ bool SceneTest::Start()
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
 	main_menu_background = (UI_Image*)main_menu_window->CreateImage({ 0, 0 }, { 0, 1139, 1680, 1050 });
+	
+	int distance = App->win->_GetWindowSize().y / 4 - App->win->_GetWindowSize().y / 8;
+	int y_position = App->win->_GetWindowSize().y / 8;
+	SDL_Rect standard_button = { 0, 2190, 283, 109 };
+	SDL_Rect hover_button = { 331, 2190, 283, 109 };
+	SDL_Rect click_button = { 662, 2190, 283, 109 };
+
+	new_game_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	new_game_button->AddImage("standard", standard_button);
+	new_game_button->AddImage("hover", hover_button);
+	new_game_button->AddImage("click", click_button);
+	new_game_button->SetImage("standard");
+	y_position += distance;
+
+	load_game_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	load_game_button->AddImage("standard", standard_button);
+	load_game_button->AddImage("hover", hover_button);
+	load_game_button->AddImage("click", click_button);
+	load_game_button->SetImage("standard");
+	y_position += distance;
+
+	credits_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	credits_button->AddImage("standard", standard_button);
+	credits_button->AddImage("hover", hover_button);
+	credits_button->AddImage("click", click_button);
+	credits_button->SetImage("standard");
+	y_position += distance;
+
+	trailer_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	trailer_button->AddImage("standard", standard_button);
+	trailer_button->AddImage("hover", hover_button);
+	trailer_button->AddImage("click", click_button);
+	trailer_button->SetImage("standard");
+	y_position += distance;
+
+	exit_game_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 283, 109);
+	exit_game_button->AddImage("standard", standard_button);
+	exit_game_button->AddImage("hover", hover_button);
+	exit_game_button->AddImage("click", click_button);
+	exit_game_button->SetImage("standard");
 
 	SDL_ShowCursor(0);
 	return true;

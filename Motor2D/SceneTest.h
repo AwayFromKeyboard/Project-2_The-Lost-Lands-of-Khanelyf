@@ -64,6 +64,7 @@ private:
 	UI_Button* exit_game_button = nullptr;
 	UI_Button* trailer_button = nullptr;
 
+
 public:
 	int gold = 0;
 
