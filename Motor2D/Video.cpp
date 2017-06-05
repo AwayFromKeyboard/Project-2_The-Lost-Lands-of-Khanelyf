@@ -79,7 +79,7 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 
 	while (audio_queue && (len > 0)) {
 		volatile AudioQueue *item = audio_queue;
-		AudioQueue *next = item->next;
+		AudioQueue *next = item->next;	//crash, mem acces violation
 		const int channels = item->audio->channels;
 
 		const float *src = item->audio->samples + (item->offset * channels);
