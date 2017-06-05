@@ -6,10 +6,10 @@
 #include "j1Input.h"
 #include "j1Textures.h"
 #include "j1Render.h"
-#include "j1Audio.h"
 #include "j1Scene.h"
 #include "SceneTest.h"
 #include <sstream>
+#include "j1Audio.h"
 
 #include <stdio.h>
 
@@ -57,10 +57,18 @@ bool Video::CleanUp()
 	if (!active)
 		return true;
 
-	if (texture) SDL_DestroyTexture(texture);
-	if (video) THEORAPLAY_freeVideo(video);
-	if (audio) THEORAPLAY_freeAudio(audio);
-	if (decoder) THEORAPLAY_stopDecode(decoder);
+	if (texture)
+		App->tex->UnLoadTexture(texture);
+
+	if (video)
+		THEORAPLAY_freeVideo(video);
+
+	if (audio)
+		THEORAPLAY_freeAudio(audio);
+
+	if (decoder)
+		THEORAPLAY_stopDecode(decoder);
+
 	SDL_CloseAudio();
 	SDL_Quit();
 
@@ -77,9 +85,15 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 {
 	Sint16 *dst = (Sint16 *)stream;
 
-	while (audio_queue && (len > 0)) {
+	while (audio_queue && (len > 0))
+	{
 		volatile AudioQueue *item = audio_queue;
-		AudioQueue *next = item->next;	//crash, mem acces violation
+
+		if (item->next == nullptr)
+			return;
+
+		AudioQueue *next = item->next;
+
 		const int channels = item->audio->channels;
 
 		const float *src = item->audio->samples + (item->offset * channels);
@@ -89,8 +103,9 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 		if (cpy > (len / sizeof(Sint16)))
 			cpy = len / sizeof(Sint16);
 
-		for (i = 0; i < cpy; i++) {
-			const float val = *(src++); //crash
+		for (i = 0; i < cpy; i++)
+		{
+			const float val = *(src++);
 			if (val < -1.0f)
 				*(dst++) = -32768;
 			else if (val > 1.0f)
@@ -102,9 +117,10 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 		item->offset += (cpy / channels);
 		len -= cpy * sizeof(Sint16);
 
-		if (item->offset >= item->audio->frames) {
+		if (item->offset >= item->audio->frames)
+		{
 			THEORAPLAY_freeAudio(item->audio);
-			SDL_free((void *)item);
+			delete item;
 			audio_queue = next;
 		}
 	}
@@ -119,8 +135,10 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 
 void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
 {
-	AudioQueue *item = (AudioQueue *)SDL_malloc(sizeof(AudioQueue));
-	if (!item) {
+	AudioQueue *item = new AudioQueue;
+
+	if (!item)
+	{
 		THEORAPLAY_freeAudio(audio);
 		return;
 	}
@@ -142,11 +160,11 @@ void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
 
 void Video::LoadVideo(const char *fname)
 {
-	// Loading --------------------------------------------------------
-
 	decoder = THEORAPLAY_startDecodeFile(fname, 30, THEORAPLAY_VIDFMT_IYUV);
 
-	while (!audio || !video) {
+	// Wait until we have video and/or audio data, so we can set up hardware.
+	while (!audio || !video)
+	{
 		if (!audio) audio = THEORAPLAY_getAudio(decoder);
 		if (!video) video = THEORAPLAY_getVideo(decoder);
 		SDL_Delay(10);
@@ -154,6 +172,7 @@ void Video::LoadVideo(const char *fname)
 
 	framems = (video->fps == 0.0) ? 0 : ((Uint32)(1000.0 / video->fps));
 
+	// Setting up the screen where we want to display our video
 	screen = App->win->window;
 	texture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, video->width, video->height);
 
@@ -166,17 +185,16 @@ void Video::LoadVideo(const char *fname)
 	spec.samples = 2048;
 	spec.callback = audio_callback;
 
-	init_failed = quit = (init_failed || (SDL_OpenAudio(&spec, NULL) != 0)); // Audio is already opened?
+	// Tip! Module Video needs "the control" of the sound. If not SDL_OpenAudio will not initialize.
+	// Right now module Audio has init the audio previously.
+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	init_failed = quit = (init_failed || (SDL_OpenAudio(&spec, NULL) != 0));
 
 	SDL_PauseAudio(0);
 }
 
 void Video::PlayVideo(const char *fname, SDL_Rect r)
 {
-	// Taking control in the sound -------
-
-	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-
 	// Loading video ---------------------
 
 	ResetValues();
@@ -187,41 +205,30 @@ void Video::PlayVideo(const char *fname, SDL_Rect r)
 
 	baseticks = SDL_GetTicks();
 	want_to_play = true;
-
 }
 
 bool Video::Update(float dt)
 {
 	if (want_to_play && !quit && THEORAPLAY_isDecoding(decoder))
 	{
+		Uint32 now = SDL_GetTicks() - baseticks;
 		// Events ------------------------------------------------------
-		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down){
 			quit = 1;
+		}
 
 		// ----------------------------------------------------------------
-
-		Uint32 now = SDL_GetTicks() - baseticks;
-
 		if (!video)
 			video = THEORAPLAY_getVideo(decoder);
 
-		// Setting new texture --------------------------------------------
+		if ((audio = THEORAPLAY_getAudio(decoder)) != NULL)
+			queue_audio(audio);
 
-		if (!pause && video && (video->playms <= now))
+		// Setting new texture --------------------------------------------
+		//!pause && 
+		if (video && (video->playms <= now))
 		{
-			if (framems && ((now - video->playms) >= framems))
-			{
-				const THEORAPLAY_VideoFrame *last = video;
-				while ((video = THEORAPLAY_getVideo(decoder)) != NULL)
-				{
-					THEORAPLAY_freeVideo(last);
-					last = video;
-					if ((now - video->playms) < framems)
-						break;
-				}
-				if (!video)
-					video = last;
-			}
+			// Locking a portion of a texture for write only pixel access
 
 			SDL_LockTexture(texture, NULL, &pixels, &pitch);
 			const int w = video->width;
@@ -245,20 +252,9 @@ bool Video::Update(float dt)
 
 			THEORAPLAY_freeVideo(video);
 			video = NULL;
-		} // if
-		else
-		{
-			SDL_Delay(10);
 		}
-
-		if ((audio = THEORAPLAY_getAudio(decoder)) != NULL && !pause)
-			queue_audio(audio);
-
-		// Render texture ------------------------------------------------
-
-		//SDL_RenderClear(App->render->renderer);
+		
 		SDL_RenderCopy(App->render->renderer, texture, NULL, &rendering_rect);
-		//SDL_RenderPresent(App->render->renderer);
 
 	}
 
@@ -271,6 +267,7 @@ bool Video::Update(float dt)
 	{
 		ResetValues();
 		App->scene->scene_test->is_video_active = false;
+		App->audio->RestartAudio();
 	}
 
 	return true;
@@ -278,10 +275,17 @@ bool Video::Update(float dt)
 
 void Video::ResetValues()
 {
-	if (texture) SDL_DestroyTexture(texture);
-	if (video) THEORAPLAY_freeVideo(video);
-	if (audio) THEORAPLAY_freeAudio(audio);
-	if (decoder) THEORAPLAY_stopDecode(decoder);
+	if (texture)
+		App->tex->UnLoadTexture(texture);
+
+	if (video)
+		THEORAPLAY_freeVideo(video);
+
+	if (audio)
+		THEORAPLAY_freeAudio(audio);
+
+	if (decoder)
+		THEORAPLAY_stopDecode(decoder);
 
 	decoder = NULL;
 	video = NULL;
@@ -292,7 +296,6 @@ void Video::ResetValues()
 
 	baseticks = 0;
 	framems = 0;
-	pause = false;
 	init_failed = 0;
 	quit = 0;
 	pitch = 0;

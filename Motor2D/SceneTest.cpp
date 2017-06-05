@@ -104,8 +104,6 @@ bool SceneTest::Start()
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
 	App->video->PlayVideo("video.ogv", { 0, 0, 1680, 1050 });
-	App->audio->PlayMusic("audio/music/main_game.ogg");
-	App->audio->PauseMusic();
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
 	main_menu_background = (UI_Image*)main_menu_window->CreateImage({ 0, 0 }, { 0, 1139, 1680, 1050 });
@@ -226,8 +224,11 @@ bool SceneTest::PreUpdate()
 			new_game_button->SetImage("hover");
 		else if (new_game_button->MouseClickEnterLeft())
 			new_game_button->SetImage("click");
-		else if (new_game_button->MouseClickOutLeft())
+		else if (new_game_button->MouseClickOutLeft()) {
 			main_menu_window->SetEnabledAndChilds(false);
+			App->audio->PlayMusic("audio/music/main_game.ogg");
+			App->audio->PauseMusic();
+		}
 		else if (new_game_button->MouseOut())
 			new_game_button->SetImage("standard");
 
@@ -245,6 +246,8 @@ bool SceneTest::PreUpdate()
 			App->player->choose_ability_b_txt->enabled = false;
 			App->player->choose_ability_uw->enabled = false;
 			App->player->choose_ability_uw_txt->enabled = false;
+			App->audio->PlayMusic("audio/music/main_game.ogg");
+			App->audio->PauseMusic();
 		}
 		else if (load_game_button->MouseOut())
 			load_game_button->SetImage("standard");
