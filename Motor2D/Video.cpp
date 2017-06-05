@@ -225,7 +225,6 @@ bool Video::Update(float dt)
 			queue_audio(audio);
 
 		// Setting new texture --------------------------------------------
-		//!pause && 
 		if (video && (video->playms <= now))
 		{
 			// Locking a portion of a texture for write only pixel access

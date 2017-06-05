@@ -756,6 +756,7 @@ bool Player::PreUpdate()
 		App->entity->UnselectEverything();
 		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
 		App->LoadGame("Restart_Game_File.xml");
+		App->audio->RestartAudio();
 		pause_status = false;
 
 		button_clicked.Start();
