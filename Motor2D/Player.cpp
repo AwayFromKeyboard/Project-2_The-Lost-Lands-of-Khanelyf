@@ -1713,6 +1713,7 @@ bool Player::Update(float dt)
 						else
 						{
 							App->entity->selected.push_back((Unit*)*it);
+							break;
 						}
 					}
 				}
