@@ -9,6 +9,7 @@
 #include "j1Entity.h"
 #include "Functions.h"
 #include "j1Scene.h"
+#include "SceneTest.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -491,25 +492,28 @@ void j1Gui::DeleteElement(UI_Element* element)
 
 void j1Gui::CursorSelection()
 {
-	int x, y;
-	App->input->GetMouseWorld(x, y);
+	if (App->scene->scene_test->main_menu_window->enabled == false)
+	{
+		int x, y;
+		App->input->GetMouseWorld(x, y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
-	{
-		selection_rect.x = x;
-		selection_rect.y = y;
-		selection_rect.w = selection_rect.x;
-		selection_rect.h = selection_rect.y;
-	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
-	{	
-		selection_rect.w = x;
-		selection_rect.h = y;
-		App->render->DrawQuad({ selection_rect.x, selection_rect.y, selection_rect.w - selection_rect.x, selection_rect.h - selection_rect.y }, 255, 255, 255, 255, false);
-	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up)
-	{
-		App->entity->SelectInQuad(selection_rect);
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down)
+		{
+			selection_rect.x = x;
+			selection_rect.y = y;
+			selection_rect.w = selection_rect.x;
+			selection_rect.h = selection_rect.y;
+		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_repeat)
+		{
+			selection_rect.w = x;
+			selection_rect.h = y;
+			App->render->DrawQuad({ selection_rect.x, selection_rect.y, selection_rect.w - selection_rect.x, selection_rect.h - selection_rect.y }, 255, 255, 255, 255, false);
+		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_up)
+		{
+			App->entity->SelectInQuad(selection_rect);
+		}
 	}
 }
 

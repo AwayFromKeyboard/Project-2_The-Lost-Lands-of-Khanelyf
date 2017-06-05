@@ -446,6 +446,8 @@ void j1Entity::DeleteEntity(Entity* entity)
 
 void j1Entity::SelectInQuad(const SDL_Rect&  select_rect)
 {
+
+
 	for (std::list<Entity*>::iterator it = entity_list.begin(); it != entity_list.end(); it++)
 	{
 

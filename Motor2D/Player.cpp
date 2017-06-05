@@ -753,6 +753,7 @@ bool Player::PreUpdate()
 	else if (mainmenu->MouseClickEnterLeft() && pause_status)
 	{
 		mainmenu->SetImage("clicked");
+		App->entity->UnselectEverything();
 		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
 		App->LoadGame("Restart_Game_File.xml");
 		pause_status = false;
@@ -1652,76 +1653,132 @@ bool Player::Update(float dt)
 	
 	if (!App->minimap->IsMouseOver())
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat)
+		if (App->scene->scene_test->main_menu_window->enabled == false)
 		{
-			iPoint mouse;
-			App->input->GetMouseWorld(mouse.x, mouse.y);
-			App->entity->UnselectEverything();
-			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat)
 			{
-				Collider* unit = (*it)->GetCollider();
+				iPoint mouse;
+				App->input->GetMouseWorld(mouse.x, mouse.y);
+				App->entity->UnselectEverything();
+				for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+				{
+					Collider* unit = (*it)->GetCollider();
 
-				if (unit != nullptr)
-				{
-					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building))
+					if (unit != nullptr)
 					{
-						(*it)->SetSelected(true);
-					}
-				}
-				if ((*it)->GetSelected())
-				{
-					if ((*it)->GetType() == building && (*it)->name == barracks)
-					{
-						App->entity->UnselectEverything();
-						(*it)->SetSelected(true);
-						barracks_ui_window->SetEnabledAndChilds(true);
-						break;
-					}
-					else if ((*it)->GetType() == building && (*it)->name == broken_building)
-					{
-						App->entity->UnselectEverything();
-						(*it)->SetSelected(true);
-						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
+						if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building))
 						{
-							unit_scroll->SetEnabled(true);
-							brokenbuilding_ui_window->SetEnabledAndChilds(true);
-							if (App->scene->scene_test->create_blacksmith == false)
-							{
-								create_building_button3->SetEnabled(false);
-								blacksmith_img->SetEnabled(false);
-							}
+							(*it)->SetSelected(true);
 						}
-						break;
 					}
-					else if ((*it)->GetType() == building && (*it)->name == blacksmiths)
+					if ((*it)->GetSelected())
 					{
-						App->entity->UnselectEverything();
-						(*it)->SetSelected(true);
+						if ((*it)->GetType() == building && (*it)->name == barracks)
+						{
+							App->entity->UnselectEverything();
+							(*it)->SetSelected(true);
+							barracks_ui_window->SetEnabledAndChilds(true);
+							break;
+						}
+						else if ((*it)->GetType() == building && (*it)->name == broken_building)
+						{
+							App->entity->UnselectEverything();
+							(*it)->SetSelected(true);
+							if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
+							{
+								unit_scroll->SetEnabled(true);
+								brokenbuilding_ui_window->SetEnabledAndChilds(true);
+								if (App->scene->scene_test->create_blacksmith == false)
+								{
+									create_building_button3->SetEnabled(false);
+									blacksmith_img->SetEnabled(false);
+								}
+							}
+							break;
+						}
+						else if ((*it)->GetType() == building && (*it)->name == blacksmiths)
+						{
+							App->entity->UnselectEverything();
+							(*it)->SetSelected(true);
 
-						choose_ability_b->SetEnabled(true);
-						choose_ability_b_txt->SetEnabled(true);
+							choose_ability_b->SetEnabled(true);
+							choose_ability_b_txt->SetEnabled(true);
 
-						choose_ability_uw->SetEnabled(true);
-						choose_ability_uw_txt->SetEnabled(true);
+							choose_ability_uw->SetEnabled(true);
+							choose_ability_uw_txt->SetEnabled(true);
 
-						break;
-					}
-					else
-					{
-						App->entity->selected.push_back((Unit*)*it);
+							break;
+						}
+						else
+						{
+							App->entity->selected.push_back((Unit*)*it);
+						}
 					}
 				}
 			}
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+			{
+				iPoint mouse;
+				App->input->GetMouseWorld(mouse.x, mouse.y);
+				iPoint mouse_pathfinding;
+				App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+				iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+				p = App->map->WorldToMap(p.x, p.y);
+				bool mouse_over_entity = false;
+
+				for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+				{
+					Collider* unit = (*it)->GetCollider();
+
+					if (unit != nullptr)
+					{
+						if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+						{
+							switch ((*it)->GetType())
+							{
+							case entity_type::ally:
+							case entity_type::npc:
+							case entity_type::player:
+								MoveToTile(p);
+								mouse_over_entity = true;
+								break;
+							case entity_type::enemy:
+							case entity_type::enemy_boss:
+								SetAttackingEnemy((Unit*)*it);
+								mouse_over_entity = true;
+								break;
+							case entity_type::building:
+							case entity_type::ally_building:
+								mouse_over_entity = true;
+								break;
+							case entity_type::object:
+								SetPickingObject((Object*)*it);
+								mouse_over_entity = true;
+								break;
+							case entity_type::enemy_building:
+								SetAttackingBuilding((Building*)*it);
+								mouse_over_entity = true;
+								break;
+							default:
+								break;
+							}
+						}
+					}
+
+					if (mouse_over_entity)
+						continue;
+				}
+
+				if (!mouse_over_entity) {
+					MoveToTile(p);
+				}
+			}
 		}
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+		if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down)
 		{
+
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
-			iPoint mouse_pathfinding;
-			App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
-			iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
-			p = App->map->WorldToMap(p.x, p.y);
-			bool mouse_over_entity = false;
 
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
 			{
@@ -1730,164 +1787,110 @@ bool Player::Update(float dt)
 				if (unit != nullptr)
 				{
 					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+						if ((*it)->life > 0) (*it)->KillEntity();
+				}
+			}
+		}
+
+		if (change_button_config)
+		{
+			SDL_Scancode code = App->input->ReturnKey();
+			if (code != SDL_SCANCODE_0)
+			{
+				bool key_repeated = false;
+				for (int i = 0; i < CONTROLS_SIZE; i++)
+				{
+					if (App->input->controls[i] == code)
 					{
-						switch ((*it)->GetType())
-						{
-						case entity_type::ally:
-						case entity_type::npc:
-						case entity_type::player:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
-						case entity_type::enemy:
-						case entity_type::enemy_boss:
-							SetAttackingEnemy((Unit*)*it);
-							mouse_over_entity = true;
-							break;
-						case entity_type::building:
-						case entity_type::ally_building:
-							mouse_over_entity = true;
-							break;
-						case entity_type::object:
-							SetPickingObject((Object*)*it);
-							mouse_over_entity = true;
-							break;
-						case entity_type::enemy_building:
-							SetAttackingBuilding((Building*)*it);
-							mouse_over_entity = true;
-							break;
-						default:
-							break;
-						}
+						key_repeated = true;
+						continue;
 					}
 				}
 
-				if (mouse_over_entity)
-					continue;
-			}
-
-			if (!mouse_over_entity) {
-				MoveToTile(p);
-			}
-		}
-	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down)
-	{
-
-		iPoint mouse;
-		App->input->GetMouseWorld(mouse.x, mouse.y);
-
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-		{
-			Collider* unit = (*it)->GetCollider();
-
-			if (unit != nullptr)
-			{
-				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
-					if ((*it)->life > 0) (*it)->KillEntity();
-			}
-		}
-	}
-
-	if (change_button_config)
-	{
-		SDL_Scancode code = App->input->ReturnKey();
-		if (code != SDL_SCANCODE_0)
-		{
-			bool key_repeated = false;
-			for (int i = 0; i < CONTROLS_SIZE; i++)
-			{
-				if (App->input->controls[i] == code)
+				if (battlecry_button_options->CompareState("clicked") && !key_repeated)
 				{
-					key_repeated = true;
-					continue;
+					App->input->controls[BATTLECRY] = code;
+					battlecry_button_options->SetImage("standard");
+					change_button_config = false;
+
+					battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+					battlecry_txt2->SetText(battlecry_txt2->str);
+
+					battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+					battlecry_key->SetText(battlecry_key->str);
+				}
+				else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[WHIRLWIND] = code;
+					whirlwind_button_options->SetImage("standard");
+					change_button_config = false;
+
+					whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+					whirlwind_txt2->SetText(whirlwind_txt2->str);
+
+					whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+					whirlwind_key->SetText(whirlwind_key->str);
+				}
+				else if (charge_button_options->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[CHARGE] = code;
+					charge_button_options->SetImage("standard");
+					change_button_config = false;
+
+					charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+					charge_txt2->SetText(charge_txt2->str);
+
+					charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+					charge_key->SetText(charge_key->str);
+				}
+				else if (move_map_up_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_UP] = code;
+					move_map_up_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+					move_map_up_txt2->SetText(move_map_up_txt2->str);
+				}
+				else if (move_map_down_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_DOWN] = code;
+					move_map_down_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+					move_map_down_txt2->SetText(move_map_down_txt2->str);
+				}
+				else if (move_map_left_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_LEFT] = code;
+					move_map_left_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+					move_map_left_txt2->SetText(move_map_left_txt2->str);
+				}
+				else if (move_map_right_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_RIGHT] = code;
+					move_map_right_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+					move_map_right_txt2->SetText(move_map_right_txt2->str);
+				}
+				else if (create_group_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[CREATE_GROUP] = code;
+					create_group_button->SetImage("standard");
+					change_button_config = false;
+
+					create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+					create_group_txt2->SetText(create_group_txt2->str);
 				}
 			}
-
-			if (battlecry_button_options->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[BATTLECRY] = code;
-				battlecry_button_options->SetImage("standard");
-				change_button_config = false;
-
-				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
-				battlecry_txt2->SetText(battlecry_txt2->str);
-				
-				battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
-				battlecry_key->SetText(battlecry_key->str);
-			}
-			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[WHIRLWIND] = code;
-				whirlwind_button_options->SetImage("standard");
-				change_button_config = false;
-
-				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
-				whirlwind_txt2->SetText(whirlwind_txt2->str);
-
-				whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
-				whirlwind_key->SetText(whirlwind_key->str);
-			}
-			else if (charge_button_options->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[CHARGE] = code;
-				charge_button_options->SetImage("standard");
-				change_button_config = false;
-
-				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
-				charge_txt2->SetText(charge_txt2->str);
-
-				charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
-				charge_key->SetText(charge_key->str);
-			}
-			else if (move_map_up_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_UP] = code;
-				move_map_up_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
-				move_map_up_txt2->SetText(move_map_up_txt2->str);
-			}
-			else if (move_map_down_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_DOWN] = code;
-				move_map_down_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
-				move_map_down_txt2->SetText(move_map_down_txt2->str);
-			}
-			else if (move_map_left_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_LEFT] = code;
-				move_map_left_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
-				move_map_left_txt2->SetText(move_map_left_txt2->str);
-			}
-			else if (move_map_right_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_RIGHT] = code;
-				move_map_right_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
-				move_map_right_txt2->SetText(move_map_right_txt2->str);
-			}
-			else if (create_group_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[CREATE_GROUP] = code;
-				create_group_button->SetImage("standard");
-				change_button_config = false;
-
-				create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
-				create_group_txt2->SetText(create_group_txt2->str);
-			}
 		}
 	}
-
 	return ret;
 }
 

@@ -108,6 +108,7 @@ bool SceneTest::Start()
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
 	main_menu_background = (UI_Image*)main_menu_window->CreateImage({ 0, 0 }, { 0, 1139, 1680, 1050 });
 	main_menu_background->change_click_through = true;
+	main_menu_window->SetEnabled(true);
 	
 	int distance = App->win->_GetWindowSize().y / 4 - App->win->_GetWindowSize().y / 8;
 	int y_position = App->win->_GetWindowSize().y / 8;
