@@ -5,7 +5,6 @@
 #include "j1FileSystem.h"
 #include "j1Fonts.h"
 
-#include "SDL\include\SDL.h"
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
@@ -36,6 +35,8 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 		default = Load(path, size);
 		default_15 = Load(path, 15);
 		default_10 = Load(path, 10);
+		default_42 = Load(path, 42);
+		default_48 = Load(path, 48);
 		default_50 = Load(path, 50);
 	}
 

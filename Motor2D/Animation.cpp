@@ -4,6 +4,9 @@
 #include "Unit.h"
 #include "Player.h"
 #include "Fire.h"
+#include "CursorAnimations.h"
+#include "BattlecryBuff.h"
+#include "UndWillBuf.h"
 
 Animation::Animation() : frames(5), speed(1.0f), curr_frame(0), loop(true), loops(0)
 {
@@ -371,6 +374,45 @@ void Animator::LoadAnimationsFromUnitsXML(pugi::xml_node & node, Unit* unit)
 		unit->de_north.SetLoop(false);
 
 	}
+}
+
+void Animator::LoadCursorAnimationsFromParticlesXML(pugi::xml_node & node, CursorAnimations* cursor_anim)
+{
+	pugi::xml_node _node;
+	
+	cursor_anim->movement.frames.clear();
+
+	for (pugi::xml_node rect = node.child("movement").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		cursor_anim->movement.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("movement").attribute("w").as_int(), node.child("movement").attribute("h").as_int() });
+	}
+
+	cursor_anim->movement.SetSpeed(node.child("movement").attribute("speed").as_float());
+}
+
+void Animator::LoadBattlecryBuffFromParticlesXML(pugi::xml_node & node, BattlecryBuff* battlecry_buff)
+{
+	pugi::xml_node _node;
+
+	battlecry_buff->movement.frames.clear();
+
+	for (pugi::xml_node rect = node.child("movement").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		battlecry_buff->movement.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("movement").attribute("w").as_int(), node.child("movement").attribute("h").as_int() });
+	}
+
+	battlecry_buff->movement.SetSpeed(node.child("movement").attribute("speed").as_float());
+}
+
+void Animator::LoadUndWillBuffFromParticlesXML(pugi::xml_node & node, UndWillBuff* undwill_buff)
+{
+	pugi::xml_node _node;
+
+	undwill_buff->movement.frames.clear();
+
+	for (pugi::xml_node rect = node.child("movement").child("rect"); rect != NULL; rect = rect.next_sibling("rect")) {
+		undwill_buff->movement.frames.push_back({ rect.attribute("x").as_int(), rect.attribute("y").as_int(), node.child("movement").attribute("w").as_int(), node.child("movement").attribute("h").as_int() });
+	}
+
+	undwill_buff->movement.SetSpeed(node.child("movement").attribute("speed").as_float());
 }
 
 void Animator::SetAnimation(const char* name)

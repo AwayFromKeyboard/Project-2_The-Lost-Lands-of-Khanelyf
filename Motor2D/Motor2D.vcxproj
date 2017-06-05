@@ -80,10 +80,12 @@
     <ClCompile Include="Barbarian.cpp" />
     <ClCompile Include="Barracks.cpp" />
     <ClCompile Include="BasicBuilding.cpp" />
+    <ClCompile Include="BattlecryBuff.cpp" />
     <ClCompile Include="Blacksmith.cpp" />
     <ClCompile Include="Boss_Axe_Knight.cpp" />
     <ClCompile Include="BrokenBuilding.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="CursorAnimations.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Escorted_NPC.cpp" />
@@ -122,19 +124,24 @@
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Swordsman.cpp" />
+    <ClCompile Include="theoraplay.c" />
     <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="UndWillBuff.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="Video.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Barbarian.h" />
     <ClInclude Include="Barracks.h" />
     <ClInclude Include="BasicBuilding.h" />
+    <ClInclude Include="BattlecryBuff.h" />
     <ClInclude Include="Blacksmith.h" />
     <ClInclude Include="Boss_Axe_Knight.h" />
     <ClInclude Include="BrokenBuilding.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="CollisionFilters.h" />
+    <ClInclude Include="CursorAnimations.h" />
     <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="Escorted_NPC.h" />
     <ClInclude Include="Fire.h" />
@@ -178,8 +185,11 @@
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Swordsman.h" />
+    <ClInclude Include="theoraplay.h" />
     <ClInclude Include="Tower.h" />
+    <ClInclude Include="UndWillBuf.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="Video.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\Buildings.xml" />

@@ -20,10 +20,13 @@
 #include "Building.h"
 #include "Minimap.h"
 #include "Barracks.h"
+#include "Blacksmith.h"
 #include "BasicBuilding.h"
 #include "Functions.h"
 #include "QuestManager.h"
 #include "j1Audio.h"
+#include "ParticleManager.h"
+#include "Particle.h"
 
 Player::Player()
 {
@@ -37,6 +40,13 @@ Player::~Player()
 bool Player::Start()
 {
 	bool ret = true;
+
+	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 0, 0, 100);
+
+	helping_txt = (UI_Text*)help_window->CreateText({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_15);
+	helping_txt->click_through = true;
+	
+	help_window->SetEnabledAndChilds(false);
 
 	victory_window = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 3)-(App->win->_GetWindowSize().y /10) }, 100, 200, 100);
 	
@@ -144,7 +154,7 @@ bool Player::Start()
 	mainmenu->AddImage("clicked", { 25, 2768, 186, 31 });
 	mainmenu->AddImage("hovered", { 26, 2732, 186, 31 });
 	
-	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, 186, 31);
+	back= (UI_Button*)pause_window->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 18) }, 186, 31);
 	back->AddImage("standard", { 25, 2695, 186, 31 });
 	back->SetImage("standard");
 	back->AddImage("clicked", { 25, 2768, 186, 31 });
@@ -265,7 +275,7 @@ bool Player::Start()
 	mainmenu_txt->SetText("Main Menu");
 	mainmenu_txt->click_through = true;
 	
-	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 16) }, App->font->default);
+	back_txt = (UI_Text*)pause_window->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 17) }, App->font->default);
 	back_txt->SetText("Resume Game");
 	back_txt->click_through = true;
 	
@@ -310,23 +320,29 @@ bool Player::Start()
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
 	brokenbuilding_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(480, 200), 225, 144, 11);
 
+	unit_scroll = (UI_Image*)barracks_ui_window->CreateImage(iPoint(0, 750), { 1326, 2190, 224, 125 });
+	unit_scroll->click_through = true;
+
 	//Buttons for barracks
-	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(285, 500), 60, 60);
+
+	create_unit_button = (UI_Button*)barracks_ui_window->CreateButton(iPoint(25, 785), 60, 60);
 	create_unit_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button->SetImage("standard");
 	create_unit_button->AddImage("clicked", { 645, 0, 60, 60 });
+	create_unit_button->change_click_through = true;
 
-	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(384, 500), 60, 60);
+	create_unit_button2 = (UI_Button*)barracks_ui_window->CreateButton(iPoint(112, 785), 60, 60);
 	create_unit_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_unit_button2->SetImage("standard");
 	create_unit_button2->AddImage("clicked", { 645, 0, 60, 60 });
+	create_unit_button2->change_click_through = true;
 
-	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(297, 510), 37, 36);
+	barbarian_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(37, 795), 37, 36);
 	barbarian_img->AddImage("standard", { 765, 0, 37, 36 });
 	barbarian_img->SetImage("standard");
 	barbarian_img->click_through = true;
 
-	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(395, 510), 37, 36);
+	swordsman_img = (UI_Button*)barracks_ui_window->CreateButton(iPoint(123, 795), 37, 36);
 	swordsman_img->AddImage("standard", { 765, 36, 37, 36 });
 	swordsman_img->SetImage("standard");
 	swordsman_img->click_through = true;
@@ -334,32 +350,38 @@ bool Player::Start()
 	barracks_ui_window->SetEnabledAndChilds(false);
 
 	//Buttons for brokenbuilding
-
-	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(485, 500), 60, 60);
+	create_building_button = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(3, 785), 60, 60);
 	create_building_button->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button->SetImage("standard");
 	create_building_button->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button->change_click_through = true;
 
-	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(584, 500), 60, 60);
+	create_building_button2 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(66, 785), 60, 60);
 	create_building_button2->AddImage("standard", { 705, 0, 60, 60 });
 	create_building_button2->SetImage("standard");
 	create_building_button2->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button2->change_click_through = true;
 
-	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(497, 510), 37, 36);
-	barrack_img->AddImage("standard", { 808, 48, 39, 38 });
-	barrack_img->SetImage("standard");
+	create_building_button3 = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(129, 785), 60, 60);
+	create_building_button3->AddImage("standard", { 705, 0, 60, 60 });
+	create_building_button3->SetImage("standard");
+	create_building_button3->AddImage("clicked", { 645, 0, 60, 60 });
+	create_building_button3->change_click_through = true;
+
+	barrack_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(15, 795), { 808, 48, 39, 38 });
 	barrack_img->click_through = true;
 
-	house_img = (UI_Button*)brokenbuilding_ui_window->CreateButton(iPoint(595, 515), 37, 36);
-	house_img->AddImage("standard", { 847, 52, 37, 33 });
-	house_img->SetImage("standard");
+	house_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(76, 800), { 847, 52, 37, 33 });
 	house_img->click_through = true;
+
+	blacksmith_img = (UI_Button*)brokenbuilding_ui_window->CreateImage(iPoint(139, 795), { 852, 0, 45, 36 });
+	blacksmith_img->click_through = true;
 
 	brokenbuilding_ui_window->SetEnabledAndChilds(false);
 
 	//player abilities
 
-	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 200, 60, 12);
+	player_abilities = (UI_Window*)App->gui->UI_CreateWin(iPoint(400, 200), 0, 0, 12);
 
 	//Choose ability
 
@@ -368,12 +390,14 @@ bool Player::Start()
 	choose_ability_b->SetImage("standard");
 	choose_ability_b->AddImage("clicked", { 25, 2768, 186, 31 });
 	choose_ability_b->AddImage("hovered", { 26, 2732, 186, 31 });
+	choose_ability_b->change_click_through = true;
 
 	choose_ability_uw = (UI_Button*)player_abilities->CreateButton({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 17), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, 186, 31);
 	choose_ability_uw->AddImage("standard", { 25, 2695, 186, 31 });
 	choose_ability_uw->SetImage("standard");
 	choose_ability_uw->AddImage("clicked", { 25, 2768, 186, 31 });
 	choose_ability_uw->AddImage("hovered", { 26, 2732, 186, 31 });
+	choose_ability_uw->change_click_through = true;
 
 	choose_ability_b_txt = (UI_Text*)player_abilities->CreateText({ (App->win->_GetWindowSize().x / 2) - (App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y / 2) - (App->win->_GetWindowSize().y / 6) }, App->font->default);
 	choose_ability_b_txt->SetText("Berserker");
@@ -432,9 +456,9 @@ bool Player::Start()
 
 	//drop object interface
 
-	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1000, 200), 25, 25, 13);
-	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x / 2, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 2), 60, 60);
-	item_drop->AddImage("standard", { 645, 60, 25, 25 });
+	inventory = (UI_Window*)App->gui->UI_CreateWin(iPoint(1300, 1000), 0, 0, 13);
+	item_drop = (UI_Button*)player_abilities->CreateButton(iPoint(App->win->_GetWindowSize().x - App->win->_GetWindowSize().x / 5, App->win->_GetWindowSize().y - App->win->_GetWindowSize().y / 8), 60, 60);
+	item_drop->AddImage("standard", { 898, 0, 40, 40 });
 	item_drop->SetImage("standard");
 	item_drop->SetEnabled(false);
 
@@ -444,8 +468,6 @@ bool Player::Start()
 bool Player::PreUpdate()
 {
 	bool ret = true;
-	load->enabled = false;
-	save->enabled = false;
 
 	if (victory_status) {
 		victory_window->SetEnabledAndChilds(true);
@@ -476,41 +498,48 @@ bool Player::PreUpdate()
 		App->player->lose_status = true;
 	}
 
-	if (active_ability == not_chosen && pause_status == false)
+	if (active_ability == not_chosen && pause_status == false) {
 		pause_status = !pause_status;
+		choose_ability_b->SetEnabled(true);
+		choose_ability_b_txt->SetEnabled(true);
+		choose_ability_uw->SetEnabled(true);
+		choose_ability_uw_txt->SetEnabled(true);
+		show_ability_name->SetText("");
+	}
 
-	if (choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen)
+	if ((choose_ability_b->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == battlecry_active && loaded))
 	{
 		active_ability = battlecry_active;
 
 		show_ability_name->SetText("BC");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
 		
+		if (loaded)
+			loaded = false;
 	}
-	else if (choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen)
+	else if ((choose_ability_uw->MouseClickEnterLeft() && active_ability == not_chosen) || (active_ability == undying_will_active && loaded))
 	{
 		active_ability = undying_will_active;
 
 		show_ability_name->SetText("UW");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		pause_status = !pause_status;
+
+		if (loaded)
+			loaded = false;
 	}
 
 	if (choose_ability_b->MouseClickEnterLeft() && active_ability != not_chosen && active_ability != battlecry_active && App->scene->scene_test->gold >= 50)
@@ -520,13 +549,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("BC");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		battlecry_ability->SetImage("clicked");
 
@@ -541,13 +568,11 @@ bool Player::PreUpdate()
 
 		show_ability_name->SetText("UW");
 
-		choose_ability_b->click_through = true;
-		choose_ability_b->enabled = false;
-		choose_ability_b_txt->enabled = false;
+		choose_ability_b->SetEnabled(false);
+		choose_ability_b_txt->SetEnabled(false);
 
-		choose_ability_uw->click_through = true;
-		choose_ability_uw->enabled = false;
-		choose_ability_uw_txt->enabled = false;
+		choose_ability_uw->SetEnabled(false);
+		choose_ability_uw_txt->SetEnabled(false);
 
 		battlecry_ability->SetImage("clicked");
 
@@ -560,13 +585,11 @@ bool Player::PreUpdate()
 	{
 		if (active_ability != not_chosen)
 		{
-			choose_ability_b->click_through = true;
-			choose_ability_b->enabled = false;
-			choose_ability_b_txt->enabled = false;
+			choose_ability_b->SetEnabled(false);
+			choose_ability_b_txt->SetEnabled(false);
 
-			choose_ability_uw->click_through = true;
-			choose_ability_uw->enabled = false;
-			choose_ability_uw_txt->enabled = false;
+			choose_ability_uw->SetEnabled(false);
+			choose_ability_uw_txt->SetEnabled(false);
 		}
 		if (change_controls_status)
 		{
@@ -672,7 +695,7 @@ bool Player::PreUpdate()
 		button_clicked.Start();
 		button_on_clicked = true;
 
-		if(audio_muted)
+		if (audio_muted)
 		{
 			audio_muted = !audio_muted;
 			audio_on_off->SetText("On");
@@ -730,6 +753,12 @@ bool Player::PreUpdate()
 	else if (mainmenu->MouseClickEnterLeft() && pause_status)
 	{
 		mainmenu->SetImage("clicked");
+		App->entity->UnselectEverything();
+		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
+		App->LoadGame("Restart_Game_File.xml");
+		App->audio->RestartAudio();
+		pause_status = false;
+
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
@@ -855,7 +884,7 @@ bool Player::PreUpdate()
 		options_status = false;
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
+
 	if (button_clicked.ReadSec() >= 0.1 && button_on_clicked == true && (save->CompareState("clicked") || load->CompareState("clicked")))
 	{
 		button_on_clicked = false;
@@ -1052,7 +1081,7 @@ bool Player::PreUpdate()
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
 	}
-	
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == key_down)
@@ -1113,49 +1142,55 @@ bool Player::PreUpdate()
 		move_map_left_txt2->SetEnabled(false);
 		move_map_right_txt2->SetEnabled(false);
 		create_group_txt2->SetEnabled(false);
-				
+
 	}
 
 	else if ((!pause_status && pause_window->enabled && active_ability != not_chosen))
 	{
 		pause_window->SetEnabledAndChilds(false);
 	}
-	
-	if (backpause->MouseEnter())
+	if (backpause->MouseEnter()) {
 		backpause->SetImage("hovered");
-	else if (backpause->MouseOut() && backpause->CompareState("hovered"))
+		}
+	else if (backpause->MouseOut() && backpause->CompareState("hovered")) {
 		backpause->SetImage("standard");
-	
-	if (controls_button->MouseEnter())
+		}
+	if (controls_button->MouseEnter()) {
 		controls_button->SetImage("hovered");
+		}
 	else if (controls_button->MouseOut() && controls_button->CompareState("hovered"))
 		controls_button->SetImage("standard");
-	
-	if (audio_button->MouseEnter())
+
+	if (audio_button->MouseEnter()) {
 		audio_button->SetImage("hovered");
+		}
 	else if (audio_button->MouseOut() && audio_button->CompareState("hovered"))
 		audio_button->SetImage("standard");
 
-	if (backoptions->MouseEnter())
+	if (backoptions->MouseEnter()) {
 		backoptions->SetImage("hovered");
+		}
 	else if (backoptions->MouseOut() && backoptions->CompareState("hovered"))
 		backoptions->SetImage("standard");
 
-	if (battlecry_button_options->MouseEnter())
+	if (battlecry_button_options->MouseEnter()) {
 		battlecry_button_options->SetImage("hovered");
-	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered"))
+		}
+	else if (battlecry_button_options->MouseOut() && battlecry_button_options->CompareState("hovered")){
 		battlecry_button_options->SetImage("standard");
-
-	if (whirlwind_button_options->MouseEnter())
+		}
+	if (whirlwind_button_options->MouseEnter()) {
 		whirlwind_button_options->SetImage("hovered");
+		}
 	else if (whirlwind_button_options->MouseOut() && whirlwind_button_options->CompareState("hovered"))
 		whirlwind_button_options->SetImage("standard");
-
-	if (charge_button_options->MouseEnter())
+	
+	if (charge_button_options->MouseEnter()) {
 		charge_button_options->SetImage("hovered");
-	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered"))
+	}
+	else if (charge_button_options->MouseOut() && charge_button_options->CompareState("hovered")){
 		charge_button_options->SetImage("standard");
-
+		}
 	if (move_map_up_button->MouseEnter())
 		move_map_up_button->SetImage("hovered");
 	else if (move_map_up_button->MouseOut() && move_map_up_button->CompareState("hovered"))
@@ -1182,38 +1217,50 @@ bool Player::PreUpdate()
 		create_group_button->SetImage("standard");
 
 	//backbutton
-	if (back->MouseEnter())
+	if (back->MouseEnter()) {
 		back->SetImage("hovered");
+		
+	}
 	else if (back->MouseOut() && back->CompareState("hovered"))
 		back->SetImage("standard");
 
-	if (mainmenu->MouseEnter())
+	if (mainmenu->MouseEnter()) {
 		mainmenu->SetImage("hovered");
+		
+	}
 	else if (mainmenu->MouseOut() && mainmenu->CompareState("hovered"))
 		mainmenu->SetImage("standard");
 
 	//savebutton
-	if (save->MouseEnter())
+	if (save->MouseEnter()) {
 		save->SetImage("hovered");
+		
+	}
 	else if (save->MouseOut() && save->CompareState("hovered"))
 		save->SetImage("standard");
 	
 	//load button
-	if (load->MouseEnter())
+	if (load->MouseEnter()) {
 		load->SetImage("hovered");
+		
+	}
 	else if (load->MouseOut() && load->CompareState("hovered"))
 		load->SetImage("standard");
 	
 	// options button
 
-	if (options->MouseEnter())
+	if (options->MouseEnter()) {
 		options->SetImage("hovered");
+		
+	}
 	else if (options->MouseOut() && options->CompareState("hovered"))
 		options->SetImage("standard");
 
 	//quitbutton
-	if (quit_game->MouseEnter())
+	if (quit_game->MouseEnter()) {
 		quit_game->SetImage("hovered");
+		
+	}
 	else if (quit_game->MouseOut())
 		quit_game->SetImage("standard");
 
@@ -1221,27 +1268,152 @@ bool Player::PreUpdate()
 		quit_game->SetImage("clicked");
 		App->stop_exe = true;
 	}
+
+
+	if (!pause_status)
+	{
+
+
+		if (life_txt->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Life points");
+			text_on = true;
+		}
+		
+		else if (armor_txt->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Armor points");
+			text_on = true;
+		}
 	
-	if (!pause_status) {
+		else if (damage_txt->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Damage points");
+			text_on = true;
+		}
+		
+		else if (pierce_armor_txt->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hero's Armor Penetration points");
+			text_on = true;
+		}
+		else if (create_building_button->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a barrack to hire troops. Requirements: 90 Gold. (You can only have one building of this type)");
+			text_on = true;
+		}
+		else if (create_building_button2->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a house to increase by 1 the maximum amount of units you can have. Requirements: 30 Gold (You need a barrack to build one)");
+			text_on = true;
+		}
+		else if (create_building_button3->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Create a blacksmith to change your first ability for 50 gold. Requirements: 50 Gold");
+			text_on = true;
+		}
+		else if (create_unit_button->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hire a Barbarian. Requirements: 10 Gold");
+			text_on = true;
+		}
+		else if (create_unit_button2->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Hire a Swordsman. Requirements: 30 Gold & complete mission 4");
+			text_on = true;
+		}
+		else if (item_drop->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Click to drop the item");
+			text_on = true;
+		}
+
+		else if (battlecry_ability->MouseEnter())
+		{
+
+			if (active_ability == battlecry_active) {
+				help_window->SetEnabledAndChilds(true);
+				helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd)");
+				text_on = true;
+			}
+			else if (active_ability == undying_will_active) {
+				help_window->SetEnabledAndChilds(true);
+				helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
+				text_on = true;
+			}
+		}
+
+		else if (whirlwind_ability->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Whirlwind. A spin that does 40 AoE damage (8s cd)");
+			text_on = true;
+		}
+
+		else if (charge_ability->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Charge. Click on the ground below an enemy inside the range of action to charge at him and deal him 40 damage + your actual attack (12s cd)");
+			text_on = true;
+		}
+
+		else if (choose_ability_uw->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd). Requirements: 50 Gold");
+			text_on = true;
+		}
+
+		else if (choose_ability_b->MouseEnter())
+		{
+			help_window->SetEnabledAndChilds(true);
+			helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd). Requirements: 50 Gold");
+			text_on = true;
+		}
+		
+		else if (text_on && ((choose_ability_b->enabled == false || (choose_ability_b->MouseOut() && choose_ability_uw->MouseOut())) && battlecry_ability->MouseOut() && whirlwind_ability->MouseOut() && charge_ability->MouseOut() && pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled==false || item_drop->MouseOut()))
+		{
+			help_window->SetEnabledAndChilds(false);
+			text_on = false;
+		}
+
+		if(text_on == false)
+			help_window->SetEnabledAndChilds(false);
+		else
+			help_window->SetEnabledAndChilds(true);
+
 
 		//Barracks create unit buttons
-		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true) {
+		if (create_unit_button->MouseClickEnterLeft() && create_barbarian == true)
+		{
 			create_unit_button->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 5 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
+			if (App->scene->scene_test->gold >= 10 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 1) {
 				Barbarian* barb = (Barbarian*)App->entity->CreateEntity(barbarian, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= barb->cost;
 				App->scene->scene_test->current_human_resources += barb->human_cost;
 			}
 		}
-		if (create_unit_button->MouseClickOutLeft()) {
+		if (create_unit_button->MouseClickOutLeft())
+		{
 			create_unit_button->SetImage("standard");
 		}
 
-		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true) {
+		if (create_unit_button2->MouseClickEnterLeft() && create_swordsman == true)
+		{
 			create_unit_button2->SetImage("clicked");
 
-			if (App->scene->scene_test->gold >= 20 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
+			if (App->scene->scene_test->gold >= 30 && App->scene->scene_test->current_human_resources <= App->scene->scene_test->human_resources_max - 2) {
 				Swordsman* sword = (Swordsman*)App->entity->CreateEntity(swordsman, ally, iPoint(barracks_position.x + 100, barracks_position.y + 100));
 				App->scene->scene_test->gold -= sword->cost;
 				App->scene->scene_test->current_human_resources += sword->human_cost;
@@ -1254,6 +1426,8 @@ bool Player::PreUpdate()
 		}
 
 		//Brokenbuilding create building buttons
+		
+				
 		if (create_building_button->MouseClickEnterLeft() && create_building_button->CompareState("standard") && (App->scene->scene_test->gold >= 90 || App->debug_mode))
 		{
 			create_building_button->SetImage("clicked");
@@ -1268,6 +1442,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					Barracks* barrack = (Barracks*)App->entity->CreateEntity(barracks, building,  pos);
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 					App->scene->scene_test->create_barrack = false;
 					if (App->questmanager->GetCurrentQuest()->type == quest_type::create && App->questmanager->GetCurrentQuest()->id == quest_id::quest_leader)
@@ -1283,8 +1458,6 @@ bool Player::PreUpdate()
 			create_building_button->SetImage("standard");
 		}
 
-
-
 		if (create_building_button2->MouseClickEnterLeft() && create_building_button2->CompareState("standard") && (App->scene->scene_test->gold >= 30 || App->debug_mode) && App->scene->scene_test->create_barrack == false)
 		{
 			create_building_button2->SetImage("clicked");
@@ -1299,6 +1472,7 @@ bool Player::PreUpdate()
 					iPoint pos = (*it)->position;
 					(*it)->state = entity_death;
 					BasicBuilding* basicbuilding = (BasicBuilding*)App->entity->CreateBuildingEntity(basic_building, ally_building, pos, RandomGenerate(1, 3));
+					unit_scroll->SetEnabled(false);
 					brokenbuilding_ui_window->SetEnabledAndChilds(false);
 				}
 			}
@@ -1308,6 +1482,32 @@ bool Player::PreUpdate()
 		if (create_building_button2->MouseClickOutLeft())
 		{
 			create_building_button2->SetImage("standard");
+		}
+
+		if (create_building_button3->MouseClickEnterLeft() && create_building_button3->CompareState("standard") && (App->scene->scene_test->gold >= 50 || App->debug_mode) && App->scene->scene_test->create_blacksmith == true && blacksmith_alive == false)
+		{
+			create_building_button3->SetImage("clicked");
+
+			if (!App->debug_mode)
+				App->scene->scene_test->gold -= 50;	//Blacksmith cost
+
+			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			{
+				if ((*it)->GetSelected())
+				{
+					iPoint pos = (*it)->position;
+					(*it)->state = entity_death;
+					Blacksmith* blacksmith = (Blacksmith*)App->entity->CreateEntity(blacksmiths, building, iPoint(pos.x + 40, pos.y + 50));
+					unit_scroll->SetEnabled(false);
+					brokenbuilding_ui_window->SetEnabledAndChilds(false);
+				}
+			}
+			blacksmith_alive = true;
+		}
+
+		if (create_building_button3->MouseClickOutLeft())
+		{
+			create_building_button3->SetImage("standard");
 		}
 
 		//player abilities
@@ -1355,6 +1555,7 @@ bool Player::PreUpdate()
 					battlecry_timer.Start();
 					draw_battlecry_range = false;
 					range_visited.clear();
+					create_new_buff_particle = true;
 				}
 				if (battlecry_timer.ReadSec() >= COOLDOWN_BATTLECRY) {
 					battlecry_cd->SetEnabled(false);
@@ -1370,6 +1571,8 @@ bool Player::PreUpdate()
 				if ((App->input->GetKey(App->input->controls[BATTLECRY]) == key_down || battlecry_ability->MouseClickEnterLeft()) && battlecry_ability->CompareState("standard"))
 				{
 					undying_state_active = true;
+
+					(UndWillBuff*)App->particle->CreateParticle(particle_type::undwillbuff, 0, { hero->position.x, hero->position.y });
 
 					battlecry_ability->SetImage("clicked");
 
@@ -1451,72 +1654,132 @@ bool Player::Update(float dt)
 	
 	if (!App->minimap->IsMouseOver())
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat)
+		if (App->scene->scene_test->main_menu_window->enabled == false)
 		{
-			iPoint mouse;
-			App->input->GetMouseWorld(mouse.x, mouse.y);
-			App->entity->UnselectEverything();
-			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == key_down && App->gui->GetMouseHover() == nullptr && App->input->GetKey(App->input->controls[BATTLECRY]) != key_repeat && App->input->GetKey(App->input->controls[WHIRLWIND]) != key_repeat && App->input->GetKey(App->input->controls[CHARGE]) != key_repeat)
 			{
-				Collider* unit = (*it)->GetCollider();
+				iPoint mouse;
+				App->input->GetMouseWorld(mouse.x, mouse.y);
+				App->entity->UnselectEverything();
+				for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+				{
+					Collider* unit = (*it)->GetCollider();
 
-				if (unit != nullptr)
-				{
-					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building))
+					if (unit != nullptr)
 					{
-						(*it)->SetSelected(true);
-					}
-				}
-				if ((*it)->GetSelected())
-				{
-					if ((*it)->GetType() == building && (*it)->name == barracks)
-					{
-						App->entity->UnselectEverything();
-						(*it)->SetSelected(true);
-						barracks_ui_window->SetEnabledAndChilds(true);
-						break;
-					}
-					else if ((*it)->GetType() == building && (*it)->name == broken_building)
-					{
-						App->entity->UnselectEverything();
-						(*it)->SetSelected(true);
-						if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
+						if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h && ((*it)->GetType() == entity_type::player || (*it)->GetType() == entity_type::ally || (*it)->GetType() == entity_type::building))
 						{
-							brokenbuilding_ui_window->SetEnabledAndChilds(true);
+							(*it)->SetSelected(true);
 						}
-						break;
 					}
-					else if ((*it)->GetType() == building && (*it)->name == blacksmiths)
+					if ((*it)->GetSelected())
 					{
-						App->entity->UnselectEverything();
-						(*it)->SetSelected(true);
+						if ((*it)->GetType() == building && (*it)->name == barracks)
+						{
+							App->entity->UnselectEverything();
+							(*it)->SetSelected(true);
+							barracks_ui_window->SetEnabledAndChilds(true);
+							break;
+						}
+						else if ((*it)->GetType() == building && (*it)->name == broken_building)
+						{
+							App->entity->UnselectEverything();
+							(*it)->SetSelected(true);
+							if (App->questmanager->GetCurrentQuest()->id != quest_id::quest_beggar)
+							{
+								unit_scroll->SetEnabled(true);
+								brokenbuilding_ui_window->SetEnabledAndChilds(true);
+								if (App->scene->scene_test->create_blacksmith == false)
+								{
+									create_building_button3->SetEnabled(false);
+									blacksmith_img->SetEnabled(false);
+								}
+							}
+							break;
+						}
+						else if ((*it)->GetType() == building && (*it)->name == blacksmiths)
+						{
+							App->entity->UnselectEverything();
+							(*it)->SetSelected(true);
 
-						choose_ability_b->click_through = false;
-						choose_ability_b->enabled = true;
-						choose_ability_b_txt->enabled = true;
+							choose_ability_b->SetEnabled(true);
+							choose_ability_b_txt->SetEnabled(true);
 
-						choose_ability_uw->click_through = false;
-						choose_ability_uw->enabled = true;
-						choose_ability_uw_txt->enabled = true;
+							choose_ability_uw->SetEnabled(true);
+							choose_ability_uw_txt->SetEnabled(true);
 
-						break;
-					}
-					else
-					{
-						App->entity->selected.push_back((Unit*)*it);
+							break;
+						}
+						else
+						{
+							App->entity->selected.push_back((Unit*)*it);
+						}
 					}
 				}
 			}
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+			{
+				iPoint mouse;
+				App->input->GetMouseWorld(mouse.x, mouse.y);
+				iPoint mouse_pathfinding;
+				App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+				iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+				p = App->map->WorldToMap(p.x, p.y);
+				bool mouse_over_entity = false;
+
+				for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+				{
+					Collider* unit = (*it)->GetCollider();
+
+					if (unit != nullptr)
+					{
+						if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+						{
+							switch ((*it)->GetType())
+							{
+							case entity_type::ally:
+							case entity_type::npc:
+							case entity_type::player:
+								MoveToTile(p);
+								mouse_over_entity = true;
+								break;
+							case entity_type::enemy:
+							case entity_type::enemy_boss:
+								SetAttackingEnemy((Unit*)*it);
+								mouse_over_entity = true;
+								break;
+							case entity_type::building:
+							case entity_type::ally_building:
+								mouse_over_entity = true;
+								break;
+							case entity_type::object:
+								SetPickingObject((Object*)*it);
+								mouse_over_entity = true;
+								break;
+							case entity_type::enemy_building:
+								SetAttackingBuilding((Building*)*it);
+								mouse_over_entity = true;
+								break;
+							default:
+								break;
+							}
+						}
+					}
+
+					if (mouse_over_entity)
+						continue;
+				}
+
+				if (!mouse_over_entity) {
+					MoveToTile(p);
+				}
+			}
 		}
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == key_down)
+		if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down)
 		{
+
 			iPoint mouse;
 			App->input->GetMouseWorld(mouse.x, mouse.y);
-			iPoint mouse_pathfinding;
-			App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
-			iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
-			p = App->map->WorldToMap(p.x, p.y);
-			bool mouse_over_entity = false;
 
 			for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
 			{
@@ -1525,168 +1788,110 @@ bool Player::Update(float dt)
 				if (unit != nullptr)
 				{
 					if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+						if ((*it)->life > 0) (*it)->KillEntity();
+				}
+			}
+		}
+
+		if (change_button_config)
+		{
+			SDL_Scancode code = App->input->ReturnKey();
+			if (code != SDL_SCANCODE_0)
+			{
+				bool key_repeated = false;
+				for (int i = 0; i < CONTROLS_SIZE; i++)
+				{
+					if (App->input->controls[i] == code)
 					{
-						switch ((*it)->GetType())
-						{
-						case entity_type::ally:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
-						case entity_type::enemy:
-							SetAttackingEnemy((Unit*)*it);
-							mouse_over_entity = true;
-							break;
-						case entity_type::npc:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
-						case entity_type::player:
-							MoveToTile(p);
-							mouse_over_entity = true;
-							break;
-						case entity_type::building:
-							mouse_over_entity = true;
-							break;
-						case entity_type::object:
-							SetPickingObject((Object*)*it);
-							mouse_over_entity = true;
-							break;
-						case entity_type::enemy_building:
-							SetAttackingBuilding((Building*)*it);
-							mouse_over_entity = true;
-							break;
-						default:
-							break;
-						}
+						key_repeated = true;
+						continue;
 					}
 				}
 
-				if (mouse_over_entity)
-					continue;
-			}
-
-			if (!mouse_over_entity) {
-				MoveToTile(p);
-			}
-		}
-	}
-	if (App->debug_mode && App->input->GetKey(SDL_SCANCODE_K) == key_down)
-	{
-
-		iPoint mouse;
-		App->input->GetMouseWorld(mouse.x, mouse.y);
-
-		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
-		{
-			Collider* unit = (*it)->GetCollider();
-
-			if (unit != nullptr)
-			{
-				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
-					if ((*it)->life > 0) (*it)->KillEntity();
-			}
-		}
-	}
-
-	if (change_button_config)
-	{
-		SDL_Scancode code = App->input->ReturnKey();
-		if (code != SDL_SCANCODE_0)
-		{
-			bool key_repeated = false;
-			for (int i = 0; i < CONTROLS_SIZE; i++)
-			{
-				if (App->input->controls[i] == code)
+				if (battlecry_button_options->CompareState("clicked") && !key_repeated)
 				{
-					key_repeated = true;
-					continue;
+					App->input->controls[BATTLECRY] = code;
+					battlecry_button_options->SetImage("standard");
+					change_button_config = false;
+
+					battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+					battlecry_txt2->SetText(battlecry_txt2->str);
+
+					battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
+					battlecry_key->SetText(battlecry_key->str);
+				}
+				else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[WHIRLWIND] = code;
+					whirlwind_button_options->SetImage("standard");
+					change_button_config = false;
+
+					whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+					whirlwind_txt2->SetText(whirlwind_txt2->str);
+
+					whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
+					whirlwind_key->SetText(whirlwind_key->str);
+				}
+				else if (charge_button_options->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[CHARGE] = code;
+					charge_button_options->SetImage("standard");
+					change_button_config = false;
+
+					charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+					charge_txt2->SetText(charge_txt2->str);
+
+					charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
+					charge_key->SetText(charge_key->str);
+				}
+				else if (move_map_up_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_UP] = code;
+					move_map_up_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
+					move_map_up_txt2->SetText(move_map_up_txt2->str);
+				}
+				else if (move_map_down_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_DOWN] = code;
+					move_map_down_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
+					move_map_down_txt2->SetText(move_map_down_txt2->str);
+				}
+				else if (move_map_left_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_LEFT] = code;
+					move_map_left_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
+					move_map_left_txt2->SetText(move_map_left_txt2->str);
+				}
+				else if (move_map_right_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[MOVE_MAP_RIGHT] = code;
+					move_map_right_button->SetImage("standard");
+					change_button_config = false;
+
+					move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
+					move_map_right_txt2->SetText(move_map_right_txt2->str);
+				}
+				else if (create_group_button->CompareState("clicked") && !key_repeated)
+				{
+					App->input->controls[CREATE_GROUP] = code;
+					create_group_button->SetImage("standard");
+					change_button_config = false;
+
+					create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
+					create_group_txt2->SetText(create_group_txt2->str);
 				}
 			}
-
-			if (battlecry_button_options->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[BATTLECRY] = code;
-				battlecry_button_options->SetImage("standard");
-				change_button_config = false;
-
-				battlecry_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
-				battlecry_txt2->SetText(battlecry_txt2->str);
-				
-				battlecry_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[BATTLECRY]);
-				battlecry_key->SetText(battlecry_key->str);
-			}
-			else if (whirlwind_button_options->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[WHIRLWIND] = code;
-				whirlwind_button_options->SetImage("standard");
-				change_button_config = false;
-
-				whirlwind_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
-				whirlwind_txt2->SetText(whirlwind_txt2->str);
-
-				whirlwind_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[WHIRLWIND]);
-				whirlwind_key->SetText(whirlwind_key->str);
-			}
-			else if (charge_button_options->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[CHARGE] = code;
-				charge_button_options->SetImage("standard");
-				change_button_config = false;
-
-				charge_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
-				charge_txt2->SetText(charge_txt2->str);
-
-				charge_key->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CHARGE]);
-				charge_key->SetText(charge_key->str);
-			}
-			else if (move_map_up_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_UP] = code;
-				move_map_up_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_up_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_UP]);
-				move_map_up_txt2->SetText(move_map_up_txt2->str);
-			}
-			else if (move_map_down_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_DOWN] = code;
-				move_map_down_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_down_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_DOWN]);
-				move_map_down_txt2->SetText(move_map_down_txt2->str);
-			}
-			else if (move_map_left_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_LEFT] = code;
-				move_map_left_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_left_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_LEFT]);
-				move_map_left_txt2->SetText(move_map_left_txt2->str);
-			}
-			else if (move_map_right_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[MOVE_MAP_RIGHT] = code;
-				move_map_right_button->SetImage("standard");
-				change_button_config = false;
-
-				move_map_right_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[MOVE_MAP_RIGHT]);
-				move_map_right_txt2->SetText(move_map_right_txt2->str);
-			}
-			else if (create_group_button->CompareState("clicked") && !key_repeated)
-			{
-				App->input->controls[CREATE_GROUP] = code;
-				create_group_button->SetImage("standard");
-				change_button_config = false;
-
-				create_group_txt2->str = App->input->GetKeyString((SDL_Scancode)App->input->controls[CREATE_GROUP]);
-				create_group_txt2->SetText(create_group_txt2->str);
-			}
 		}
 	}
-
 	return ret;
 }
 
@@ -1694,11 +1899,18 @@ bool Player::PostUpdate()
 {
 	bool ret = true;
 
+	CheckMouseEntity();
+
 	if (hero != nullptr)
 		UpdateAttributes();
 	
 	if (draw_buff == true)
-		DrawBuff();
+	{
+		if (create_new_buff_particle == true) {
+			DrawBuff();
+			create_new_buff_particle = false;
+		}
+	}
 
 	if (battlecry_timer.ReadSec() <= COOLDOWN_BATTLECRY && active_ability == battlecry_active)
 	{
@@ -1765,10 +1977,31 @@ bool Player::Load(pugi::xml_node& data)
 			break;
 		}
 
-		Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
-		entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+		if (ally.child("Life").attribute("current").as_int() > 0)
+		{
+			Entity* entity = App->entity->CreateEntity(name, entity_type::ally, { 0, 0 });
+			entity->position.create(ally.child("Position").attribute("x").as_int(), ally.child("Position").attribute("y").as_int());
+			entity->life = ally.child("Life").attribute("current").as_int();
+			entity->max_life = ally.child("Life").attribute("max").as_int();
+		}
 	}
 
+	int ability = data.child("First_Ability").attribute("ability").as_int();
+
+	switch (ability)
+	{
+	case battlecry_active:
+		active_ability = battlecry_active;
+		break;
+	case undying_will_active:
+		active_ability = undying_will_active;
+		break;
+	case not_chosen:
+		active_ability = not_chosen;
+		break;
+	default:
+		break;
+	}
 
 	return true;
 }
@@ -1802,10 +2035,15 @@ bool Player::Save(pugi::xml_node& data) const
 			pugi::xml_node ally = allies.append_child("Ally");
 			ally.append_attribute("name") = (*it)->name;
 	
+			ally.append_child("Life").append_attribute("current") = (*it)->life;
+			ally.child("Life").append_attribute("max") = (*it)->max_life;
+
 			ally.append_child("Position").append_attribute("x") = (*it)->position.x;
 			ally.child("Position").append_attribute("y") = (*it)->position.y;
 		}
 	}
+
+	data.append_child("First_Ability").append_attribute("ability") = active_ability;
 
 	return true;
 }
@@ -1818,6 +2056,8 @@ void Player::MoveToTile(iPoint tile)
 		(*it)->attacked_unit = nullptr;
 		(*it)->attacked_building = nullptr;
 	}
+
+	App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
 }
 
 void Player::SetAttackingEnemy(Unit* enemy)
@@ -2225,11 +2465,11 @@ void Player::CheckStraightAbilityRange(int range)
 
 void Player::DrawBuff()
 {
-	//if (buffed_list.empty() != true) {
-	//	for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
-	//		App->scene->LayerBlit(5, (*it)->entity_texture, { (*it)->position.x + 10, (*it)->position.y + 10 }, (*it)->current_animation->GetAnimationFrame(1) );
-	//	}
-	//}
+	if (buffed_list.empty() != true) {
+		for (std::list<Unit*>::iterator it = buffed_list.begin(); it != buffed_list.end(); it++) {
+			(*it)->buff_particle = (BattlecryBuff*)App->particle->CreateParticle(particle_type::battlecrybuff, 0, { (*it)->position.x, (*it)->position.y - 15});
+		}
+	}
 }
 
 void Player::StopBuff(int modifier)
@@ -2279,4 +2519,64 @@ void Player::DrawCD(int ability_number)
 		std::string txt = oss.str();
 		undying_will_cd->SetText(txt);
 	}
+}
+
+void Player::CheckMouseEntity()
+{
+	iPoint mouse;
+	App->input->GetMouseWorld(mouse.x, mouse.y);
+	iPoint mouse_pathfinding;
+	App->input->GetMousePosition(mouse_pathfinding.x, mouse_pathfinding.y);
+	iPoint p = App->render->ScreenToWorld(mouse_pathfinding.x, mouse_pathfinding.y);
+	p = App->map->WorldToMap(p.x, p.y);
+	bool mouse_over_entity = false;
+
+	if (!pause_window->enabled)
+	{
+		for (std::list<Entity*>::iterator it = App->entity->entity_list.begin(); it != App->entity->entity_list.end(); it++)
+		{
+			Collider* unit = (*it)->GetCollider();
+
+			if (unit != nullptr)
+			{
+				if (mouse.x > unit->rect.x && mouse.x < unit->rect.x + unit->rect.w && mouse.y > unit->rect.y && mouse.y < unit->rect.y + unit->rect.h)
+				{
+					switch ((*it)->GetType())
+					{
+					case entity_type::ally:
+					case entity_type::npc:
+					case entity_type::player:
+						mouse_over_entity = true;
+						break;
+					case entity_type::building:
+					case entity_type::ally_building:
+						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_build_r);
+						mouse_over_entity = true;
+						break;
+					case entity_type::object:
+						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_object_r);
+						mouse_over_entity = true;
+						break;
+					case entity_type::enemy:
+					case entity_type::enemy_building:
+					case entity_type::enemy_boss:
+						App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_attack_r);
+						mouse_over_entity = true;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
+			if (mouse_over_entity)
+				continue;
+		}
+
+		if (!mouse_over_entity)
+			App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_r);
+	}
+	else 
+		App->scene->scene_test->SetCurrentCursor(App->scene->scene_test->cursor_ui_r);
+
 }

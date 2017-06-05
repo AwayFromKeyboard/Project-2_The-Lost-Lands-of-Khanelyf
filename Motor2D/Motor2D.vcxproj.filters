@@ -127,6 +127,12 @@
     <ClCompile Include="BasicBuilding.cpp">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Engine\1. Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.c">
+      <Filter>Engine\5. Tools</Filter>
+    </ClCompile>
     <ClCompile Include="Boss_Axe_Knight.cpp">
       <Filter>Engine\4. Entities\Boss</Filter>
     </ClCompile>
@@ -150,6 +156,15 @@
     </ClCompile>
     <ClCompile Include="Escorted_NPC.cpp">
       <Filter>Engine\4. Entities\Troops</Filter>
+    </ClCompile>
+    <ClCompile Include="CursorAnimations.cpp">
+      <Filter>Engine\6. Particles\CursorAnimations</Filter>
+    </ClCompile>
+    <ClCompile Include="BattlecryBuff.cpp">
+      <Filter>Engine\6. Particles\BattlecryBuff</Filter>
+    </ClCompile>
+    <ClCompile Include="UndWillBuff.cpp">
+      <Filter>Engine\6. Particles\UndWillBuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +301,12 @@
     <ClInclude Include="BasicBuilding.h">
       <Filter>Engine\4. Entities\Buildings</Filter>
     </ClInclude>
+    <ClInclude Include="Video.h">
+      <Filter>Engine\1. Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Engine\5. Tools</Filter>
+    </ClInclude>
     <ClInclude Include="Minimap.h">
       <Filter>Engine\1. Modules</Filter>
     </ClInclude>
@@ -312,6 +333,15 @@
     </ClInclude>
     <ClInclude Include="Escorted_NPC.h">
       <Filter>Engine\4. Entities\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorAnimations.h">
+      <Filter>Engine\6. Particles\CursorAnimations</Filter>
+    </ClInclude>
+    <ClInclude Include="BattlecryBuff.h">
+      <Filter>Engine\6. Particles\BattlecryBuff</Filter>
+    </ClInclude>
+    <ClInclude Include="UndWillBuf.h">
+      <Filter>Engine\6. Particles\UndWillBuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -382,6 +412,15 @@
     </Filter>
     <Filter Include="Engine\6. Particles\Fire">
       <UniqueIdentifier>{a2b8b138-d06a-4ae3-85a5-bf03010462a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\CursorAnimations">
+      <UniqueIdentifier>{da8e66ff-8a06-40cf-85f3-4400e91876c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\BattlecryBuff">
+      <UniqueIdentifier>{40f9aef8-f133-43b4-93ee-b94d24244d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\6. Particles\UndWillBuff">
+      <UniqueIdentifier>{770aa642-ce75-4fc1-a52d-38ff3bcf768b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

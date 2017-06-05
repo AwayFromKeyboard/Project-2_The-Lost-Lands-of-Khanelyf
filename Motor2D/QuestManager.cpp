@@ -3,9 +3,11 @@
 #include "Log.h"
 #include "j1Scene.h"
 #include "SceneTest.h"
+#include "j1Audio.h"
 #include "Player.h"
 #include "Hero.h"
 #include "DialogueManager.h"
+#include "SceneTest.h"
 #include "j1Map.h"
 
 QuestManager::QuestManager() {
@@ -57,6 +59,7 @@ bool QuestManager::PreUpdate()
 bool QuestManager::Update(float dt) {
 
 	if (current_quest->progress == current_quest->requested) {
+		App->audio->PlayFx(App->scene->scene_test->achievement_quest_id);
 		current_quest->progress = 0;
 		App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
 		App->player->GetHero()->levelup_points += current_quest->reward.level_point;

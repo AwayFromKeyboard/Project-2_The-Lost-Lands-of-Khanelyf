@@ -2,6 +2,10 @@
 #include "Particle.h"
 #include "Fire.h"
 #include "Log.h"
+#include "CursorAnimations.h"
+#include "BattlecryBuff.h"
+#include "UndWillBuf.h"
+#include "Player.h"
 
 ParticleManager::ParticleManager()
 {
@@ -87,6 +91,15 @@ Particle* ParticleManager::CreateParticle(particle_type type, int set, iPoint po
 	{
 	case particle_type::fire:
 		ret = new Fire(set);
+		break;
+	case particle_type::cursor:
+		ret = new CursorAnimations(set);
+		break;
+	case particle_type::battlecrybuff:
+		ret = new BattlecryBuff(set);
+		break;
+	case particle_type::undwillbuff:
+		ret = new UndWillBuff(set);
 		break;
 	}
 

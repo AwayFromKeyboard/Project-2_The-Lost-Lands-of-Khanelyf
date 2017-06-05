@@ -121,7 +121,7 @@ bool j1Textures::UnLoadTexture(SDL_Texture* texture)
 // Translate a surface into a texture
 SDL_Texture* const j1Textures::SurfaceToTexture(SDL_Surface* surface)
 {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(App->render->renderer, surface); //crash w/ renderer module, acces violation
 
 	if (texture == NULL)
 	{

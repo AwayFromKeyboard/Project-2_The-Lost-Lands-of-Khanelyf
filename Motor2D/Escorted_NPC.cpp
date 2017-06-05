@@ -26,7 +26,7 @@ bool EscortedNPC::LoadEntity(iPoint pos, entity_name name)
 	App->LoadXML("Units.xml", doc);
 	for (pugi::xml_node unit = doc.child("units").child("unit"); unit; unit = unit.next_sibling("unit"))
 	{
-		if (TextCmp(unit.attribute("type").as_string(), "Barbarian_npc") && type == entity_type::npc)
+		if (TextCmp(unit.attribute("type").as_string(), "Old_NPC") && type == entity_type::npc)
 		{
 			node = unit;
 			break;

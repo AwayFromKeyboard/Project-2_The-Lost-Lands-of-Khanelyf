@@ -22,6 +22,7 @@
 #include "Particle.h"
 #include "ParticleManager.h"
 #include "Escorted_NPC.h"
+#include "BattlecryBuff.h"
 
 Unit::Unit()
 {
@@ -185,6 +186,9 @@ bool Unit::Update(float dt)
 				else {
 					if (path.size() > 0) {
 						FollowPath(dt);
+						if (type == entity_type::enemy) {
+							CheckSurroundings();
+						}
 					}
 				}
 			}
@@ -238,6 +242,9 @@ bool Unit::Update(float dt)
 
 		case entity_state::entity_death:
 			CheckDeathDirection();
+			if (App->player->draw_buff && buff_particle != nullptr) {
+				buff_particle->to_delete = true;
+			}
 			if (collision != nullptr) {
 				App->collisions->EraseCollider(collision);
 				collision = nullptr;
@@ -416,6 +423,9 @@ bool Unit::PostUpdate()
 
 	if (life > 0)
 	{
+		if (App->player->draw_buff && buff_particle != nullptr) {
+			buff_particle->position.create(position.x, position.y);
+		}
 		if (is_escortednpc && App->questmanager->GetCurrentQuest()->id == quest_id::quest_escort) {
 			if (position_map != ESCORT_DESTINATION) {
 				if (npc_quest->CheckEscortRadius()) {
@@ -698,17 +708,25 @@ void Unit::CheckDirection()
 
 void Unit::FollowPath(float dt)
 {
-	SetDirection();
+	if (stay_still == false)
+	{
+		SetDirection();
 
-	fPoint pos = fPoint(position.x, position.y);
+		fPoint pos = fPoint(position.x, position.y);
 
-	pos.x += direction.x * speed;
-	pos.y += direction.y * speed;
+		pos.x += direction.x * speed;
+		pos.y += direction.y * speed;
 
-	position.x = pos.x;
-	position.y = pos.y;
+		position.x = pos.x;
+		position.y = pos.y;
 
-	if (path.size() == 0)
+		if (path.size() == 0)
+		{
+			state = entity_idle;
+			has_destination = false;
+		}
+	}
+	else
 	{
 		state = entity_idle;
 		has_destination = false;
@@ -872,11 +890,13 @@ bool Unit::CheckSurroundings() {
 									if (found->type == player || found->type == ally || found->name == npc_escort) {
 										attacked_unit = (Unit*)found;
 										state = entity_move_to_enemy;
+										stay_still = false;
 										return true;
 									}
 									if (found->type == entity_type::ally_building || (found->type == entity_type::building && found->name == entity_name::barracks)) {
 										attacked_building = (Building*)found;
 										state = entity_move_to_building;
+										stay_still = false;
 										return true;
 									}
 								}
@@ -1000,6 +1020,14 @@ void Unit::UnitAttack()
 	if (attacked_unit != nullptr) {
 		LookAtAttack();
 
+		if (attacked_unit->attacked_building != nullptr) {
+			attacked_unit->attacked_building = nullptr;
+			attacked_unit->attacked_unit = this;
+		}
+		else if (attacked_unit->attacked_unit == nullptr) {
+			attacked_unit->attacked_building = nullptr;
+			attacked_unit->attacked_unit = this;
+		}
 		if (current_animation->GetFrameIndex() == 5 && shout_fx == true)
 		{
 			if (App->player->audio_muted == false)
@@ -1031,6 +1059,7 @@ void Unit::UnitAttack()
 			}
 			shout_fx = true;
 		}
+
 	}
 	else state = entity_idle;
 }

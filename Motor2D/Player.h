@@ -60,19 +60,21 @@ private:
 	void DrawBuff();
 	void StopBuff(int modifier);
 
-	void UndyingRage();
-
 	void Whirlwind();
 
 	void Charge();
 
 	void DrawCD(int ability_number);
+private:
+	void CheckMouseEntity();
+
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
 	
 private:
 	UI_Window* victory_window = nullptr;
+	UI_Window* help_window = nullptr;
 	UI_Text* victory = nullptr;
 	UI_Text* lose = nullptr;
 	UI_Image* pause_bg = nullptr;
@@ -87,6 +89,7 @@ private:
 	UI_Button* returnmenu = nullptr;
 	UI_Button* mainmenu = nullptr;
 
+	UI_Text* helping_txt = nullptr;
 	UI_Text* pause_menu_txt = nullptr;
 	UI_Text* quit_txt = nullptr;
 	UI_Text* save_txt = nullptr;
@@ -179,9 +182,14 @@ public:
 
 	UI_Button* item_drop = nullptr;
 
+	UI_Image* unit_scroll = nullptr;
+
 	//buttons for brokenbuilding
 	UI_Button* create_building_button = nullptr;
 	UI_Button* create_building_button2 = nullptr;
+	UI_Button* create_building_button3 = nullptr;
+
+	bool blacksmith_alive = false;
 
 	UI_Button* choose_ability_b = nullptr;
 	UI_Button* choose_ability_uw = nullptr;
@@ -190,6 +198,7 @@ public:
 	UI_Text* choose_ability_uw_txt = nullptr;
 
 private:
+
 	//buttons for barracks
 	UI_Button* barbarian_img = nullptr;
 	UI_Button* swordsman_img = nullptr;
@@ -199,6 +208,7 @@ private:
 	//buttons for brokenbuilding
 	UI_Button* barrack_img = nullptr;
 	UI_Button* house_img = nullptr;
+	UI_Button* blacksmith_img = nullptr;
 
 	//buttons for abilities
 	UI_Button* battlecry_ability = nullptr;
@@ -211,6 +221,7 @@ private:
 	bool changing_ability = false;
 
 public:
+	bool text_on = false;
 	bool audio_status = false;
 	bool change_controls_status = false;
 	bool options_status = false;
@@ -228,6 +239,7 @@ public:
 	bool draw_whirlwind_range = false;
 	bool draw_charge_range = false;
 	bool draw_buff = false;
+	bool create_new_buff_particle = true;
 	bool charge_speed_buff = false;
 	bool charge_damage_buff = false;
 
@@ -237,6 +249,7 @@ public:
 	bool undying_state_active = false;
 
 	bool audio_muted = false;
+	bool loaded = false;
 
 private:
 	j1Timer battlecry_timer;

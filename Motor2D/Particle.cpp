@@ -21,8 +21,6 @@ bool Particle::PreUpdate()
 
 bool Particle::Update(float dt)
 {
-	Draw(dt);
-
 	return true;
 }
 
@@ -38,7 +36,6 @@ bool Particle::Draw(float dt)
 
 bool Particle::CleanUp()
 {
-
 	return true;
 }
 

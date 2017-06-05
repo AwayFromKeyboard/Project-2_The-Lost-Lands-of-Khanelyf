@@ -8,7 +8,9 @@ class Animator;
 
 enum particle_type {
 	fire,
-
+	cursor,
+	battlecrybuff,
+	undwillbuff,
 	particle_null
 };
 
