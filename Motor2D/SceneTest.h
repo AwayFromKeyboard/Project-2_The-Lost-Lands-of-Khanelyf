@@ -153,6 +153,7 @@ public:
 	bool start_waves_timer = true;
 	bool enemy_waves_active = false;
 	bool has_save_file = false;
+	bool is_video_active = true;
 };
 
 #endif // _SceneTest_H_

@@ -46,7 +46,6 @@ bool SceneTest::Start()
 	if (size > 0)
 		has_save_file = true;
 
-
 	if (App->map->Load("map.tmx") == true)
 	{
 		int w, h;
@@ -221,58 +220,64 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
 
-	if (new_game_button->MouseEnter())
-		new_game_button->SetImage("hover");
-	else if (new_game_button->MouseClickEnterLeft())
-		new_game_button->SetImage("click");
-	else if (new_game_button->MouseClickOutLeft())
-		main_menu_window->SetEnabledAndChilds(false);
-	else if (new_game_button->MouseOut())
-		new_game_button->SetImage("standard");
+	if (!is_video_active)
+	{
+		if (new_game_button->MouseEnter())
+			new_game_button->SetImage("hover");
+		else if (new_game_button->MouseClickEnterLeft())
+			new_game_button->SetImage("click");
+		else if (new_game_button->MouseClickOutLeft())
+			main_menu_window->SetEnabledAndChilds(false);
+		else if (new_game_button->MouseOut())
+			new_game_button->SetImage("standard");
 
-	if (!has_save_file)
-		load_game_button->SetImage("click");
-	else if (load_game_button->MouseEnter())
-		load_game_button->SetImage("hover");
-	else if (load_game_button->MouseClickEnterLeft())
-		load_game_button->SetImage("click");
-	else if (load_game_button->MouseClickOutLeft() && has_save_file) {
-		App->LoadGame("Save_File.xml");
-		App->player->loaded = true;
-		main_menu_window->SetEnabledAndChilds(false);
-		App->player->choose_ability_b->enabled = false;
-		App->player->choose_ability_b_txt->enabled = false;
-		App->player->choose_ability_uw->enabled = false;
-		App->player->choose_ability_uw_txt->enabled = false;
-	}
-	else if (load_game_button->MouseOut())
-		load_game_button->SetImage("standard");
+		if (!has_save_file)
+			load_game_button->SetImage("click");
+		else if (load_game_button->MouseEnter())
+			load_game_button->SetImage("hover");
+		else if (load_game_button->MouseClickEnterLeft())
+			load_game_button->SetImage("click");
+		else if (load_game_button->MouseClickOutLeft() && has_save_file) {
+			App->LoadGame("Save_File.xml");
+			App->player->loaded = true;
+			main_menu_window->SetEnabledAndChilds(false);
+			App->player->choose_ability_b->enabled = false;
+			App->player->choose_ability_b_txt->enabled = false;
+			App->player->choose_ability_uw->enabled = false;
+			App->player->choose_ability_uw_txt->enabled = false;
+		}
+		else if (load_game_button->MouseOut())
+			load_game_button->SetImage("standard");
 
-	if (credits_button->MouseEnter()) {
-		credits_button->SetImage("hover");
-		credits_window->SetEnabledAndChilds(true);
-	}
-	else if (credits_button->MouseOut()) {
-		credits_button->SetImage("standard");
-		credits_window->SetEnabledAndChilds(false);
-	}
+		if (credits_button->MouseEnter()) {
+			credits_button->SetImage("hover");
+			credits_window->SetEnabledAndChilds(true);
+		}
+		else if (credits_button->MouseOut()) {
+			credits_button->SetImage("standard");
+			credits_window->SetEnabledAndChilds(false);
+		}
 
-	if (trailer_button->MouseEnter() || trailer_button->MouseClickOutLeft())
-		trailer_button->SetImage("hover");
-	else if (trailer_button->MouseClickEnterLeft())
-		trailer_button->SetImage("click");
-	else if (trailer_button->MouseOut())
-		trailer_button->SetImage("standard");
+		if (trailer_button->MouseEnter())
+			trailer_button->SetImage("hover");
+		else if (trailer_button->MouseClickEnterLeft()) {
+			trailer_button->SetImage("click");
+			is_video_active = true;
+			App->video->PlayVideo("video.ogv", { 0, 0, 1680, 1050 });
+		}
+		else if (trailer_button->MouseOut())
+			trailer_button->SetImage("standard");
 
-	if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeftIntern()) {
-		exit_game_button->SetImage("hover");
+		if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeftIntern()) {
+			exit_game_button->SetImage("hover");
+		}
+		else if (exit_game_button->MouseClickEnterLeft()) {
+			exit_game_button->SetImage("click");
+			App->stop_exe = true;
+		}
+		else if (exit_game_button->MouseOut())
+			exit_game_button->SetImage("standard");
 	}
-	else if (exit_game_button->MouseClickEnterLeft()){
-		exit_game_button->SetImage("click");
-		App->stop_exe = true;
-	}
-	else if (exit_game_button->MouseOut())
-		exit_game_button->SetImage("standard");
 
 	if (enemy_waves_active)
 	{

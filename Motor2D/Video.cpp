@@ -7,6 +7,8 @@
 #include "j1Textures.h"
 #include "j1Render.h"
 #include "j1Audio.h"
+#include "j1Scene.h"
+#include "SceneTest.h"
 #include <sstream>
 
 #include <stdio.h>
@@ -70,7 +72,7 @@ bool Video::CleanUp()
 AudioQueue* Video::audio_queue = NULL;
 AudioQueue* Video::audio_queue_tail = NULL;
 
-void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len) 
+void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 {
 	Sint16 *dst = (Sint16 *)stream;
 
@@ -193,8 +195,10 @@ bool Video::Update(float dt)
 
 		// Events -------------------------------------------------------
 
-		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down) {
 			quit = 1;
+			App->scene->scene_test->is_video_active = false;
+		}
 
 		// ----------------------------------------------------------------
 
