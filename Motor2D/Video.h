@@ -9,7 +9,7 @@ struct THEORAPLAY_AudioPacket;
 struct THEORAPLAY_Decoder;
 struct THEORAPLAY_VideoFrame;
 
-struct AudioQueue 
+struct AudioQueue
 {
 	const THEORAPLAY_AudioPacket *audio;
 	int offset;
@@ -60,6 +60,7 @@ private:
 	Uint32 framems;
 	int init_failed;
 	int quit;
+	bool pause;
 
 	void* pixels;
 	int pitch;
