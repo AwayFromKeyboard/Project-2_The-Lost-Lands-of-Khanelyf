@@ -68,9 +68,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(dialogs);
 
-	//Video Player
-	AddModule(video);
-
 	// Scene
 	AddModule(scene);
 
@@ -88,6 +85,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// render last to swap buffer
 	AddModule(render);
+
+	//Video Player
+	AddModule(video);
 
 	console->AddCommand("quit", console, 0, 0, "Exit application");
 	console->AddCommand("save", console, 0, 0, "Save data");

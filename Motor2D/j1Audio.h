@@ -36,6 +36,7 @@ public:
 	void PauseMusic();
 	void ResumeMusic();
 	void StopMusic();
+	void RestartAudio();
 	void DefaultVolume();
 	void ChangeVolume(int volume);
 	
