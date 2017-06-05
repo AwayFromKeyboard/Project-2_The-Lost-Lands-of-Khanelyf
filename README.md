@@ -20,61 +20,109 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 
 Controls:
 
-* Use the arrow keys or the mouse to move the camera
+* Use the arrow keys or the mouse to move the camera.
 
-* Use the left mouse button to select your units
+* Use the left mouse button to select your units.
 
-* Click left mouse button and drag to select multiple units
+* Keep left click pressed and drag to select multiple units.
 
-* Click left mouse button on the minimap to change view
+* Left click on the minimap to change view.
 
-* Left click on barracks to create new units (Swordsmans cannot be created before mission number 3)
+* Left click on barracks to create new units:
 
-  * Barbarian costs 5 gold
+  * Barbarian costs 10 gold.
 
-  * Swordsman costs 20 gold
+  * Swordsman costs 30 gold.
 
-* Left click on blacksmith building to change the first ability (for 50 gold)
+* Left click on broken buildings to create new buildings:
+
+  * Barrack costs 90 gold.
+
+  * Basic building costs 30 gold.
+
+  * Blacksmith costs 50 gold.
+
+* Left click on blacksmith building to change the first ability (for 50 gold).
 
 * Use the right mouse button to:
 
-  * Attack enemy units
+  * Attack enemy units.
  
-  * Attack enemy buildings
+  * Attack enemy buildings.
  
-  * Move the selected troops (can also be used in the minimap)
+  * Move the selected troops (can also be used in the minimap).
 
-  * Pick objects
+  * Pick objects.
 
-* ESC to open pause menu:
+* On main menu:
 
-  * Left click on Save Game to save the current game
+  * Left click on "New Game" to start a new game.
 
-  * Left click on Load Game to load the last saved game
+  * Left click on "Load Game" to load the last saved game.
 
-  * Left click on Options to open the options menu
+  * Put the mouse over "Credits" to see the members of the team.
 
-	* Left click on Audio to disable or enable it
+  * Left click on "Watch Trailer" to see the trailer.
 
-	* Left click on Controls to open controls menu
+  * Left click on "Exit Game" to exit the game.
 
-		* Left click on one button on this menu and click some button on the keyboard to replace the actual key to the new one
+  * Left click on the check box of "Fullscreen" to change between fullscreen and windowed mode.
 
-  * Left click on Quit to exit game
+* ESC skip the trailer while seeing it or to open the pause menu while playing.
 
-  * Left click on Resume Game or ESC to exit pause menu
+* On pause menu:
 
-* F1 to debug mode
+  * Left click on Save Game to save the current game.
 
-* Z to level up points
+  * Left click on Load Game to load the last saved game.
 
-* B to constuct barrack(then you can create 2 types of units with left click)
+  * Left click on Options to open the options menu.
+
+	* Left click on Audio to disable or enable it.
+
+	* Left click on Controls to open controls menu.
+
+		* Left click on one button on this menu and click some button on the keyboard to replace the actual key to the new one.
+
+  * Left click on Quit to exit game.
+
+  * Left click on Resume Game or ESC to exit pause menu.
+
+* F1 to debug mode.
+
+* While on debug:
+
+  * Non walkable tiles + spawn points from all entities are shown.
+
+  * Construct buildings does not require gold.
+
+  * F2 to see UI elements.
+
+  * F3 to see colisions.
+
+  * Z to adquire level up points.
+
+  * B to constuct barrack(then you can create 2 types of units with left click).
+
+  * A to create a barbarian.
+
+  * S to create a swordsman.
+
+  * K to kill an entity.
+
+  * W to create a boss.
+
+  * U, I, O to create a basic building.
+
+  * J to create an object.
+
+  * N to create a broken building.
 
 * Abilities
-	* Battlecry: Boosts the damage of the allies inside the radius of action.
-	* Undying Will: The Hero is immune to damage for 3 seconds.
-	* Whirlwind: The hero deals heavy damage to adjecent enemies.
-	* Charge: The hero charges to one selected enemy inside the radius of action.
+	* Battlecry: Boosts the damage of the allies inside the radius of action by 5 points for 5 seconds.
+	* Undying Will: The Hero is immune to damage for 4 seconds.
+	* Whirlwind: The hero deals 40 damage to adjecent enemies.
+	* Charge: The hero charges to one selected enemy inside the radius of action and deals 40 + current damage to one enemy.
 
 * Battlecry and Undying Will abilities can be activated by 2 ways:
 	* X + left click (default key)
