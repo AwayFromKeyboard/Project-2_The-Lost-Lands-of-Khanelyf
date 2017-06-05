@@ -90,7 +90,7 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 			cpy = len / sizeof(Sint16);
 
 		for (i = 0; i < cpy; i++) {
-			const float val = *(src++);
+			const float val = *(src++); //crash
 			if (val < -1.0f)
 				*(dst++) = -32768;
 			else if (val > 1.0f)
@@ -262,7 +262,16 @@ bool Video::Update(float dt)
 
 	}
 
-	if (quit) ResetValues();
+	if (!THEORAPLAY_isDecoding(decoder) && App->scene->scene_test->is_video_active == true)
+	{
+		quit = true;
+	}
+
+	if (quit)
+	{
+		ResetValues();
+		App->scene->scene_test->is_video_active = false;
+	}
 
 	return true;
 }
@@ -291,7 +300,5 @@ void Video::ResetValues()
 
 	audio_queue = NULL;
 	audio_queue_tail = NULL;
-
-	App->scene->scene_test->is_video_active = false;
 }
 
