@@ -18,6 +18,7 @@ enum ui_element
 	ui_image,
 	ui_scroll_bar,
 	ui_colored_rect,
+	ui_check_box,
 	ui_element_null
 };
 
@@ -29,6 +30,8 @@ struct TTF_Font;
 class UI_Element;
 class UI_Window;
 class UI_Text;
+class UI_Check_Box;
+
 struct ElementItem {
 	UI_Element* data;
 	double priority;
@@ -206,6 +209,7 @@ public:
 	UI_Element* CreateTextInput(iPoint pos, int w, _TTF_Font* font, bool dinamic = false, uint r = 255, uint g = 255, uint b = 255);
 	UI_Element* CreateScrollBar(iPoint pos, int view_w, int view_h, int button_size = 11, bool dinamic = false);
 	UI_Element* CreateColoredRect(iPoint pos, int view_w, int view_h, SDL_Color color, bool filled = true, bool dinamic = false);
+	UI_Element* CreateCheckBox(iPoint pos, int w, int h, SDL_Rect pressed = NULLRECT, SDL_Rect idle = NULLRECT, bool multiple_choices = false, bool _dinamic = false);
 
 public:
 	bool MouseEnter();
@@ -504,5 +508,58 @@ private:
 
 // ----------------------
 // ---------------------- Colored Rect
+
+
+struct check_box
+{
+	check_box() {};
+	check_box(iPoint pos, int size_w, int size_h, const char* _name)
+	{
+		button = new UI_Button();
+		button->Set(pos, size_w, size_h);
+		checked = false;
+		name = _name;
+	};
+	~check_box() { };
+
+	bool        checked = false;
+	UI_Button*  button = nullptr;
+	string      name;
+};
+
+class UI_Check_Box : public UI_Element
+{
+public:
+	UI_Check_Box();
+	~UI_Check_Box();
+
+	void Set(iPoint pos, int w, int h, SDL_Rect pressed, SDL_Rect idle, bool multiple_choice = false);
+
+	bool update();
+	bool cleanup();
+
+	void AddBox(iPoint pos, int size_w, int size_h, const char* name);
+	bool GetBox(char* name);
+	void SetBox(bool set, char* name);
+	void SetBox(bool set, int i);
+
+	void SetPressed(SDL_Rect rect);
+	void SetIdle(SDL_Rect rect);
+
+private:
+	void CheckControl();
+
+private:
+	vector<check_box*> check_box_list;
+	int				   size_w = 0;
+	int				   size_h = 0;
+	bool		       multiple_choice = false;
+	SDL_Rect		   pressed = NULLRECT;
+	SDL_Rect		   idle = NULLRECT;
+
+};
+
+// ----------------------
+// ---------------------- Check Box
 
 #endif // !_j1GUI_H__

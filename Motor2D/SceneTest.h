@@ -78,6 +78,7 @@ private:
 	UI_Button* exit_game_button = nullptr;
 	UI_Button* trailer_button = nullptr;
 
+
 	UI_Text* new_game_txt = nullptr;
 	UI_Text* load_game_txt = nullptr;
 	UI_Text* credits_txt = nullptr;
