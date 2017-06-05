@@ -72,7 +72,7 @@ bool Video::CleanUp()
 AudioQueue* Video::audio_queue = NULL;
 AudioQueue* Video::audio_queue_tail = NULL;
 
-void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
+void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len) 
 {
 	Sint16 *dst = (Sint16 *)stream;
 
@@ -106,6 +106,7 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 			SDL_free((void *)item);
 			audio_queue = next;
 		}
+		
 	}
 
 	if (!audio_queue)
