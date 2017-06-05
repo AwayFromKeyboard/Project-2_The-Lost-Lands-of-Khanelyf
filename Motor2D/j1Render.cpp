@@ -3,6 +3,8 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Scene.h"
+#include "SceneTest.h"
 
 #define VSYNC true
 
@@ -140,45 +142,47 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 {
 	bool ret = true;
 
-	float scale = _scale;
-	if(_scale == -1)
-		scale = App->win->GetScale();
-
-	float speed = (1 * 1) / scale;
-
-	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
-
-	if(section != NULL)
+	if (App->scene->scene_test->is_video_active == false)
 	{
-		rect.w = section->w;
-		rect.h = section->h;
+		float scale = _scale;
+		if (_scale == -1)
+			scale = App->win->GetScale();
+
+		float speed = (1 * 1) / scale;
+
+		SDL_Rect rect;
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
+
+		if (section != NULL)
+		{
+			rect.w = section->w;
+			rect.h = section->h;
+		}
+		else
+		{
+			SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+		}
+
+		rect.w *= scale;
+		rect.h *= scale;
+
+		SDL_Point* p = NULL;
+		SDL_Point pivot;
+
+		if (pivot_x != INT_MAX && pivot_y != INT_MAX)
+		{
+			pivot.x = pivot_x;
+			pivot.y = pivot_y;
+			p = &pivot;
+		}
+
+		if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0) //crash, acces violation
+		{
+			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+			ret = false;
+		}
 	}
-	else
-	{
-		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
-	}
-
-	rect.w *= scale;
-	rect.h *= scale;
-
-	SDL_Point* p = NULL;
-	SDL_Point pivot;
-
-	if(pivot_x != INT_MAX && pivot_y != INT_MAX)
-	{
-		pivot.x = pivot_x;
-		pivot.y = pivot_y;
-		p = &pivot;
-	}
-
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0) //crash, acces violation
-	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-		ret = false;
-	}
-
 	return ret;
 }
 
