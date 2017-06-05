@@ -968,16 +968,12 @@ UI_Element * UI_Window::CreateCheckBox(iPoint pos, int w, int h, SDL_Rect presse
 		ret->parent_element = this;
 		ret->dinamic = _dinamic;
 		ret->started_dinamic = _dinamic;
-		ret->is_gameplay = is_gameplay;
 
 		// Layers --
 
 		ret->layer = childs.size() + layer + 1;
 
 		// ---------
-
-		App->gui->TakeVariablesFromWindow(ret);
-		App->gui->elements_list_priority.push(ret);
 		childs.push_back((UI_Element*)ret);
 	}
 
@@ -2230,17 +2226,8 @@ bool UI_Check_Box::update()
 			button = pressed;
 		else
 			button = idle;
-
-		if (!is_gameplay)
-			App->render->Blit(App->gui->atlas, check_box_list.at(i)->button->rect.x, check_box_list.at(i)->button->rect.y, &button);
-
-		else
-		{
-			if (is_ui)
-				App->view->LayerBlit(LAYER + blit_layer + layer, App->gui->atlas, iPoint(check_box_list.at(i)->button->rect.x, check_box_list.at(i)->button->rect.y), button, viewport, -1.0f, false);
-			else
-				App->view->LayerBlit(LAYER + blit_layer + layer, App->gui->atlas, iPoint(check_box_list.at(i)->button->rect.x, check_box_list.at(i)->button->rect.y), button);
-		}
+		
+		App->scene->LayerBlit(blit_layer + layer, App->gui->atlas, iPoint(check_box_list.at(i)->button->rect.x, check_box_list.at(i)->button->rect.y), button);
 	}
 
 	CheckControl();
@@ -2262,7 +2249,7 @@ void UI_Check_Box::AddBox(iPoint pos, int size_w, int size_h, const char * name)
 	cb->button->layer = layer + 1;
 	cb->button->blit_layer = blit_layer;
 	cb->button->type = ui_button;
-	App->gui->elements_list_priority.push((UI_Element*)cb->button);
+	PushElements(App->gui->elements_list, cb->button, cb->button->blit_layer);
 	childs.push_back(cb->button);
 	check_box_list.push_back(cb);
 }

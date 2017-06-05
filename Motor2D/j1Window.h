@@ -39,6 +39,8 @@ public:
 
 	void SaveCVar(std::string& cvar_name, pugi::xml_node& node) const;
 
+	bool ToggleFullscreen(bool toggle);
+
 public:
 	//The window we'll be rendering to
 	SDL_Window*  window = nullptr;

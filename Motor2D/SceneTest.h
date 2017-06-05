@@ -77,13 +77,14 @@ private:
 	UI_Button* credits_button = nullptr;
 	UI_Button* exit_game_button = nullptr;
 	UI_Button* trailer_button = nullptr;
-
+	UI_Button* fullscreen_button = nullptr;
 
 	UI_Text* new_game_txt = nullptr;
 	UI_Text* load_game_txt = nullptr;
 	UI_Text* credits_txt = nullptr;
 	UI_Text* exit_game_txt = nullptr;
 	UI_Text* trailer_txt = nullptr;
+	UI_Text* fullscreen_txt = nullptr;
 
 	bool show_credits = false;
 	UI_Window* credits_window = nullptr;

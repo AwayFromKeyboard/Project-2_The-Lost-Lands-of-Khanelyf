@@ -5,6 +5,7 @@
 #include "j1Fonts.h"
 #include "j1Render.h"
 #include <deque>
+#include <vector>
 
 #define CURSOR_WIDTH 2
 #define MOVEMENT_AREA 10

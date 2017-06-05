@@ -166,3 +166,18 @@ void j1Window::SaveCVar(std::string& cvar_name, pugi::xml_node & node) const
 		app.child("title").attribute("name").set_value(title.c_str());
 	}
 }
+
+bool j1Window::ToggleFullscreen(bool toggle)
+{
+	if (toggle) {
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	}
+	else {
+		SDL_DisplayMode new_win;
+		new_win.w = width;
+		new_win.h = height;
+		new_win.refresh_rate = 0;
+		SDL_SetWindowDisplayMode(window, &new_win);
+	}
+	return true;
+}
