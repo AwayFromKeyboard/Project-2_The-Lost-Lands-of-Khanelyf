@@ -35,7 +35,7 @@ bool j1Window::Awake(pugi::xml_node& config)
 	{
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
-		bool fullscreen = config.child("fullscreen").attribute("value").as_bool(false);
+		fullscreen = config.child("fullscreen").attribute("value").as_bool(false);
 		bool borderless = config.child("borderless").attribute("value").as_bool(false);
 		bool resizable = config.child("resizable").attribute("value").as_bool(false);
 		bool fullscreen_window = config.child("fullscreen_window").attribute("value").as_bool(false);
@@ -167,17 +167,76 @@ void j1Window::SaveCVar(std::string& cvar_name, pugi::xml_node & node) const
 	}
 }
 
-bool j1Window::ToggleFullscreen(bool toggle)
+//bool j1Window::ToggleFullscreen(bool toggle)
+//{
+//	if (toggle) {
+//		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+//	}
+//	else {
+//		SDL_DisplayMode new_win;
+//		new_win.w = width;
+//		new_win.h = height;
+//		new_win.refresh_rate = 0;
+//		SDL_SetWindowDisplayMode(window, &new_win);
+//	}
+//	return true;
+//}
+
+bool j1Window::IsInFullScreen() const
 {
-	if (toggle) {
+	return fullscreen;
+}
+
+bool j1Window::ChangeToFullScreen()
+{
+	bool ret = true;
+
+	//Create window
+	Uint32 flags = SDL_WINDOW_SHOWN;
+
+	if (fullscreen == false)
+	{
+		flags |= SDL_WINDOW_FULLSCREEN;
+		fullscreen = true;
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	}
-	else {
-		SDL_DisplayMode new_win;
-		new_win.w = width;
-		new_win.h = height;
-		new_win.refresh_rate = 0;
-		SDL_SetWindowDisplayMode(window, &new_win);
+
+	if (window == NULL)
+	{
+		LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
 	}
-	return true;
+	else
+	{
+		//Get window surface
+		screen_surface = SDL_GetWindowSurface(window);
+	}
+	return ret;
+}
+
+bool j1Window::ChangeToWindow()
+{
+	bool ret = true;
+
+	//Create window
+
+	if (fullscreen == true)
+	{
+		fullscreen = false;
+		SDL_SetWindowFullscreen(window, SDL_FALSE);
+	}
+
+	if (window == NULL)
+	{
+		LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+	else
+	{
+		//Get window surface
+		screen_surface = SDL_GetWindowSurface(window);
+	}
+
+
+	return ret;
 }

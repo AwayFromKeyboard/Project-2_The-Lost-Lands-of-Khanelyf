@@ -211,7 +211,10 @@ bool SceneTest::Start()
 	fullscreen_button->change_click_through = true;
 	fullscreen_button->AddImage("idle", { 942, 0, 45, 43 });
 	fullscreen_button->AddImage("pressed", { 987, 0, 45, 43 });
-	fullscreen_button->SetImage("pressed");
+	if (App->win->IsInFullScreen())
+		fullscreen_button->SetImage("pressed");
+	else
+		fullscreen_button->SetImage("idle");
 	fullscreen_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset*3, y_position - text_offset / 2 - 5 }, App->font->default_48, 0, false, 0, 0, 0);
 	fullscreen_txt->click_through = true;
 	fullscreen_txt->SetText("Fullscreen");
@@ -292,13 +295,14 @@ bool SceneTest::PreUpdate()
 		else if (exit_game_button->MouseOut())
 			exit_game_button->SetImage("standard");
 
-		if (fullscreen_button->MouseClickEnterLeft() && fullscreen_button->CompareState("idle")) {
+		if (fullscreen_button->MouseClickEnterLeft() && fullscreen_button->CompareState("idle"))
+		{
 			fullscreen_button->SetImage("pressed");
-			App->win->ToggleFullscreen(true);
+			App->win->ChangeToFullScreen();
 		}
 		else if (fullscreen_button->MouseClickEnterLeft() && fullscreen_button->CompareState("pressed")) {
 			fullscreen_button->SetImage("idle");
-			App->win->ToggleFullscreen(false);
+			App->win->ChangeToWindow();
 		}
 	}
 

@@ -41,6 +41,12 @@ public:
 
 	bool ToggleFullscreen(bool toggle);
 
+	bool IsInFullScreen() const;
+
+	bool ChangeToFullScreen();
+
+	bool ChangeToWindow();
+
 public:
 	//The window we'll be rendering to
 	SDL_Window*  window = nullptr;
@@ -49,10 +55,12 @@ public:
 	SDL_Surface* screen_surface = nullptr;
 
 private:
-	string	     title;
-	uint		 width;
-	uint		 height;
-	uint		 scale;
+	bool		fullscreen;
+
+	string		title;
+	uint		width;
+	uint		height;
+	uint		scale;
 };
 
 #endif // __j1WINDOW_H__
