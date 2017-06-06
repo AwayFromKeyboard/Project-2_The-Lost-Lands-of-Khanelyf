@@ -41,6 +41,7 @@ public:
 	_TTF_Font*			    default_42 = nullptr;
 	_TTF_Font*			    default_48 = nullptr;
 	_TTF_Font*			    default_50 = nullptr;
+	_TTF_Font*				default_20 = nullptr;
 };
 
 

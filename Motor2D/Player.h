@@ -158,6 +158,8 @@ private:
 	UI_Button* armor_button = nullptr;
 	UI_Button* pierce_armor_button = nullptr;
 	UI_Text* level_points_txt = nullptr;
+	UI_Text* level_gained_txt = nullptr;
+	j1Timer text_timer;
 
 	Hero* hero = nullptr;
 public:
