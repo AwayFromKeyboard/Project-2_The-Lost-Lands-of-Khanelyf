@@ -315,6 +315,9 @@ bool Player::Start()
 	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
 	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
+	level_gained_txt = (UI_Text*)levelup_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x/10,  (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, App->font->default_20, 0, false, 255, 255, 0);
+	level_gained_txt->SetText("You have gained a level! Check your stats and upgrade your hero!");
+	level_gained_txt->click_through = true;
 	levelup_window->SetEnabledAndChilds(false);
 
 	barracks_ui_window = (UI_Window*)App->gui->UI_CreateWin(iPoint(280, 200), 225, 144, 11);
