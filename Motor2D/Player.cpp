@@ -2064,7 +2064,8 @@ void Player::MoveToTile(iPoint tile)
 		(*it)->attacked_building = nullptr;
 	}
 
-	App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
+	if (App->entity->selected.size())
+		App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
 }
 
 void Player::SetAttackingEnemy(Unit* enemy)
