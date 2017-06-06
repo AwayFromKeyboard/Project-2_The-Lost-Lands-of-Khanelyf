@@ -40,6 +40,8 @@ Player::~Player()
 bool Player::Start()
 {
 	bool ret = true;
+	minimap_icons = (UI_Window*)App->gui->UI_CreateWin({ (App->win->_GetWindowSize().x - App->win->_GetWindowSize().x / 20), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 6) }, 0, 0, 100);
+	focus = (UI_Image*)minimap_icons->CreateImage({ (App->win->_GetWindowSize().x - App->win->_GetWindowSize().x / 8), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 12) }, { 745,60,17,17 });
 
 	help_window = (UI_Window*)App->gui->UI_CreateWin({ 0 + (App->win->_GetWindowSize().x / 40), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y /6) }, 0, 0, 100);
 

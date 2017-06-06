@@ -71,13 +71,15 @@ private:
 public:
 	UI_Window* pause_window = nullptr;
 	UI_Button* quit_game = nullptr;
-	
+	UI_Image* focus = nullptr;
 private:
+	UI_Window* minimap_icons = nullptr;
 	UI_Window* victory_window = nullptr;
 	UI_Window* help_window = nullptr;
 	UI_Text* victory = nullptr;
 	UI_Text* lose = nullptr;
 	UI_Image* pause_bg = nullptr;
+	
 
 	UI_Button* back = nullptr;
 	UI_Button* options = nullptr;

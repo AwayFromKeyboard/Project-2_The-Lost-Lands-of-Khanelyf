@@ -8,6 +8,7 @@
 #include "Hero.h"
 #include "DialogueManager.h"
 #include "SceneTest.h"
+#include "j1Window.h"
 #include "j1Map.h"
 
 QuestManager::QuestManager() {
@@ -69,15 +70,18 @@ bool QuestManager::Update(float dt) {
 			current_quest = ChangeQuest(quest_id::quest_leader);
 			App->scene->scene_test->create_barrack = true;
 			App->scene->scene_test->enemy_waves_active = true;
+			
 			break;
 		case quest_leader:
 			current_quest = ChangeQuest(quest_id::quest_mayor);
 			current_quest->progress += App->scene->scene_test->progress_quest_2;
+			App->player->focus->Set({ (App->win->_GetWindowSize().x - App->win->_GetWindowSize().x / 9), (App->win->_GetWindowSize().y) - (App->win->_GetWindowSize().y / 12) }, App->player->focus->rect);
 			break;
 		case quest_mayor:
 			current_quest = ChangeQuest(quest_id::quest_mayor2);
 			current_quest->progress += App->scene->scene_test->progress_quest_3;
 			App->player->create_swordsman = true;
+			
 			break;
 		case quest_mayor2:
 			current_quest = ChangeQuest(quest_id::quest_conquer);
