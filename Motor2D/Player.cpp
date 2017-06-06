@@ -302,16 +302,16 @@ bool Player::Start()
 	pierce_armor_txt = (UI_Text*)attributes_window->CreateText({ 149, 988 }, App->font->default_15);
 	
 	levelup_window = (UI_Window*)App->gui->UI_CreateWin({ 0, 0 }, 0, 0, 10);
-	life_button = (UI_Button*)levelup_window->CreateButton({ 169, 937 }, 10, 10);
+	life_button = (UI_Button*)levelup_window->CreateButton({ 180, 945 }, 10, 10);
 	life_button->AddImage("standard", { 792, 73, 10, 10 });
 	life_button->SetImage("standard");
-	damage_button = (UI_Button*)levelup_window->CreateButton({ 169, 953 }, 10, 10);
+	damage_button = (UI_Button*)levelup_window->CreateButton({ 180, 961 }, 10, 10);
 	damage_button->AddImage("standard", { 792, 73, 10, 10 });
 	damage_button->SetImage("standard");
-	armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 969 }, 10, 10);
+	armor_button = (UI_Button*)levelup_window->CreateButton({ 180, 977 }, 10, 10);
 	armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	armor_button->SetImage("standard");
-	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 169, 985 }, 10, 10);
+	pierce_armor_button = (UI_Button*)levelup_window->CreateButton({ 180, 993 }, 10, 10);
 	pierce_armor_button->AddImage("standard", { 792, 73, 10, 10 });
 	pierce_armor_button->SetImage("standard");
 	level_points_txt = (UI_Text*)levelup_window->CreateText({ 150, 1017 }, App->font->default_10);
