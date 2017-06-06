@@ -1261,7 +1261,7 @@ void UI_Text::Set(iPoint _pos, _TTF_Font* _font, int _spacing, uint r, uint g, u
 	rect.h = -1;
 
 	spacing = _spacing;
-
+	
 	color.a = 255;
 }
 
