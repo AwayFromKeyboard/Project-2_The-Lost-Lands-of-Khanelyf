@@ -60,6 +60,7 @@ bool QuestManager::PreUpdate()
 bool QuestManager::Update(float dt) {
 
 	if (current_quest->progress == current_quest->requested) {
+		App->audio->PlayFx(App->scene->scene_test->achievement_quest_id);
 		current_quest->progress = 0;
 		App->scene->scene_test->IncreaseGold(current_quest->reward.gold);
 		App->player->GetHero()->levelup_points += current_quest->reward.level_point;
@@ -213,7 +214,6 @@ Quest * QuestManager::ChangeQuest(quest_id new_quest)
 			App->dialogs->id = (*it)->id;
 			App->dialogs->NPCstate = 0;
 			App->dialogs->dialogueStep = 0;
-			App->audio->PlayFx(App->scene->scene_test->achievement_quest_id);
 			return *it;
 		}
 	}

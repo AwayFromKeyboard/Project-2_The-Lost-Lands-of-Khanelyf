@@ -22,12 +22,14 @@
 #include "Building.h"
 #include "Minimap.h"
 #include "Object.h"
+#include "video.h"
 #include "Player.h"
 #include "Boss_Axe_Knight.h"
 #include "BrokenBuilding.h"
 #include "ParticleManager.h"
 #include "Fire.h"
 #include "Escorted_NPC.h"
+#include "j1FileSystem.h"
 
 SceneTest::SceneTest()
 {
@@ -39,6 +41,11 @@ SceneTest::~SceneTest()
 
 bool SceneTest::Start()
 {
+	char* buffer;
+	uint size = App->fs->Load("Save_File.xml", &buffer);
+	if (size > 0)
+		has_save_file = true;
+
 	if (App->map->Load("map.tmx") == true)
 	{
 		int w, h;
@@ -96,12 +103,12 @@ bool SceneTest::Start()
 	gold_txt = (UI_Text*)general_ui_window->CreateText({ 33, 1 }, App->font->default_15);
 	human_resources_txt = (UI_Text*)general_ui_window->CreateText({ general_ui_window->GetRect().w / 15, 1 }, App->font->default_15);
 
-	App->audio->PlayMusic("audio/music/main_game.ogg");
-	App->audio->PauseMusic();
+	App->video->PlayVideo("video.ogv", { 0, 0, 1680, 1050 });
 
 	main_menu_window = (UI_Window*)App->gui->UI_CreateWin({ 0,0 }, 0, 0, 99);
 	main_menu_background = (UI_Image*)main_menu_window->CreateImage({ 0, 0 }, { 0, 1139, 1680, 1050 });
 	main_menu_background->change_click_through = true;
+	main_menu_window->SetEnabled(true);
 	
 	int distance = App->win->_GetWindowSize().y / 4 - App->win->_GetWindowSize().y / 8;
 	int y_position = App->win->_GetWindowSize().y / 8;
@@ -198,6 +205,19 @@ bool SceneTest::Start()
 	exit_game_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset, y_position + text_offset }, App->font->default_48, 0, false, 0, 0, 0);
 	exit_game_txt->click_through = true;
 	exit_game_txt->SetText("Exit Game");
+	y_position += distance;
+	
+	fullscreen_button = (UI_Button*)main_menu_window->CreateButton({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8, y_position }, 45, 43);
+	fullscreen_button->change_click_through = true;
+	fullscreen_button->AddImage("idle", { 942, 0, 45, 43 });
+	fullscreen_button->AddImage("pressed", { 987, 0, 45, 43 });
+	if (App->win->IsInFullScreen())
+		fullscreen_button->SetImage("pressed");
+	else
+		fullscreen_button->SetImage("idle");
+	fullscreen_txt = (UI_Text*)main_menu_window->CreateText({ App->win->_GetWindowSize().x / 2 + App->win->_GetWindowSize().x / 8 + text_offset*3, y_position - text_offset / 2 - 5 }, App->font->default_48, 0, false, 0, 0, 0);
+	fullscreen_txt->click_through = true;
+	fullscreen_txt->SetText("Fullscreen");
 
 	SDL_ShowCursor(0);
 	return true;
@@ -212,56 +232,79 @@ bool SceneTest::PreUpdate()
 
 	CheckUnitCreation(p);
 
-	if (new_game_button->MouseEnter())
-		new_game_button->SetImage("hover");
-	else if (new_game_button->MouseClickEnterLeft())
-		new_game_button->SetImage("click");
-	else if (new_game_button->MouseClickOutLeft())
-		main_menu_window->SetEnabledAndChilds(false);
-	else if (new_game_button->MouseOut())
-		new_game_button->SetImage("standard");
+	if (!is_video_active)
+	{
+		if (new_game_button->MouseEnter())
+			new_game_button->SetImage("hover");
+		else if (new_game_button->MouseClickEnterLeft())
+			new_game_button->SetImage("click");
+		else if (new_game_button->MouseClickOutLeft()) {
+			main_menu_window->SetEnabledAndChilds(false);
+			App->audio->PlayMusic("audio/music/main_game.ogg");
+			App->audio->PauseMusic();
+		}
+		else if (new_game_button->MouseOut())
+			new_game_button->SetImage("standard");
 
-	if (load_game_button->MouseEnter())
-		load_game_button->SetImage("hover");
-	else if (load_game_button->MouseClickEnterLeft())
-		load_game_button->SetImage("click");
-	else if (load_game_button->MouseClickOutLeft()) {
-		App->LoadGame("Save_File.xml");
-		App->player->loaded = true;
-		main_menu_window->SetEnabledAndChilds(false);
-		App->player->choose_ability_b->enabled = false;
-		App->player->choose_ability_b_txt->enabled = false;
-		App->player->choose_ability_uw->enabled = false;
-		App->player->choose_ability_uw_txt->enabled = false;
-	}
-	else if (load_game_button->MouseOut())
-		load_game_button->SetImage("standard");
+		if (!has_save_file)
+			load_game_button->SetImage("click");
+		else if (load_game_button->MouseEnter())
+			load_game_button->SetImage("hover");
+		else if (load_game_button->MouseClickEnterLeft())
+			load_game_button->SetImage("click");
+		else if (load_game_button->MouseClickOutLeft() && has_save_file) {
+			App->LoadGame("Save_File.xml");
+			App->player->loaded = true;
+			main_menu_window->SetEnabledAndChilds(false);
+			App->player->choose_ability_b->enabled = false;
+			App->player->choose_ability_b_txt->enabled = false;
+			App->player->choose_ability_uw->enabled = false;
+			App->player->choose_ability_uw_txt->enabled = false;
+			App->audio->PlayMusic("audio/music/main_game.ogg");
+			App->audio->PauseMusic();
+		}
+		else if (load_game_button->MouseOut())
+			load_game_button->SetImage("standard");
 
-	if (credits_button->MouseEnter()) {
-		credits_button->SetImage("hover");
-		credits_window->SetEnabledAndChilds(true);
-	}
-	else if (credits_button->MouseOut()) {
-		credits_button->SetImage("standard");
-		credits_window->SetEnabledAndChilds(false);
-	}
+		if (credits_button->MouseEnter()) {
+			credits_button->SetImage("hover");
+			credits_window->SetEnabledAndChilds(true);
+		}
+		else if (credits_button->MouseOut()) {
+			credits_button->SetImage("standard");
+			credits_window->SetEnabledAndChilds(false);
+		}
 
-	if (trailer_button->MouseEnter() || trailer_button->MouseClickOutLeft())
-		trailer_button->SetImage("hover");
-	else if (trailer_button->MouseClickEnterLeft())
-		trailer_button->SetImage("click");
-	else if (trailer_button->MouseOut())
-		trailer_button->SetImage("standard");
+		if (trailer_button->MouseEnter())
+			trailer_button->SetImage("hover");
+		else if (trailer_button->MouseClickEnterLeft()) {
+			trailer_button->SetImage("click");
+			is_video_active = true;
+			App->video->PlayVideo("video.ogv", { 0, 0, 1680, 1050 });
+		}
+		else if (trailer_button->MouseOut())
+			trailer_button->SetImage("standard");
 
-	if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeftIntern()) {
-		exit_game_button->SetImage("hover");
+		if (exit_game_button->MouseEnter() || exit_game_button->MouseClickOutLeftIntern()) {
+			exit_game_button->SetImage("hover");
+		}
+		else if (exit_game_button->MouseClickEnterLeft()) {
+			exit_game_button->SetImage("click");
+			App->stop_exe = true;
+		}
+		else if (exit_game_button->MouseOut())
+			exit_game_button->SetImage("standard");
+
+		if (fullscreen_button->MouseClickEnterLeft() && fullscreen_button->CompareState("idle"))
+		{
+			fullscreen_button->SetImage("pressed");
+			App->win->ChangeToFullScreen();
+		}
+		else if (fullscreen_button->MouseClickEnterLeft() && fullscreen_button->CompareState("pressed")) {
+			fullscreen_button->SetImage("idle");
+			App->win->ChangeToWindow();
+		}
 	}
-	else if (exit_game_button->MouseClickEnterLeft()){
-		exit_game_button->SetImage("click");
-		App->stop_exe = true;
-	}
-	else if (exit_game_button->MouseOut())
-		exit_game_button->SetImage("standard");
 
 	if (enemy_waves_active)
 	{

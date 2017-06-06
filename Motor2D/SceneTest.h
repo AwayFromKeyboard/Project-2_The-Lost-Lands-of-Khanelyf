@@ -69,8 +69,7 @@ private:
 	SDL_Rect buy_unit = NULLRECT;
 
 	enemy_waves enemy_wave_number = none;
-	
-	UI_Window* main_menu_window = nullptr;
+
 	UI_Image* main_menu_background = nullptr;
 	
 	UI_Button* new_game_button = nullptr;
@@ -78,12 +77,14 @@ private:
 	UI_Button* credits_button = nullptr;
 	UI_Button* exit_game_button = nullptr;
 	UI_Button* trailer_button = nullptr;
+	UI_Button* fullscreen_button = nullptr;
 
 	UI_Text* new_game_txt = nullptr;
 	UI_Text* load_game_txt = nullptr;
 	UI_Text* credits_txt = nullptr;
 	UI_Text* exit_game_txt = nullptr;
 	UI_Text* trailer_txt = nullptr;
+	UI_Text* fullscreen_txt = nullptr;
 
 	bool show_credits = false;
 	UI_Window* credits_window = nullptr;
@@ -97,6 +98,8 @@ private:
 	UI_Text* credits_misc2 = nullptr;
 
 public:
+	UI_Window* main_menu_window = nullptr;
+
 	SDL_Rect cursor_r = NULLRECT;
 	SDL_Rect cursor_attack_r = NULLRECT;
 	SDL_Rect cursor_build_r = NULLRECT;
@@ -151,7 +154,8 @@ public:
 	j1Timer enemy_waves_timer;
 	bool start_waves_timer = true;
 	bool enemy_waves_active = false;
-
+	bool has_save_file = false;
+	bool is_video_active = true;
 };
 
 #endif // _SceneTest_H_

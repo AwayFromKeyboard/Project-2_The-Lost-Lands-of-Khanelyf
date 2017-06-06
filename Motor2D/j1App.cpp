@@ -23,6 +23,7 @@
 #include "QuestManager.h"
 #include "Minimap.h"
 #include "DialogueManager.h"
+#include "Video.h"
 #include "ParticleManager.h"
 
 // Constructor
@@ -48,6 +49,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	questmanager = new QuestManager();
 	minimap = new Minimap();
 	dialogs = new DialogueManager();
+	video = new Video();
 	particle = new ParticleManager();
 
 	// Ordered for awake / Start / Update
@@ -65,8 +67,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(player);
 	AddModule(dialogs);
+
 	// Scene
 	AddModule(scene);
+
+	// Quest Manager
 	AddModule(questmanager);
 
 	// Particle Manager
@@ -80,6 +85,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// render last to swap buffer
 	AddModule(render);
+
+	//Video Player
+	AddModule(video);
 
 	console->AddCommand("quit", console, 0, 0, "Exit application");
 	console->AddCommand("save", console, 0, 0, "Save data");
