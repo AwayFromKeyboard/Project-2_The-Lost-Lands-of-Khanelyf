@@ -158,6 +158,10 @@ Follow and complete the quests without getting your hero killed and avoid that t
 7th: Move the provisions from the enemy base to the village at the north (between the two houses).
 8th: Kill the boss near the enemy fortress.
 
+## Win Condition
+
+To win the game the player must complete all the quests
+
 # Change Log
 ## V 0.1
 * Troop Movement
