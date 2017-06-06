@@ -576,7 +576,27 @@ bool Player::PreUpdate()
 		undying_will_cd->enabled = true;
 		battlecry_cd->enabled = false;
 	}
+	if (choose_ability_b->MouseEnter())
+	{
+		help_window->SetEnabledAndChilds(true);
+		helping_txt->SetText("Undiying Will. Gives the player the state of invencibility (cannot be harmed) for 4 seconds (20s cd)");
+		text_on = true;
+	}
+	else if (choose_ability_uw->MouseEnter()) {
+		help_window->SetEnabledAndChilds(true);
+		helping_txt->SetText("Battlecry. Gives nearby units a buff of +5 damage for 5 seconds (30s cd)");
+		text_on = true;
+	}
+	else if (text_on && ((choose_ability_b->enabled == false || (choose_ability_b->MouseOut() && choose_ability_uw->MouseOut())) && battlecry_ability->MouseOut() && whirlwind_ability->MouseOut() && charge_ability->MouseOut() && pierce_armor_txt->MouseOut() && damage_txt->MouseOut() && armor_txt->MouseOut() && life_txt->MouseOut()) && (create_unit_button->enabled == false || (create_unit_button->MouseOut() && create_unit_button2->MouseOut())) && (create_building_button->enabled == false || (create_building_button->MouseOut() && create_building_button2->MouseOut() && create_building_button3->MouseOut())) && (item_drop->enabled == false || item_drop->MouseOut()))
+	{
+		help_window->SetEnabledAndChilds(false);
+		text_on = false;
+	}
 
+	if (text_on == false)
+		help_window->SetEnabledAndChilds(false);
+	else
+		help_window->SetEnabledAndChilds(true);
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == key_down)
 	{
 		if (active_ability != not_chosen)
