@@ -16,6 +16,10 @@ You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in o
 
 * [Eric Abad](https://github.com/cireks) (Design)
 
+## Web Page
+
+Click [Here](https://awayfromkeyboard.github.io/Project-2_The-Lost-Lands-of-Khanelyf/) to enter our website
+
 ## Instructions
 
 Controls:
@@ -331,7 +335,8 @@ Text for the **Drop Button**.
 >**Blacksmith** can be created after your blacksmith is broken by paying 50 gold.
 To get a **Blacksmith** the player will need to destroy the enemy one.
 Its functionality is to change the ability of the hero between the **Battlecry** and **Undying Will** for 50 gold.
-![image](https://cloud.githubusercontent.com/assets/17119542/26793240/36f47b52-4a15-11e7-9550-ddc0ebb3e9db.png)
+
+>![image](https://cloud.githubusercontent.com/assets/17119542/26793240/36f47b52-4a15-11e7-9550-ddc0ebb3e9db.png)
 ### Major Tile Rework
 ### New NPC Texture for the Escort Quest
 ### New Cursors
@@ -343,5 +348,14 @@ When the game is **Paused**, the cursor will be a **Hand**
 ### Bug Fixes
 > **Save and Load** were corrected. Now everything useful is saved.
 Changed **IA** from the enemy waves.
-Fixed an issue with **enemies moving randomly across the map**.
+Fixed an issue with **enemies moving randomly across the map**
 When a unit is in the same position than another one, now clicking that spot will not longer **select both of them**, instead **only one will be selected**.
+## Gold
+### Fixed Bugs
+> **Cursor Animation** was reproduced even if there were not any allies selected.
+When the player **lost** or **won** the game and wanted to play again by going to the main menu and selecting "new game", the game was in **pause** because the win/lose boolean was not changed.
+### Visual Enhancements
+> ### Particles
+> **Battlecry** and **Undying Will** have their respective particles
+The buttons used to **Level Up** the stats of the hero were moved to be more visualty "good"
+Now a text will show at the bottom right corner which will tell the player that he has points to spend
