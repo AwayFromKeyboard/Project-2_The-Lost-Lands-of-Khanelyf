@@ -758,6 +758,9 @@ bool Player::PreUpdate()
 		mainmenu->SetImage("clicked");
 		App->entity->UnselectEverything();
 		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
+		lose_status = false;
+		victory_status = false;
+		victory_window->SetEnabledAndChilds(false);
 		App->LoadGame("Restart_Game_File.xml");
 		App->audio->RestartAudio();
 		pause_status = false;
