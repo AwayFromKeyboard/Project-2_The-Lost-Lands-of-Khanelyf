@@ -4,6 +4,7 @@ The game follows the story of a hero in the lands of Khanelyf, he will have to g
 
 ## Development
 You can follow our progress at [@AFK_Games](https://twitter.com/AFK_Games), in our [Facebook page](https://www.facebook.com/AwayFromKeyboardGames/) or our [Trello](https://trello.com/b/SDxGXSx2/project-2) where we manage our workflow. 
+Our Github [here](https://github.com/AwayFromKeyboard/Project-2_The-Lost-Lands-of-Khanelyf)
 
 ## Our team
 * [Daniel Garcia](https://github.com/viriato22)  (Team Lead)
