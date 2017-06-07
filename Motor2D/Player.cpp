@@ -779,6 +779,9 @@ bool Player::PreUpdate()
 		mainmenu->SetImage("clicked");
 		App->entity->UnselectEverything();
 		App->scene->scene_test->main_menu_window->SetEnabledAndChilds(true);
+		lose_status = false;
+		victory_status = false;
+		victory_window->SetEnabledAndChilds(false);
 		App->LoadGame("Restart_Game_File.xml");
 		App->audio->RestartAudio();
 		pause_status = false;
@@ -2082,7 +2085,8 @@ void Player::MoveToTile(iPoint tile)
 		(*it)->attacked_building = nullptr;
 	}
 
-	App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
+	if (App->entity->selected.size())
+		App->particle->CreateParticle(particle_type::cursor, 0, App->map->MapToWorldPoint(tile));
 }
 
 void Player::SetAttackingEnemy(Unit* enemy)
