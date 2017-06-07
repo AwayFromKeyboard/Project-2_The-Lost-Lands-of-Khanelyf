@@ -167,6 +167,31 @@ bool j1Entity::Load(pugi::xml_node& data)
 			entity->max_life = enemy.child("Life").attribute("max").as_int();
 
 			entity->position.create(enemy.child("Position").attribute("x").as_int(), enemy.child("Position").attribute("y").as_int());
+
+			int id = enemy.child("id").attribute("value").as_int();
+			switch (id)
+			{
+			case quest_0:
+				entity->id = quest_0;
+				break;
+			case quest_2:
+				entity->id = quest_2;
+				break;
+			case quest_3:
+				entity->id = quest_3;
+				break;
+			case quest_4:
+				entity->id = quest_4;
+				break;
+			case quest_7:
+				entity->id = quest_7;
+				break;
+			case quest_id_null:
+				entity->id = quest_id_null;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	for (pugi::xml_node npc = npcs.child("NPC"); npc != NULL; npc = npc.next_sibling()) {
@@ -188,6 +213,31 @@ bool j1Entity::Load(pugi::xml_node& data)
 
 		Entity* entity = App->entity->CreateEntity(name, entity_type::npc, { 0, 0 });
 		entity->position.create(npc.child("Position").attribute("x").as_int(), npc.child("Position").attribute("y").as_int());
+
+		int id = npc.child("id").attribute("value").as_int();
+		switch (id)
+		{
+		case quest_0:
+			entity->id = quest_0;
+			break;
+		case quest_2:
+			entity->id = quest_2;
+			break;
+		case quest_3:
+			entity->id = quest_3;
+			break;
+		case quest_4:
+			entity->id = quest_4;
+			break;
+		case quest_7:
+			entity->id = quest_7;
+			break;
+		case quest_id_null:
+			entity->id = quest_id_null;
+			break;
+		default:
+			break;
+		}
 	}
 	for (pugi::xml_node ally_b = ally_buildings.child("Ally_Building"); ally_b != NULL; ally_b = ally_b.next_sibling()) {
 		int _name = ally_b.attribute("name").as_int();
@@ -226,6 +276,31 @@ bool j1Entity::Load(pugi::xml_node& data)
 				entity->max_life = ally_b.child("Life").attribute("max").as_int();
 			}
 			entity->position.create(ally_b.child("Position").attribute("x").as_int(), ally_b.child("Position").attribute("y").as_int());
+
+			int id = ally_b.child("id").attribute("value").as_int();
+			switch (id)
+			{
+			case quest_0:
+				entity->id = quest_0;
+				break;
+			case quest_2:
+				entity->id = quest_2;
+				break;
+			case quest_3:
+				entity->id = quest_3;
+				break;
+			case quest_4:
+				entity->id = quest_4;
+				break;
+			case quest_7:
+				entity->id = quest_7;
+				break;
+			case quest_id_null:
+				entity->id = quest_id_null;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	for (pugi::xml_node enemy_b = enemy_buildings.child("Enemy_Building"); enemy_b != NULL; enemy_b = enemy_b.next_sibling()) {
@@ -266,6 +341,31 @@ bool j1Entity::Load(pugi::xml_node& data)
 				entity->max_life = enemy_b.child("Life").attribute("max").as_int();
 			}
 			entity->position.create(enemy_b.child("Position").attribute("x").as_int(), enemy_b.child("Position").attribute("y").as_int());
+
+			int id = enemy_b.child("id").attribute("value").as_int();
+			switch (id)
+			{
+			case quest_0:
+				entity->id = quest_0;
+				break;
+			case quest_2:
+				entity->id = quest_2;
+				break;
+			case quest_3:
+				entity->id = quest_3;
+				break;
+			case quest_4:
+				entity->id = quest_4;
+				break;
+			case quest_7:
+				entity->id = quest_7;
+				break;
+			case quest_id_null:
+				entity->id = quest_id_null;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	for (pugi::xml_node object = objects.child("Object"); object != NULL; object = object.next_sibling()) {
@@ -284,6 +384,31 @@ bool j1Entity::Load(pugi::xml_node& data)
 
 		entity->pickable = object.child("Properties").attribute("Pickable").as_bool();
 		entity->is_carried = object.child("Properties").attribute("IsCarried").as_bool();
+
+		int id = object.child("id").attribute("value").as_int();
+		switch (id)
+		{
+		case quest_0:
+			entity->id = quest_0;
+			break;
+		case quest_2:
+			entity->id = quest_2;
+			break;
+		case quest_3:
+			entity->id = quest_3;
+			break;
+		case quest_4:
+			entity->id = quest_4;
+			break;
+		case quest_7:
+			entity->id = quest_7;
+			break;
+		case quest_id_null:
+			entity->id = quest_id_null;
+			break;
+		default:
+			break;
+		}
 	}
 
 	App->player->Load(player);
@@ -312,6 +437,8 @@ bool j1Entity::Save(pugi::xml_node& data) const
 
 			enemy.append_child("Position").append_attribute("x") = (*it)->position.x;
 			enemy.child("Position").append_attribute("y") = (*it)->position.y;
+
+			enemy.append_child("id").append_attribute("value") = (*it)->id;
 		}
 		else if ((*it)->type == entity_type::ally_building || (*it)->name == entity_name::broken_building) {
 			pugi::xml_node building = ally_buildings.append_child("Ally_Building");
@@ -324,6 +451,8 @@ bool j1Entity::Save(pugi::xml_node& data) const
 			building.child("Position").append_attribute("y") = (*it)->position.y;
 
 			building.append_child("Rect").append_attribute("number") = ((Building*)*it)->building_rect_number;
+			
+			building.append_child("id").append_attribute("value") = (*it)->id;
 		}
 		else if ((*it)->type == entity_type::enemy_building) {
 			pugi::xml_node building = enemy_buildings.append_child("Enemy_Building");
@@ -336,6 +465,8 @@ bool j1Entity::Save(pugi::xml_node& data) const
 			building.child("Position").append_attribute("y") = (*it)->position.y;
 
 			building.append_child("Rect").append_attribute("number") = ((Building*)*it)->building_rect_number;
+			
+			building.append_child("id").append_attribute("value") = (*it)->id;
 		}
 		else if ((*it)->type == entity_type::object) {
 			pugi::xml_node object = objects.append_child("Object");
@@ -346,6 +477,8 @@ bool j1Entity::Save(pugi::xml_node& data) const
 
 			object.append_child("Properties").append_attribute("Pickable") = ((Object*)*it)->pickable;
 			object.child("Properties").append_attribute("IsCarried") = ((Object*)*it)->is_carried;
+
+			object.append_child("id").append_attribute("value") = (*it)->id;
 		}
 		else if ((*it)->type == entity_type::npc) {
 			pugi::xml_node npc = npcs.append_child("NPC");
@@ -353,6 +486,8 @@ bool j1Entity::Save(pugi::xml_node& data) const
 
 			npc.append_child("Position").append_attribute("x") = (*it)->position.x;
 			npc.child("Position").append_attribute("y") = (*it)->position.y;
+
+			npc.append_child("id").append_attribute("value") = (*it)->id;
 		}
 	}
 
