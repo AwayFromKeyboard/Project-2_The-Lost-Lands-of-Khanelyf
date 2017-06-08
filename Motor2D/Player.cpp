@@ -771,6 +771,7 @@ bool Player::PreUpdate()
 	{
 		save->SetImage("clicked");
 		App->SaveGame("Save_File.xml");
+		App->scene->scene_test->has_save_file = true;
 		button_clicked.Start();
 		button_on_clicked = true;
 	}
